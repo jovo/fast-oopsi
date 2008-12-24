@@ -406,7 +406,7 @@ Note that this solution is the optimal linear solution, under the assumption tha
 %\end{algorithm}
 
 \begin{figure}
-\centering \includegraphics[width=0.7\linewidth]{NIPSdemo}
+%\centering \includegraphics[width=0.7\linewidth]{NIPSdemo}
 \caption{Simulation demonstrating our neuron model and inference. Note that our filter accurately infers the unobserved spike train, given only the noisy fluorescence measurements.  Top panel: Simulated fluorescence. Second panel: Simulated intracellular calcium concentration. Third panel: Simulated spike train.  Fourth panel: Output of optimal nonnegative filter (green) superimposed on simulated spike train (black).  Parameters: $\lam=10$, $\Del=0.025$ msec, $\tau=0.5$ sec, $\sig=1$.} \label{fig:demo}
 \end{figure}
 
@@ -487,12 +487,12 @@ Fig.\ \ref{fig:comp} depicts a comparison between the filters developed above an
 
 %\begin{minipage}{1.0\textwidth}
 \begin{figure}
-\includegraphics[width=1.0\linewidth]{NIPScomp}
+%\includegraphics[width=1.0\linewidth]{NIPScomp}
 \caption{Comparison of various linear filters for a simulated Poisson neuron spiking with a rate of $1$ Hz (left panels) and $200$ Hz (right panels). The main result is that the two filters proposed outperform the optimal linear (i.e., Wiener) filter. Top panels: Fluorescence measurements.  Second panels: Number of spikes per frame.  Third panels: Optimal linear (i.e., Wiener) filter output given the above fluorescence signal.  The Wiener filter does not impose a nonnegativity constraint, thus the inferred spike train can either be positive (green) or negative (red).  Fourth panels: Same as third panels, but for the optimal nonnegative filter. Note the absence of negative spikes.  Fifth panels: Same as third panels, but using the fast Projection Pursuit Regression (fPPR) filter. Parameters: $\Del=0.025$ sec, $\tau=0.5$ sec, $\lam=1/($firing rate$)$, left  $\sig=0.4$, right $\sig=1$.} \label{fig:comp}
 \end{figure}
 
 \begin{figure}[!h]
-\centering \includegraphics[width=.6\linewidth]{NIPSdata}
+%\centering \includegraphics[width=.6\linewidth]{NIPSdata}
 \caption{Inferring a spike train given fluorescence measurements from a live \emph{in vitro} neuron.  Simultaneous recording of a saturating fluorescence signal (black line in top panel), and its associated spike train (black impluses in all panels).  Note how the three filters handle saturation differently. The optimal nonnegative filter's signal-to-noise ratio degrades as saturation increases, but does not suffer a catastrophic failure (green in second panel). fPPR suffers more than the optimal nonlinear particle filter when the signal saturates, due to the hard threshold (green in third panel). The optimal nonlinear particle filter \cite{BJ08}, which explicitly incorporates saturation, correctly identifies each spike time (green in bottom panel).} \label{fig:real}
 \end{figure}
 %\end{minipage}

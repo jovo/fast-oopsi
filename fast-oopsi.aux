@@ -1,0 +1,98 @@
+\relax 
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Methods}{1}}
+\newlabel{sec:methods}{{2}{1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Model}{1}}
+\newlabel{eq:obs}{{1}{1}}
+\newlabel{eq:trans}{{2}{1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Inference}{1}}
+\newlabel{sec:inf}{{2.2}{1}}
+\citation{HastieFriedman01}
+\citation{CONV04}
+\citation{CONV04}
+\citation{CONV04}
+\newlabel{eq:obj}{{3}{2}}
+\newlabel{eq:obj2}{{4}{2}}
+\newlabel{eq:eta}{{5}{2}}
+\newlabel{eq:M}{{6}{2}}
+\citation{Rabiner89}
+\newlabel{eq:eta2}{{7}{3}}
+\newlabel{eq:NR}{{8}{3}}
+\newlabel{eq:g}{{8c}{3}}
+\newlabel{eq:H}{{8d}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Learning}{3}}
+\newlabel{sec:est}{{2.3}{3}}
+\newlabel{eq:par1}{{9}{3}}
+\newlabel{eq:lik}{{10}{4}}
+\newlabel{eq:lik2}{{12}{4}}
+\newlabel{eq:prior}{{13}{4}}
+\newlabel{eq:par}{{14}{4}}
+\citation{YaksiFriedrich06}
+\citation{Wiener49}
+\citation{ShumwayStoffer06}
+\newlabel{eq:m}{{15}{5}}
+\newlabel{eq:sig}{{16}{5}}
+\newlabel{eq:lam}{{17}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Results}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Main Result}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Simulation demonstrating our neuron model and inference. Note that the effective signal-to-noise ratio (SNR) of our fast filter improves on the Wiener filter, largely by eliminating the ringing effect present in the Wiener filter output. For both filters, only the fluorescence was provided to the algorithm, so both the parameters and the inference were performed using this minimal amount of data. Top panel: Simulated fluorescence. Second panel: Simulated intracellular calcium concentration. Third panel: Simulated spike train. Fourth panel: Wiener filter (blue for positive inference, red for negative), superimposed on simulated spike train (black triangles). Bottom panel: Fast filter (same conventions as fourth panel). Parameters: $\gamma =0.94$, $\nu =0$, $\rho =1$, $\sigma =0.3$, $\lambda =8$, $\Delta =0.005$ msec.}}{6}}
+\newlabel{fig:schem}{{1}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Fast Spiking Neuron}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Comparing the Wiener filter and our fast filter for a fast spiking neuron. In this scenario, the two filters perform approximately equally well. Note that both recover fast fluctuations in the firing rate that are smoothed out by the calcium dynamics. Conventions as in Fig. 1\hbox {}. Actual and inferred spike trains were normalized similarly, to ease comparisons. Parameters: $\gamma =0.94$, $\nu =0$, $\rho =1$, $\sigma =0.3$, $\lambda =100$ (modulated by a sinusoid), $\Delta =0.05$ msec.}}{7}}
+\newlabel{fig:FastSpiking}{{2}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Spatial Filtering}{7}}
+\citation{Fortin00}
+\bibdata{/Users/joshyv/Research/misc/biblist}
+\bibcite{CONV04}{Boyd and Vandenberghe, 2004}
+\newlabel{eq:Obs}{{18}{8}}
+\newlabel{eq:Par}{{20}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Incorporating a nonlinear observation model}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Optimal thresholding}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Slow dynamics}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{8}}
+\@writefile{toc}{\contentsline {paragraph}{Acknowledgments}{8}}
+\bibcite{Fortin00}{Fortin, 2000}
+\bibcite{HastieFriedman01}{Hastie et\nobreakspace  {}al., 2001}
+\bibcite{IkegayaYuste04}{Ikegaya et\nobreakspace  {}al., 2004}
+\bibcite{MacLeanYuste05}{MacLean et\nobreakspace  {}al., 2005}
+\bibcite{NiellSmith05}{Niell and Smith, 2005}
+\bibcite{OhkiReid05}{Ohki et\nobreakspace  {}al., 2005}
+\bibcite{Rabiner89}{Rabiner, 1989}
+\bibcite{SatoSvoboda07}{Sato et\nobreakspace  {}al., 2007}
+\bibcite{ShumwayStoffer06}{Shumway and Stoffer, 2006}
+\bibcite{BJ08}{Vogelstein et\nobreakspace  {}al., 2008}
+\bibcite{Wiener49}{Wiener, 1949}
+\bibcite{YaksiFriedrich06}{Yaksi and Friedrich, 2006}
+\bibstyle{apalike}
+\@writefile{toc}{\contentsline {section}{References}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Wiener Filter}{10}}
+\newlabel{eq:w1}{{21}{10}}
+\newlabel{eq:w2}{{22}{10}}
+\newlabel{eq:w_par}{{25a}{10}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}old}{10}}
+\@writefile{toc}{\contentsline {paragraph}{Generalization of the optimal nonnegative filter}{10}}
+\newlabel{eq:SS}{{26}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Simulation demonstrating our neuron model and inference. Note that our filter accurately infers the unobserved spike train, given only the noisy fluorescence measurements. Top panel: Simulated fluorescence. Second panel: Simulated intracellular calcium concentration. Third panel: Simulated spike train. Fourth panel: Output of optimal nonnegative filter (green) superimposed on simulated spike train (black). Parameters: $\lambda =10$, $\Delta =0.025$ msec, $\tau =0.5$ sec, $\sigma =1$.}}{11}}
+\newlabel{fig:demo}{{3}{11}}
+\newlabel{eq:SSa}{{26a}{11}}
+\newlabel{eq:SSb}{{26b}{11}}
+\@writefile{toc}{\contentsline {paragraph}{Projection Pursuit Regression}{11}}
+\citation{Wiener49}
+\citation{BJ08}
+\citation{BJ08}
+\citation{MacLeanYuste05}
+\citation{BJ08}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Comparison of various linear filters for a simulated Poisson neuron spiking with a rate of $1$ Hz (left panels) and $200$ Hz (right panels). The main result is that the two filters proposed outperform the optimal linear (i.e., Wiener) filter. Top panels: Fluorescence measurements. Second panels: Number of spikes per frame. Third panels: Optimal linear (i.e., Wiener) filter output given the above fluorescence signal. The Wiener filter does not impose a nonnegativity constraint, thus the inferred spike train can either be positive (green) or negative (red). Fourth panels: Same as third panels, but for the optimal nonnegative filter. Note the absence of negative spikes. Fifth panels: Same as third panels, but using the fast Projection Pursuit Regression (fPPR) filter. Parameters: $\Delta =0.025$ sec, $\tau =0.5$ sec, $\lambda =1/($firing rate$)$, left $\sigma =0.4$, right $\sigma =1$.}}{12}}
+\newlabel{fig:comp}{{4}{12}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}Results}{12}}
+\newlabel{sec:results}{{C}{12}}
+\citation{IkegayaYuste04}
+\citation{NiellSmith05}
+\citation{OhkiReid05}
+\citation{YaksiFriedrich06}
+\citation{SatoSvoboda07}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Inferring a spike train given fluorescence measurements from a live \emph  {in vitro} neuron. Simultaneous recording of a saturating fluorescence signal (black line in top panel), and its associated spike train (black impluses in all panels). Note how the three filters handle saturation differently. The optimal nonnegative filter's signal-to-noise ratio degrades as saturation increases, but does not suffer a catastrophic failure (green in second panel). fPPR suffers more than the optimal nonlinear particle filter when the signal saturates, due to the hard threshold (green in third panel). The optimal nonlinear particle filter \cite  {BJ08}, which explicitly incorporates saturation, correctly identifies each spike time (green in bottom panel).}}{13}}
+\newlabel{fig:real}{{5}{13}}
+\@writefile{toc}{\contentsline {section}{\numberline {D}Conclusions}{13}}
+\newlabel{sec:dis}{{D}{13}}
+\@writefile{toc}{\contentsline {section}{\numberline {E}other}{14}}
