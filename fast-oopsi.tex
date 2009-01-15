@@ -14,7 +14,7 @@
 \newcommand{\CaT}{\Cav}
 \newcommand{\ax}{\argmax_{\ve{C}_t \geq 0 \forall t}}
 \newcommand{\an}{\argmin_{n_t \geq 0 \forall t}}
-\newcommand{\az}{\argmin_{\bM \bC - \bb \geq \ve{0}}}
+\newcommand{\az}{\argmin_{\bM \bC \geq \ve{0}}}
 \newcommand{\ath}{\argmax_{\bth \in \ve{\Theta}}}
 \newcommand{\ann}{\argmin_{n_t \in \mathbb{N}_0 \forall t}}
 \newcommand{\hnm}{\widehat{\bn}}
@@ -90,59 +90,62 @@ Joshua T.~Vogelstein% \thanks{ Use footnote for providing further information ab
 
 \subsection{Model}
 
-We assume the following discrete-time state-space model relating spikes, $n_t$, baseline subtracted intracellular calcium concentration, denoted by $C_t$, and fluorescence measurements, $F_t$: (1) spikes follow Poisson statistics with rate $\lam \Del$, (2) $C_t$ decays exponentially with decay $\gamma$ to baseline $\nu$, but jumps by $\rho$ after each spike, and (3) fluorescent observations are linear functions of $C_t$ with additive Gaussian noise with variance $\sig^2$.  Together, these assumptions imply the following model:
+We assume a simple discrete-time state-space model relating spikes, $n_t$, baseline subtracted intracellular calcium concentration, denoted by $C_t$, and fluorescence measurements, $F_t$.  First, we assume a linear relationship between $F_t$ and $C_t$, with gaussian noise.  Second, we assume that $C_t$ jumps after each spike, and then decays according to some time constant.  Finally, we assume that spikes are distributed according to a Poisson process. The above assumptions lead to the follwoing model:
+
+%. (1) spikes follow Poisson statistics with rate $\lam \Del$, (2) $C_t$ decays exponentially with decay $\gamma$ to baseline $\nu$, but jumps by $\rho$ after each spike, and (3) fluorescent observations are linear functions of $C_t$ with additive Gaussian noise with variance $\sig^2$.  Together, these assumptions imply the following model:
 
 \begin{align}
-F_t &= \alpha C_t + \beta +  \sig \varepsilon_t, \qquad &\varepsilon_t \sim \mathcal{N}(0,1) \label{eq:obs} \\
-C_t  &= \gamma  C_{t-1} + \nu + \rho n_t,  \qquad &n_t \sim \text{Poisson}(n_t; \lam \Del) \label{eq:trans}  
+F_t &= \alpha C_t + \beta +  \varepsilon_t, \qquad &\varepsilon_t \sim \mathcal{N}(0,\sig) \label{eq:obs} \\
+C_t  &= \gamma  C_{t-1} + n_t,  \qquad &n_t \sim \text{Poisson}(n_t; \lam \Del) \label{eq:trans}  
 \end{align}
 
-\noindent where $\alpha$ and $\beta$ set the baseline and offset respectively. To enforce identifiability, we will let $\alpha=1$ and $\beta=0$, without loss of generality, as explained below.
+\noindent where $\alpha$ and $\beta$ set the fluorescence baseline and offset respectively, $\sig$ indicates the variance of the noise, and $\gamma$ sets the decay rate. %Note that   . To enforce identifiability, we will let $\alpha=1$ and $\beta=0$, without loss of generality, as explained below.
 
 \subsection{Inference} \label{sec:inf}
 
-Given such a model, our goal is to find the maximum \emph{a posteriori} (MAP) spike train, i.e., the most likely spike train, $\bn=[n_1,\ldots, n_T]$, where $T$ is the final time step,  given the fluorescence measurements, $\bF=[F_1,\ldots, F_T]$. Thus, the objective function that we'd like to solve may be written as:
+Given such a model, our goal is to find the maximum \emph{a posteriori} (MAP) spike train, i.e., the most likely spike train, $\bn$ (where we use the shorthand notation $\bX=[X_1, \ldots, X_T]$, and $T$ is the final time step),  given the fluorescence measurements, $\bF$. %=[F_1,\ldots, F_T]$.
+Thus, the objective function that we'd like to solve may be written as:
 
 %\begin{subequations}
 \begin{align}
 \hnm &=  \ann P(\bn | \bF) = \ann P(\bF | \bn) P(\bn) \nonumber  \\
 &= \argmax_{n_t \in \mathbb{N}_0 \forall t} \prod_{t=1}^T  P(F_t | C_t)  P(n_t) = \argmax_{n_t \in \mathbb{N}_0 \forall t} \sum_{t=1}^T \big( \log P(F_t | C_t) + \log P(n_t)\big)  \nonumber \\
-&= \ann  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - C_t)^2  -  n_t \log \lam \Del + \log n_t! \bigg),   \label{eq:obj}
+&= \ann  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha C_t - \beta)^2  -  n_t \log \lam \Del + \log n_t! \bigg),   \label{eq:obj}
 \end{align}
 %\end{subequations}
 
 \noindent where $\mathbb{N}_0 = \{0, 1, 2, \ldots\}$, and $C_t$ is implicitly a function of $n_t$.  Unfortunately, the computational complexity of solving Eq. \eqref{eq:obj} scales exponentially with $T$, i.e., is $O($e$^T)$, making Eq. \eqref{eq:obj} an NP-hard problem.  Thus, instead of an exact solution, we propose to make an approximation that reduces the complexity to be \emph{polynomial} in $T$.  In particular, we relax the assumption that we must have an integer number of spikes at any time step, by approximating the Poisson distribution with an exponential.  Note that this is a common approximation technique in the machine learning literature \cite{HastieFriedman01}, as it is the closest convex relaxation to its non-convex counterpart.  The constraint on $n_t$ in Eq. \eqref{eq:obj} is therefore relaxed from  $n_t \in \mathbb{N}_0$ to $n_t \geq 0$:
 
 \begin{align} \label{eq:obj2}
-\hnm &\approx \an  \sum_{t=1}^T \left( \frac{1}{2 \sig^2}(F_t - C_t)^2  +  n_t  \lam \Del \right).
+\hnm &\approx \an  \sum_{t=1}^T \left( \frac{1}{2 \sig^2}(F_t -\alpha C_t - \beta)^2  +  n_t  \lam \Del \right).
 \end{align}
 
 While this convex relaxation makes the problem tractable, the ``sharp'' threshold imposed by the nonnegativity constraint prohibits the use of standard gradient ascent techniques \cite{CONV04}. We therefore take an ``interior-point'' (or ``barrier'') approach, in which we drop the sharp threshold, and add a barrier term, which must approach $-\infty$ as $n_t$ approaches zero (e.g., $-\log n_t$) \cite{CONV04}.  By iteratively reducing the weight of the barrier term, $\zzz > 0$, we are guaranteed to converge to the correct solution \cite{CONV04}, $\hnm$.  Thus, our goal is to efficiently solve:
 
 \begin{align} \label{eq:eta}
-\hbn_{\zzz} &= \argmin_{n_t \forall t}  \sum_{t=1}^T \left( \frac{1}{2 \sig^2}(F_t - C_t)^2  +  n_t  \lam \Del - \zzz \log(n_t) \right),
+\hbn_{\zzz} &= \argmin_{n_t \forall t}  \sum_{t=1}^T \left( \frac{1}{2 \sig^2}(F_t -\alpha C_t - \beta)^2  +  n_t  \lam \Del - \zzz \log(n_t) \right),
 \end{align}
 
 \noindent which is concave and may therefore be solved exactly and efficiently using a gradient ascent technique. To see how, we first note that   
 % such as Newton-Raphson, which, na\"{i}ely, requires inverting the Hessian (second derivative), an $O(T^3)$ operation.  
 %We have therefore reduced the computational burden from exponential to polynomial in $T$.   However, by utilizing the structure of Eq. \eqref{eq:trans}, we can devise an algorithm that further reduces computation burden from polynomial in $T$ to \emph{linear} in $T$.  In particular, we note here that 
-spikes and calcium are related to one another via a simple linear transformation, namely, $n_t=f(C_t,C_{t-1})= (C_t - \gamma C_{t-1} - \nu) / \rho$, or, in matrix notation: 
+spikes and calcium are related to one another via a simple linear transformation, namely, $n_t=f(C_t,C_{t-1})= C_t - \gamma C_{t-1}$, or, in matrix notation: 
 
 \begin{align} \label{eq:M}
-\ve{M} \bC - \bb=
+\ve{M} \bC = %- \bb=
 \begin{bmatrix}
-1/\rho & 0  & 0 & \cdots & \cdots \\
-1/\rho & -\gamma/\rho & 0 & \cdots & \cdots \\
-0 & 1/\rho & -\gamma/\rho & 0 & \cdots  \\
+1 & 0  & 0 & \cdots & \cdots \\
+1 & -\gamma & 0 & \cdots & \cdots \\
+0 & 1 & -\gamma & 0 & \cdots  \\
 \vdots & \vdots & \vdots & \vdots & \vdots  \\
-0 & 0 & 0 & 1/\rho & -\gamma/\rho
+0 & 0 & 0 & 1 & -\gamma
 \end{bmatrix}
 \begin{bmatrix}
 C_1 \\ C_2 \\ \vdots \\ \vdots \\ C_T  
 \end{bmatrix}
--\begin{bmatrix}
-\nu/\rho \\ \nu/\rho \\ \vdots \\ \vdots \\ \nu/\rho 
-\end{bmatrix}
+%-\begin{bmatrix}
+%\nu/\rho \\ \nu/\rho \\ \vdots \\ \vdots \\ \nu/\rho 
+%\end{bmatrix}
 = 
 \begin{bmatrix}
 n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
@@ -154,12 +157,12 @@ n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
 
 %\begin{subequations}  
 \begin{align} 
-\hbC_{\zzz} &= \argmin_{(C_t - \gamma C_{t-1} - \nu)/\rho \geq 0 \forall t} \sum_{t=1}^{T} \left( \frac{1}{2 \sig^2}(F_t - C_t)^2  + (C_t - \gamma C_{t-1} - \nu)  \lam \Del/\rho - \zzz \log[(C_t - \gamma C_{-1} -\nu )/\rho] \right) \nonumber \\
-&= \az  \frac{1}{2 \sig^2} \norm{\bF - \bC}^2 + \lam \Del (\bM \bC-\bb )' \ve{1}  - \zzz \log(\bM \bC - \bb)'\ve{1},  \label{eq:eta2}
+\hbC_{\zzz} &= \argmin_{C_t - \gamma C_{t-1} \geq 0 \forall t} \sum_{t=1}^{T} \left( \frac{1}{2 \sig^2}(F_t - \alpha C_t - \beta)^2  + (C_t - \gamma C_{t-1}) \lam \Del - \zzz \log(C_t - \gamma C_{-1} -\nu ) \right) \nonumber \\
+&= \az  \frac{1}{2 \sig^2} \norm{\bF - \alpha \bC -\beta \ve{1} }^2 + \lam \Del (\bM \bC )' \ve{1}  - \zzz \log(\bM \bC)'\ve{1},  \label{eq:eta2}
 \end{align}
 %\end{subequations}
 
-\noindent where $\bM \bC -\bb \geq \ve{0}$ indicates that every element of $\bM \bC -\bb$ is greater than or equal to zero, $'$ indicates transpose, and  $\ve{1}$ is a $T$ dimensional column vectors. As \eqref{eq:eta2} is concave (it is identical to Eq. \eqref{eq:eta} with different notation), we may use any descent technique to find $\hbC_{\zzz}$.  We elect to use the Newton-Raphson approach: 
+\noindent where $\bM \bC \geq \ve{0}$ indicates that every element of $\bM \bC$ is greater than or equal to zero, $'$ indicates transpose, and  $\ve{1}$ is a $T$ dimensional column vectors. As \eqref{eq:eta2} is concave (it is identical to Eq. \eqref{eq:eta} with different notation), we may use any descent technique to find $\hbC_{\zzz}$.  We elect to use the Newton-Raphson approach: 
 
 %, i.e., update $\widehat{\ve{C}}_{\zzz}$ by adding to it the solution to $\ve{H}\ve{C} = \ve{g}$, weighted by $0<s\leq1$, where $\ve{H}$ and $\ve{g}$ are the Hessian and gradient of the argument in \eqref{eq:goal2}.  The step size, $s$, ensures that the posterior converges, by enforcing an increase in the objective with each step. Therefore, we have: 
 
@@ -167,8 +170,8 @@ n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
 \begin{align}
 \hbC_{\zzz} &\leftarrow \hbC_{\zzz} + s \bd \\
 \bH \bd &= \bg \\
-\ve{g} &= -\frac{1}{\sig^2}(\bF - \hbC_{\zzz}) + \lam \Del \ve{M}' \ve{1} - \zzz \ve{M}' (\ve{M} \hbC_{\zzz} -\bb)^{-1} \label{eq:g} \\
-\ve{H} &= \frac{1}{\sig^2} \ve{I} + 2 \zzz \ve{M}' (\ve{M} \hbC_{\zzz} - \bb)^{-2} \ve{M} \label{eq:H}
+\ve{g} &= -\frac{\alpha}{\sig^2}(\bF -\alpha \hbC_{\zzz} - \beta) + \lam \Del \ve{M}' \ve{1} - \zzz \ve{M}' (\ve{M} \hbC_{\zzz})^{-1} \label{eq:g} \\
+\ve{H} &= \frac{\alpha^2}{\sig^2} \ve{I} + 2 \zzz \ve{M}' (\ve{M} \hbC_{\zzz})^{-2} \ve{M} \label{eq:H}
 \end{align}
 \end{subequations}
 
@@ -184,31 +187,52 @@ were known. In general, however, these parameters may be estimated from the data
 
 %\begin{subequations} \label{eq:par}
 \begin{align} \label{eq:par1}
-\widehat{\bth} &= \argmax_{\bth \in \ve{\Theta}} \int P(\ve{F}|\ve{n}, \ve{\theta}) P(\ve{n} | \ve{\theta} ) d\bn \approx \argmax_{\bth \in \ve{\Theta}}P(\ve{F}| \hnm, \ve{\theta}) P(\hnm | \ve{\theta})
+\widehat{\bth} &= \argmax_{\bth \in \ve{\Theta}} \iint P(\bF|\bC, \bn, \bth) P(\bC, \bn | \bth) d\bn d\bC  \approx \argmax_{\bth \in \ve{\Theta}}P(\bF| \hCm, \hnm, \bth) P(\hCm, \hnm | \bth)
 \end{align}
 
-\noindent where $\hnm=[\hn_1, \ldots, \hn_T]$ is estimate of $\hnm$ from the inference algorithm described above ($\hCm$ is defined similarly). The approximation in \eqref{eq:par} is good whenever the likelihood is very peaky, meaning that most of the mass is around the MAP sequence.\footnote{The approximation in \eqref{eq:par} may be considered a first-order Laplace approximation}  In particular, for state-space models, one often approximates the integral in \eqref{eq:par} with the Viterbi path, i.e., the MAP path of the hidden states \cite{Rabiner89}. Finding the Viterbi path is often far easier than solving the integral in \eqref{eq:par}, as in the case here.  Due to the state space nature of the above model (Eqs \eqref{eq:obs} and \eqref{eq:trans}), the optimization in Eq \eqref{eq:par1} simplifies significantly.  More specifically, the likelihood term, $P(\bF | \hnm, \bth)$ may be written as:
+\noindent where $\hnm=[\hn_1, \ldots, \hn_T]$ is estimate of $\hnm$ from the inference algorithm described above ($\hCm$ is defined similarly). The approximation in \eqref{eq:par} is good whenever the likelihood is very peaky, meaning that most of the mass is around the MAP sequence.\footnote{The approximation in \eqref{eq:par} may be considered a first-order Laplace approximation}  In particular, for state-space models, one often approximates the integral in \eqref{eq:par} with the Viterbi path, i.e., the MAP path of the hidden states \cite{Rabiner89}. Finding the Viterbi path is often far easier than solving the integral in \eqref{eq:par}, as in the case here.  Due to the state space nature of the above model (Eqs \eqref{eq:obs} and \eqref{eq:trans}), the optimization in Eq \eqref{eq:par1} simplifies significantly.  More specifically, we can write the argument from the left-hand-side of Eq \eqref{eq:par1} as a product of terms that we have defined in our model:
+
+ \begin{align} \label{eq:par2}
+P(\bF| \hCm, \hnm, \bth) P(\hCm, \hnm | \bth) &= \prod_{t=1}^T P(F_t | \hC_t, \alpha, \beta,\sig) P(\hC_t | \hC_{t-1}, \hn_t, \gamma) P(\hn_t | \lam)
+\end{align}
+
+\noindent Thus, this likelihood is jointly concave in all the parameters.  To solve for $\{\alpha,\beta,\sig\}$, we solve:
 
 \begin{align} 
-P(\bF | \hnm, \bth) &= \prod_{t=1}^T P(F_t | n_t, \bth) = \prod_{t=1}^T \frac{1}{\sqrt{2 \pi \sig^2}} \exp \left\{-\frac{1}{2\sig^2} (F_t - \alpha \hC_t - \beta )^2\right\} \nonumber \\
-&= \prod_{t=1}^T \frac{1}{\sqrt{2 \pi \sig^2}} \exp \left\{-\frac{1}{2\sig^2} \big[F_t - \alpha (\gamma \hC_{t-1} + \nu + \rho n_t) - \beta \big]^2\right\} \label{eq:lik}
+\{\halpha, \hbeta, \hsig\} &= \argmax_{\alpha, \beta, \sig > 0} \sum_{t=1}^T \log P(F_t | \hC_t, \alpha, \beta, \sig) \nonumber \\
+&=  \argmax_{\alpha, \beta, \sig > 0} -\frac{T}{2} \log (2 \pi \sig^2)  - \frac{1}{2\sig^2} \sum_{t=1}^T (F_t - \alpha \hC_{t} - \beta )^2 \nonumber \\
+&=   \argmax_{\alpha, \beta, \sig > 0} -\frac{T}{2} \log (2 \pi \sig^2)  - \frac{1}{2\sig^2} \norm{\bF- \hbX \ve{\eta}}^2 \label{eq:lik2}
+%P(\bF | \hCm, \alpha, \beta, \sig) &= \prod_{t=1}^T P(F_t | \hC_t, \alpha, \beta, \sig) = \prod_{t=1}^T \frac{1}{\sqrt{2 \pi \sig^2}} \exp \left\{-\frac{1}{2\sig^2} (F_t - \alpha \hC_t - \beta )^2\right\}, \label{eq:lik}% \nonumber \\
+%&= \prod_{t=1}^T \frac{1}{\sqrt{2 \pi \sig^2}} \exp \left\{-\frac{1}{2\sig^2} \big[F_t - \alpha (\gamma \hC_{t-1} + n_t) - \beta \big]^2\right\} \label{eq:lik}
 \end{align}
 
-\noindent which follows from Eq \eqref{eq:trans} because $\hC_t$ is deterministic given $\hn_t$. Considering for a moment, only the quadratic term in Eq \eqref{eq:lik}, the terms can be reorganized:
+%\noindent which follows from Eq \eqref{eq:trans}. Taking the log of both sides yields:
+%
+% because $\hC_t$ is deterministic given $\hn_t$. Considering for a moment, only the quadratic term in Eq \eqref{eq:lik}, the terms can be reorganized:
+%
+%\begin{align}
+%F_t - \alpha (\gamma \hC_{t-1} + \nu + \rho \hn_t) - \beta &= F_t - (\alpha \gamma) \hC_{t-1} - (\alpha \nu + \beta) - (\alpha \rho) \hn_t 
+%\end{align}
+%
+%\noindent which emphasizes the over-parameterization in our model.  Thus, without loss of generality, we can assume that $\alpha=1$ and $\beta=0$. Taking logs in Eq \eqref{eq:lik} then yields:
+%
+%\begin{align} 
+%\log P(\bF | \hnm, \bth) &=  -\frac{T}{2} \log (2 \pi \sig^2)  - \frac{1}{2\sig^2} \sum_{t=1}^T (F_t - \alpha \hC_{t} - \beta )^2 \nonumber \\
+%&=  -\frac{T}{2} \log (2 \pi \sig^2)  - \frac{1}{2\sig^2} \norm{\bF- \hbX \ve{\eta}}^2
+% \label{eq:lik2}
+%\end{align}
 
-\begin{align}
-F_t - \alpha (\gamma \hC_{t-1} + \nu + \rho \hn_t) - \beta &= F_t - (\alpha \gamma) \hC_{t-1} - (\alpha \nu + \beta) - (\alpha \rho) \hn_t 
-\end{align}
-
-\noindent which emphasizes the over-parameterization in our model.  Thus, without loss of generality, we can assume that $\alpha=1$ and $\beta=0$. Taking logs in Eq \eqref{eq:lik} then yields:
+\noindent where  $\ve{\eta}=[\alpha, \, \beta]$  and $\hbX_t=[\hC_{t}, \, 1]$.  Thus, solving for $\{\halpha,\hbeta\}$, is a constrained quadratic optimization problem, which can be solved efficiently using standard tools, such as Matlab's \texttt{quadprog}.  The variance may then be solved for analytically:
 
 \begin{align} 
-\log P(\bF | \hnm, \bth) &=  -\frac{T}{2} \log (2 \pi \sig^2)  - \frac{1}{2\sig^2} \sum_{t=1}^T (F_t - \gamma \hC_{t-1} - \nu - \rho \hn_t)^2 \nonumber \\
-&=  -\frac{T}{2} \log (2 \pi \sig^2)  - \frac{1}{2\sig^2} \norm{\bF- \hbX \ve{\eta}}^2
- \label{eq:lik2}
+\widehat{\sig}^2 &= \frac{1}{T} \norm{\bF - \hbX \widehat{\ve{\eta}}}_2^2 \label{eq:sig}
 \end{align}
 
-\noindent where  $\ve{\eta}=[\gam, \, \nu, \, \rho]$, $\hbX=[\hbX_1, \ldots, \hbX_T]'$, and $\hbX_t=[\hC_{t-1}, \, 1, \, \hn_t]$.  Similarly, taking the log of the prior term, $P(\hnm | \bth )$ yields:
+
+
+
+
+Similarly, taking the log of the prior term, $P(\hnm | \bth )$ yields:
 
 \begin{align} \label{eq:prior}
 \log P(\hnm | \bth) =  \sum _{t=1}^T \log(\lam \Del)  -\lam \Del \hn_t =T (\lam \Del) - \lam \Del \hnm' \ve{1} 

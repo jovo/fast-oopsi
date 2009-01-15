@@ -1,5 +1,6 @@
-This is pdfTeX, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2008.3.24)  24 DEC 2008 09:31
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2008.3.24)  15 JAN 2009 10:54
 entering extended mode
+ Source specials enabled.
 **fast-oopsi.tex
 (./fast-oopsi.tex
 LaTeX2e <2005/12/01>
@@ -184,7 +185,11 @@ Package: times 2005/04/12 PSNFSS-v9.2a (SPQR)
 \f@ncyO@olf=\skip61
 \f@ncyO@orf=\skip62
 )
-(/Users/joshyv/Research/misc/latex_commands.tex)) (./fast-oopsi.aux)
+(/Users/joshyv/Research/misc/latex_commands.tex)) (./fast-oopsi.aux
+
+LaTeX Warning: Label `eq:sig' multiply defined.
+
+)
 \openout1 = `fast-oopsi.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 65.
@@ -200,8 +205,7 @@ LaTeX Font Info:    ... okay on input line 65.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 65.
 LaTeX Font Info:    ... okay on input line 65.
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 65.
-
-(/opt/local/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+ (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 LaTeX Font Info:    Try loading font information for U+msa on input line 67.
@@ -223,18 +227,13 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
  [1
 
 ]
-Overfull \hbox (69.07672pt too wide) in paragraph at lines 120--121
+Overfull \hbox (69.07672pt too wide) in paragraph at lines 123--124
 \OT1/ptm/m/n/12 non-neg-a-tiv-ity con-straint pro-hibits the use of stan-dard g
 ra-di-ent as-cent tech-niques [[]].
  []
 
-
-Overfull \hbox (26.7211pt too wide) in paragraph at lines 159--159
-[] 
- []
-
 [2] [3]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 238.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 225.
 
  (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
@@ -244,27 +243,31 @@ File: schem.eps Graphic file (type eps)
 <schem.eps> [6]
 File: FastSpiking.eps Graphic file (type eps)
  <FastSpiking.eps> [7]
-Overfull \hbox (11.13988pt too wide) in paragraph at lines 315--316
-\OT1/ptm/m/n/12 where $\OMS/cmsy/m/n/12 j ^^A j$ \OT1/ptm/m/n/12 in-di-cates th
-e de-ter-mi-nant. By pre-whitening the ob-ser-va-tion ma-trix, $[] \OT1/cmr/m/n
-/12 = [[][]\OML/cmm/m/it/12 ; [][]; [] ; [][]\OT1/cmr/m/n/12 ]$\OT1/ptm/m/n/12 
-,
+Overfull \hbox (11.13988pt too wide) in paragraph at lines 339--340
+[]\OT1/ptm/m/n/12 where $\OMS/cmsy/m/n/12 j ^^A j$ \OT1/ptm/m/n/12 in-di-cates 
+the de-ter-mi-nant. By pre-whitening the ob-ser-va-tion ma-trix, $[] \OT1/cmr/m
+/n/12 = [[][]\OML/cmm/m/it/12 ; [][]; [] ; [][]\OT1/cmr/m/n/12 ]$\OT1/ptm/m/n/1
+2 ,
  []
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 336.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 360.
 (./fast-oopsi.bbl [8]) [9] [10] [11]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[12] [13] [14] (./fast-oopsi.aux) ) 
+[12] [13] [14] (./fast-oopsi.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 2229 strings out of 94074
- 23939 string characters out of 1164820
- 84333 words of memory out of 1500000
- 5474 multiletter control sequences out of 10000+50000
+ 2238 strings out of 94074
+ 23986 string characters out of 1164820
+ 84432 words of memory out of 1500000
+ 5483 multiletter control sequences out of 10000+50000
  21710 words of font info for 70 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
  29i,17n,43p,1656b,288s stack positions out of 5000i,500n,6000p,200000b,5000s
 
-Output written on fast-oopsi.dvi (14 pages, 59656 bytes).
+Output written on fast-oopsi.dvi (14 pages, 61400 bytes).

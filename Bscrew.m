@@ -1,4 +1,4 @@
-function [n P]=FOOPSI2_51(F,P,Sim)
+function [n P]=Bscrew(F,P,Sim)
 % this function solves the following optimization problem:
 % n_best = argmax_{n >= 0} P(n | F)
 % which is a MAP estimate for the most likely spike train given the
@@ -57,8 +57,9 @@ function [n P]=FOOPSI2_51(F,P,Sim)
 % 2_432:added baseline (in progress)
 % 2_5:  dunno
 % 2_51: removed rho and nu
+% 2_52: a=alpha, b=beta, in code
 %%
-fprintf('\nFOOPSI2_51\n')
+fprintf('\nFOOPSI2_52\n')
 
 % get F "right"
 siz     = size(F);                              % make sure F is a column vector
@@ -72,13 +73,13 @@ Q=P;
 % define some stuff for brevity
 T       = length(F);                            % number of time steps
 dt      = Sim.dt;                               % time step size
-c       = 1/(2*P.sig^2);                        % scale of variance
+u       = 1/(2*P.sig^2);                        % scale of variance
 
 % define some stuff for speed
 O   = 1+0*F;                                    % init a unity vector
 M   = spdiags([-P.gam*O O], -1:0,T,T);          % matrix transforming calcium into spikes, ie n=M*C
 I   = speye(T);                                 % create out here cuz it must be reused
-H1  = 2*c*P.alpha*I;                            % pre-compute matrix for hessian
+H1  = 2*u*P.a^2*I;                                % pre-compute matrix for hessian
 H2  = I;                                        % another one
 d0  = 1:T+1:T^2;                                % index of diagonal elements of TxT matrices
 d1  = 2:T+1:T^2;                                % index of off-diagonal elements (the diagonal below the diagonal) of TxT matrices
@@ -88,6 +89,7 @@ if ~isfield(Sim,'MaxIter') || Sim.MaxIter==0,
     Sim.MaxIter = 0;
     n = FastFilter(F,P);                        % infer approximate MAP spike train, given initial parameter estimates
     l = [];
+    b = [];
 else
     % initialize some stuff
     n   = O/P.lam;                              % spike train
@@ -95,12 +97,13 @@ else
     DD  = (F-C)'*(F-C);                         % squared error
     l   = zeros(Sim.MaxIter,1);                 % extize likelihood
     l(1)= .5*T*log(2*pi*P.sig^2) + DD/(2*P.sig^2) - T*log(P.lam*dt) + P.lam*dt*sum(n);% initialize likelihood
-
+    b   = zeros(Sim.MaxIter,1);                 % extize likelihood
+    
     % prepare stuff for plotting
     if isfield(Sim,'Plot'), DoPlot = Sim.Plot; else DoPlot = 0; end
     if DoPlot == 1
         figure(104), clf
-%         fprintf('alpha=%.2f, beta=%.2f, sig=%.2f, lam=%.2f\n',P.alpha, P.beta, P.sig, P.gam, P.lam)
+%         fprintf('a=%.2f, b=%.2f, sig=%.2f, lam=%.2f\n',P.a, P.b, P.sig, P.gam, P.lam)
     end
 end
 
@@ -108,15 +111,23 @@ end
 for i=1:Sim.MaxIter
 
     [n C]   = FastFilter(F,P);                  % infer approximate MAP spike train, given most recent parameter estimates
-    P       = FastParams3_1(F,C,n,T,dt,Q);        % update parameters
-
-    l(i+1) = P.l;                               % update likelihood and display stuff (if requested)
+    j=0;
+    for b=0:.01:4;
+        j=j+1;
+        D = F-P.a*C-b;                    % difference vector
+        LL(j) = u*D'*D+P.lam*dt*sum(n);  % Likilihood function using C
+    end
+    
+    P       = FastParams3_2(F,C,n,T,dt,Q);      % update parameters
+    P.LL    = LL;
+    b(i+1)  = P.b;
+    l(i+1)  = P.l;                               % update likelihood and display stuff (if requested)
     if DoPlot == 1
         subplot(311), hold on, plot(i+1,l(i+1),'o'), axis('tight')
-        subplot(312), cla, hold on, plot(F,'.k'), plot(P.alpha*C+P.beta,'b'),  axis('tight')
+        subplot(312), cla, hold on, plot(F,'.k'), plot(P.a*C+P.b,'b'),  axis('tight')
         subplot(313), cla, bar(n/max(n),'EdgeColor','r','FaceColor','r'), axis('tight'), drawnow
-        fprintf('alpha=%.2f, beta=%.2f, sig=%.2f, gam=%.2f, lam=%.2f, lik=%.2f\n',...
-            P.alpha, P.beta, P.sig, P.gam, P.lam, l(i+1))
+        fprintf('a=%.2f, b=%.2f, sig=%.2f, gam=%.2f, lam=%.2f, lik=%.2f\n',...
+            P.a, P.b, P.sig, P.gam, P.lam, l(i+1))
     end
 
     if abs(l(i+1)-l(i))<1e-3, break, end        % stopping criterion
@@ -124,27 +135,29 @@ for i=1:Sim.MaxIter
 end
 %% main loop over
 P.l = l(1:i+1);
+P.b = b(1:i+1);
 
     function [n C] = FastFilter(F,P)
 
-        e       = 1;                            % weight on barrier function
-        c       = 1/(2*P.sig^2);                % scale of variance
-        n       = O*(e/P.lam);                  % initialize spike train
+        z       = 1;                            % weight on barrier function
+        u       = 1/(2*P.sig^2);                % scale of variance
+        n       = O*(z/P.lam);                  % initialize spike train
         C       = filter(1,[1, -P.gam],n);      % initialize calcium
         M(d1)   = -P.gam;                       % matrix transforming calcium into spikes, ie n=M*C
-        H1(d0)  = 2*c*P.alpha^2;                % for expediency
         sumM    = sum(M)';                      % for expediency
+        H1(d0)  = 2*u*P.a^2;                    % for expediency
         
-        while e>1e-13                           % this is an arbitrary threshold
+        while z>1e-13                           % this is an arbitrary threshold
 
-            D = F-P.alpha*C-P.beta;             % difference vector
-            L = c*D'*D+P.lam*dt*sum(n)-e*sum(log(n));  % Likilihood function using C
+            D = F-P.a*C-P.b;                    % difference vector
+            L = u*D'*D+P.lam*dt*sum(n)-z*sum(log(n));  % Likilihood function using C
             s = 1;                              % step size
             d = 1;                              % direction
-            while norm(d)>5e-2 && s > 1e-3      % converge for this e (again, these thresholds are arbitrary)
-                g   = -2*c*P.alpha*D + P.lam*dt*sumM - e*M'*(n.^-1);  % gradient
+            while norm(d)>5e-2 && s > 1e-3      % converge for this z (again, these thresholds are arbitrary)
+                g   = -2*u*P.a*D + P.lam*dt*sumM - z*M'*(n.^-1);  % gradient
+%                 g   = -2*P.a*u*(F-P.a*C)+2*P.a*P.b + P.lam*dt*sumM - z*M'*(n.^-1);  % gradient
                 H2(d0) = n.^-2;
-                H   = H1 + 2*e*M'*H2*M;         % Hessian                
+                H   = H1 + 2*z*M'*H2*M;         % Hessian                
                 d   = -H\g;                     % direction to step using newton-raphson
                 hit = -n./(M*d);                % step within constraint boundaries
                 hit(hit<0)=[];                  % ignore negative hits
@@ -157,14 +170,14 @@ P.l = l(1:i+1);
                 while L1>=L+1e-7                % make sure newton step doesn't increase objective
                     C1  = C+s*d;
                     n   = M*C1;
-                    D   = F-P.alpha*C1-P.beta;
-                    L1  = c*D'*D+P.lam*dt*sum(n)-e*sum(log(n));
+                    D   = F-P.a*C1-P.b;
+                    L1  = u*D'*D+P.lam*dt*sum(n)-z*sum(log(n));
                     s   = s/2;                  % if step increases objective function, decrease step size
                 end
                 C = C1;                         % update C
                 L = L1;                         % update L
             end
-            e=e/10;                             % reduce e (sequence of e reductions is arbitrary)
+            z=z/10;                             % reduce z (sequence of z reductions is arbitrary)
         end
     end
 
