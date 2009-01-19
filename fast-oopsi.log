@@ -1,6 +1,5 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2008.3.24)  15 JAN 2009 10:54
+This is pdfTeX, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2008.3.24)  16 JAN 2009 14:37
 entering extended mode
- Source specials enabled.
 **fast-oopsi.tex
 (./fast-oopsi.tex
 LaTeX2e <2005/12/01>
@@ -243,16 +242,16 @@ File: schem.eps Graphic file (type eps)
 <schem.eps> [6]
 File: FastSpiking.eps Graphic file (type eps)
  <FastSpiking.eps> [7]
-Overfull \hbox (11.13988pt too wide) in paragraph at lines 339--340
-[]\OT1/ptm/m/n/12 where $\OMS/cmsy/m/n/12 j ^^A j$ \OT1/ptm/m/n/12 in-di-cates 
-the de-ter-mi-nant. By pre-whitening the ob-ser-va-tion ma-trix, $[] \OT1/cmr/m
-/n/12 = [[][]\OML/cmm/m/it/12 ; [][]; [] ; [][]\OT1/cmr/m/n/12 ]$\OT1/ptm/m/n/1
-2 ,
+Overfull \hbox (11.13988pt too wide) in paragraph at lines 335--336
+\OT1/ptm/m/n/12 where $\OMS/cmsy/m/n/12 j ^^A j$ \OT1/ptm/m/n/12 in-di-cates th
+e de-ter-mi-nant. By pre-whitening the ob-ser-va-tion ma-trix, $[] \OT1/cmr/m/n
+/12 = [[][]\OML/cmm/m/it/12 ; [][]; [] ; [][]\OT1/cmr/m/n/12 ]$\OT1/ptm/m/n/12 
+,
  []
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 360.
-(./fast-oopsi.bbl [8]) [9] [10] [11]
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 359.
+[8] (./fast-oopsi.bbl) [9] [10] [11]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -268,6 +267,6 @@ Here is how much of TeX's memory you used:
  5483 multiletter control sequences out of 10000+50000
  21710 words of font info for 70 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 29i,17n,43p,1656b,288s stack positions out of 5000i,500n,6000p,200000b,5000s
+ 29i,17n,43p,1656b,256s stack positions out of 5000i,500n,6000p,200000b,5000s
 
-Output written on fast-oopsi.dvi (14 pages, 61400 bytes).
+Output written on fast-oopsi.dvi (14 pages, 59096 bytes).

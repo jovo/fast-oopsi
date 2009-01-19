@@ -19,17 +19,16 @@ clear, clc, fprintf('\nWhy thresholding is useful\n')
 Sim.T       = 500;                              % # of time steps
 Sim.dt      = 0.005;                            % time step size
 Sim.Plot    = 1;                                % whether to plot
-Sim.MaxIter = 30;                               % max number of iterations
+% Sim.MaxIter = 99;                               % max number of iterations
 
 % 2) initialize parameters
 P.a     = .1;
-P.b     = .3;
-P.sig   = .03;                                  % stan dev of noise
+P.b     = 0;
+P.sig   = .07;                                  % stan dev of noise
 C_0     = 0;
 tau     = 0.05;                                 % decay time constant
 P.gam   = 1-Sim.dt/tau;
-P.lam   = 30;                                   % rate-ish, ie, lam*dt=# spikes per second
-P.l     = 1e99;                                 % initialize likelihood
+P.lam   = 10;                                   % rate-ish, ie, lam*dt=# spikes per second
 
 % 3) simulate data
 n = poissrnd(P.lam*Sim.dt*ones(Sim.T-1,1));     % simulate spike train
@@ -47,42 +46,45 @@ display(Phat);
 
 % initialize parameters
 P2 = P;
-P2.a    = P.a/2;
-P2.b    = P.b/2;
-P2.lam  = 2*P.lam;
-P2.sig  = 2*P.sig;
-
-for q=1:2
-    P2.case=2;
-    I{q}.name       = [{'Fast'}; {'Filter'}];
-    if q==1, Sim.thresh=0;
-    elseif q==2, Sim.thresh=1; P2.name = [{'Thr'}];
+for q=1:9
+    if q==1,
+        Sim.MaxIter=0;
+        I{q}.P.label   = 'no estimate'; 
+        P2.label = 'no estimate';    
+    else
+        Sim.MaxIter=29;
+        P2.case = q-2;
+        % P2.a    = P.a/2;
+        % P2.b    = P.b/2;
+        P2.lam  = 2*P.lam;
+        P2.sig  = .2*P.sig;
     end
-    tic
-    [I{q}.n I{q}.P] = FOOPSI2_53(F,P2,Sim);
-    toc
+    [I{q}.n I{q}.P] = FOOPSI2_55(F,P2,Sim);
 end
 
-%% 6) plot results
-fig     = figure(1); clf,
-nrows   = 3+q;                                    % set number of rows
-h       = zeros(nrows);
-Pl.xlims= [5 Sim.T];                            % time steps to plot
-Pl.nticks=5;                                    % number of ticks along x-axis
-Pl.n    = double(n); Pl.n(Pl.n==0)=NaN;         % store spike train for plotting
-Pl      = PlotParams(Pl);                       % generate a number of other parameters for plotting
 
-for r=1:q;
-    display(max(diff(I{q}.P.l)))
+%% 6) plot results
+for r=1:q
+    display(max(diff(I{q}.P.l(2:end))))
 end
 
 % plot likelihoods
 figure(2), clf
 for r=1:q
-    subplot(nrows-3,1,r);
-    Pl.label = I{r}.name;
-    plot(I{r}.P.l(2:end)), axis('tight')
+    subplot(3+q,1,3+r);
+    Pl.label = I{r}.P.label;
+    plot(I{r}.P.l(2:end),'.-'), axis('tight')
 end
+
+% paper fig
+fig     = figure(1); clf,
+nrows   = 3+q;                                  % set number of rows
+h       = zeros(nrows,1);
+Pl.xlims= [5 Sim.T];                            % time steps to plot
+Pl.nticks=5;                                    % number of ticks along x-axis
+Pl.n    = double(n); Pl.n(Pl.n==0)=NaN;         % store spike train for plotting
+Pl      = PlotParams(Pl);                       % generate a number of other parameters for plotting
+Pl.vs   = 2;
 
 % plot fluorescence data
 i=1; h(1) = subplot(nrows,1,i);
@@ -105,18 +107,17 @@ title(['a=',num2str(Phat.a),', b=',num2str(Phat.b), ', sig=',num2str(Phat.sig), 
 % plot inferred spike trains
 for r=1:q
     i=i+1; h(3+r) = subplot(nrows,1,i);
-    Pl.label = I{r}.P.name;
+    Pl.label = I{r}.P.label;
     Plot_n_MAP(Pl,I{r}.n);
-    title(['a=',num2str(I{r}.P.a),', b=',num2str(I{r}.P.b), 'sig=',num2str(I{r}.P.sig),...
-        ', lam=',num2str(I{r}.P.lam), ', n=',num2str(max(I{r}.n))])
+    title(['a=',num2str(I{r}.P.a),', b=',num2str(I{r}.P.b), ', sig=',num2str(I{r}.P.sig),...
+        ', lam=',num2str(I{r}.P.lam), ', n_{max}=',num2str(max(I{r}.n))])
 end
 
 
 subplot(nrows,1,nrows)
 set(gca,'XTick',Pl.XTicks,'XTickLabel',Pl.XTicks*Sim.dt,'FontSize',Pl.fs)
 xlabel('Time (sec)','FontSize',Pl.fs)
-% linkaxes(h,'x')
-% linkaxes([h(end-1), h(end)])
+linkaxes(h,'x')
 
 % print fig
 wh=[7 5];   %width and height

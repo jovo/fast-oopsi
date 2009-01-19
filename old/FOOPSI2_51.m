@@ -132,8 +132,7 @@ P.l = l(1:i+1);
         n       = O*(e/P.lam);                  % initialize spike train
         C       = filter(1,[1, -P.gam],n);      % initialize calcium
         M(d1)   = -P.gam;                       % matrix transforming calcium into spikes, ie n=M*C
-        M(d0)   = 1;                            % update d0 of M
-        H1(d0)  = 2*c*P.alpha;                  % for expediency
+        H1(d0)  = 2*c*P.alpha^2;                % for expediency
         sumM    = sum(M)';                      % for expediency
         
         while e>1e-13                           % this is an arbitrary threshold

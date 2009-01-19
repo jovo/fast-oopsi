@@ -162,7 +162,7 @@ n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
 \end{align}
 %\end{subequations}
 
-\noindent where $\bM \bC \geq \ve{0}$ indicates that every element of $\bM \bC$ is greater than or equal to zero, $'$ indicates transpose, and  $\ve{1}$ is a $T$ dimensional column vectors. As \eqref{eq:eta2} is concave (it is identical to Eq. \eqref{eq:eta} with different notation), we may use any descent technique to find $\hbC_{\zzz}$.  We elect to use the Newton-Raphson approach: 
+\noindent where $\bM \bC \geq \ve{0}$ indicates that every element of $\bM \bC$ is greater than or equal to zero, $'$ indicates transpose, and  $\ve{1}$ is a $T$ dimensional column vector, and $\log(\cdot)$ indicates an element-wise logarithm.  As \eqref{eq:eta2} is concave (it is identical to Eq. \eqref{eq:eta} with different notation), we may use any descent technique to find $\hbC_{\zzz}$.  We elect to use the Newton-Raphson approach: 
 
 %, i.e., update $\widehat{\ve{C}}_{\zzz}$ by adding to it the solution to $\ve{H}\ve{C} = \ve{g}$, weighted by $0<s\leq1$, where $\ve{H}$ and $\ve{g}$ are the Hessian and gradient of the argument in \eqref{eq:goal2}.  The step size, $s$, ensures that the posterior converges, by enforcing an increase in the objective with each step. Therefore, we have: 
 
@@ -171,11 +171,11 @@ n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
 \hbC_{\zzz} &\leftarrow \hbC_{\zzz} + s \bd \\
 \bH \bd &= \bg \\
 \ve{g} &= -\frac{\alpha}{\sig^2}(\bF -\alpha \hbC_{\zzz} - \beta) + \lam \Del \ve{M}' \ve{1} - \zzz \ve{M}' (\ve{M} \hbC_{\zzz})^{-1} \label{eq:g} \\
-\ve{H} &= \frac{\alpha^2}{\sig^2} \ve{I} + 2 \zzz \ve{M}' (\ve{M} \hbC_{\zzz})^{-2} \ve{M} \label{eq:H}
+\ve{H} &= \frac{\alpha^2}{\sig^2} \ve{I} + \zzz \ve{M}' (\ve{M} \hbC_{\zzz})^{-2} \ve{M} \label{eq:H}
 \end{align}
 \end{subequations}
 
-\noindent where $s$ is the step size, $\bd$ is the step direction, and $\bg$ and $\bH$ are the gradient (first derivative) and Hessian (second derivative) of the likelihood, respectively (the likelihood is the argument to be minimized in Eq. \eqref{eq:eta2}). Note that we use ``backtracking linesearches'', meaning that for each iteration, we find the maximal $s$ that is between $0$ and $1$ and decreases the likelihood.
+\noindent where $s$ is the step size, $\bd$ is the step direction, and $\bg$ and $\bH$ are the gradient (first derivative) and Hessian (second derivative) of the likelihood, respectively (the likelihood is the argument to be minimized in Eq. \eqref{eq:eta2}), and the exponents indicate element-wise operations. Note that we use ``backtracking linesearches'', meaning that for each iteration, we find the maximal $s$ that is between $0$ and $1$ and decreases the likelihood.
 
 Typically, implementing Newton-Raphson requires inverting the Hessian, i.e., $\bd = \bH^{-1} \bg$, a computation consuming $O(T^3)$ time. Instead, because $\ve{M}$ is bidiagonal, the Hessian is tridiagonal, so the solution may be found in $O(T)$ time via standard banded Gaussian elimination techniques (which can be implemented efficiently in Matlab using $\bH \backslash \bg$). The resulting fast algorithm for solving the optimization problem in \eqref{eq:obj2} is the main result of this paper, i.e.  we may approximately infer the optimal solution  for models characterized by equations such as \eqref{eq:obs} and \eqref{eq:trans} in linear time, whereas an exact solution would require exponential time, and a na\"{i}ve approximate solution would require polynomial time.  
 
@@ -228,11 +228,7 @@ P(\bF| \hCm, \hnm, \bth) P(\hCm, \hnm | \bth) &= \prod_{t=1}^T P(F_t | \hC_t, \a
 \widehat{\sig}^2 &= \frac{1}{T} \norm{\bF - \hbX \widehat{\ve{\eta}}}_2^2 \label{eq:sig}
 \end{align}
 
-
-
-
-
-Similarly, taking the log of the prior term, $P(\hnm | \bth )$ yields:
+\noindent Similarly, taking the log of the prior term, $P(\hnm | \bth )$ yields:
 
 \begin{align} \label{eq:prior}
 \log P(\hnm | \bth) =  \sum _{t=1}^T \log(\lam \Del)  -\lam \Del \hn_t =T (\lam \Del) - \lam \Del \hnm' \ve{1} 
@@ -346,12 +342,15 @@ Eqs \eqref{eq:Obs} and \eqref{eq:trans} into \eqref{eq:par1}, to obtain:
 
 \noindent where $\ve{\eta}_v=[\Alpha, \, \Beta]$, and $\bX_v=[\gamma \bC + \bn, \, \ve{1}]'$. Note that we have constrained the norm of $\ve{\eta}_v$, which is necessary because otherwise there is a free scale between $\bX_v$ and $\ve{\eta}_v$.  Problems of the form as in Eq \eqref{eq:Par} are known as ``trust region subproblems''.  Fortunately, many algorithms for solving such a problem are available \cite{Fortin00}.  
 
+\subsection{Karel's data}
 
 \subsection{Incorporating a nonlinear observation model}
 
-\subsection{Optimal thresholding}
-
 \subsection{Slow dynamics}
+
+\subsection{Two spike trains (overlapping SPF's)}
+
+\subsection{Optimal thresholding}
 
 \section{Discussion}
 

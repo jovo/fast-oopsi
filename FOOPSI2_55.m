@@ -1,4 +1,4 @@
-function [n P]=FOOPSI2_52(F,P,Sim)
+function [n P]=FOOPSI2_55(F,P,Sim)
 % this function solves the following optimization problem:
 % n_best = argmax_{n >= 0} P(n | F)
 % which is a MAP estimate for the most likely spike train given the
@@ -26,7 +26,7 @@ function [n P]=FOOPSI2_52(F,P,Sim)
 %   dt:     time step size
 %   Plot:   whether to plot results        (if not set, default is no)
 %   MaxIter:maximum number of iterations   (typically set to 50)
-% 
+%
 % Output---
 % n:        inferred spike train
 % P:        inferred parameter structure
@@ -58,73 +58,72 @@ function [n P]=FOOPSI2_52(F,P,Sim)
 % 2_5:  dunno
 % 2_51: removed rho and nu
 % 2_52: a=alpha, b=beta, in code
-%%
-fprintf('\nFOOPSI2_52\n')
+% 2_53: threshold n s.t. n \in \{0,1\} before estimating parameters
+% 2_54: allow for F to be a vector at each time step
+% 2_55: fixed bugs, back to scalar F_t
+
+%% initialize stuff
+fprintf('\nFOOPSI2_55\n')
 
 % get F "right"
 siz     = size(F);                              % make sure F is a column vector
 if siz(1)>1 && siz(2) >1
     error('F must be a vector')
-elseif siz(1)==1 && siz(2)>1                
+elseif siz(1)==1 && siz(2)>1
     F=F';
 end
-Q=P;
 
 % define some stuff for brevity
-T       = length(F);                            % number of time steps
+T       = Sim.T;                                % # of time steps
 dt      = Sim.dt;                               % time step size
 u       = 1/(2*P.sig^2);                        % scale of variance
 
 % define some stuff for speed
-O   = 1+0*F;                                    % init a unity vector
+O   = 1+0*F(:,1);                               % init a unity vector
 M   = spdiags([-P.gam*O O], -1:0,T,T);          % matrix transforming calcium into spikes, ie n=M*C
 I   = speye(T);                                 % create out here cuz it must be reused
-H1  = 2*u*P.a^2*I;                                % pre-compute matrix for hessian
+H1  = I;                                        % initialize memory for Hessian matrix
 H2  = I;                                        % another one
 d0  = 1:T+1:T^2;                                % index of diagonal elements of TxT matrices
 d1  = 2:T+1:T^2;                                % index of off-diagonal elements (the diagonal below the diagonal) of TxT matrices
 
 % if we are not estimating parameters
-if ~isfield(Sim,'MaxIter') || Sim.MaxIter==0,
-    Sim.MaxIter = 0;
+if Sim.MaxIter==0,
     n = FastFilter(F,P);                        % infer approximate MAP spike train, given initial parameter estimates
-    l = [];
 else
     % initialize some stuff
     n   = O/P.lam;                              % spike train
-    C   = filter(1,[1 -P.gam],n);               % calcium concentratin
-    DD  = (F-C)'*(F-C);                         % squared error
-    l   = zeros(Sim.MaxIter,1);                 % extize likelihood
-    l(1)= .5*T*log(2*pi*P.sig^2) + DD/(2*P.sig^2) - T*log(P.lam*dt) + P.lam*dt*sum(n);% initialize likelihood
+    l   = zeros(Sim.MaxIter+1,1);               % extize likelihood
 
     % prepare stuff for plotting
     if isfield(Sim,'Plot'), DoPlot = Sim.Plot; else DoPlot = 0; end
-    if DoPlot == 1
-        figure(104), clf
-%         fprintf('a=%.2f, b=%.2f, sig=%.2f, lam=%.2f\n',P.a, P.b, P.sig, P.gam, P.lam)
+    if DoPlot == 1,  figure(104), clf
     end
 end
+l(1)= GetLik(F,n,T,dt,P);
 
-%% here is the main loop
-for i=1:Sim.MaxIter
+% here is the main loop
+for i=2:Sim.MaxIter
 
+%     n0      = n;
     [n C]   = FastFilter(F,P);                  % infer approximate MAP spike train, given most recent parameter estimates
-    P       = FastParams3_2(F,C,n,T,dt,Q);      % update parameters
+    n       = n/max(n);
+    [P l(i)]= FastParams3_3(F,C,n,T,dt,P);      % update parameters
 
-    l(i+1) = P.l;                               % update likelihood and display stuff (if requested)
     if DoPlot == 1
-        subplot(311), hold on, plot(i+1,l(i+1),'o'), axis('tight')
+        subplot(311), hold on, plot(i,l(i),'o'), axis('tight')
         subplot(312), cla, hold on, plot(F,'.k'), plot(P.a*C+P.b,'b'),  axis('tight')
         subplot(313), cla, bar(n/max(n),'EdgeColor','r','FaceColor','r'), axis('tight'), drawnow
         fprintf('a=%.2f, b=%.2f, sig=%.2f, gam=%.2f, lam=%.2f, lik=%.2f\n',...
-            P.a, P.b, P.sig, P.gam, P.lam, l(i+1))
+            P.a, P.b, P.sig, P.gam, P.lam, l(i))
     end
 
-    if abs(l(i+1)-l(i))<1e-3, break, end        % stopping criterion
-    if l(i+1)>l(i), display(l(i+1)-l(i)), end
-end
-%% main loop over
-P.l = l(1:i+1);
+%     if abs(l(i+1)-l(i))<1e-2 || norm(n0-n)<1e-3, break, end        % stopping criterion
+    if abs(l(i)-l(i-1))<1e-2, break, end        % stopping criterion
+%     tol=norm(n0-n)
+    if l(i)>l(i-1), display(['wrong way' num2str(l(i)-l(i-1))]), end
+end % main loop over
+P.l=l(1:i+1);
 
     function [n C] = FastFilter(F,P)
 
@@ -135,7 +134,7 @@ P.l = l(1:i+1);
         M(d1)   = -P.gam;                       % matrix transforming calcium into spikes, ie n=M*C
         sumM    = sum(M)';                      % for expediency
         H1(d0)  = 2*u*P.a^2;                    % for expediency
-        
+
         while z>1e-13                           % this is an arbitrary threshold
 
             D = F-P.a*C-P.b;                    % difference vector
@@ -143,9 +142,9 @@ P.l = l(1:i+1);
             s = 1;                              % step size
             d = 1;                              % direction
             while norm(d)>5e-2 && s > 1e-3      % converge for this z (again, these thresholds are arbitrary)
-                g   = -2*u*P.a*(F - P.a*C - P.b) + P.lam*dt*sumM - z*M*(n.^-1);  % gradient
+                g   = -2*u*P.a*(F - P.a*C - P.b) +P.lam*dt*sumM - z*M'*(n.^-1);  % gradient
                 H2(d0) = n.^-2;
-                H   = H1 + 2*z*M'*H2*M;         % Hessian                
+                H   = H1 + z*(M'*H2*M);         % Hessian
                 d   = -H\g;                     % direction to step using newton-raphson
                 hit = -n./(M*d);                % step within constraint boundaries
                 hit(hit<0)=[];                  % ignore negative hits
