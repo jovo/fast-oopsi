@@ -66,6 +66,6 @@ end
 P.lam   = sum(n)/(T*dt);
 DD      = norm(F-P.a*C-P.b)^2;
 P.sig   = sqrt(DD/T);
-l       = GetLik(F,n,T,dt,P);
+l       = GetLik(F,C,n,T,dt,P);
 
 end

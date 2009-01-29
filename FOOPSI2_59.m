@@ -1,4 +1,4 @@
-function [n P]=FOOPSI2_55(F,P,Sim)
+function [n P]=FOOPSI2_59(F,P,Sim)
 % this function solves the following optimization problem:
 % n_best = argmax_{n >= 0} P(n | F)
 % which is a MAP estimate for the most likely spike train given the
@@ -61,88 +61,86 @@ function [n P]=FOOPSI2_55(F,P,Sim)
 % 2_53: threshold n s.t. n \in \{0,1\} before estimating parameters
 % 2_54: allow for F to be a vector at each time step
 % 2_55: fixed bugs, back to scalar F_t
+% 2_56: back to vector case, but no param estimate
+% 2_57: estimate spatial filter as well
+% 2_58: multiple cells (buggy)
+% 2_59: multiple cells, but hopefully less buggy 
 
 %% initialize stuff
-fprintf('\nFOOPSI2_55\n')
-
-% get F "right"
-siz     = size(F);                              % make sure F is a column vector
-if siz(1)>1 && siz(2) >1
-    error('F must be a vector')
-elseif siz(1)==1 && siz(2)>1
-    F=F';
-end
+fprintf('\nFOOPSI2_59\n')
 
 % define some stuff for brevity
+Nc      = Sim.Nc;                               % # of cells
 T       = Sim.T;                                % # of time steps
 dt      = Sim.dt;                               % time step size
 u       = 1/(2*P.sig^2);                        % scale of variance
 
 % define some stuff for speed
-O   = 1+0*F(:,1);                               % init a unity vector
-M   = spdiags([-P.gam*O O], -1:0,T,T);          % matrix transforming calcium into spikes, ie n=M*C
-I   = speye(T);                                 % create out here cuz it must be reused
+Z   = zeros(Nc*T,1);                            % zero vector
+M   = spdiags([repmat(-P.gam,T,1) repmat(Z,1,Nc-1) (1+Z)], -Nc:0,Nc*T,Nc*T);  % matrix transforming calcium into spikes, ie n=M*C
+I   = speye(Nc*T);                              % create out here cuz it must be reused
 H1  = I;                                        % initialize memory for Hessian matrix
 H2  = I;                                        % another one
-d0  = 1:T+1:T^2;                                % index of diagonal elements of TxT matrices
-d1  = 2:T+1:T^2;                                % index of off-diagonal elements (the diagonal below the diagonal) of TxT matrices
+d0  = 1:Nc*T+1:(Nc*T)^2;                        % index of diagonal elements of TxT matrices
+d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            % index of diagonal elements of TxT matrices
 
-% if we are not estimating parameters
-if Sim.MaxIter==0,
-    n = FastFilter(F,P);                        % infer approximate MAP spike train, given initial parameter estimates
-else
-    % initialize some stuff
-    n   = O/P.lam;                              % spike train
-    l   = zeros(Sim.MaxIter+1,1);               % extize likelihood
+if Sim.MaxIter==0
+    n       = FastFilter(F,P);                  % infer approximate MAP spike train, given initial parameter estimates
+end
 
-    % prepare stuff for plotting
-    if isfield(Sim,'Plot'), DoPlot = Sim.Plot; else DoPlot = 0; end
-    if DoPlot == 1,  figure(104), clf
+for i=1:Sim.MaxIter
+    figure(4), 
+    subplot(1,2,1), imagesc(reshape(z1(P.a),Sim.Nrows,Sim.Ncols))%, colorbar
+    subplot(1,2,2), imagesc(reshape(P.b,Sim.Nrows,Sim.Ncols))
+    title(['iteration ' num2str(i)])
+    n       = FastFilter(F,P);                  % infer approximate MAP spike train, given initial parameter estimates
+    C       = filter(1,[1, -P.gam],n);
+    X       = [C 1+Z];
+    for ii=1:numel(P.a)
+        Y   = F(:,ii);
+        B   = X\Y;
+        P.a(ii) = B(1);
+        P.b(ii) = B(2);
     end
 end
-l(1)= GetLik(F,n,T,dt,P);
 
-% here is the main loop
-for i=2:Sim.MaxIter
-
-%     n0      = n;
-    [n C]   = FastFilter(F,P);                  % infer approximate MAP spike train, given most recent parameter estimates
-    n       = n/max(n);
-    [P l(i)]= FastParams3_3(F,C,n,T,dt,P);      % update parameters
-
-    if DoPlot == 1
-        subplot(311), hold on, plot(i,l(i),'o'), axis('tight')
-        subplot(312), cla, hold on, plot(F,'.k'), plot(P.a*C+P.b,'b'),  axis('tight')
-        subplot(313), cla, bar(n/max(n),'EdgeColor','r','FaceColor','r'), axis('tight'), drawnow
-        fprintf('a=%.2f, b=%.2f, sig=%.2f, gam=%.2f, lam=%.2f, lik=%.2f\n',...
-            P.a, P.b, P.sig, P.gam, P.lam, l(i))
-    end
-
-%     if abs(l(i+1)-l(i))<1e-2 || norm(n0-n)<1e-3, break, end        % stopping criterion
-    if abs(l(i)-l(i-1))<1e-2, break, end        % stopping criterion
-%     tol=norm(n0-n)
-    if l(i)>l(i-1), display(['wrong way' num2str(l(i)-l(i-1))]), end
-end % main loop over
-P.l=l(1:i+1);
+nn=zeros(T,Nc);
+for i=1:Nc
+    nn(:,i) = n(i:Nc:end);
+end
+n=nn;
 
     function [n C] = FastFilter(F,P)
 
+        % initialize n and C
         z       = 1;                            % weight on barrier function
         u       = 1/(2*P.sig^2);                % scale of variance
-        n       = O*(z/P.lam);                  % initialize spike train
-        C       = filter(1,[1, -P.gam],n);      % initialize calcium
-        M(d1)   = -P.gam;                       % matrix transforming calcium into spikes, ie n=M*C
-        sumM    = sum(M)';                      % for expediency
-        H1(d0)  = 2*u*P.a^2;                    % for expediency
-
+        n       = repmat(z./P.lam,T,1);         % initialize spike train
+        C       = 0*n;                          % initialize calcium
+        for j=1:Nc                              
+            C(j:Nc:end) = filter(1,[1, -P.gam(j)],n(j:Nc:end));      
+        end
+        
+        % precompute parameters required for evaluating and maximizing
+        % likelihood
+        M(d1)   = -repmat(P.gam,T-1,1);         % matrix transforming calcium into spikes, ie n=M*C
+        lam     = dt*repmat(P.lam,T,1);         % for lik
+        lnprior = lam.*sum(M)';                 % for grad
+        aa      = repmat(diag(P.a'*P.a),T,1);   % for grad
+        H1(d0)  = 2*u*aa;                       % for Hess
+        gg      = (F*P.a+repmat(P.b'*P.a,T,1))';% for grad
+        b       = (1+Z(1:T))*P.b';              % for lik
+        
+        % find C = argmin_{C_z} lik + prior + barrier_z
         while z>1e-13                           % this is an arbitrary threshold
 
-            D = F-P.a*C-P.b;                    % difference vector
-            L = u*D'*D+P.lam*dt*sum(n)-z*sum(log(n));  % Likilihood function using C
+            D = F-reshape(C,Nc,T)'*P.a'-b;                     % difference vector, mse=D(:)'*D(:); % ass2=(P.a'*P.a)*(C'*C) + C'*(-2*F*P.a+2*P.a'*P.b) + sum(F(:).^2) - 2*sum(F*P.b) + P.b'*P.b;
+            L = u*D(:)'*D(:)+lam'*n-z*sum(log(n));  % Likilihood function using C
+
             s = 1;                              % step size
             d = 1;                              % direction
             while norm(d)>5e-2 && s > 1e-3      % converge for this z (again, these thresholds are arbitrary)
-                g   = -2*u*P.a*(F - P.a*C - P.b) +P.lam*dt*sumM - z*M'*(n.^-1);  % gradient
+                g   = 2*u*(aa.*C-gg(:)) + lnprior - z*M'*(n.^-1);  % gradient
                 H2(d0) = n.^-2;
                 H   = H1 + z*(M'*H2*M);         % Hessian
                 d   = -H\g;                     % direction to step using newton-raphson
@@ -157,8 +155,8 @@ P.l=l(1:i+1);
                 while L1>=L+1e-7                % make sure newton step doesn't increase objective
                     C1  = C+s*d;
                     n   = M*C1;
-                    D   = F-P.a*C1-P.b;
-                    L1  = u*D'*D+P.lam*dt*sum(n)-z*sum(log(n));
+                    D   = F-reshape(C1,Nc,T)'*P.a'-b;
+                    L1  = u*D(:)'*D(:)+lam'*n-z*sum(log(n));
                     s   = s/2;                  % if step increases objective function, decrease step size
                 end
                 C = C1;                         % update C

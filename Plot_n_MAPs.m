@@ -1,6 +1,7 @@
-function Plot_n_MAP(Pl,n)
+function Plot_n_MAPs(Pl,n)
 
 cla, hold on
+Pl.n=Pl.n(:,Pl.j);
 maxn(1) = max(n(Pl.xlims(1):Pl.xlims(2)));
 maxn(2) = max(Pl.n(Pl.xlims(1):Pl.xlims(2)));
 
@@ -9,9 +10,9 @@ n(abs(n)<1e-3)=NaN;                             % set negligible values to NaN s
 Pl.n=Pl.n/maxn(2);
 
 pos = find(n>0);                                % plot positive spikes in blue
-stem(pos,n(pos),'Marker','none','LineWidth',Pl.sw,'Color',Pl.col(2,:))
+stem(pos,n(pos),'Marker','none','LineWidth',Pl.sw,'Color',Pl.colors(Pl.j,:))
 neg = find(n<=0);                               % plot negative spikes in red
-stem(neg,n(neg),'Marker','none','LineWidth',Pl.sw,'Color',Pl.col(1,:))
+stem(neg,n(neg),'Marker','none','LineWidth',Pl.sw,'Color',Pl.colors(Pl.j,:))
 
 stem(Pl.n,'Marker','v','MarkerSize',Pl.vs,...   % plot real spike train
     'LineStyle','none','MarkerFaceColor','k','MarkerEdgeColor','k');

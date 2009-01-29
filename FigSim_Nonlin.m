@@ -5,37 +5,48 @@
 % 3) generate fake data
 % 4) infers spikes using a variety of approaches
 % 5) plots results
-%
-% 2_0: we estimate b in F_t = a C_t + b + sig*epsilon_t
-% 2_1: totally reparameterized. see section 3
-% 2_2: allow for initial condition on C
-% 2_3: don't know, something else buggy i think
-% 2_4: reparameterized a bit.
-% 2_5: debugged a bit.
 
-clear, clc, fprintf('\nWhy thresholding is useful\n')
+clear, clc, fprintf('\nNonlinear model\n')
 
 % 1) set simulation metadata
 Sim.T       = 500;                              % # of time steps
 Sim.dt      = 0.005;                            % time step size
 Sim.Plot    = 1;                                % whether to plot
-% Sim.MaxIter = 99;                               % max number of iterations
+Sim.MaxIter = 0;                               % max number of iterations
 
 % 2) initialize parameters
 P.a     = .1;
 P.b     = 0;
-P.sig   = .07;                                  % stan dev of noise
+P.sig   = .001;                                  % stan dev of noise
 C_0     = 0;
 tau     = 0.05;                                 % decay time constant
 P.gam   = 1-Sim.dt/tau;
-P.lam   = 10;                                   % rate-ish, ie, lam*dt=# spikes per second
+P.lam   = ((linspace(0,100,Sim.T-1)).*(sin(linspace(0,12*pi,Sim.T-1))+1))';                                   % rate-ish, ie, lam*dt=# spikes per second
+P.k_d   = 180;
+P.rho   = 50;
 
 % 3) simulate data
-n = poissrnd(P.lam*Sim.dt*ones(Sim.T-1,1));     % simulate spike train
+% n = poissrnd(P.lam*Sim.dt);     % simulate spike train
+% n = poissrnd(P.lam*Sim.dt*ones(Sim.T-1,1));     % simulate spike train
+spt = [100 200:10:220 300:5:320 400:2:420];
+n = zeros(Sim.T-1,1);
+n(spt) = 1;
+% n(n>1)=1;
 % n(n>1)=1;
 n = [C_0; n];                                   % set initial calcium
-C = filter(1,[1 -P.gam],n);                     % calcium concentration
-F = P.a*C+P.b+P.sig*randn(Sim.T,1);             % fluorescence
+C = filter(1,[1 -P.gam],n*P.rho);                     % calcium concentration
+S = C./(C+P.k_d);
+F = P.a*S+P.b+P.sig*randn(Sim.T,1);             % fluorescence
+
+
+X=0:.01:max(C); P.n=1;
+figure(10), clf, nrows=4; i=0;
+i=i+1; subplot(nrows,1,i), plot(F,'k'), axis('tight')
+hold on, plot(P.a*S+P.b), axis('tight')
+i=i+1; subplot(nrows,1,i), hold on, plot(z1(P.a*S+P.b)), axis('tight')
+plot(z1(C),'r'), axis('tight')
+i=i+1; subplot(nrows,1,i), bar(n), axis('tight')
+i=i+1; subplot(nrows,1,i), semilogx(Hill_v1(P,X));
 
 % 4) estimate params from real spikes
 P.case=2;
@@ -43,42 +54,24 @@ Phat = FastParams3_3(F,C,n,Sim.T,Sim.dt,P);
 display(Phat);
 
 %% 5) infer spikes and estimate parameters
+P2=P;
+P2.lam=Phat.lam;
 
 % initialize parameters
-P2 = P;
-for q=1:9
-    if q==1,
-        Sim.MaxIter=0;
-        I{q}.P.label   = 'no estimate'; 
-        P2.label = 'no estimate';    
-    else
-        Sim.MaxIter=29;
-        P2.case = q-2;
-        % P2.a    = P.a/2;
-        % P2.b    = P.b/2;
-        P2.lam  = 2*P.lam;
-        P2.sig  = .2*P.sig;
+for q=1:2
+    if q==1
+        [I{q}.n I{q}.P] = FOOPSI2_55(F,P2,Sim);
+        I{q}.P.label = 'Linear';
+    elseif q==2
+        Sim.n=I{1}.n;
+        [I{q}.n I{q}.P] = NFOOPSI1_0(F,P2,I{1}.P,Sim);
+        I{q}.P.label = 'Nonlinear';
     end
-    [I{q}.n I{q}.P] = FOOPSI2_55(F,P2,Sim);
 end
-
 
 %% 6) plot results
-for r=1:q
-    display(max(diff(I{q}.P.l(2:end))))
-end
-
-% plot likelihoods
-figure(2), clf
-for r=1:q
-    subplot(3+q,1,3+r);
-    Pl.label = I{r}.P.label;
-    plot(I{r}.P.l(2:end),'.-'), axis('tight')
-end
-
-% paper fig
 fig     = figure(1); clf,
-nrows   = 3+q;                                  % set number of rows
+nrows   = 4+q;                                  % set number of rows
 h       = zeros(nrows,1);
 Pl.xlims= [5 Sim.T];                            % time steps to plot
 Pl.nticks=5;                                    % number of ticks along x-axis
@@ -113,13 +106,24 @@ for r=1:q
         ', lam=',num2str(I{r}.P.lam), ', n_{max}=',num2str(max(I{r}.n))])
 end
 
+% plot inferred calcium
+i=i+1; h(2) = subplot(nrows,1,i);
+Pl.label = [{'Inferred'}; {'Calcium'}];
+Pl.color = Pl.gray;
+plot(C,'k'), hold on
+plot(max(C)*z1(filter(1,[1 -P.gam],I{1}.n*P.rho)),'b')
+plot(filter(1,[1 -P.gam],I{2}.n*P.rho),'r')
+axis('tight')
+% X=0:.01:max(C); P.n=1;
+% i=i+1; subplot(nrows,1,i), semilogx(Hill_v1(P,X));
+
 
 subplot(nrows,1,nrows)
 set(gca,'XTick',Pl.XTicks,'XTickLabel',Pl.XTicks*Sim.dt,'FontSize',Pl.fs)
 xlabel('Time (sec)','FontSize',Pl.fs)
-linkaxes(h,'x')
+% linkaxes(h,'x')
 
 % print fig
 wh=[7 5];   %width and height
 set(fig,'PaperPosition',[0 11-wh(2) wh]);
-print('-depsc','schem')
+print('-depsc','nonlin')
