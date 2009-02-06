@@ -64,10 +64,9 @@ function [n P]=FOOPSI2_59(F,P,Sim)
 % 2_56: back to vector case, but no param estimate
 % 2_57: estimate spatial filter as well
 % 2_58: multiple cells (buggy)
-% 2_59: multiple cells, but hopefully less buggy 
+% 2_59: multiple cells, estimate {a,b} 
 
 %% initialize stuff
-fprintf('\nFOOPSI2_59\n')
 
 % define some stuff for brevity
 Nc      = Sim.Nc;                               % # of cells
@@ -83,44 +82,42 @@ H1  = I;                                        % initialize memory for Hessian 
 H2  = I;                                        % another one
 d0  = 1:Nc*T+1:(Nc*T)^2;                        % index of diagonal elements of TxT matrices
 d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            % index of diagonal elements of TxT matrices
-
-if Sim.MaxIter==0
-    n       = FastFilter(F,P);                  % infer approximate MAP spike train, given initial parameter estimates
-end
+l   = Z(1:Sim.MaxIter);                         % initialize likelihood
+[n C DD] = FastFilter(F,P);                     % infer approximate MAP spike train, given initial parameter estimates
 
 for i=1:Sim.MaxIter
-    figure(4), 
-    subplot(1,2,1), imagesc(reshape(z1(P.a),Sim.Nrows,Sim.Ncols))%, colorbar
-    subplot(1,2,2), imagesc(reshape(P.b,Sim.Nrows,Sim.Ncols))
-    title(['iteration ' num2str(i)])
-    n       = FastFilter(F,P);                  % infer approximate MAP spike train, given initial parameter estimates
-    C       = filter(1,[1, -P.gam],n);
-    X       = [C 1+Z];
-    for ii=1:numel(P.a)
+    l(i) = Getlik2_0(DD,n,P,Sim);
+    figure(400), nrows=1+Nc;
+    for j=1:Nc, subplot(1,nrows,j),
+        imagesc(reshape(z1(P.a(:,j)),Sim.Nrows,Sim.Ncols)),
+    end
+    subplot(1,nrows,nrows), imagesc(reshape(z1(P.b),Sim.Nrows,Sim.Ncols))
+    title(['iteration ' num2str(i)]), drawnow
+    [n C DD]   = FastFilter(F,P);                  % infer approximate MAP spike train, given initial parameter estimates
+    X       = [C 1+Z(1:T)];
+    for ii=1:Sim.Np
         Y   = F(:,ii);
         B   = X\Y;
-        P.a(ii) = B(1);
-        P.b(ii) = B(2);
+        for j=1:Nc
+            P.a(ii,j) = B(j);
+        end
+        P.b(ii) = B(end);
     end
 end
 
-nn=zeros(T,Nc);
-for i=1:Nc
-    nn(:,i) = n(i:Nc:end);
-end
-n=nn;
+P.l=l;
 
-    function [n C] = FastFilter(F,P)
+    function [n C DD] = FastFilter(F,P)
 
         % initialize n and C
         z       = 1;                            % weight on barrier function
         u       = 1/(2*P.sig^2);                % scale of variance
         n       = repmat(z./P.lam,T,1);         % initialize spike train
         C       = 0*n;                          % initialize calcium
-        for j=1:Nc                              
-            C(j:Nc:end) = filter(1,[1, -P.gam(j)],n(j:Nc:end));      
+        for j=1:Nc
+            C(j:Nc:end) = filter(1,[1, -P.gam(j)],n(j:Nc:end));
         end
-        
+
         % precompute parameters required for evaluating and maximizing
         % likelihood
         M(d1)   = -repmat(P.gam,T-1,1);         % matrix transforming calcium into spikes, ie n=M*C
@@ -130,7 +127,7 @@ n=nn;
         H1(d0)  = 2*u*aa;                       % for Hess
         gg      = (F*P.a+repmat(P.b'*P.a,T,1))';% for grad
         b       = (1+Z(1:T))*P.b';              % for lik
-        
+
         % find C = argmin_{C_z} lik + prior + barrier_z
         while z>1e-13                           % this is an arbitrary threshold
 
@@ -156,7 +153,8 @@ n=nn;
                     C1  = C+s*d;
                     n   = M*C1;
                     D   = F-reshape(C1,Nc,T)'*P.a'-b;
-                    L1  = u*D(:)'*D(:)+lam'*n-z*sum(log(n));
+                    DD  = D(:)'*D(:);
+                    L1  = u*DD+lam'*n-z*sum(log(n));
                     s   = s/2;                  % if step increases objective function, decrease step size
                 end
                 C = C1;                         % update C
@@ -164,6 +162,14 @@ n=nn;
             end
             z=z/10;                             % reduce z (sequence of z reductions is arbitrary)
         end
+
+        nn=reshape(Z,T,Nc);
+        CC=0*nn;
+        for k=1:Nc
+            nn(:,k) = n(k:Nc:end);
+            CC(:,k) = C(k:Nc:end);
+        end
+        n=nn;C=CC;
     end
 
 end
