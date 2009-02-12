@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2008.3.24)  16 JAN 2009 14:37
+This is pdfTeX, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2008.3.24)  11 FEB 2009 00:18
 entering extended mode
 **fast-oopsi.tex
 (./fast-oopsi.tex
@@ -10,10 +10,11 @@ erman, danish, esperanto, spanish, catalan, galician, estonian, farsi, finnish,
 us, indonesian, icelandic, italian, latin, mongolian, dutch, norsk, polish, por
 tuguese, pinyin, romanian, russian, slovenian, uppersorbian, serbian, swedish, 
 turkish, ukenglish, ukrainian, loaded.
+(/Users/joshyv/Research/misc/latex_paper.tex
 (/opt/local/share/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2005/09/16 v1.4f Standard LaTeX document class
-(/opt/local/share/texmf-dist/tex/latex/base/size12.clo
-File: size12.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
+(/opt/local/share/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@section=\count80
@@ -27,7 +28,6 @@ File: size12.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/Users/joshyv/Research/misc/latex_paper.tex
 (/opt/local/share/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2000/07/18 v2.13 AMS math features
 \@mathmargin=\skip43
@@ -102,10 +102,11 @@ Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 (/opt/local/share/texmf/tex/latex/config/graphics.cfg
 File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
 )
-Package graphics Info: Driver file: dvips.def on input line 90.
+Package graphics Info: Driver file: pdftex.def on input line 90.
 
-(/opt/local/share/texmf-dist/tex/latex/graphics/dvips.def
-File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+(/opt/local/share/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2007/01/08 v0.04d Graphics/color for pdfTeX
+\Gread@gobject=\count99
 ))
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
@@ -135,7 +136,7 @@ Package: algorithm
 Document Style `algorithm' - floating environment
 (/opt/local/share/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count99
+\c@float@type=\count100
 \float@exts=\toks26
 \float@box=\box28
 \@float@everytoks=\toks27
@@ -145,7 +146,7 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
 \@float@every@algorithm=\toks28
-\c@algorithm=\count100
+\c@algorithm=\count101
 )
 (/opt/local/share/texmf-dist/tex/latex/algorithms/algorithmic.sty
 Package: algorithmic 2006/06/02
@@ -153,20 +154,20 @@ Package: algorithmic 2006/06/02
 Document Style `algorithmic' - environment
 (/opt/local/share/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2005/08/06 v4.2 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count101
-\calc@Bcount=\count102
+\calc@Acount=\count102
+\calc@Bcount=\count103
 \calc@Adimen=\dimen114
 \calc@Bdimen=\dimen115
 \calc@Askip=\skip49
 \calc@Bskip=\skip50
 LaTeX Info: Redefining \setlength on input line 75.
 LaTeX Info: Redefining \addtolength on input line 76.
-\calc@Ccount=\count103
+\calc@Ccount=\count104
 \calc@Cskip=\skip51
 )
-\c@ALC@line=\count104
-\c@ALC@rem=\count105
-\c@ALC@depth=\count106
+\c@ALC@line=\count105
+\c@ALC@rem=\count106
+\c@ALC@depth=\count107
 \ALC@tlm=\skip52
 \algorithmicindent=\skip53
 )
@@ -184,11 +185,10 @@ Package: times 2005/04/12 PSNFSS-v9.2a (SPQR)
 \f@ncyO@olf=\skip61
 \f@ncyO@orf=\skip62
 )
-(/Users/joshyv/Research/misc/latex_commands.tex)) (./fast-oopsi.aux
-
-LaTeX Warning: Label `eq:sig' multiply defined.
-
-)
+(/Users/joshyv/Research/misc/latex_commands.tex
+\c@thm=\count108
+\c@defi=\count109
+)) (./fast-oopsi.aux)
 \openout1 = `fast-oopsi.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 65.
@@ -204,12 +204,24 @@ LaTeX Font Info:    ... okay on input line 65.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 65.
 LaTeX Font Info:    ... okay on input line 65.
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 65.
- (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+
+(/opt/local/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
+(/opt/local/share/texmf-dist/tex/context/base/supp-pdf.tex
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count110
+\scratchdimen=\dimen116
+\scratchbox=\box30
+\nofMPsegments=\count111
+\nofMParguments=\count112
+\MPscratchCnt=\count113
+\MPscratchDim=\dimen117
+\MPnumerator=\count114
+\everyMPtoPDFconversion=\toks29
+)
 LaTeX Font Info:    Try loading font information for U+msa on input line 67.
-
-(/opt/local/share/texmf-dist/tex/latex/amsfonts/umsa.fd
+ (/opt/local/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2002/01/19 v2.2g AMS font definitions
 )
 LaTeX Font Info:    Try loading font information for U+msb on input line 67.
@@ -217,56 +229,85 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 67.
 (/opt/local/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2002/01/19 v2.2g AMS font definitions
 )
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 69.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 73.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 73.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 91.
  [1
 
-]
-Overfull \hbox (69.07672pt too wide) in paragraph at lines 123--124
-\OT1/ptm/m/n/12 non-neg-a-tiv-ity con-straint pro-hibits the use of stan-dard g
-ra-di-ent as-cent tech-niques [[]].
- []
-
-[2] [3]
+{/opt/local/share/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 225.
 
- (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+
+(/opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) [4] [5]
-File: schem.eps Graphic file (type eps)
+) [3]
+<schem.pdf, id=31, 464.73625pt x 203.76125pt>
+File: schem.pdf Graphic file (type pdf)
+ <use schem.pdf>
 
-<schem.eps> [6]
-File: FastSpiking.eps Graphic file (type eps)
- <FastSpiking.eps> [7]
-Overfull \hbox (11.13988pt too wide) in paragraph at lines 335--336
-\OT1/ptm/m/n/12 where $\OMS/cmsy/m/n/12 j ^^A j$ \OT1/ptm/m/n/12 in-di-cates th
-e de-ter-mi-nant. By pre-whitening the ob-ser-va-tion ma-trix, $[] \OT1/cmr/m/n
-/12 = [[][]\OML/cmm/m/it/12 ; [][]; [] ; [][]\OT1/cmr/m/n/12 ]$\OT1/ptm/m/n/12 
-,
- []
+! LaTeX Error: File `wiener' not found.
 
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 359.
-[8] (./fast-oopsi.bbl) [9] [10] [11]
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.302 ...cludegraphics[width=.9\linewidth]{wiener}
+                                                  
+? q
+OK, entering \batchmode...
+
+! LaTeX Error: File `spatial' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.307 ...ludegraphics[width=.9\linewidth]{spatial}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+ [4] [5 <./schem.pdf>] [6]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 455.
+ (./fast-oopsi.bbl [7]) [8] [9]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[12] [13] [14] (./fast-oopsi.aux)
-
-LaTeX Warning: There were multiply-defined labels.
-
- ) 
+ [10] [11] (./fast-oopsi.aux) ) 
 Here is how much of TeX's memory you used:
- 2238 strings out of 94074
- 23986 string characters out of 1164820
- 84432 words of memory out of 1500000
- 5483 multiletter control sequences out of 10000+50000
- 21710 words of font info for 70 fonts, out of 1200000 for 2000
+ 2702 strings out of 94073
+ 28943 string characters out of 1164797
+ 91171 words of memory out of 1500000
+ 5916 multiletter control sequences out of 10000+50000
+ 32484 words of font info for 76 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 29i,17n,43p,1656b,256s stack positions out of 5000i,500n,6000p,200000b,5000s
+ 29i,17n,43p,1656b,292s stack positions out of 5000i,500n,6000p,200000b,5000s
+{/opt/local/share/texmf-dist/fonts/enc/dvips/bas
+e/8r.enc}</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx10.pfb></opt/l
+ocal/share/texmf-dist/fonts/type1/bluesky/cm/cmbx7.pfb></opt/local/share/texmf-
+dist/fonts/type1/bluesky/cm/cmex10.pfb></opt/local/share/texmf-dist/fonts/type1
+/bluesky/cm/cmmi10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi
+5.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi7.pfb></opt/local
+/share/texmf-dist/fonts/type1/bluesky/cm/cmmib10.pfb></opt/local/share/texmf-di
+st/fonts/type1/bluesky/ams/cmmib7.pfb></opt/local/share/texmf-dist/fonts/type1/
+bluesky/cm/cmr10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr5.p
+fb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb></opt/local/sha
+re/texmf-dist/fonts/type1/bluesky/cm/cmsy10.pfb></opt/local/share/texmf-dist/fo
+nts/type1/bluesky/cm/cmsy5.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky
+/cm/cmsy7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/ams/msbm10.pfb><
+/opt/local/share/texmf-dist/fonts/type1/bluesky/ams/msbm7.pfb></opt/local/share
+/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/local/share/texmf-dist/fon
+ts/type1/urw/times/utmb8a.pfb></opt/local/share/texmf-dist/fonts/type1/urw/time
+s/utmr8a.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on fast-oopsi.pdf (11 pages, 215846 bytes).
+PDF statistics:
+ 132 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 131072)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
-Output written on fast-oopsi.dvi (14 pages, 59096 bytes).

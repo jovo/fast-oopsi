@@ -87,12 +87,14 @@ l   = Z(1:Sim.MaxIter);                         % initialize likelihood
 
 for i=1:Sim.MaxIter
     l(i) = Getlik2_0(DD,n,P,Sim);
-    figure(400), nrows=1+Nc;
-    for j=1:Nc, subplot(1,nrows,j),
-        imagesc(reshape(z1(P.a(:,j)),Sim.Nrows,Sim.Ncols)),
+    if Sim.plot == 1
+        figure(400), nrows=1+Nc;
+        for j=1:Nc, subplot(1,nrows,j),
+            imagesc(reshape(z1(P.a(:,j)),Sim.w,Sim.h)),
+        end
+        subplot(1,nrows,nrows), imagesc(reshape(z1(P.b),Sim.w,Sim.h))
+        title(['iteration ' num2str(i)]), drawnow
     end
-    subplot(1,nrows,nrows), imagesc(reshape(z1(P.b),Sim.Nrows,Sim.Ncols))
-    title(['iteration ' num2str(i)]), drawnow
     [n C DD]   = FastFilter(F,P);                  % infer approximate MAP spike train, given initial parameter estimates
     X       = [C 1+Z(1:T)];
     for ii=1:Sim.Np
@@ -103,6 +105,8 @@ for i=1:Sim.MaxIter
         end
         P.b(ii) = B(end);
     end
+%     P.lam   = sum(n)'/(T*dt);
+%     P.sig   = sqrt(DD/T);
 end
 
 P.l=l;

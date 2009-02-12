@@ -15,7 +15,7 @@ neg = find(n<=0);                               % plot negative spikes in red
 stem(neg,n(neg),'Marker','none','LineWidth',Pl.sw,'Color',Pl.colors(Pl.j,:))
 
 stem(Pl.n,'Marker','v','MarkerSize',Pl.vs,...   % plot real spike train
-    'LineStyle','none','MarkerFaceColor','k','MarkerEdgeColor','k');
+    'LineStyle','none','MarkerFaceColor',Pl.gray,'MarkerEdgeColor',Pl.gray);
 
 
 axis([Pl.xlims min(min(n),0) 1])

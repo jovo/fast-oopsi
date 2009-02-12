@@ -1,7 +1,7 @@
 function Plot_n(Pl,n)
 
-stem(n,'Marker','none','LineWidth',Pl.sw,'Color',Pl.gray,'MarkerFaceColor',Pl.gray,'MarkerEdgeColor',Pl.gray);
-ylab=ylabel([{'Spike'}; {'Train'}],'Interpreter',Pl.inter,'FontSize',Pl.fs);
+stem(n,'Marker','none','LineWidth',Pl.sw,'Color',Pl.color,'MarkerFaceColor',Pl.color,'MarkerEdgeColor',Pl.color);
+ylab=ylabel(Pl.label,'Interpreter',Pl.inter,'FontSize',Pl.fs);
 set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
 set(gca,'YTick',[],'YTickLabel',[])
 set(gca,'XTick',Pl.XTicks,'XTickLabel',[],'FontSize',Pl.fs)
