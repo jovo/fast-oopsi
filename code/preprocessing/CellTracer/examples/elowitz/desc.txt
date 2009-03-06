@@ -1,0 +1,4 @@
+double resolution
+crop to view
+bg1 0.3 0 d 0
+b4 20 0.75 0.90 130 5

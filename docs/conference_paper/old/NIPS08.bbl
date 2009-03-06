@@ -1,0 +1,104 @@
+\begin{thebibliography}{10}
+
+\bibitem{LeeSeung99}
+Lee, D.~D. and Seung, H.~S.
+\newblock {\em Nature}{ \bf 401}(6755), 788--791 Oct  (1999).
+
+\bibitem{LeeSeung01}
+Lee, D. and Seung, H.
+\newblock {\em Advances in Neural Information Processing Systems}{ \bf 13},
+  556--562 (2001).
+
+\bibitem{HuysPaninski06}
+Huys, Q. J.~M., Ahrens, M.~B., and Paninski, L.
+\newblock {\em J Neurophysiol}{ \bf 96}(2), 872--890 Aug  (2006).
+
+\bibitem{OGradyPearlmutter06}
+{O’Grady, P.D. and Pearlmutter, B.A.}
+\newblock {\em Machine Learning for Signal Processing, 2006. Proceedings of the
+  2006 16th IEEE Signal Processing Society Workshop on}{ \bf }, 427--432
+  (2006).
+
+\bibitem{PortugalVicente94}
+Portugal, L., Judice, J., and Vicente, L.
+\newblock {\em Mathematics of Computation}{ \bf 63}(208), 625--643 (1994).
+
+\bibitem{LeeNg06}
+Lee, H., Battle, A., Raina, R., and Ng, A.
+\newblock {\em Advances in Neural Information Processing Systems}{ \bf }
+  (2006).
+
+\bibitem{YasudaSvoboda04}
+Yasuda, R., Nimchinsky, E.~A., Scheuss, V., Pologruto, T.~A., Oertner, T.~G.,
+  Sabatini, B.~L., and Svoboda, K.
+\newblock {\em Sci STKE}{ \bf 2004}(219), pl5 Feb  (2004).
+
+\bibitem{BJ08}
+Vogelstein, J., Watson, B., AM, P., Yuste, R., B, J., and Paninski, L.
+\newblock {\em Under Review}{ \bf } (2008).
+
+\bibitem{SmettersYuste99}
+Smetters, D., Majewska, A., and Yuste, R.
+\newblock {\em Methods}{ \bf 18}(2), 215--221 Jun  (1999).
+
+\bibitem{KerrHelmchen05}
+Kerr, J. N.~D., Greenberg, D., and Helmchen, F.
+\newblock {\em Proceedings of The National Academy Of Sciences Of The United
+  States Of America}{ \bf 102}(39), 14063--14068 Sep  (2005).
+
+\bibitem{YaksiFriedrich06}
+Yaksi, E. and Friedrich, R.~W.
+\newblock {\em Nat Methods}{ \bf 3}(5), 377--383 May  (2006).
+
+\bibitem{HolekampHoly08}
+Holekamp, T.~F., Turaga, D., and Holy, T.~E.
+\newblock {\em Neuron}{ \bf 57}(5), 661--672 Mar  (2008).
+
+\bibitem{HastieFriedman01}
+Hastie, T., Tibshirani, R., and Friedman, J.
+\newblock {\em {The Elements of Statistical Learning: Data Mining, Inference,
+  and Prediction}}.
+\newblock Springer,  (2001).
+
+\bibitem{Candes06}
+Candes, E.
+\newblock {\em Proceedings of the International Congress of Mathematicians,
+  Madrid, Spain}{ \bf 3}, 1433--1452 (2006).
+
+\bibitem{CONV04}
+Boyd, S. and Vandenberghe, L.
+\newblock {\em Convex Optimization}.
+\newblock Oxford University Press,  (2004).
+
+\bibitem{Rabiner89}
+Rabiner, L.~R.
+\newblock {\em Proceedings of the IEEE}{ \bf 72}(2), 257--286 February  (1989).
+
+\bibitem{Wiener49}
+Wiener, N.
+\newblock {\em {Extrapolation, interpolation, and smoothing of stationary time
+  series: with engineering applications}}.
+\newblock MIT Press, Cambridge, Mass.,  (1949).
+
+\bibitem{MacLeanYuste05}
+MacLean, J.~N., Watson, B.~O., Aaron, G.~B., and Yuste, R.
+\newblock {\em Neuron}{ \bf 48}(5), 811--823 Dec  (2005).
+
+\bibitem{IkegayaYuste04}
+Ikegaya, Y., Aaron, G., Cossart, R., Aronov, D., Lampl, I., Ferster, D., and
+  Yuste, R.
+\newblock {\em Science}{ \bf 304}(5670), 559--564 Apr  (2004).
+
+\bibitem{NiellSmith05}
+Niell, C.~M. and Smith, S.~J.
+\newblock {\em Neuron}{ \bf 45}(6), 941--951 Mar  (2005).
+
+\bibitem{OhkiReid05}
+Ohki, K., Chung, S., Ch'ng, Y.~H., Kara, P., and Reid, R.~C.
+\newblock {\em Nature}{ \bf 433}(7026), 597--603 Feb  (2005).
+
+\bibitem{SatoSvoboda07}
+Sato, T.~R., Gray, N.~W., Mainen, Z.~F., and Svoboda, K.
+\newblock {\em PLoS Biol}{ \bf 5}(7), e189 Jul  (2007).
+
+\end{thebibliography}

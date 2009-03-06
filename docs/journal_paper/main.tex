@@ -1,0 +1,413 @@
+%\documentclass[12pt]{article}
+\input{/Users/joshyv/Research/misc/latex_paper.tex} 
+%\newcommand{\hC}{\widehat{C}}
+%\newcommand{\hn}{\widehat{n}}
+\newcommand{\zzz}{z}
+\newcommand{\xT}{\ve{C}}
+\newcommand{\yT}{\ve{y}}
+\newcommand{\nT}{\ve{n}}
+\newcommand{\zT}{\ve{n}}
+\newcommand{\FT}{\ve{F}}
+\newcommand{\lT}{\ve{\lam}}
+\newcommand{\wX}{\widehat{\ve{C}}}
+\newcommand{\wY}{\widehat{\ve{Y}}}
+\newcommand{\CaT}{\Cav}
+\newcommand{\ax}{\argmax_{\ve{C}_t \geq 0 \forall t}}
+\newcommand{\an}{\argmin_{n_t \geq 0 \forall t}}
+\newcommand{\az}{\argmin_{\bM \bC \geq \ve{0}}}
+\newcommand{\ath}{\argmax_{\bth \in \ve{\Theta}}}
+\newcommand{\ann}{\argmin_{n_t \in \mathbb{N}_0 \forall t}}
+\newcommand{\hnm}{\widehat{\bn}}
+\newcommand{\hCm}{\widehat{\bC}}
+%\newcommand{\hbm}{\widehat{\ve{\nu}}}
+%\newcommand{\hbn}{\widehat{\bn}}
+%\newcommand{\hbC}{\widehat{\bC}}
+
+\lhead{Vogelstein JT, et al}
+\rhead{Fast spike train inference from calcium imaging}
+%\headheight=14.5pt
+
+
+\title{Fast spike train inference from calcium imaging}
+
+\author{
+Joshua T.~Vogelstein% \thanks{ Use footnote for providing further information about author (webpage, alternative address)---\emph{not} for acknowledging funding agencies.}
+% \\ Department of Neuroscience\\
+%Johns Hopkuns University\\
+%Baltimore, MD 21205 \\
+%\texttt{joshuav@jhu.edu} \\
+%\And
+%Baktash Babadi\\
+%Department of Neuroscience \\
+%Columbia University \\
+%New York City, NY, 10027 \\
+%\texttt{bb2280@columbia.edu} \\
+%\And
+%Brendon O.~Watson\\
+%Department of Neuroscience \\
+%Columbia University \\
+%New York City, NY, 10027 \\
+%\texttt{bow4@columbia.edu} \\
+%\And
+%Rafael Yuste\\
+%Department of Neuroscience \\
+%Columbia University \\
+%New York City, NY, 10027 \\
+%\texttt{rmy5@columbia.edu} \\
+%\And
+, other fuckers, Liam Paninski\\
+%Department of Statistics\\
+%Columbia University \\
+%New York City, NY, 10027 \\
+%\texttt{liam@stat.columbia.edu} \\
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\input{abstract} 
+
+\end{abstract}
+
+\section{Introduction}
+\input{intro}
+
+%\section{Model} \label{sec:model}
+\section{Methods} \label{sec:methods}
+
+\subsection{Model}
+\input{model}
+
+\subsection{Inference} \label{sec:inf}
+\input{inference}
+
+
+\subsection{Learning} \label{sec:est}
+\input{learning}
+
+\section{Results}
+
+\begin{figure}
+\centering \includegraphics[width=.9\linewidth]{schem}
+\caption{A simulation demonstrating that given a fluorescence time series, and the parameters of our model, we can accurately infer a close approximation to the most likely spike train.  Top panel: simulated fluorescence time series.  Second panel: simulated intracellular calcium concentration.  Third panel: simulated spike train. Fourth panel: the fast filter's inferred spike train (gray triangles indicate true spike times here, and elsewhere, unless indicated otherwise).  Parameters: $\Del=5$ msec, $\alpha=1$ a.u., $\beta=0$ a.u., $\sig=0.25$ a.u., $\tau=700$ msec, $\lam=10$ Hz.} \label{fig:schem}
+\end{figure}
+
+%\newpage
+\begin{figure}
+\centering \includegraphics[width=.9\linewidth]{wiener}
+\caption{A simulation demonstrating that the fast filter performs at least as well as the optimal linear filter. The left panels show that in the slow firing  regime, the fast filter --- which approximates the Poisson distribution governing spiking with an exponential distribution  --- outperforms the Wiener filter --- which approximates the Poisson distribution with a Gaussian.  The right panels show that both approximations are sufficient in the fast firing regime. Top left panel: fluorescence time series for a neuron with a slow firing rate.  Middle left panel: the fast filter's inferred spike train.  Bottom left panel: Wiener filter's inferred spike train.  Note that (i) the Wiener filter does not impose a non-negativity constraint, and (ii) the effective SNR of this filter in this example is higher than the fast filter's.  Top right panel: same as top left panel, for a neuron with a high firing rate.  Middle right panel: the fast filter's inferred spike train smoothed with a Gaussian kernel for visualization purposes (black line), and the true spike train smoothed with the same Gaussian kernel (gray line).  Bottom right panel: same as middle right panel, but with the Wiener filter. Parameters for left panels: same as above.  Parameters for right panels: same as above, except: $\sig=8$ a.u., $\lam=500$ Hz.} \label{fig:wiener}
+\end{figure}
+
+\begin{figure}
+\centering \includegraphics[width=.9\linewidth]{spatial}
+\caption{A simulation demonstratig that using a better spatial filter can significantly enhance the effective SNR (see Supplementary Movie 1 for the full movie associated with this simulation).  Top: five movie frames, equally spaced from the entire move.  Middle left: projection of the entire movie onto the optimal spatial filter, yielding a 1D fluorescence time series, with a small SNR. Bottom left: fast filter's inferred spike train using the optimal spatial filter.  Middle right: projection of the entire movie onto the ``mean'' spatial filter, yielding a 1D fluorescence time series with a large SNR. Bottom right: fast filter's inferred spike train using the mean spatial filter. Parameters different from Fig \ref{fig:schem}: $\balpha$ is a mixture of two Gaussian kernels, each with the same mean, but different variances and component coefficients (see main text for details). $\bbeta=1$.} \label{fig:spatial} \end{figure} 
+
+\begin{figure}
+\centering \includegraphics[width=.9\linewidth]{spatial_EM}
+\caption{A simulation demonstrating that given only the fluorescence movie, the parameters may be estimated, and the spike train inferred (c.f. Supplementary Movie 2). Top left panel: true spatial filter.  Middle left panel: projection of movie onto true spatial filter. Bottom left panel: inferred spike train using true parameters. Right panels: same as left except estimating parameters.  $\balpha$ initialized with SVD.  $\bbeta$ initialized with $\ve{0}$.  $\lam$ and $\sig$ were initialized at double their true value.  $\tau$ was assumed known. Parameters same as above.} \label{fig:spatial_EM}
+\end{figure}
+
+\begin{figure}
+\centering \includegraphics[width=.9\linewidth]{spatial_data}
+\caption{Given only a fluorescence movie, recorded in vivo, we can learn the parameters necessary to correctly infer the spike trains. Top left: mean frame.  Middle left: projection of movie onto mean frame. Bottom left: the fast filter's inference using the mean frame as the filter ($\lam$ and $\sig$ estimated as described by equations \eqref{??} and \eqref{??}, respectively).  Right panels: same as left, but estimating $\balpha$ and $\bbeta$ as described in text.} \label{fig:spatial_data}
+\end{figure}
+
+\begin{figure}
+%\centering \includegraphics[width=.9\linewidth]{schem}
+\caption{distribution of errors in spike inference from real data} \label{fig:err}
+\end{figure}
+
+\begin{figure}
+\centering \includegraphics[width=.9\linewidth]{spatial_multi}
+\caption{same as spatial EM, but with 2 cells in ROI} \label{fig:spatial_multi}
+\end{figure}
+
+\begin{figure}
+%\centering \includegraphics[width=.9\linewidth]{schem}
+\caption{full movie, fully automated} \label{fig:spatial_full}
+\end{figure}
+
+\begin{figure}
+%\centering \includegraphics[width=.9\linewidth]{schem}
+\caption{full movie, fully automated, real data} \label{fig:spatial_full_data}
+\end{figure}
+
+\section{Discussion}
+
+\begin{figure}
+%\centering \includegraphics[width=.9\linewidth]{schem}
+\caption{same as spatial EM, but now have slow rise time on F} \label{fig:slow_rise}
+\end{figure}
+
+\begin{figure}
+%\centering \includegraphics[width=.9\linewidth]{schem}
+\caption{same as spatial EM, but now have nonlinear observations} \label{fig:nonlin}
+\end{figure}
+
+\begin{figure}
+%\centering \includegraphics[width=.9\linewidth]{schem}
+\caption{same as spatial EM, but now have poisson observations} \label{fig:poisson}
+\end{figure}
+
+\section{other stuff}
+
+\begin{figure}
+%\centering \includegraphics[width=.9\linewidth]{schem}
+\caption{drift}
+\end{figure}
+
+\begin{figure}
+%\centering \includegraphics[width=.9\linewidth]{schem}
+\caption{thresholding}
+\end{figure}
+
+
+
+\section{Old Results}
+\subsection{Main Result}
+
+To evaluate the efficacy of our fast filter, we compare it with the optimal linear (i.e., Wiener) filter \cite{Wiener49}. The top three panels of Fig. \ref{fig:schem} depict a typical dataset simulated according to our model, Eqs. \eqref{eq:obs} and \eqref{eq:trans}. Beneath the simulation, we show both the Wiener filter output (fourth panel) and our fast filter output (bottom panel).  For both filters, we provided only the fluorescence observations depicted in the top panel, and $\ve{\eta}$.  From this data, we estimate the remaining parameters, and infer the hidden spike train. Several differences between these two approaches should be apparent.  First, the effective signal-to-noise ratio (SNR) of our fast filter improves upon the optimal linear filter.  Second, while the Wiener filter induces a ``ringing'' effect (where the inferred signal oscillates above and below zero), our fast filter completely eliminates this effect.  These two improvements are common observations upon imposing a non-negative constraint when appropriate \cite{ShumwayStoffer06}.  Importantly, both our implementation of the Wiener filter and our fast filter require only $O(T)$ time, whereas the na\"{i}ve implementation of the Wiener filter requires $O(T \log(T))$, and the na\"{i}ve implementation of a non-negative filter requires $O(T^3)$.  Thus, when our approximation in Eq \eqref{eq:obj2} is good, our filter outperforms the Wiener filter, and imposes approximately the same computational burden.
+
+\begin{figure}
+%\centering \includegraphics[width=.9\linewidth]{schem}
+\caption{Simulation demonstrating our neuron model and inference. Note that the effective signal-to-noise ratio (SNR) of our fast filter improves on the Wiener filter, largely by eliminating the ringing effect present in the Wiener filter output.  For both filters, only the fluorescence was provided to the algorithm, so both the parameters and the inference were performed using this minimal amount of data.  Top panel: Simulated fluorescence. Second panel: Simulated intracellular calcium concentration. Third panel: Simulated spike train.  Fourth panel: Wiener filter (blue for positive inference, red for negative), superimposed on simulated spike train (black triangles).  Bottom panel: Fast filter (same conventions as fourth panel). Parameters:  $\gamma=0.94$, $\nu=0$, $\rho=1$, $\sig=0.3$, $\lam=8$, $\Del=0.005$ msec.} \label{fig:schem2}
+\end{figure}
+
+\subsection{Fast Spiking Neuron}
+
+When the observed neuron is spiking quickly, the Poisson distribution may be well approximated by a Gaussian distribution, suggesting that the Wiener filter may be optimal in this regime.  But the exponential approximation of a Poisson is also very accurate in the fast spiking regime.  To compare these two strategies, we simulated a fast spiking neuron, where the expected number of spikes per bin exceeds 10 (Fig. \ref{fig:FastSpiking}). In this scenario, both the Wiener filter and our fast filter perform approximately equally well.  Both filters infer peaks in the firing rate that are obscured by the low-pass filter properties of the calcium dynamics. Thus, it seems from this analysis that regardless of the firing rate of the observable neuron, (1) filtering the signal may provide valuable information, and (2) our fast filter performs at least as well as the Wiener filter, without requiring more computational time.
+
+\begin{figure}
+%\centering \includegraphics[width=.9\linewidth]{FastSpiking}
+\caption{Comparing the Wiener filter and our fast filter for a fast spiking neuron.  In this scenario, the two filters perform approximately equally well. Note that both recover fast fluctuations in the firing rate that are smoothed out by the calcium dynamics. Conventions as in Fig. \ref{fig:schem}.  Actual and inferred spike trains were normalized similarly, to ease comparisons. Parameters: $\gamma=0.94$, $\nu=0$, $\rho=1$, $\sig=0.3$, $\lam=100$ (modulated by a sinusoid), $\Del=0.05$ msec.} \label{fig:FastSpiking}
+\end{figure}
+
+
+%The Wiener filter differs in construction from our filter in a few ways.  First, it imposes no constraint on on the spike train.  Second, it is optimal upon assuming that the prior distribution of $n_t$ is Gaussian. In our model, spiking was Poisson, \eqref{eq:trans}, which may be well approximated by an exponential in the slow spiking regime, and well approximated by a Gaussian in the fast spiking regime.  and the nonnegativity of $n_t$ in the sparse-spiking regime makes the Gaussian model assumed by the Wiener filter inaccurate (Fig.\ 2, left).  However, when spike rates are fast --- e.g., on average, several spikes per image frame --- a Poisson distribution is better approximated by a Gaussian distribution.  Furthermore, at high firing rates, the mean of the Gaussian would be relatively far from zero, and the variance proportional, so the probability of sampling a negative number would be relatively small, obviating the need for the nonnegativity constraint. Thus, one might expect the Wiener filter to perform as well as our nonnegative filter (and fPPR) when the observed neuron has a high firing rate (and relatively low imaging rate). Furthermore, given that the calcium kernel is exponential, the Wiener filter, like the filters we developed here, only requires $O(T)$ time, as opposed to the typical $O(T\log T)$.
+
+\subsection{Spatial Filtering}
+
+In the above, we assumed a one-dimensional (1-D) observation, $\bF$.  The raw data, however, is actually a series of multidimensional images. To get the 1-D time-series, two pre-processing steps are required.  First, for each neuron, one must define a region-of-interest (ROI), essentially assigning sets of pixels to neurons. This yields a vector time-series for each neuron, $\vbF_t \in \Real^m$.   Second, one must project the $m-$D observations into a 1-D time-series.  Typically, this step is performed by averaging all the pixels within the ROI.  In theory, one can improve on this uniform averaging by estimating the optimal spatial filter. Here, we provide details on how to incorporate this second step (projecting the $m-$D observations into 1-D) into our fast filter. First, we replace Eq \eqref{eq:obj} with:
+
+\begin{align}
+\vbF_t &= \ve{\alpha} C_t + \ve{\beta} +  \ve{\Sig} \ve{\varepsilon}_t, \qquad \varepsilon_t \sim \mathcal{N}(\ve{0},\bI) \label{eq:Obs} 
+\end{align}
+
+\noindent where $\vbF_t$, $\ve{\alpha}$, and $\beta$ are all $m$ dimensional column vectors, $\ve{\Sig}$ is the covariance matrix, and $\ve{\varepsilon}_t$ is an $m-$dimensional standard normal random vector. $\Alpha$ now represents the optimal spatial filter, and $\Beta$ represents the baseline for each pixel.  Our goal then is to estimate $\Alpha$ and $\Beta$, to provide maximal information about the underlying spike train.  We would expect this optimal spatial filtering improve the effective SNR after filtering in many situations.  For example, if certain pixels are anti-correlated with others, a uniform spatial filter would average out those differences, whereas the optimal filter would take advantage of that information.    
+
+To estimate $\Alpha$ and $\Beta$, we first plug 
+%Then, plugging %To estimate the optimal spatial filter, first we assume that both $\bn$ and $\bC$ are known.  Then, letting $\ve{\eta}_v=[\gam \ve{\Alpha}, \nu \Alpha + \Beta, \rho \Alpha]'$, we see that the parameters are again unidentifiable.  This time, we let $\nu=0$ and $\rho=1$, yielding $\ve{\eta}_v=[\gam \ve{\Alpha}, \Beta,\Alpha]'$.  Then, plugging 
+Eqs \eqref{eq:Obs} and \eqref{eq:trans} into \eqref{eq:par1}, to obtain:
+
+\begin{align} 
+\vec{\bth} &=\argmax_{\vec{\bth} \in \vec{\bTh}} - \frac{T}{2} \log (2\pi|\ve{\Sig}|) + T\log (\lam \Del) -  \lam \Del \bn' \ve{1} \nonumber\\
+&-\frac{1}{2} \sum_{t=1}^T (\vbF_t - \ve{\alpha} (\gamma \hC_{t-1} -\nu  - \rho \hn_t) - \ve{\beta})' \ve{\Sig}^{-1} (\vbF_t - \ve{\alpha} (\gamma \hC_{t-1} -\nu  - \rho \hn_t) - \ve{\beta}) %\nonumber \\
+\end{align} 
+
+\noindent where $| \cdot |$ indicates the determinant. By pre-whitening the observation matrix, $\vbF=[\vbF_1, \vbF_2, \ldots, \vbF_T]$, we can estimate the covariance matrix by the identity, i.e., $\ve{\Sig}=\ve{I}$.   Without loss of generality, we may assume that $\nu=0$ and $\rho=1$, similar to our assumption of $\alpha=1$ and $\beta=0$ above. This leaves $\gamma$, $\Alpha$, and $\Beta$. Assuming that $\gamma$ is known (or estimated from the raw fluorescence signal, as we did above), we have: 
+
+\begin{align}
+\widehat{\ve{\eta}}_v = \argmax_{\norm{\ve{\eta}_v} <1} \norm{\vbF - \ve{\eta}_v \bX_v}^2 \label{eq:Par}
+%\ve{\eta}_v &=\argmax_{\ve{\eta}_v, \, 0 < \gamma < 1} %- \frac{T}{2} \log (2\pi|\ve{\Sig}|) + T \log (\lam \Del) -\lam \Del \bn'\ve{1} 
+%-(\vbF -\ve{\eta}_v \bX_v) ' \ve{\Sig}^{-1}   (\vbF - \bX \bth_v) \label{eq:Par}
+\end{align}
+
+\noindent where $\ve{\eta}_v=[\Alpha, \, \Beta]$, and $\bX_v=[\gamma \bC + \bn, \, \ve{1}]'$. Note that we have constrained the norm of $\ve{\eta}_v$, which is necessary because otherwise there is a free scale between $\bX_v$ and $\ve{\eta}_v$.  Problems of the form as in Eq \eqref{eq:Par} are known as ``trust region subproblems''.  Fortunately, many algorithms for solving such a problem are available \cite{Fortin00}.  
+
+\subsection{Karel's data}
+
+\subsection{Incorporating a nonlinear observation model}
+
+\subsection{Slow dynamics}
+
+\subsection{Two spike trains (overlapping SPF's)}
+
+\subsection{Optimal thresholding}
+
+\section{Discussion}
+
+\paragraph{Acknowledgments}
+
+Support for JTV was provided by NIDCD DC00109. LP is supported by an NSF CAREER award, by an Alfred P.\ Sloan Research Fellowship, and the McKnight Scholar Award. BOW was supported by NDS grant F30 NS051964. The authors would like to thank A.\ Packer for helpful discussions.
+
+%\subparagraph*{References}
+\bibliography{/Users/joshyv/Research/misc/biblist}
+\addcontentsline{toc}{section}{References}
+%\bibliography{Science}
+\bibliographystyle{apalike}
+%\bibliographystyle{biophysj}
+%\bibliographystyle{nature}
+
+
+\appendix
+
+\section{Wiener Filter}
+
+Sections \ref{sec:inf} and \ref{sec:est} outline one approach to solving Eq. \eqref{eq:obj}, by approximating the Poisson distribution with an exponential distribution, and imposing a non-negative constraint on the inferred $\hnm$.  Perhaps a more straightforward approach would be to approximate the Poission distribution with a Gaussian distribution.  In fact, as rate increases above about $10$ spikes/sec, a Poisson distribution with rate $\lam \Del$ is well approximated by a Gaussian with mean and variance $\lam \Del$.  Given such an approximation, instead of Eq. \eqref{eq:obj2}, we would obtain:
+
+\begin{align} \label{eq:w1}
+\hbn_{w} &\approx \argmin_{n_t \in \Real, \forall t} \sum_{t=1}^T \bigg(\frac{1}{2\sig^2} (F_t-C_t)^2 + \frac{1}{2 \lam \Del} (n_t - \lam \Del)^2\bigg)% \nonumber \\
+\end{align}
+
+\noindent As above, we can rewrite Eq. \eqref{eq:w1} in matrix notation in terms of $\bC$:
+
+\begin{align}   \label{eq:w2}
+\hbC_{w}&= \argmin_{C_t \in \Real, \forall t} \frac{1}{2\sig^2} \norm{\bF - \bC}^2 + \frac{1}{2\lam\Del} \norm{\bM \bC - \lam\Del\ve{1}}^2 
+\end{align}
+
+\noindent which is quadratic in $\bC$, and may therefore be solved analytically using quadratic programming, $\hbC_w = \hbC_0 + \bd_w$, where $\hbC_0$ is the initial guess and $\bd_w=\bH_w \backslash \bg_w$, where
+
+\begin{align}
+\bg_w &= \frac{1}{\sig^2} (\bC_0' - \bF) + \frac{1}{\lam\Del} ( (\bM \hbC_0)' \bM - \lam\Del \bM' \ve{1}) \\
+\bH_w &= \frac{1}{\sig^2} \ve{I} + \frac{1}{\lam\Del} \bM' \bM
+\end{align}
+
+Note that this solution is the optimal linear solution, under the assumption that spikes follow a Gaussian distribution, and if often referred to as the Wiener filter, regression with a smoothing prior, or ridge regression.  To estimate the parameters for the Wiener filter, we take the same approach as above:
+
+\begin{subequations}
+\begin{align} \label{eq:w_par}
+\hbth_w &\approx \argmax_{\bth_w}P(\ve{F}| \hbn_w, \thet_w) P(\hbn_w | \thet_w) \\
+%&= \argmax_{\bth_w} \sum_{t=1}^T \left(-\frac{1}{2} \log (2\pi\sig^2)-\frac{1}{2\sig^2} (F_t - \gamma \hC_{t-1} - \hn_t - \beta)^2 \right) \nonumber \\
+%&\qquad \qquad \qquad + \sum_{t=1}^T \bigg(-\frac{1}{2} \log (2\pi\lam\Del)-\frac{1}{2\lam\Del} (\hn_t - \lam\Del)^2 \bigg) \\
+&= \argmax_{\bth_w} -\frac{T}{2} \log (4\pi^2\sig^2\lam\Del) - \frac{1}{2\sig^2} \norm{\bY_w + \ve{\eta}_w \bX_w}^2 - \frac{1}{2\lam\Del} \norm{\hbn_w - \lam\Del\ve{1}}^2
+\end{align}
+\end{subequations}
+
+\noindent where $\bY_w$, $\ve{\eta}_w$, and $\bX_w$ are defined as their subscriptless counterparts in Eq. \eqref{eq:par1}.
+
+
+
+\section{old}
+
+%\begin{algorithm}
+%\caption{Pseudocode for implementing the optimal nonnegative filter for an exponential prior} \label{alg:bar}
+%\begin{algorithmic}
+%\WHILE{$\zzz > \epsilon$}
+%\STATE Initialize $\zT$
+%\STATE $\mathcal{L}_i= \sum_t (\ve{y}_t - \ve{A} \ve{C}_t - \ve{b}) \ve{I}^{-1}  (\ve{y}_t - \ve{A} \ve{C}_t - \ve{b}) +\Del \lam_t n_t - \zzz \log n_t$
+%\WHILE{$\mathcal{L}_i < \mathcal{L}_{i-1}$}
+%\STATE $\ve{g} = -2  (\ve{y} - \ve{A} \xT - \ve{b}) - \Del \lT' \ve{M} - \zzz \ve{M}' (\zT^{-1})$
+%\STATE $\ma{H}= 2 \ve{I} + 2 \zzz \ve{M}' (\zT^{-2}) \ve{M}$
+%\STATE Compute $\ve{d}=\ma{H}^{-1}\ve{g}$ efficiently
+%\STATE Choose $s$ such that 
+%\STATE $\qquad s \geq -\zT(\ve{M} \ve{d})^{-1}$
+%\STATE $\qquad$and $\mathcal{L}_{i} < \mathcal{L}_{i-1}$
+%\STATE Let $\xT \leftarrow  \xT + s \ve{d}$
+%\STATE $i \leftarrow i + 1$
+%\ENDWHILE
+%\STATE reduce $\zzz$ 
+%\ENDWHILE
+%\end{algorithmic}
+%\end{algorithm}
+
+\begin{figure}
+%\centering \includegraphics[width=0.7\linewidth]{NIPSdemo}
+\caption{Simulation demonstrating our neuron model and inference. Note that our filter accurately infers the unobserved spike train, given only the noisy fluorescence measurements.  Top panel: Simulated fluorescence. Second panel: Simulated intracellular calcium concentration. Third panel: Simulated spike train.  Fourth panel: Output of optimal nonnegative filter (green) superimposed on simulated spike train (black).  Parameters: $\lam=10$, $\Del=0.025$ msec, $\tau=0.5$ sec, $\sig=1$.} \label{fig:demo}
+\end{figure}
+
+\paragraph{Generalization of the optimal nonnegative filter}
+
+The above filter design assumed a very simple model relating spikes to $\Ca$, and $\Ca$ to fluorescence.  Both \eqref{eq:obs} and \eqref{eq:trans} may be generalized in a straightforward manner. In fact, our model may be thought of as a special case of the more general state-space framework:
+
+\begin{subequations} \label{eq:SS}
+\begin{align}
+\ve{C}_t &= \ve{D} \ve{C}_{t-1} + \ve{1} n_t \label{eq:SSa} \\
+\ve{F}_t &= \ve{A} \ve{C}_t + \ve{b} + \ve{\varepsilon}_t \label{eq:SSb}
+\end{align}
+\end{subequations}
+
+\noindent which we can solve in linear time for any log-concave distribution of $n_t$ and $\ve{\varepsilon}_t$.  For our particular scenario of interest, i.e., that of inferring spike trains from calcium sensitive fluorescence observations, these generalizations facilitate considering a model with much richer dynamics.  For instance, a more accurate model relating spikes to $\Ca$ would consider myriad calcium extrusion mechanisms, buffering, etc. In such a situation, we would represent $\Ca$ as a vector, $\ve{C}_t \in \mathbb{R}^{N \times 1}$, where each element of $\ve{C}_t$ would correspond 
+%
+%These may all easily be incorporated by replacing the monodimensional $\Ca$ equation, with %:
+%
+%\begin{align} \label{eq:C}
+%$\ve{C}_{t+1} = \ma{D} \ve{C}_t + \ve{1} n_t$ %, \qquad \ve{C}_t \geq 0 \quad \forall t
+%\end{align}
+%
+%\noindent 
+%where each element of $\ve{C}_t \in \mathbb{R}^{N \times 1}$ corresponds 
+to a different spike dependent calcium process. The differential operator, $\ve{D} \in \mathbb{R}^{N \times N}$, accounts for the relative strength of each of these mechanisms, and their time constants. The spikes, $n_t$, are multiplied by a column vector of ones, $\ve{1} \in \mathbb{R}^{N \times 1}$, because the magnitude of the effect of a spike on each element in $\ve{C}_t$ is scaled by $\ve{\rho}$.\footnote{For the same reasons that there is no parameter scaling the spikes in the monodimensional case} It should be clear that as in \eqref{eq:trans}, spikes are related to calcium by a simple linear transformation.  In the multidimensional scenario, however, $\ve{D}$ --- a matrix --- would replace $a$ --- a scalar ---  so $\ve{M}$ becomes block-bidiagonal, making the Hessian block tridiagonal.  Nonetheless, Gaussian elimination may still solve $\ve{H}\ve{C}=\ve{g}$ in $O(T)$, so our filter may be applied to this scenario as well.
+
+Another natural extension of this work would be to let $F_t$ also be multidimensional.  In \eqref{eq:obs}, although we assumed that we had access to a monodimensional fluorescent magnitude at each time, the raw data is actually a multidimensional movie. These images, however, are necessarily blurred by the point-spread-function of the camera.  Thus, we could replace \eqref{eq:obs} with \eqref{eq:SSb}, where $\ve{A}$ is the point-spread function of the camera, and $\ve{b}$ sets the relative baseline intensity per pixel. %\footnote{In practice, we would concatenate the columns of each image,  making $\ve{F}_t$ a column vector, $\ve{F}_t \in \mathbb{R}^{Q \times 1}$. Furthermore, $\ve{A} \in \mathbb{R}^{Q \times N}$, $\ve{A}$ would be a rank-one matrix, $\ve{A}=\ve{a} \ve{1}'$, where each element of $\ve{a}$ corresponds to the relative weight of each pixel. By parameterizing $\ve{a}$, we could limit the number of parameters for this multidimensional model to be relatively few.} 
+Furthermore, the noise, $\ve{\varepsilon}_t$, could have any log-concave distribution, and these results would still hold. Given these generalizations, this filter may be applied to a large class of problems.
+
+%nonnegative deconvolution \cite{SaulLee03} and matrix factorization \cite{LeeSeung99, LeeSeung01} arise in a number of different scenarios, including from audio signals processing \cite{OGradyPearlmutter06} and image processing. We are interested in dealing with a subset of these problems.
+%In particular, we assume the existence of a signal of interest, $\zT=n_0,\ldots,n_T$, where each $n_t \in \mathbb{R}_+$ is a scalar nonnegative number,  which is then filtered by a series of linear ordinary differential equations, of the form:
+%
+%\begin{align} \label{eq:C}
+%\ve{C}_{t+1} = \ma{a} (\ve{C}_t + \ve{C}_b) + \ve{1}  n_t %, \qquad \ve{C}_t \geq 0 \quad \forall t
+%\end{align}
+%
+%\noindent where $\ve{C}_t \in \mathbb{R}^{N \times 1}$ is an $N$ dimensional column vector, $\ma{a} \in \mathbb{R}^{N\times N}$ is a differential operator matrix that updates $\ve{C}_t$, $\ve{C}_b$ is the baseline resting value for $\ve{C}_t$, and $\ve{1}$ is a $N$ dimensional column vector of ones.  Observations of this system, $\ve{y}_t \in \mathbb{R}^{M \times 1}$,  are linear-Gaussian functions of $\ve{C}_t$:
+%
+%\begin{align} \label{eq:y}
+%\ve{y}_t = \ve{A} \ve{C}_t + \ve{b} + \ve{\varepsilon}_t, \qquad \ve{\varepsilon}_t \sim \mathcal{N}(0,\ve{I})
+%\end{align} 
+%
+%\noindent where $\ma{A} \in \mathbb{R}^{M\times N}$ is a scaling matrix,  $\ve{b} \in \mathbb{R}^{M \times 1}$ is an offset vector, and  $\varepsilon_t \in \mathbb{R}^{M \times 1}$ is a standard multivariate normal random variable.  Models characterized by \eqref{eq:trans} and \eqref{eq:y} arise in a number of contexts, including several in neuroscience \cite{bj08}.   
+%%This signal is then convoled with $J$ exponential filters, each with a unique amplitude and time constant, $A_j$ and $\tau_j$, respectively.  Finally, we make observations, $y_t$ that are corrupted by some Gaussian noise source, $\varepsilon_t$, with mean $\mu$ and variance $\sig^2$, yielding
+%%
+%%\begin{align}
+%%y_t = \sum_{j=1}^J \sum_{t=0}^T C_t \ast A_j e^{-t/\tau_j} + \varepsilon_t, \qquad \varepsilon \sim \mathcal{N}(\mu,\sig^2)
+%%\end{align}
+
+\paragraph{Projection Pursuit Regression} 
+
+Projection pursuit regression (PPR) is another technique one could use to infer a spike train from fluorescence measurements.  PPR is different from the optimal nonnegative filter in a few ways.  First, it solves a related, but slightly different problem: instead of finding the MAP estimate of the spike train, PPR finds the maximum likelihood estimate, i.e., the spike train that makes the fluorescence measurements most likely.  Second, PPR constrains the solution to have only nonnegative integers. Therefore, $\zT_{PPR}=\argmax_{n_t \in \mathbb{N}_0} p(\FT | \zT)$, where $\mathbb{N}_0$ is the set of nonnegative integers.. 
+% is the solution to the following optimization problem:
+%
+%\begin{align} \label{eq:ppr}
+%\nT_{PPR} = \argmax_{n_t \in \mathbb{n}} p(\FT | \nT)
+%\end{align} 
+%
+Third, because of this constraint, PPR requires an additional parameter, $w$, that sets the size of the calcium transient caused by a single an action potential.  This forces us to substitute \eqref{eq:trans}  with $C_t = a C_{t-1} + w n_t$.  % It may be helpful to think of $\CaT$ as a sum of exponentials, each starting at the time of an action potential.  
+%
+%More specifically, for this problem, PPR assumes that the signal of interest, $\FT$, is a sum of exponentials times Heaviside step functions and Gaussian noise:
+%
+%\begin{align}
+%\FT = \sum_{t_i} \rho e^{(t_i-t)/\tau} H(t_i-t) + \ve{\varepsilon}
+%\end{align}
+%
+%\noindent where $H(C)=1$ when $C\geq 0$ and zero otherwise, and the goal is to find the spike times, $\{t_i\}$. 
+Given these differences, to find $\zT_{PPR}$, PPR proceeds iteratively, adding a spike with each iteration, as long as doing so reduces the residual square error (i.e., the sum of the squared difference between the inferred $\xT$ and $\FT$). One obtains the time of the next inferred spike by finding the maximum of the convolution of the current residual square error with the calcium kernel, $w e^{-t\Del/\tau}$. In general, this procedure takes $O(T \log T)$ per iteration, as the convolution is computed in the Fourier domain.  However, the recursive state-space representation in \eqref{eq:SS} implies that this convolution requires just $O(T)$ time here.  Henceforth, we therefore refer to this approach as fast PPR (or fPPR). This approach may generalized to the multidimensional cases, as in the previous filter. However, unlike the previous filter, the likelihood function is not concave (recall that PPR is a greedy optimization method), so we are no longer guaranteed to converge to the optimal solution. % Nonetheless, this algorithm performs very well for simulated data, as depicted by the bottom panels of Fig. \ref{fig:comp}. 
+%Learning the parameters for this model proceeds much like learning those for the optimal nonnegative filter. 
+
+\section{Results} \label{sec:results} %Comparison to other methods}\label{sec:comp}
+
+To evaluate the efficacy of our filters, we compare their results to that of the optimal linear (i.e., Wiener) filter \cite{Wiener49}.  The Wiener filter differs in construction from our filters in a few ways.  First, it imposes no constraint on on the spike train.  Second, it is optimal upon assuming that the prior distribution of $n_t$ is Gaussian. In our model, spiking was Poisson, \eqref{eq:trans}, and the nonnegativity of $n_t$ in the sparse-spiking regime makes the Gaussian model assumed by the Wiener filter inaccurate (Fig.\ 2, left).  However, when spike rates are fast --- e.g., on average, several spikes per image frame --- a Poisson distribution is better approximated by a Gaussian distribution.  Furthermore, at high firing rates, the mean of the Gaussian would be relatively far from zero, and the variance proportional, so the probability of sampling a negative number would be relatively small, obviating the need for the nonnegativity constraint. Thus, one might expect the Wiener filter to perform as well as our nonnegative filter (and fPPR) when the observed neuron has a high firing rate (and relatively low imaging rate). Furthermore, given that the calcium kernel is exponential, the Wiener filter, like the filters we developed here, only requires $O(T)$ time, as opposed to the typical $O(T\log T)$.
+
+Fig.\ \ref{fig:comp} depicts a comparison between the filters developed above and the Wiener filter for two different scenarios: a slow firing rate simulation (left panels) and a fast firing rate simulation (right panels). When action potentials are sparse, the two filters we propose above outperform the Wiener filter. Moreover, at high firing rates,  all three filters perform approximately equally well. 
+
+%Perhaps the most closely related filter to the filters developed above is the Wiener filter \cite{??}.   Fig. \ref{fig:comp} shows two example fluorescent traces.  One the left, a neuron was simulated with a rate of $1$ Hz; on the right, $10$ Hz. The top and second panels show the simulated fluorescence and spike train, respectively.  The third panels show the performance of the optimal linear (i.e., Wiener) filter; whereas the fourth panels show the performance of the optimal nonnegative filter. Both filters perform very well in the scenario when there are on average several spikes per frame.   
+
+%\begin{minipage}{1.0\textwidth}
+\begin{figure}
+%\includegraphics[width=1.0\linewidth]{NIPScomp}
+\caption{Comparison of various linear filters for a simulated Poisson neuron spiking with a rate of $1$ Hz (left panels) and $200$ Hz (right panels). The main result is that the two filters proposed outperform the optimal linear (i.e., Wiener) filter. Top panels: Fluorescence measurements.  Second panels: Number of spikes per frame.  Third panels: Optimal linear (i.e., Wiener) filter output given the above fluorescence signal.  The Wiener filter does not impose a nonnegativity constraint, thus the inferred spike train can either be positive (green) or negative (red).  Fourth panels: Same as third panels, but for the optimal nonnegative filter. Note the absence of negative spikes.  Fifth panels: Same as third panels, but using the fast Projection Pursuit Regression (fPPR) filter. Parameters: $\Del=0.025$ sec, $\tau=0.5$ sec, $\lam=1/($firing rate$)$, left  $\sig=0.4$, right $\sig=1$.} \label{fig:comp}
+\end{figure}
+
+\begin{figure}[!h]
+%\centering \includegraphics[width=.6\linewidth]{NIPSdata}
+\caption{Inferring a spike train given fluorescence measurements from a live \emph{in vitro} neuron.  Simultaneous recording of a saturating fluorescence signal (black line in top panel), and its associated spike train (black impluses in all panels).  Note how the three filters handle saturation differently. The optimal nonnegative filter's signal-to-noise ratio degrades as saturation increases, but does not suffer a catastrophic failure (green in second panel). fPPR suffers more than the optimal nonlinear particle filter when the signal saturates, due to the hard threshold (green in third panel). The optimal nonlinear particle filter \cite{BJ08}, which explicitly incorporates saturation, correctly identifies each spike time (green in bottom panel).} \label{fig:real}
+\end{figure}
+%\end{minipage}
+
+While in simulations, all the above algorithms perform reasonably well, the true test is how well they perform given data from live cells. We simultaneously recorded both electrophysiologically and imaged with an epifluorescent microscope, from a pyramidal neuron in a somatosensory cortical slice, as described in \cite{MacLeanYuste05}. Fig.\ \ref{fig:real} shows an example fluorescence time-series in which the neuron spiked with a relatively low rate, but the calcium accumulated nonetheless, leading to fluorescence saturation (top panel). In practice, this kind of strong saturation is rarely observed (personal communication, anonymous% R.\ Friedrich
+), so this example is designed to test the limits of performance of our filters. %As all the above described methods are inherently linear methods, their assumptions do not adequately capture these nonlinear dynamics.
+In fact, the optimal nonnegative filter accurately infers every spike, even when the fluorescence is strongly saturating, and the signal-to-noise ratio is very poor (second panel). On the other hand, fPPR, which has a sharp threshold for including an additional spike, performs relatively poorly (third panel), demonstrating the dependency of this method on a good model fit.  For comparison purposes, we also show the performance of an optimal nonlinear particle filter \cite{BJ08}, which specifically incorporates a nonlinear saturation function. While the optimal nonlinear particle filter performs better in scenarios such as this one, the computational burden is increased by approximately $100$-fold relative to the fast nonnegative filter. Thus these two filters serve complementary purposes: the fast nonnegative filter is better geared to rapid online analysis of large-scale multi-neuronal data, whereas the nonlinear particle filter is better suited for offline refinement of the results from the fast nonnegative filter.   
+
+\section{Conclusions} \label{sec:dis}
+
+We show here that for certain nonnegative deconvolution problems, we can derive an algorithm that is both optimal and efficient.  More specifically, our algorithm may be applied to any model with a nonnegative signal that is linearly filtered by a matrix linear ordinary differential equation.  We apply this approach to the problem of inferring the most likely spike train given noisy calcium sensitive fluorescence observations (c.f. Fig.\ \ref{fig:demo}), and demonstrate, in simulations, that the optimal nonnegative filter outperforms the optimal linear (i.e., Wiener) filter in both slow and fast firing rate regimes (c.f. Fig.\ \ref{fig:comp}).  Furthermore, when applied to data from a live cell, the optimal nonnegative filter outperforms a fast projection pursuit regression filter, which constrains the inferred spike train to be nonnegative integers (c.f. Fig.\ \ref{fig:real}). On the other hand, the nonnegative filter is based on a linear observation model, and therefore suffers a loss of precision in the presence of strong saturation effects, in contrast to the optimal nonlinear particle filter (c.f. Fig.\ \ref{fig:real}).    
+
+The implications of these results are severalfold.  First, it seems as if there is no reason to use the Wiener filter for scenarios in which our algorithm may apply.  Second, as our filter is so efficient, it may be used for many real-time processing applications.  Specifically, upon simultaneously imaging a population of neurons \cite{IkegayaYuste04, NiellSmith05, OhkiReid05, YaksiFriedrich06, SatoSvoboda07}, our filter may be applied essentially online.  This could greatly expedite the tuning of important experimental parameters --- such as laser intensity --- to optimize signal-to-noise ratio for inferring spikes.  Third, the parameters estimated from this filter may be used to initialize the parameters of the optimal nonlinear particle filter, which may then be used offline, to further refine the spike train inference. % Because the optimal nonlinear particle filter performs in approximately real-time (making it $\sim 100$ fold slower than the filters developed here), it may be run overnight on all the neural data collected in a daily experimental session. 
+Future work will consider multidimensional models for this application, incorporating both more sophisticated calcium models, and spatial filtering for extracting the fluorescence signal, obviating the need for additional algorithms for image segmentation. 
+
+\section{other}
+
+We have found empirically that despite the approximation in \eqref{eq:obj2}, upon initializing the parameters with a reasonable guess, the algorithm tends to converge to parameters that are reasonably close to the true parameters, resulting in an accurate spike reconstruction. Importantly, estimating these parameters typically requires only a very short sequence of observations, e.g., several seconds of data including about $5$--$10$ spikes (not shown).
+
+
+\end{document}
