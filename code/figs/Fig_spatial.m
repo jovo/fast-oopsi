@@ -180,6 +180,7 @@ for q=qs
     i=i+2; h(i) = subplot(nrows,ncols,i);
     Pl.col(2,:)=[0 0 0];
     Pl.gray=[.5 .5 .5];
+    hold on
     Plot_n_MAP(Pl,I{q}.n);
 
     % set xlabel stuff

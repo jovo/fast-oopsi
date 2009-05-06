@@ -95,7 +95,7 @@ for q=qs
             save('ROIs','ROWS1','COLS1')
         end
     else
-        load ROIs
+%         load ROIs
     end
 
 

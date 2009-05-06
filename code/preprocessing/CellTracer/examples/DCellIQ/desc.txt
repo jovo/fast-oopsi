@@ -1,3 +1,0 @@
-invert
-1. bg1
-2. b3 d 100 dddd or bg2 50 500 2 0

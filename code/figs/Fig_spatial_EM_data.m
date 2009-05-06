@@ -2,12 +2,12 @@
 
 % 1) get data
 clear, clc, %close all
-foldname    = 'TS108_6';
-dir         = '/Users/joshyv/Research/data/karel/takashi/';
+foldname    = 'TS193_3';
+dir         = ['/Users/joshyv/Research/projects/oopsi/oopsi/data/karel/takashi/'];
 im_dir      = '/Image/';
 phys_dir    = '/Physiology/';
-i           = 3;
-LoadTif     = 0;
+i           = 2;
+LoadTif     = 1;
 if i<10                                         % get tif file name
     tifname=[dir foldname im_dir  foldname '_00' num2str(i) '.tif'];
     matname = [foldname '_00' num2str(i) '.mat'];
@@ -53,7 +53,7 @@ if LoadTif == 1                                     % get whole movie
         imwrite(reshape(FF(t,:),Sim.h,Sim.w)',[matname(1:end-4) '.tif'],'tif','Compression','none','WriteMode',mod)
     end
 
-    load(['/Users/joshyv/Research/projects/oopsi/spatial-filter/' matname])
+    load(['/Users/joshyv/Research/projects/oopsi/fast-oopsi/data/' matname])
     Sim.spt = R.spt;
     Sim.dt  = 30/Sim.T;
     save(matname,'F','Sim')
@@ -62,12 +62,12 @@ else
 end
 
 % 2) set simulation metadata
-Sim.MaxIter = 0;                               % # iterations of EM to estimate params
+Sim.MaxIter = 25;                               % # iterations of EM to estimate params
 Sim.Np      = Sim.w*Sim.h;                     % # of pixels in each image
 Sim.Nc      = 1;                               % # cells
-Sim.plot    = 0;                               % whether to plot filter with each iteration
+Sim.plot    = 1;                               % whether to plot filter with each iteration
 Sim.matname = matname;
-
+Sim.thresh  = 1;
 
 %% 4) infer spike train using various approaches
 [U,S,V] = svd(F,0);
@@ -77,13 +77,12 @@ if max(F*P.a)<0, P.a=-P.a; end
 %%
 P.b = 0*P.a; %(0*P.a+1)/norm(P.a);
 P.sig = 0.001;
-P.lam = 5/30;
+P.lam = 1/30;
 P.gam=0.96;
-% Sim.gam=P.gam;
-% P = FastParams4_1(F,Sim);
+P.smooth=0;
 
 qs=1:2;
-MaxIter=2;
+MaxIter=4;
 for q=qs
     GG=F; Tim=Sim; Phat{q}=P;
     %     if q==1,                        % estimate spatial filter from real spikes

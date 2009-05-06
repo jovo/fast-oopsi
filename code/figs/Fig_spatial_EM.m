@@ -45,6 +45,7 @@ Sim.w       = width;                            % width of frame (pixels)
 Sim.h       = height;                           % height of frame (pixels)
 Sim.Nc      = Nc;                               % # cells
 Sim.plot    = 0;                                % whether to plot filter with each iteration
+Sim.thresh  = 1;
 
 % 3) initialize params
 for i=1:Sim.Nc
@@ -80,7 +81,7 @@ if MakMov==1
     end
 end
 
-GetROI  = 0;
+GetROI  = 1;
 fnum    = 0;
 
 if GetROI

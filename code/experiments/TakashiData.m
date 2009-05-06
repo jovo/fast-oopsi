@@ -8,11 +8,11 @@
 
 clear, clc, %close all
 foldname    = 'TS108_6';
-dir         = '/Users/joshyv/Research/projects/oopsi/data/karel/takashi/';
+dir         = '/Users/joshyv/Research/projects/oopsi/meta-oopsi/data/karel/takashi/';
 im_dir      = '/Image/';
 phys_dir    = '/Physiology/';
 
-for i=1:2
+for i=12;%:2
     
     % get whole movie
     if i<10                                         % get tif file name
@@ -54,7 +54,7 @@ for i=1:2
     figure(101), clf,
     imagesc(reshape(z1(MeanROI),Ncols,Nrows)')
     
-    D = GetSpatialFilter(R.F,Ncols,Nrows);           
+%     D = GetSpatialFilter(R.F,Ncols,Nrows);           
 
     % get spike times
     if i<10

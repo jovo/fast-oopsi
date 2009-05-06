@@ -1,4 +1,0 @@
-double resolution
-crop to view
-1. bg1 0.5, d
-2. b3 0.6 200 1 0.25 30 10

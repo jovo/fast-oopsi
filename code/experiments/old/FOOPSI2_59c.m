@@ -82,7 +82,7 @@ H1  = I;                                        % initialize memory for Hessian 
 H2  = I;                                        % another one
 d0  = 1:Nc*T+1:(Nc*T)^2;                        % index of diagonal elements of TxT matrices
 d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            % index of diagonal elements of TxT matrices
-l   = Z(1:Sim.MaxIter+1);                       % initialize likelihood
+l   = Z(1:Sim.MaxIter+10);                         % initialize likelihood
 [n C DD] = FastFilter(F,P);                     % infer approximate MAP spike train, given initial parameter estimates
 l_max = l;                                      % maximum likelihood achieved so far
 n_best=n;                                       % best spike train
@@ -90,11 +90,11 @@ P_best=P;                                       % best parameter estimate
 
 for i=1:Sim.MaxIter
     l(i) = Getlik2_0(DD,n,P,Sim);               % update likelihood
-%     if l(i)>l_max                               % if this is the best one, keep n and P
+    if l(i)>l_max                               % if this is the best one, keep n and P
         n_best=n;
         P_best=P;
-%     end
-    if abs(l(i+1)-l(i))<1e-4 break; end         % if lik doesn't change, stop iterating
+    end
+    if abs(l(i+1)-l(i))<1e-4 break; end         % if li
 
     if Sim.plot == 1
         figure(400), nrows=1+Nc;
@@ -121,7 +121,7 @@ for i=1:Sim.MaxIter
         CC=0*C;
         for j=1:Nc
             nsort   = sort(n(:,j));
-            nthr    = nsort(round(0.95*T));
+            nthr    = nsort(round(0.98*T));
             nn      = Z(1:T);
             nn(n(:,j)<=nthr)=0;
             nn(n(:,j)>nthr)=1;
@@ -132,10 +132,10 @@ for i=1:Sim.MaxIter
         X       = [C 1+Z(1:T)];
     end
     
-    % regression
+    % smoothed regression
     for ii=1:Sim.Np
         Y   = F(:,ii);
-        B   = X\Y; %Y'*X*pinv(X'*X); %Y'*X*pinv(X'*X + P.smooth*I(1:Nc+1,1:Nc+1)); %X\Y; %
+        B   = Y'*X*pinv(X'*X + P.smooth*I(1:Nc+1,1:Nc+1));
         for j=1:Nc
             P.a(ii,j) = B(j);
         end
@@ -147,9 +147,9 @@ for i=1:Sim.MaxIter
     %     end
     
     %%% estimate other parameters
-    nnorm   = n./repmat(max(n),Sim.T,1);
-    P.lam   = sum(nnorm)'/(T*dt);
-    P.sig   = sqrt(DD/T);
+    %     nnorm   = n./repmat(max(n),Sim.T,1);
+    %     P.lam   = sum(nnorm)'/(T*dt);
+    %     P.sig   = sqrt(DD/T);
 end
 
 P_best.l=l;

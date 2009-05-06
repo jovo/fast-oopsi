@@ -1,4 +1,4 @@
-function [n_best P_best]=FOOPSI2_59(F,P,Sim)
+function [n_best P_best]=FOOPSI_v3_01_00(F,P,Sim,U)
 % this function solves the following optimization problem:
 % n_best = argmax_{n >= 0} P(n | F)
 % which is a MAP estimate for the most likely spike train given the
@@ -65,6 +65,7 @@ function [n_best P_best]=FOOPSI2_59(F,P,Sim)
 % 2_57: estimate spatial filter as well
 % 2_58: multiple cells (buggy)
 % 2_59: multiple cells, estimate {a,b}
+% 3   : works with other meta-oopsi filters
 
 %% initialize stuff
 
@@ -82,74 +83,66 @@ H1  = I;                                        % initialize memory for Hessian 
 H2  = I;                                        % another one
 d0  = 1:Nc*T+1:(Nc*T)^2;                        % index of diagonal elements of TxT matrices
 d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            % index of diagonal elements of TxT matrices
-l   = Z(1:Sim.MaxIter+1);                       % initialize likelihood
+l   = Z(1:U.MaxIter+1);                       % initialize likelihood
 [n C DD] = FastFilter(F,P);                     % infer approximate MAP spike train, given initial parameter estimates
-l_max = l;                                      % maximum likelihood achieved so far
+l_max = -Inf;                                      % maximum likelihood achieved so far
 n_best=n;                                       % best spike train
 P_best=P;                                       % best parameter estimate
 
-for i=1:Sim.MaxIter
-    l(i) = Getlik2_0(DD,n,P,Sim);               % update likelihood
-%     if l(i)>l_max                               % if this is the best one, keep n and P
+for i=1:U.MaxIter
+    l(i+1) = GetLik(DD,n,P,Sim);               % update likelihood
+    if l(i+1)>l_max                               % if this is the best one, keep n and P
         n_best=n;
         P_best=P;
-%     end
+    end
     if abs(l(i+1)-l(i))<1e-4 break; end         % if lik doesn't change, stop iterating
 
-    if Sim.plot == 1
-        figure(400), nrows=1+Nc;
-        for j=1:Nc, subplot(1,nrows,j),
-            imagesc(reshape(z1(P.a(:,j)),Sim.w,Sim.h)),
-        end
-        subplot(1,nrows,nrows), imagesc(reshape(z1(P.b),Sim.w,Sim.h))
+    if U.plot == 1
+        figure(400), ncols=1; nrows=Nc+1;
         title(['iteration ' num2str(i)]),
-        figure(401), ncols=Nc+1;
         for j=1:Nc
-            subplot(ncols,1,j), bar(n(:,j));
+            subplot(nrows,ncols,j), bar(n(:,j));
             set(gca,'XTickLabel',[])
             axis('tight')
         end
-        subplot(ncols,1,ncols), plot(l(1:i))
+        subplot(nrows,ncols,nrows), plot(l(1:i))
         set(gca,'XTickLabel',[])
         drawnow
     end
     [n C DD]   = FastFilter(F,P);                  % infer approximate MAP spike train, given initial parameter estimates
 
     %%% estimate spatial filter
-    % generate regressor
-    if Sim.thresh==1
-        CC=0*C;
-        for j=1:Nc
-            nsort   = sort(n(:,j));
-            nthr    = nsort(round(0.95*T));
-            nn      = Z(1:T);
-            nn(n(:,j)<=nthr)=0;
-            nn(n(:,j)>nthr)=1;
-            CC(:,j) = filter(1,[1 -P.gam(j)],nn);
+    if U.a_est==1
+        if U.thresh==1
+            CC=0*C;
+            for j=1:Nc
+                nsort   = sort(n(:,j));
+                nthr    = nsort(round(0.98*T));
+                nn      = Z(1:T);
+                nn(n(:,j)<=nthr)=0;
+                nn(n(:,j)>nthr)=1;
+                CC(:,j) = filter(1,[1 -P.gam(j)],nn);
+            end
+            X       = [CC 1+0*Z(1:T)];
+        else
+            X       = [C 1+Z(1:T)];
         end
-        X       = [CC 1+0*Z(1:T)];
-    else
-        X       = [C 1+Z(1:T)];
-    end
-    
-    % regression
-    for ii=1:Sim.Np
-        Y   = F(:,ii);
-        B   = X\Y; %Y'*X*pinv(X'*X); %Y'*X*pinv(X'*X + P.smooth*I(1:Nc+1,1:Nc+1)); %X\Y; %
-        for j=1:Nc
-            P.a(ii,j) = B(j);
+
+        % update filter
+        for ii=1:Sim.Np
+            Y   = F(:,ii);
+            B   = X\Y;
+            for j=1:Nc
+                P.a(ii,j) = B(j);
+            end
+            P.b(ii) = B(end);
         end
-        P.b(ii) = B(end);
     end
-    
-    %     for j=1:Nc
-    %         if max(F*P.a(:,j))<0, P.a(:,j)=-P.a(:,j); end
-    %     end
-    
+
     %%% estimate other parameters
     nnorm   = n./repmat(max(n),Sim.T,1);
-    P.lam   = sum(nnorm)'/(T*dt);
-    P.sig   = sqrt(DD/T);
+    if U.lam_est == 1, P.lam = sum(nnorm)'/(T*dt); end
+    if U.sig_est == 1, P.sig = sqrt(DD/T); end
 end
 
 P_best.l=l;
