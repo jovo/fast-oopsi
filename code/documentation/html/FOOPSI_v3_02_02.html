@@ -1,0 +1,588 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>FOOPSI_v3_02_02</title>
+      <meta name="generator" content="MATLAB 7.6">
+      <meta name="date" content="2009-05-07">
+      <meta name="m-file" content="FOOPSI_v3_02_02"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#3">initialize stuff</a></li>
+               <li><a href="#4">estimate spatial filter</a></li>
+               <li><a href="#5">estimate other parameters</a></li>
+            </ul>
+         </div><pre class="codeinput"><span class="keyword">function</span> [n_best P_best]=FOOPSI_v3_02_02(F,P,Meta,User)
+</pre><pre class="codeinput"><span class="comment">% this function solves the following optimization problem:</span>
+<span class="comment">% n_best = argmax_{n &gt;= 0} P(n | F)</span>
+<span class="comment">% which is a MAP estimate for the most likely spike train given the</span>
+<span class="comment">% fluorescence signal.  given the model:</span>
+<span class="comment">%</span>
+<span class="comment">% C_t = gam C_{t-1} + nu + rho*n_t, n_t ~ Poisson(n_t; p_t)</span>
+<span class="comment">% F_t = alpha*C_t + beta + sigma*eps_t, eps_t ~ N(0,1)</span>
+<span class="comment">%</span>
+<span class="comment">% if F_t is a vector, then alpha and beta are BOTH vectors as well</span>
+<span class="comment">% we approx the Poisson with an Exponential. we take an</span>
+<span class="comment">% "interior-point" approach. each step with solved in O(T)</span>
+<span class="comment">% time by utilizing gaussian elimination on the tridiagonal hessian, as</span>
+<span class="comment">% opposed to the O(T^3) time typically required for non-negative</span>
+<span class="comment">% deconvolution.</span>
+<span class="comment">%</span>
+<span class="comment">% Input----</span>
+<span class="comment">% F:        fluorescence time series</span>
+<span class="comment">% P.        structure of neuron parameters</span>
+<span class="comment">%   alpha:  scale</span>
+<span class="comment">%   beta:   offset</span>
+<span class="comment">%   sig:    standard deviation</span>
+<span class="comment">%   gam:  "decay" (ie, tau=dt/(1-gam)</span>
+<span class="comment">%   nu:     "baseline" (ie, C_b = nu/(1-gam)</span>
+<span class="comment">%   rho:    jump size</span>
+<span class="comment">% Meta.      structure of simulation parameters</span>
+<span class="comment">%   dt:     time step size</span>
+<span class="comment">%   T:      # of time steps</span>
+<span class="comment">%   h:      height of ROI (assumes square ROI) (# of pixels)</span>
+<span class="comment">%   w:      width of ROI (assumes square ROI) (# of pixels)</span>
+<span class="comment">%   Np:     # of pixels in ROI</span>
+<span class="comment">% User.     structure of User defined parameters</span>
+<span class="comment">%   Plot:   whether to plot results        (if not set, default is no)</span>
+<span class="comment">%   MaxIter:maximum number of iterations   (typically set to 50)</span>
+<span class="comment">%   Nc:     # of cells within ROI</span>
+<span class="comment">%   Thresh: whether to threshold infered spike train before updating parameters</span>
+
+<span class="comment">% Output---</span>
+<span class="comment">% n:        inferred spike train</span>
+<span class="comment">% P:        inferred parameter structure</span>
+<span class="comment">%</span>
+<span class="comment">% Remarks on revisions:</span>
+<span class="comment">% 1_7:      no longer need to define Meta.Plot (ie, if it is not defined, default</span>
+<span class="comment">%           is to not plot, but if it is defined, one can either plot or not)</span>
+<span class="comment">% 1_8:      cleaned up code from 1_7, and made Identity matrix outside loop,</span>
+<span class="comment">%           which gets diagonal replaced inside loop (instead of calling speye in</span>
+<span class="comment">%           loo)</span>
+<span class="comment">% 1_9:      mean subtract and normalize max(F)=1 such that arbitrary scale and</span>
+<span class="comment">%           offset shifts do no change results.</span>
+<span class="comment">% 2:        removed normalize.  takes either a row or column vector.</span>
+<span class="comment">%           doesn't require any Meta fields other than Meta.dt. also, we estimate</span>
+<span class="comment">%           parameters now using FastParams code (which is the same as the one used</span>
+<span class="comment">%           to estimate params given the real spikes, for debugging purposes)</span>
+<span class="comment">% 2_1:      also estimate mu</span>
+<span class="comment">% 2_2:      forgot to make this one :)</span>
+<span class="comment">% 2_3:      fixed a bunch of bugs.  this version works to infer and learn, but</span>
+<span class="comment">%           fixes mu in above model.</span>
+<span class="comment">% 2_4:      to my knowledge, this one works, but requires fixing 'mu' and 'a' in</span>
+<span class="comment">%           the above model. I also normalize between 0 and 1</span>
+<span class="comment">% 2_41:     reparameterized for stability.  uses constrained optimization. this</span>
+<span class="comment">%           works assuming nu=0 and rho=1.</span>
+<span class="comment">% 2_42:     works for arbitrary rho</span>
+<span class="comment">% 2_43:     fixed bugs so that M is only T-1 x T-1. cleaned up names and stuff.</span>
+<span class="comment">% 2_431:    made M TxT again</span>
+<span class="comment">% 2_432:    added baseline (in progress)</span>
+<span class="comment">% 2_5:      dunno</span>
+<span class="comment">% 2_51:     removed rho and nu</span>
+<span class="comment">% 2_52:     a=alpha, b=beta, in code</span>
+<span class="comment">% 2_53:     threshold n s.t. n \in \{0,1\} before estimating parameters</span>
+<span class="comment">% 2_54:     allow for F to be a vector at each time step</span>
+<span class="comment">% 2_55:     fixed bugs, back to scalar F_t</span>
+<span class="comment">% 2_56:     back to vector case, but no param estimate</span>
+<span class="comment">% 2_57:     estimate spatial filter as well</span>
+<span class="comment">% 2_58:     multiple cells (buggy)</span>
+<span class="comment">% 2_59:     multiple cells, estimate {a,b}</span>
+<span class="comment">% 3_01_01:  cleaning up a bit</span>
+<span class="comment">% 3_02_01:  added input structure 'U' to control parameters that are 'User defined'</span>
+<span class="comment">% 3_02_02:  don't need to include U in input, default values are set</span>
+</pre><h2>initialize stuff<a name="3"></a></h2><pre class="codeinput"><span class="comment">% deal with user defined switches</span>
+<span class="comment">% default user defined variables</span>
+U.Plot=1;
+U.MaxIter=25;
+U.Nc=1;
+U.Thresh=1;
+<span class="keyword">if</span> nargin == 3
+    User=U;
+<span class="keyword">else</span>
+    <span class="keyword">if</span> isfield(User,<span class="string">'Plot'</span>), <span class="keyword">else</span> User.Plot=U.Plot; <span class="keyword">end</span>
+    <span class="keyword">if</span> isfield(User,<span class="string">'MaxIter'</span>), <span class="keyword">else</span> User.MaxIter=U.MaxIter; <span class="keyword">end</span>
+    <span class="keyword">if</span> isfield(User,<span class="string">'Nc'</span>), <span class="keyword">else</span> User.Nc=U.Nc; <span class="keyword">end</span>
+    <span class="keyword">if</span> isfield(User,<span class="string">'Thresh'</span>), <span class="keyword">else</span> User.Thresh=U.Thresh; <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% define some stuff for brevity</span>
+Nc      = User.Nc;                               <span class="comment">% # of cells</span>
+T       = Meta.T;                                <span class="comment">% # of time steps</span>
+dt      = Meta.dt;                               <span class="comment">% time step size</span>
+u       = 1/(2*P.sig^2);                        <span class="comment">% scale of variance</span>
+
+<span class="comment">% define some stuff for speed</span>
+Z   = zeros(Nc*T,1);                            <span class="comment">% zero vector</span>
+M   = spdiags([repmat(-P.gam,T,1) repmat(Z,1,Nc-1) (1+Z)], -Nc:0,Nc*T,Nc*T);  <span class="comment">% matrix transforming calcium into spikes, ie n=M*C</span>
+I   = speye(Nc*T);                              <span class="comment">% create out here cuz it must be reused</span>
+H1  = I;                                        <span class="comment">% initialize memory for Hessian matrix</span>
+H2  = I;                                        <span class="comment">% another one</span>
+d0  = 1:Nc*T+1:(Nc*T)^2;                        <span class="comment">% index of diagonal elements of TxT matrices</span>
+d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            <span class="comment">% index of diagonal elements of TxT matrices</span>
+l   = Z(1:User.MaxIter);                        <span class="comment">% initialize likelihood</span>
+[n C DD]= FastFilter(F,P);                      <span class="comment">% infer approximate MAP spike train, given initial parameter estimates</span>
+l_max   = -inf;                                 <span class="comment">% maximum likelihood achieved so far</span>
+l(1)    = l_max;
+n_best  = n;                                    <span class="comment">% best spike train</span>
+P_best  = P;                                    <span class="comment">% best parameter estimate</span>
+
+<span class="keyword">for</span> i=2:User.MaxIter
+    l(i) = GetLik_v2_01(DD,n,P,Meta);           <span class="comment">% update likelihood</span>
+    <span class="keyword">if</span> l(i)&gt;l_max                               <span class="comment">% if this is the best one, keep n and P</span>
+        n_best=n;
+        P_best=P;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> abs((l(i)-l(i-1))/l(i))&lt;1e-5; <span class="keyword">break</span>; <span class="keyword">end</span> <span class="comment">% if lik doesn't change much (relatively), stop iterating</span>
+
+    <span class="keyword">if</span> User.Plot == 1
+        figure(400), nrows=1+Nc;
+        <span class="keyword">for</span> j=1:Nc, subplot(1,nrows,j),
+            imagesc(reshape(z1(P.a(:,j)),Meta.h,Meta.w)),
+            title(<span class="string">'a'</span>)
+        <span class="keyword">end</span>
+        subplot(1,nrows,nrows), imagesc(reshape(z1(P.b),Meta.h,Meta.w)), title(<span class="string">'b'</span>)
+        figure(401), ncols=Nc+1;
+        <span class="keyword">for</span> j=1:Nc
+            subplot(ncols,1,j), bar(n(:,j));
+            title([<span class="string">'iteration '</span> num2str(i)]),
+            set(gca,<span class="string">'XTickLabel'</span>,[])
+            axis(<span class="string">'tight'</span>)
+        <span class="keyword">end</span>
+        subplot(ncols,1,ncols), plot(l(2:i))
+        title([<span class="string">'lik '</span> num2str(l(i))])
+        set(gca,<span class="string">'XTickLabel'</span>,[])
+        drawnow
+    <span class="keyword">end</span>
+    [n C DD]   = FastFilter(F,P);                  <span class="comment">% infer approximate MAP spike train, given initial parameter estimates</span>
+</pre><h2>estimate spatial filter<a name="4"></a></h2>
+         <p>generate regressor</p><pre class="codeinput">    <span class="keyword">if</span> User.Thresh==1
+        CC=0*C;
+        <span class="keyword">for</span> j=1:Nc
+            nsort   = sort(n(:,j));
+            nthr    = nsort(round(0.95*T));
+            nn      = Z(1:T);
+            nn(n(:,j)&lt;=nthr)=0;
+            nn(n(:,j)&gt;nthr)=1;
+            CC(:,j) = filter(1,[1 -P.gam(j)],nn);
+        <span class="keyword">end</span>
+        X       = [CC 1+0*Z(1:T)];
+    <span class="keyword">else</span>
+        X       = [C 1+Z(1:T)];
+    <span class="keyword">end</span>
+
+    <span class="comment">% regression</span>
+    <span class="keyword">for</span> ii=1:Meta.Np
+        Y   = F(:,ii);
+        B   = X\Y;
+        <span class="keyword">for</span> j=1:Nc
+            P.a(ii,j) = B(j);
+        <span class="keyword">end</span>
+        P.b(ii) = B(end);
+    <span class="keyword">end</span>
+
+    <span class="comment">%     for j=1:Nc</span>
+    <span class="comment">%         if max(F*P.a(:,j))&lt;0, P.a(:,j)=-P.a(:,j); end</span>
+    <span class="comment">%     end</span>
+</pre><h2>estimate other parameters<a name="5"></a></h2><pre class="codeinput">    nnorm   = n./repmat(max(n),Meta.T,1);
+    P.lam   = sum(nnorm)'/(T*dt);
+    P.sig   = sqrt(DD/T);
+<span class="keyword">end</span>
+
+P_best.l=l(2:i);
+
+    <span class="keyword">function</span> [n C DD] = FastFilter(F,P)
+
+        <span class="comment">% initialize n and C</span>
+        z       = 1;                            <span class="comment">% weight on barrier function</span>
+        u       = 1/(2*P.sig^2);                <span class="comment">% scale of variance</span>
+        n       = repmat(z./P.lam,T,1);         <span class="comment">% initialize spike train</span>
+        C       = 0*n;                          <span class="comment">% initialize calcium</span>
+        <span class="keyword">for</span> j=1:Nc
+            C(j:Nc:end) = filter(1,[1, -P.gam(j)],n(j:Nc:end));
+        <span class="keyword">end</span>
+
+        <span class="comment">% precompute parameters required for evaluating and maximizing</span>
+        <span class="comment">% likelihood</span>
+        M(d1)   = -repmat(P.gam,T-1,1);         <span class="comment">% matrix transforming calcium into spikes, ie n=M*C</span>
+        lam     = dt*repmat(P.lam,T,1);         <span class="comment">% for lik</span>
+        lnprior = lam.*sum(M)';                 <span class="comment">% for grad</span>
+        aa      = repmat(diag(P.a'*P.a),T,1);   <span class="comment">% for grad</span>
+        H1(d0)  = 2*u*aa;                       <span class="comment">% for Hess</span>
+        gg      = (F*P.a+repmat(P.b'*P.a,T,1))';<span class="comment">% for grad</span>
+        b       = (1+Z(1:T))*P.b';              <span class="comment">% for lik</span>
+
+        <span class="comment">% find C = argmin_{C_z} lik + prior + barrier_z</span>
+        <span class="keyword">while</span> z&gt;1e-13                           <span class="comment">% this is an arbitrary threshold</span>
+
+            D = F-reshape(C,Nc,T)'*P.a'-b;                     <span class="comment">% difference vector, mse=D(:)'*D(:); % ass2=(P.a'*P.a)*(C'*C) + C'*(-2*F*P.a+2*P.a'*P.b) + sum(F(:).^2) - 2*sum(F*P.b) + P.b'*P.b;</span>
+            L = u*D(:)'*D(:)+lam'*n-z*sum(log(n));  <span class="comment">% Likilihood function using C</span>
+
+            s = 1;                              <span class="comment">% step size</span>
+            d = 1;                              <span class="comment">% direction</span>
+            <span class="keyword">while</span> norm(d)&gt;5e-2 &amp;&amp; s &gt; 1e-3      <span class="comment">% converge for this z (again, these thresholds are arbitrary)</span>
+                g   = 2*u*(aa.*C-gg(:)) + lnprior - z*M'*(n.^-1);  <span class="comment">% gradient</span>
+                H2(d0) = n.^-2;
+                H   = H1 + z*(M'*H2*M);         <span class="comment">% Hessian</span>
+                d   = -H\g;                     <span class="comment">% direction to step using newton-raphson</span>
+                hit = -n./(M*d);                <span class="comment">% step within constraint boundaries</span>
+                hit(hit&lt;0)=[];                  <span class="comment">% ignore negative hits</span>
+                <span class="keyword">if</span> any(hit&lt;1)
+                    s = min(1,0.99*min(hit(hit&gt;0)));
+                <span class="keyword">else</span>
+                    s = 1;
+                <span class="keyword">end</span>
+                L1 = L+1;
+                <span class="keyword">while</span> L1&gt;=L+1e-7                <span class="comment">% make sure newton step doesn't increase objective</span>
+                    C1  = C+s*d;
+                    n   = M*C1;
+                    D   = F-reshape(C1,Nc,T)'*P.a'-b;
+                    DD  = D(:)'*D(:);
+                    L1  = u*DD+lam'*n-z*sum(log(n));
+                    s   = s/2;                  <span class="comment">% if step increases objective function, decrease step size</span>
+                <span class="keyword">end</span>
+                C = C1;                         <span class="comment">% update C</span>
+                L = L1;                         <span class="comment">% update L</span>
+            <span class="keyword">end</span>
+            z=z/10;                             <span class="comment">% reduce z (sequence of z reductions is arbitrary)</span>
+        <span class="keyword">end</span>
+
+        nn=reshape(Z,T,Nc);
+        CC=0*nn;
+        <span class="keyword">for</span> k=1:Nc
+            nn(:,k) = n(k:Nc:end);
+            CC(:,k) = C(k:Nc:end);
+        <span class="keyword">end</span>
+        n=nn;C=CC;
+    <span class="keyword">end</span>
+</pre><pre class="codeoutput">Input argument "User" is undefined.
+
+Error in ==&gt; FOOPSI_v3_02_02 at 91
+    if isfield(User,'Plot'), else User.Plot=U.Plot; end
+
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><pre class="codeoutput">WDEavRCxrA000030000</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.6<br></p>
+      </div>
+      <!--
+##### SOURCE BEGIN #####
+function [n_best P_best]=FOOPSI_v3_02_02(F,P,Meta,User)
+% this function solves the following optimization problem:
+% n_best = argmax_{n >= 0} P(n | F)
+% which is a MAP estimate for the most likely spike train given the
+% fluorescence signal.  given the model:
+%
+% C_t = gam C_{t-1} + nu + rho*n_t, n_t ~ Poisson(n_t; p_t)
+% F_t = alpha*C_t + beta + sigma*eps_t, eps_t ~ N(0,1)
+%
+% if F_t is a vector, then alpha and beta are BOTH vectors as well
+% we approx the Poisson with an Exponential. we take an
+% "interior-point" approach. each step with solved in O(T)
+% time by utilizing gaussian elimination on the tridiagonal hessian, as
+% opposed to the O(T^3) time typically required for non-negative
+% deconvolution.
+%
+% InputREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+% F:        fluorescence time series
+% P.        structure of neuron parameters
+%   alpha:  scale
+%   beta:   offset
+%   sig:    standard deviation
+%   gam:  "decay" (ie, tau=dt/(1-gam)
+%   nu:     "baseline" (ie, C_b = nu/(1-gam)
+%   rho:    jump size
+% Meta.      structure of simulation parameters
+%   dt:     time step size
+%   T:      # of time steps
+%   h:      height of ROI (assumes square ROI) (# of pixels)
+%   w:      width of ROI (assumes square ROI) (# of pixels)
+%   Np:     # of pixels in ROI
+% User.     structure of User defined parameters
+%   Plot:   whether to plot results        (if not set, default is no)
+%   MaxIter:maximum number of iterations   (typically set to 50)
+%   Nc:     # of cells within ROI
+%   Thresh: whether to threshold infered spike train before updating parameters
+
+% OutputREPLACE_WITH_DASH_DASH-
+% n:        inferred spike train
+% P:        inferred parameter structure
+%
+% Remarks on revisions:
+% 1_7:      no longer need to define Meta.Plot (ie, if it is not defined, default
+%           is to not plot, but if it is defined, one can either plot or not)
+% 1_8:      cleaned up code from 1_7, and made Identity matrix outside loop,
+%           which gets diagonal replaced inside loop (instead of calling speye in
+%           loo)
+% 1_9:      mean subtract and normalize max(F)=1 such that arbitrary scale and
+%           offset shifts do no change results.
+% 2:        removed normalize.  takes either a row or column vector.
+%           doesn't require any Meta fields other than Meta.dt. also, we estimate
+%           parameters now using FastParams code (which is the same as the one used
+%           to estimate params given the real spikes, for debugging purposes)
+% 2_1:      also estimate mu
+% 2_2:      forgot to make this one :)
+% 2_3:      fixed a bunch of bugs.  this version works to infer and learn, but
+%           fixes mu in above model.
+% 2_4:      to my knowledge, this one works, but requires fixing 'mu' and 'a' in
+%           the above model. I also normalize between 0 and 1
+% 2_41:     reparameterized for stability.  uses constrained optimization. this
+%           works assuming nu=0 and rho=1.
+% 2_42:     works for arbitrary rho
+% 2_43:     fixed bugs so that M is only T-1 x T-1. cleaned up names and stuff.
+% 2_431:    made M TxT again
+% 2_432:    added baseline (in progress)
+% 2_5:      dunno
+% 2_51:     removed rho and nu
+% 2_52:     a=alpha, b=beta, in code
+% 2_53:     threshold n s.t. n \in \{0,1\} before estimating parameters
+% 2_54:     allow for F to be a vector at each time step
+% 2_55:     fixed bugs, back to scalar F_t
+% 2_56:     back to vector case, but no param estimate
+% 2_57:     estimate spatial filter as well
+% 2_58:     multiple cells (buggy)
+% 2_59:     multiple cells, estimate {a,b}
+% 3_01_01:  cleaning up a bit
+% 3_02_01:  added input structure 'U' to control parameters that are 'User defined'
+% 3_02_02:  don't need to include U in input, default values are set
+
+%% initialize stuff
+
+% deal with user defined switches
+% default user defined variables
+U.Plot=1;
+U.MaxIter=25;
+U.Nc=1;
+U.Thresh=1;
+if nargin == 3
+    User=U;
+else
+    if isfield(User,'Plot'), else User.Plot=U.Plot; end
+    if isfield(User,'MaxIter'), else User.MaxIter=U.MaxIter; end
+    if isfield(User,'Nc'), else User.Nc=U.Nc; end
+    if isfield(User,'Thresh'), else User.Thresh=U.Thresh; end
+end
+
+% define some stuff for brevity
+Nc      = User.Nc;                               % # of cells
+T       = Meta.T;                                % # of time steps
+dt      = Meta.dt;                               % time step size
+u       = 1/(2*P.sig^2);                        % scale of variance
+
+% define some stuff for speed
+Z   = zeros(Nc*T,1);                            % zero vector
+M   = spdiags([repmat(-P.gam,T,1) repmat(Z,1,Nc-1) (1+Z)], -Nc:0,Nc*T,Nc*T);  % matrix transforming calcium into spikes, ie n=M*C
+I   = speye(Nc*T);                              % create out here cuz it must be reused
+H1  = I;                                        % initialize memory for Hessian matrix
+H2  = I;                                        % another one
+d0  = 1:Nc*T+1:(Nc*T)^2;                        % index of diagonal elements of TxT matrices
+d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            % index of diagonal elements of TxT matrices
+l   = Z(1:User.MaxIter);                        % initialize likelihood
+[n C DD]= FastFilter(F,P);                      % infer approximate MAP spike train, given initial parameter estimates
+l_max   = -inf;                                 % maximum likelihood achieved so far
+l(1)    = l_max;
+n_best  = n;                                    % best spike train
+P_best  = P;                                    % best parameter estimate
+
+for i=2:User.MaxIter
+    l(i) = GetLik_v2_01(DD,n,P,Meta);           % update likelihood
+    if l(i)>l_max                               % if this is the best one, keep n and P
+        n_best=n;
+        P_best=P;
+    end
+    if abs((l(i)-l(i-1))/l(i))<1e-5; break; end % if lik doesn't change much (relatively), stop iterating
+
+    if User.Plot == 1
+        figure(400), nrows=1+Nc;
+        for j=1:Nc, subplot(1,nrows,j),
+            imagesc(reshape(z1(P.a(:,j)),Meta.h,Meta.w)),
+            title('a')
+        end
+        subplot(1,nrows,nrows), imagesc(reshape(z1(P.b),Meta.h,Meta.w)), title('b')
+        figure(401), ncols=Nc+1;
+        for j=1:Nc
+            subplot(ncols,1,j), bar(n(:,j));
+            title(['iteration ' num2str(i)]),
+            set(gca,'XTickLabel',[])
+            axis('tight')
+        end
+        subplot(ncols,1,ncols), plot(l(2:i))
+        title(['lik ' num2str(l(i))])
+        set(gca,'XTickLabel',[])
+        drawnow
+    end
+    [n C DD]   = FastFilter(F,P);                  % infer approximate MAP spike train, given initial parameter estimates
+
+    %%% estimate spatial filter
+    % generate regressor
+    if User.Thresh==1
+        CC=0*C;
+        for j=1:Nc
+            nsort   = sort(n(:,j));
+            nthr    = nsort(round(0.95*T));
+            nn      = Z(1:T);
+            nn(n(:,j)<=nthr)=0;
+            nn(n(:,j)>nthr)=1;
+            CC(:,j) = filter(1,[1 -P.gam(j)],nn);
+        end
+        X       = [CC 1+0*Z(1:T)];
+    else
+        X       = [C 1+Z(1:T)];
+    end
+
+    % regression
+    for ii=1:Meta.Np
+        Y   = F(:,ii);
+        B   = X\Y;
+        for j=1:Nc
+            P.a(ii,j) = B(j);
+        end
+        P.b(ii) = B(end);
+    end
+
+    %     for j=1:Nc
+    %         if max(F*P.a(:,j))<0, P.a(:,j)=-P.a(:,j); end
+    %     end
+
+    %%% estimate other parameters
+    nnorm   = n./repmat(max(n),Meta.T,1);
+    P.lam   = sum(nnorm)'/(T*dt);
+    P.sig   = sqrt(DD/T);
+end
+
+P_best.l=l(2:i);
+
+    function [n C DD] = FastFilter(F,P)
+
+        % initialize n and C
+        z       = 1;                            % weight on barrier function
+        u       = 1/(2*P.sig^2);                % scale of variance
+        n       = repmat(z./P.lam,T,1);         % initialize spike train
+        C       = 0*n;                          % initialize calcium
+        for j=1:Nc
+            C(j:Nc:end) = filter(1,[1, -P.gam(j)],n(j:Nc:end));
+        end
+
+        % precompute parameters required for evaluating and maximizing
+        % likelihood
+        M(d1)   = -repmat(P.gam,T-1,1);         % matrix transforming calcium into spikes, ie n=M*C
+        lam     = dt*repmat(P.lam,T,1);         % for lik
+        lnprior = lam.*sum(M)';                 % for grad
+        aa      = repmat(diag(P.a'*P.a),T,1);   % for grad
+        H1(d0)  = 2*u*aa;                       % for Hess
+        gg      = (F*P.a+repmat(P.b'*P.a,T,1))';% for grad
+        b       = (1+Z(1:T))*P.b';              % for lik
+
+        % find C = argmin_{C_z} lik + prior + barrier_z
+        while z>1e-13                           % this is an arbitrary threshold
+
+            D = F-reshape(C,Nc,T)'*P.a'-b;                     % difference vector, mse=D(:)'*D(:); % ass2=(P.a'*P.a)*(C'*C) + C'*(-2*F*P.a+2*P.a'*P.b) + sum(F(:).^2) - 2*sum(F*P.b) + P.b'*P.b;
+            L = u*D(:)'*D(:)+lam'*n-z*sum(log(n));  % Likilihood function using C
+
+            s = 1;                              % step size
+            d = 1;                              % direction
+            while norm(d)>5e-2 && s > 1e-3      % converge for this z (again, these thresholds are arbitrary)
+                g   = 2*u*(aa.*C-gg(:)) + lnprior - z*M'*(n.^-1);  % gradient
+                H2(d0) = n.^-2;
+                H   = H1 + z*(M'*H2*M);         % Hessian
+                d   = -H\g;                     % direction to step using newton-raphson
+                hit = -n./(M*d);                % step within constraint boundaries
+                hit(hit<0)=[];                  % ignore negative hits
+                if any(hit<1)
+                    s = min(1,0.99*min(hit(hit>0)));
+                else
+                    s = 1;
+                end
+                L1 = L+1;
+                while L1>=L+1e-7                % make sure newton step doesn't increase objective
+                    C1  = C+s*d;
+                    n   = M*C1;
+                    D   = F-reshape(C1,Nc,T)'*P.a'-b;
+                    DD  = D(:)'*D(:);
+                    L1  = u*DD+lam'*n-z*sum(log(n));
+                    s   = s/2;                  % if step increases objective function, decrease step size
+                end
+                C = C1;                         % update C
+                L = L1;                         % update L
+            end
+            z=z/10;                             % reduce z (sequence of z reductions is arbitrary)
+        end
+
+        nn=reshape(Z,T,Nc);
+        CC=0*nn;
+        for k=1:Nc
+            nn(:,k) = n(k:Nc:end);
+            CC(:,k) = C(k:Nc:end);
+        end
+        n=nn;C=CC;
+    end
+
+end
+##### SOURCE END #####
+-->
+   </body>
+</html>

@@ -34,7 +34,6 @@ for i=1:Nc
     g1(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma1);
     g2(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma2);
 end
-a_b = sum(g1-g2,2);
 
 % 2) set simulation metadata
 Sim.T       = 600;                              % # of time steps
@@ -48,11 +47,11 @@ Sim.plot    = 0;                                % whether to plot filter with ea
 
 % 3) initialize params
 for i=1:Sim.Nc
-    P.a(:,i)=g1(:,i)-g2(:,i);
+    P.a(:,i)=g1(:,i)-0.5*g2(:,i);
 end
 P.b     = 0*P.a(:,1);                           % baseline is zero
 
-P.sig   = 0.005;                                 % stan dev of noise (indep for each pixel)
+P.sig   = 0.01;                                 % stan dev of noise (indep for each pixel)
 C_0     = 0;                                    % initial calcium
 tau     = round(100*rand(Sim.Nc,1))/100+0.05;   % decay time constant for each cell
 P.gam   = 1-Sim.dt./tau(1:Sim.Nc);
@@ -128,7 +127,7 @@ clear Pl
 nrows   = 3+Nc;                                  % set number of rows
 ncols   = 2;
 h       = zeros(nrows,1);
-Pl.xlims= [5 Sim.T];                            % time steps to plot
+Pl.xlims= [5 Sim.T-5];                            % time steps to plot
 Pl.nticks=5;                                    % number of ticks along x-axis
 Pl.n    = double(n); Pl.n(Pl.n==0)=NaN;         % store spike train for plotting
 Pl      = PlotParams(Pl);                       % generate a number of other parameters for plotting
@@ -137,28 +136,47 @@ Pl.colors(1,:) = [0 0 0];
 Pl.colors(2,:) = Pl.gray;
 Pl.colors(3,:) = [.5 0 0];
 Pl.Nc   = Sim.Nc;
-Pl.XTicks=[200 400 600];
+Pl.XTicks=100:100:400;
 
-% movie slices
+% % movie slices
 fnum = figure(1); clf,
-i=1; h(i) = subplot(nrows,ncols,1:4);
-v=reshape(F',width,height,Sim.T);
-vv=v(:,:,100:20:Sim.T);
-[XX,YY,ZZ] = meshgrid(x,y,1:size(vv,3));
-inc=5;
-xslice = []; yslice = []; zslice = 1:inc:inc^2; %100:200:Sim.T;
-hh = slice(XX,YY,ZZ,vv,xslice,yslice,zslice);
-rotate(hh,[1 0 1],90)
-colormap gray
-set(gca,'XTick',[-10:inc:inc^2],'XTickLabel',[100:100:Sim.T]*Sim.dt,'FontSize',Pl.fs)
-set(gca,'YTick',[],'FontSize',Pl.fs)
-set(gca,'ZTick',[],'FontSize',Pl.fs)
-set(gca,'XColor',[0 0 0],'YColor',[1 1 1],'ZColor',[1 1 1])
-axis tight
-box off
-grid off
-zlab=zlabel([{'Movie'}; {'Frames'}]);
-set(zlab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle','Color','k')
+% i=1; h(i) = subplot(nrows,ncols,1:4);
+% v=reshape(F',width,height,Sim.T);
+% vv=v(:,:,100:20:Sim.T);
+% [XX,YY,ZZ] = meshgrid(x,y,1:size(vv,3));
+% inc=5;
+% xslice = []; yslice = []; zslice = 1:inc:inc^2; %100:200:Sim.T;
+% hh = slice(XX,YY,ZZ,vv,xslice,yslice,zslice);
+% rotate(hh,[1 0 1],90)
+% colormap gray
+% set(gca,'XTick',[-10:inc:inc^2],'XTickLabel',[100:100:Sim.T]*Sim.dt,'FontSize',Pl.fs)
+% set(gca,'YTick',[],'FontSize',Pl.fs)
+% set(gca,'ZTick',[],'FontSize',Pl.fs)
+% set(gca,'XColor',[0 0 0],'YColor',[1 1 1],'ZColor',[1 1 1])
+% axis tight
+% box off
+% grid off
+% zlab=zlabel([{'Movie'}; {'Frames'}]);
+% set(zlab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle','Color','k')
+
+
+movieslices=[];
+Nframes=length(Pl.XTicks);
+% frames=round(linspace(1,Sim.T,Nframes));
+for i=1:Nframes
+    if i<Nframes
+        temp=[reshape(GG(Pl.XTicks(i),:),Sim.w,Sim.h); 0.05*ones(Sim.h,1)'];
+    else 
+        temp=reshape(GG(Pl.XTicks(i),:),Sim.w,Sim.h);
+    end
+    movieslices=[movieslices; temp];
+end
+subplot(nrows,ncols,1:4)
+imagesc(movieslices'), colormap('gray')
+set(gca,'Xtick',[6:Sim.h+1:Nframes*Sim.h],'XTickLabel',Pl.XTicks)
+set(gca,'YTick',[])
+ylab=ylabel([{'Image'}; {'Frames'}],'FontSize',Pl.fs);
+set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
 
 for q=qs
     i=q+3;
@@ -188,9 +206,12 @@ for q=qs
     set(gca,'XTick',Pl.XTicks,'XTickLabel',Pl.XTicks*Sim.dt,'FontSize',Pl.fs)
     xlabel('Time (sec)','FontSize',Pl.fs)
     %     linkaxes(h,'x')
-
-    % print fig
-    wh=[7 5];   %width and height
-    set(fnum,'PaperPosition',[0 11-wh(2) wh]);
-    print('-depsc','spatial')
 end
+
+% print fig
+wh=[7 5];   %width and height
+set(gcf,'PaperSize',wh,'PaperPosition',[0 0 wh],'Color','w');
+FigName = '../../docs/journal_paper/figs/spatial';
+print('-depsc',FigName)
+print('-dpdf',FigName)
+

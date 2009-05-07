@@ -89,7 +89,7 @@ n_best=n;                                       % best spike train
 P_best=P;                                       % best parameter estimate
 
 for i=1:Sim.MaxIter
-    l(i) = Getlik2_0(DD,n,P,Sim);               % update likelihood
+    l(i) = GetLik2_0(DD,n,P,Sim);               % update likelihood
 %     if l(i)>l_max                               % if this is the best one, keep n and P
         n_best=n;
         P_best=P;

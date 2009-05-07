@@ -43,29 +43,27 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Comparison with Wiener filter}{7}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces A simulation demonstrating that the fast filter performs at least as well as the optimal linear filter. The left panels show that in the slow firing regime, the fast filter --- which approximates the Poisson distribution governing spiking with an exponential distribution --- outperforms the Wiener filter --- which approximates the Poisson distribution with a Gaussian. The right panels show that both approximations are sufficient in the fast firing regime. Top left panel: fluorescence time series for a neuron with a slow firing rate. Middle left panel: the fast filter's inferred spike train. Bottom left panel: Wiener filter's inferred spike train. Note that (i) the Wiener filter does not impose a non-negativity constraint, and (ii) the effective SNR of this filter in this example is higher than the fast filter's. Top right panel: same as top left panel, for a neuron with a high firing rate. Middle right panel: the fast filter's inferred spike train smoothed with a Gaussian kernel for visualization purposes (black line), and the true spike train smoothed with the same Gaussian kernel (gray line). Bottom right panel: same as middle right panel, but with the Wiener filter. Parameters for left panels: same as above. Parameters for right panels: same as above, except: $\sigma =8$ a.u., $\lambda =500$ Hz.}}{8}}
 \newlabel{fig:wiener}{{3}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Spatial Filtering}{8}}
+\newlabel{eq:Obs}{{18}{8}}
 \citation{Fortin00}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Comparing the Wiener filter and our fast filter for a fast spiking neuron. In this scenario, the two filters perform approximately equally well. Note that both recover fast fluctuations in the firing rate that are smoothed out by the calcium dynamics. Conventions as in Fig. 1\hbox {}. Actual and inferred spike trains were normalized similarly, to ease comparisons. Parameters: $\gamma =0.94$, $\nu =0$, $\rho =1$, $\sigma =0.3$, $\lambda =100$ (modulated by a sinusoid), $\Delta =0.05$ msec.}}{9}}
-\newlabel{fig:FastSpiking}{{4}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Spatial Filtering}{9}}
-\newlabel{eq:Obs}{{18}{9}}
 \newlabel{eq:Par}{{20}{9}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces A simulation demonstratig that using a better spatial filter can significantly enhance the effective SNR (see Supplementary Movie 1 for the full movie associated with this simulation). Top: five movie frames, equally spaced from the entire move. Middle left: projection of the entire movie onto the optimal spatial filter, yielding a 1D fluorescence time series, with a small SNR. Bottom left: fast filter's inferred spike train using the optimal spatial filter. Middle right: projection of the entire movie onto the ``mean'' spatial filter, yielding a 1D fluorescence time series with a large SNR. Bottom right: fast filter's inferred spike train using the mean spatial filter. Parameters different from Fig 1\hbox {}: $\boldsymbol  {\alpha }$ is a mixture of two Gaussian kernels, each with the same mean, but different variances and component coefficients (see main text for details). $\boldsymbol  {\beta }=1$.}}{10}}
-\newlabel{fig:spatial}{{5}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces A simulation demonstrating that given only the fluorescence movie, the parameters may be estimated, and the spike train inferred (c.f. Supplementary Movie 2). Top left panel: true spatial filter. Middle left panel: projection of movie onto true spatial filter. Bottom left panel: inferred spike train using true parameters. Right panels: same as left except estimating parameters. $\boldsymbol  {\alpha }$ initialized with SVD. $\boldsymbol  {\beta }$ initialized with $\boldsymbol  {0}$. $\lambda $ and $\sigma $ were initialized at double their true value. $\tau $ was assumed known. Parameters same as above.}}{11}}
-\newlabel{fig:spatial_EM}{{6}{11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces A simulation demonstratig that using a better spatial filter can significantly enhance the effective SNR (see Supplementary Movie 1 for the full movie associated with this simulation). Top: five movie frames, equally spaced from the entire move. Middle left: projection of the entire movie onto the optimal spatial filter, yielding a 1D fluorescence time series, with a small SNR. Bottom left: fast filter's inferred spike train using the optimal spatial filter. Middle right: projection of the entire movie onto the ``mean'' spatial filter, yielding a 1D fluorescence time series with a large SNR. Bottom right: fast filter's inferred spike train using the mean spatial filter. Parameters different from Fig 1\hbox {}: $\boldsymbol  {\alpha }$ is a mixture of two Gaussian kernels, each with the same mean, but different variances and component coefficients (see main text for details). $\boldsymbol  {\beta }=1$.}}{10}}
+\newlabel{fig:spatial}{{4}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces A simulation demonstrating that given only the fluorescence movie, the parameters may be estimated, and the spike train inferred (c.f. Supplementary Movie 2). Top left panel: true spatial filter. Middle left panel: projection of movie onto true spatial filter. Bottom left panel: inferred spike train using true parameters. Right panels: same as left except estimating parameters. $\boldsymbol  {\alpha }$ initialized with SVD. $\boldsymbol  {\beta }$ initialized with $\boldsymbol  {0}$. $\lambda $ and $\sigma $ were initialized at double their true value. $\tau $ was assumed known. Parameters same as above.}}{11}}
+\newlabel{fig:spatial_EM}{{5}{11}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}in vivo data}{11}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Given only a fluorescence movie, recorded in vivo, we can learn the parameters necessary to correctly infer the spike trains. Top left: mean frame. Middle left: projection of movie onto mean frame. Bottom left: the fast filter's inference using the mean frame as the filter ($\lambda $ and $\sigma $ estimated as described by equations \textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces \G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `??' on page 12 undefined}\unskip \@@italiccorr )}} and \textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces \G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `??' on page 12 undefined}\unskip \@@italiccorr )}}, respectively). Right panels: same as left, but estimating $\boldsymbol  {\alpha }$ and $\boldsymbol  {\beta }$ as described in text.}}{12}}
-\newlabel{fig:spatial_data}{{7}{12}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces distribution of errors in spike inference from real data}}{13}}
-\newlabel{fig:err}{{8}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Given only a fluorescence movie, recorded in vivo, we can learn the parameters necessary to correctly infer the spike trains. Top left: mean frame. Middle left: projection of movie onto mean frame. Bottom left: the fast filter's inference using the mean frame as the filter ($\lambda $ and $\sigma $ estimated as described by equations \textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces \G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `??' on page 12 undefined}\unskip \@@italiccorr )}} and \textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces \G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `??' on page 12 undefined}\unskip \@@italiccorr )}}, respectively). Right panels: same as left, but estimating $\boldsymbol  {\alpha }$ and $\boldsymbol  {\beta }$ as described in text.}}{12}}
+\newlabel{fig:spatial_data}{{6}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces distribution of errors in spike inference from real data}}{13}}
+\newlabel{fig:err}{{7}{13}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Overlapping spatial filters}{13}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces same as spatial EM, but with 2 cells in ROI}}{14}}
-\newlabel{fig:spatial_multi}{{9}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces same as spatial EM, but with 2 cells in ROI}}{14}}
+\newlabel{fig:spatial_multi}{{8}{14}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Analyzing a whole movie}{14}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces full movie, fully automated}}{15}}
-\newlabel{fig:spatial_full}{{10}{15}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces full movie, fully automated, real data}}{16}}
-\newlabel{fig:spatial_full_data}{{11}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces full movie, fully automated}}{15}}
+\newlabel{fig:spatial_full}{{9}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces full movie, fully automated, real data}}{16}}
+\newlabel{fig:spatial_full_data}{{10}{16}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.7}Poisson observation model}{16}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.8}Time varying prior}{16}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.9}Slow dynamics}{16}}
@@ -88,10 +86,10 @@
 \bibcite{ShumwayStoffer06}{Shumway and Stoffer, 2006}
 \bibcite{Wiener49}{Wiener, 1949}
 \bibcite{YaksiFriedrich06}{Yaksi and Friedrich, 2006}
-\bibstyle{apalike}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{17}}
 \@writefile{toc}{\contentsline {paragraph}{Acknowledgments}{17}}
-\@writefile{toc}{\contentsline {section}{References}{17}}
+\bibstyle{apalike}
+\@writefile{toc}{\contentsline {section}{References}{18}}
 \@writefile{toc}{\contentsline {section}{\numberline {A}Wiener Filter}{18}}
 \newlabel{eq:w1}{{21}{18}}
 \newlabel{eq:w2}{{22}{18}}

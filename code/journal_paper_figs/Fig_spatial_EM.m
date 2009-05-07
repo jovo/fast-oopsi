@@ -173,6 +173,7 @@ for q=qs
     i=i+ncols; h(i) = subplot(nrows,ncols,i);
     Pl.col(2,:)=[0 0 0];
     Pl.gray=[.5 .5 .5];
+    hold on
     Plot_n_MAP(Pl,I{q}.n);
 
     % set xlabel stuff
@@ -183,6 +184,8 @@ for q=qs
 
     % print fig
     wh=[7 5];   %width and height
-    set(fnum,'PaperPosition',[0 11-wh(2) wh]);
-    print('-depsc','spatial_EM')
+    set(gcf,'PaperSize',wh,'PaperPosition',[0 0 wh],'Color','w');
+    FigName = '../../docs/journal_paper/figs/spatial_EM';
+    print('-depsc',FigName)
+    print('-dpdf',FigName)
 end

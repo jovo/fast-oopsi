@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=latex 2009.4.16)  28 APR 2009 12:14
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=latex 2009.4.16)  6 MAY 2009 18:24
 entering extended mode
 **main
 (./main.tex
@@ -224,59 +224,30 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 48.
  (./model.tex) (./inference.tex [1
 
-]
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 12.
-
-
-LaTeX Warning: Citation `HastieFriedman01' on page 2 undefined on input line 12
-.
-
-
-LaTeX Warning: Citation `CONV04' on page 2 undefined on input line 18.
-
-
-LaTeX Warning: Citation `CONV04' on page 2 undefined on input line 18.
-
-
-LaTeX Warning: Citation `CONV04' on page 2 undefined on input line 18.
-
-[2]) (./learning.tex
-
-LaTeX Warning: Citation `Rabiner89' on page 3 undefined on input line 9.
-
-[3]
+] [2]) (./learning.tex [3]
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 41.
- (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+
+(/opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-)
-
-LaTeX Warning: Citation `YaksiFriedrich06' on page 4 undefined on input line 76
-.
-
-) [4] (./main_result.tex
-
-LaTeX Warning: Citation `Wiener49' on page 5 undefined on input line 1.
-
-
-LaTeX Warning: Citation `ShumwayStoffer06' on page 5 undefined on input line 1.
-
-
-[5]
+)) [4]
+(./main_result.tex [5]
 File: ../figs/schem.eps Graphic file (type eps)
- <../figs/schem.eps> [6]) (./wiener.tex [7]
+ <../figs/schem.eps> [6]) (./wiener.tex
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
+
+
+LaTeX Warning: Reference `fig:FastSpiking' on page 7 undefined on input line 1.
+
+
+[7]
 File: ../figs/wiener.eps Graphic file (type eps)
- <../figs/wiener.eps> [8])
-(./spatial.tex
-
-LaTeX Warning: Citation `Fortin00' on page 9 undefined on input line 26.
-
-[9]
+ <../figs/wiener.eps>) (./spatial.tex [8] [9]
 File: ../figs/spatial.eps Graphic file (type eps)
  <../figs/spatial.eps> [10]
 File: ../figs/spatial_EM.eps Graphic file (type eps)
- <../figs/spatial_EM.eps>) (./in_vivo.tex
-[11]
+
+<../figs/spatial_EM.eps>) (./in_vivo.tex [11]
 File: ../figs/spatial_data.eps Graphic file (type eps)
  <../figs/spatial_data.eps>
 
@@ -307,37 +278,18 @@ LaTeX Warning: Reference `fig:real' on page 17 undefined on input line 1.
 
 LaTeX Warning: Reference `fig:real' on page 17 undefined on input line 1.
 
-
-LaTeX Warning: Citation `IkegayaYuste04' on page 17 undefined on input line 3.
-
-
-LaTeX Warning: Citation `NiellSmith05' on page 17 undefined on input line 3.
-
-
-LaTeX Warning: Citation `OhkiReid05' on page 17 undefined on input line 3.
-
-
-LaTeX Warning: Citation `YaksiFriedrich06' on page 17 undefined on input line 3
-.
-
-
-LaTeX Warning: Citation `SatoSvoboda07' on page 17 undefined on input line 3.
-
-) (./main.bbl) (./appendix.tex [17]) [18] (./main.aux)
+) (./main.bbl [17]) (./appendix.tex) [18] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
- 2445 strings out of 94501
- 24700 string characters out of 1155436
- 86939 words of memory out of 1000000
- 5527 multiletter control sequences out of 10000+50000
+ 2447 strings out of 94501
+ 24706 string characters out of 1155436
+ 86959 words of memory out of 1000000
+ 5529 multiletter control sequences out of 10000+50000
  21707 words of font info for 70 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 29i,17n,43p,1663b,252s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 29i,17n,43p,1663b,286s stack positions out of 1500i,500n,5000p,200000b,5000s
 
-Output written on main.dvi (18 pages, 52112 bytes).
+Output written on main.dvi (18 pages, 51876 bytes).
