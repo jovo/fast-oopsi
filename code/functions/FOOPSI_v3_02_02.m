@@ -15,14 +15,13 @@ function [n_best P_best]=FOOPSI_v3_02_02(F,P,Meta,User)
 % deconvolution.
 %
 % Input----
-% F:        fluorescence time series
+% F:        fluorescence time series (can be a vector (1 x T) or a matrix (Np x T)
 % P.        structure of neuron parameters
 %   alpha:  scale
 %   beta:   offset
 %   sig:    standard deviation
-%   gam:  "decay" (ie, tau=dt/(1-gam)
-%   nu:     "baseline" (ie, C_b = nu/(1-gam)
-%   rho:    jump size
+%   gam:    decayish (ie, tau=dt/(1-gam)
+%   lam:    firing rate-ish
 % Meta.      structure of simulation parameters
 %   dt:     time step size
 %   T:      # of time steps
@@ -112,7 +111,8 @@ d0  = 1:Nc*T+1:(Nc*T)^2;                        % index of diagonal elements of 
 d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            % index of diagonal elements of TxT matrices
 l   = Z(1:User.MaxIter);                        % initialize likelihood
 [n C DD]= FastFilter(F,P);                      % infer approximate MAP spike train, given initial parameter estimates
-l(1) = GetLik_v2_01(DD,n,P,Meta);               % update likelihood
+% l(1) = GetLik_v2_01(DD,n,P,Meta);               % update likelihood
+l(1)    = -inf;
 l_max   = l(1);                                 % maximum likelihood achieved so far
 n_best  = n;                                    % best spike train
 P_best  = P;                                    % best parameter estimate
@@ -164,7 +164,7 @@ for i=2:User.MaxIter
         n_best=n;
         P_best=P;
     end
-    if abs((l(i)-l(i-1))/l(i))<1e-5; break; end % if lik doesn't change much (relatively), stop iterating
+    if abs((l(i)-l(i-1))/l(i))<1e-5 || (l(i)-l(i-1))/l(i)<-inf; break; end % if lik doesn't change much (relatively), stop iterating
 
     % plot results from this iteration
     if User.Plot == 1
@@ -190,7 +190,7 @@ for i=2:User.MaxIter
 
 end
 
-P_best.l=l(2:i);                                % keep record of likelihoods for record
+P_best.l=l(1:i);                                % keep record of likelihoods for record
 
     function [n C DD] = FastFilter(F,P)
 
