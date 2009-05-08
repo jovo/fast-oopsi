@@ -41,7 +41,7 @@ else
     for i=1:Nc
         P.a(:,i)=g1(:,i)-g2(:,i);
     end
-    P.b     = 0.1*P.a(:,1);                     % baseline is a scaled down version of spatial filter
+    P.b     = 0.1*sum(P.a,2);                   % baseline is a scaled down version of the sum of the spatial filters
 
     P.sig   = 0.01;                             % stan dev of noise (indep for each pixel)
     C_0     = 0;                                % initial calcium
@@ -82,6 +82,14 @@ PP.sig  = 0.5*P.sig;
 [I.n I.P] = FOOPSI_v3_02_02(F,PP,Meta,User);
 
 %% plot results
+gray=[0.75 0.75 0.75];
+fs=12;
+
+% plot mean image frame
+figure(3), 
+imagesc(reshape(mean(F),Meta.h,Meta.w))
+set(gca,'XTickLabel',[],'YTickLabel',[])
+
 
 % align inferred cell with actual one
 j_inf=0*n(1:User.Nc);
@@ -93,22 +101,49 @@ for j=1:User.Nc
     [foo j_inf(j)]=max(cc);
 end
 
-% plot spatial filter
+% plot spatial filters and background
 figure(1), clf, ncols=2; nrows=1+User.Nc;                
 for j=1:Nc, 
-    subplot(nrows,ncols,ncols*(j-1)+1), imagesc(reshape((P.a(:,j)),Meta.h,Meta.w)), title('true spatial filter')
-    subplot(nrows,ncols,ncols*(j-1)+2), imagesc(reshape((I.P.a(:,j_inf(j))),Meta.h,Meta.w)), title('estimated spatial filter')
+    subplot(nrows,ncols,ncols*(j-1)+1), 
+    imagesc(reshape((P.a(:,j)),Meta.h,Meta.w)), 
+    set(gca,'XTickLabel',[],'YTickLabel',[])
+    if j==1, 
+        title('Truth','FontSize',fs), 
+    end
+    ylab=ylabel(['Spatial Filter ' num2str(j)],'FontSize',fs);
+    
+    subplot(nrows,ncols,ncols*(j-1)+2), 
+    imagesc(reshape((I.P.a(:,j_inf(j))),Meta.h,Meta.w)), 
+    set(gca,'XTickLabel',[],'YTickLabel',[])
+    if j==1, title('Estimated','FontSize',fs), end
 end
-subplot(nrows,ncols,nrows*ncols-1), imagesc(reshape(P.b,Meta.h,Meta.w)), title('true background')
-subplot(nrows,ncols,nrows*ncols), imagesc(reshape(I.P.b,Meta.h,Meta.w)), title('estimated background')
+subplot(nrows,ncols,nrows*ncols-1), 
+imagesc(reshape(P.b,Meta.h,Meta.w)), 
+ylab=ylabel(['Background'],'FontSize',fs);
+set(gca,'XTickLabel',[],'YTickLabel',[])
+
+subplot(nrows,ncols,nrows*ncols), 
+imagesc(reshape(I.P.b,Meta.h,Meta.w)), 
+set(gca,'XTickLabel',[],'YTickLabel',[])
  
 % plot inferred spike trains
 figure(2), clf,
 nnan=n; nnan(nnan==0)=NaN;
+dt_vec=Meta.dt:Meta.dt:Meta.T*Meta.dt;
+NTicks=3;
+XTicks=linspace(Meta.T/NTicks,Meta.T,NTicks);
 for j=1:User.Nc
     subplot(User.Nc,1,j), hold on
-    stem(nnan(:,j),'LineStyle','none','Marker','v')
+    stem(nnan(:,j),'LineStyle','none','Marker','v','MarkerEdgeColor',gray,'MarkerFaceColor',gray)
     bar(I.n(:,j_inf(j))/max(I.n(:,j_inf(j))))
     axis('tight')
+    set(gca,'YTick',[0 1],'YTickLabel',[])
+    ylab=ylabel(['Neuron ' num2str(j)],'FontSize',fs);
+    set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
+    if j==1, 
+        set(gca,'XTick',XTicks,'XTickLabel',[])
+    else
+        set(gca,'XTick',XTicks,'XTickLabel',XTicks*Meta.dt)
+        xlabel('Time (sec)','FontSize',fs)
+    end
 end
-title('true and inferred spike train')

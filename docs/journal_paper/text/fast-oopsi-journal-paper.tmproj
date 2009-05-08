@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>main.tex</string>
+	<string>full_movie.tex</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -13,65 +13,87 @@
 					<key>filename</key>
 					<string>main.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-06T18:42:55Z</date>
-					<key>selected</key>
-					<true/>
+					<date>2009-05-08T07:44:32Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>abstract.tex</string>
+					<key>lastUsed</key>
+					<date>2009-05-06T22:22:27Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>intro.tex</string>
+					<key>lastUsed</key>
+					<date>2009-05-06T22:22:28Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>model.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-06T18:42:55Z</date>
+					<date>2009-05-06T22:22:47Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>inference.tex</string>
+					<key>lastUsed</key>
+					<date>2009-05-06T22:22:56Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>learning.tex</string>
+					<key>lastUsed</key>
+					<date>2009-05-06T22:22:33Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>main_result.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-06T18:42:17Z</date>
+					<date>2009-05-08T07:44:52Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>wiener.tex</string>
+					<key>lastUsed</key>
+					<date>2009-05-08T07:45:01Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>spatial.tex</string>
+					<key>lastUsed</key>
+					<date>2009-05-08T07:44:20Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>in_vivo.tex</string>
+					<key>lastUsed</key>
+					<date>2009-05-08T07:45:14Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>overlapping.tex</string>
+					<key>lastUsed</key>
+					<date>2009-05-08T07:45:22Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>full_movie.tex</string>
+					<key>lastUsed</key>
+					<date>2009-05-08T07:45:22Z</date>
+					<key>selected</key>
+					<true/>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>discussion.tex</string>
+					<key>lastUsed</key>
+					<date>2009-05-06T22:22:44Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>appendix.tex</string>
+					<key>lastUsed</key>
+					<date>2009-05-06T22:22:46Z</date>
 				</dict>
 			</array>
 			<key>expanded</key>
@@ -84,33 +106,177 @@
 	<integer>200</integer>
 	<key>metaData</key>
 	<dict>
-		<key>main.tex</key>
+		<key>abstract.tex</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>41</integer>
+				<integer>0</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>59</integer>
+			<integer>0</integer>
+		</dict>
+		<key>appendix.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>discussion.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>full_movie.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>11</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>in_vivo.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>6</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>inference.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>intro.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>learning.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>main.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>9</integer>
+				<key>line</key>
+				<integer>136</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>117</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>1</integer>
+				<key>line</key>
+				<integer>136</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>9</integer>
+				<key>line</key>
+				<integer>136</integer>
+			</dict>
 		</dict>
 		<key>main_result.tex</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>438</integer>
+				<integer>8</integer>
 				<key>line</key>
-				<integer>4</integer>
+				<integer>7</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
-			<integer>192</integer>
+			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>7</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>8</integer>
+				<key>line</key>
+				<integer>7</integer>
+			</dict>
 		</dict>
 		<key>model.tex</key>
 		<dict>
@@ -126,12 +292,65 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
+		<key>overlapping.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>spatial.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>32</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>192</integer>
+			<key>firstVisibleLine</key>
+			<integer>17</integer>
+		</dict>
+		<key>wiener.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>3</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>197</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>model.tex</string>
 		<string>main.tex</string>
+		<string>abstract.tex</string>
+		<string>intro.tex</string>
+		<string>model.tex</string>
+		<string>inference.tex</string>
+		<string>learning.tex</string>
 		<string>main_result.tex</string>
+		<string>wiener.tex</string>
+		<string>spatial.tex</string>
+		<string>in_vivo.tex</string>
+		<string>overlapping.tex</string>
+		<string>full_movie.tex</string>
+		<string>discussion.tex</string>
+		<string>appendix.tex</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>

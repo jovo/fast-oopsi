@@ -164,7 +164,7 @@ for i=2:User.MaxIter
         n_best=n;
         P_best=P;
     end
-    if abs((l(i)-l(i-1))/l(i))<1e-5 || (l(i)-l(i-1))/l(i)<-inf; break; end % if lik doesn't change much (relatively), stop iterating
+    if abs((l(i)-l(i-1))/l(i))<1e-5; break; end % if lik doesn't change much (relatively), stop iterating
 
     % plot results from this iteration
     if User.Plot == 1
