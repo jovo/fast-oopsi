@@ -131,6 +131,7 @@ Pl.xlims= [5 Sim.T-5];                            % time steps to plot
 Pl.nticks=5;                                    % number of ticks along x-axis
 Pl.n    = double(n); Pl.n(Pl.n==0)=NaN;         % store spike train for plotting
 Pl      = PlotParams(Pl);                       % generate a number of other parameters for plotting
+Pl.fs   = 13;
 Pl.vs   = 2;
 Pl.colors(1,:) = [0 0 0];
 Pl.colors(2,:) = Pl.gray;
@@ -164,29 +165,36 @@ movieslices=[];
 Nframes=length(Pl.XTicks);
 % frames=round(linspace(1,Sim.T,Nframes));
 for i=1:Nframes
-    if i<Nframes
-        temp=[reshape(GG(Pl.XTicks(i),:),Sim.w,Sim.h); 0.05*ones(Sim.h,1)'];
-    else 
-        temp=reshape(GG(Pl.XTicks(i),:),Sim.w,Sim.h);
-    end
+    %     if i<Nframes
+    %         temp=[reshape(GG(Pl.XTicks(i),:),Sim.w,Sim.h); 0.05*ones(Sim.h,1)'];
+    %     else
+    temp=reshape(GG(Pl.XTicks(i),:),Sim.w,Sim.h);
+    %     end
     movieslices=[movieslices; temp];
 end
-subplot(nrows,ncols,1:4)
-imagesc(movieslices'), colormap('gray')
-set(gca,'Xtick',[6:Sim.h+1:Nframes*Sim.h],'XTickLabel',Pl.XTicks)
-set(gca,'YTick',[])
-ylab=ylabel([{'Image'}; {'Frames'}],'FontSize',Pl.fs);
-set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
+
+
+for i=1:Nframes
+    subplot('Position',[0.132+(i-1)*0.21 0.6 .2 .3])
+    imagesc(movieslices([1:10]+(i-1)*10,:)'), colormap('gray')
+    set(gca,'Xtick',[6:Sim.h+1:Nframes*Sim.h],'XTickLabel',[num2str(Pl.XTicks(i)*Sim.dt) ' sec'],'FontSize',Pl.fs)
+    set(gca,'YTick',[])
+    if i==1
+        ylab=ylabel([{'Image'}; {'Frames'}],'FontSize',Pl.fs);
+        set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
+    end
+end
+
 
 for q=qs
     i=q+3;
     % plot fluorescence data
     i=i+1; h(i) = subplot(nrows,ncols,i);
     if q==1,
-        title([{'Optimal Projection'}],'FontSize',14);
+        title([{'Optimal Projection'}],'FontSize',Pl.fs+2);
         Pl.label = 'Fluorescence';
     else
-        title([{'Mean Projection'}],'FontSize',14)
+        title([{'Mean Projection'}],'FontSize',Pl.fs+2)
         Pl.label = [];
     end
     Pl.color = 'k';
@@ -210,8 +218,6 @@ end
 
 % print fig
 wh=[7 5];   %width and height
-set(gcf,'PaperSize',wh,'PaperPosition',[0 0 wh],'Color','w');
-FigName = '../../docs/journal_paper/figs/spatial';
-print('-depsc',FigName)
-print('-dpdf',FigName)
-
+DirName = '../../docs/journal_paper/figs/';
+FileName = 'spatial';
+PrintFig(wh,DirName,FileName);

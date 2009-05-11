@@ -1,4 +1,4 @@
-function [n_best P_best]=FOOPSI_v3_02_02(F,P,Meta,User)
+function [n_best P_best]=FOOPSI_v3_03_01(F,P,Meta,User)
 % this function solves the following optimization problem:
 % (*) n_best = argmax_{n >= 0} P(n | F)
 % which is a MAP estimate for the most likely spike train given the
@@ -33,6 +33,7 @@ function [n_best P_best]=FOOPSI_v3_02_02(F,P,Meta,User)
 %   MaxIter:maximum number of iterations   (typically set to 50)
 %   Nc:     # of cells within ROI
 %   Thresh: whether to threshold infered spike train before updating parameters
+%   n:      if true spike train is known, and we are plotting, plot it
 
 % Output---
 % n:        inferred spike train
@@ -76,6 +77,9 @@ function [n_best P_best]=FOOPSI_v3_02_02(F,P,Meta,User)
 % 3_02_01:  added input structure 'U' to control parameters that are 'User defined'
 % 3_02_02:  don't need to include U in input, default values are set, and
 %           rearranged some code, added some comments
+% 3_02_03:  no more GetLik function, just inline, also plot true n if
+%           available from User structure, and plot max lik
+% 3_03_01:  made background a scalar
 
 %% initialize stuff
 
@@ -111,14 +115,13 @@ d0  = 1:Nc*T+1:(Nc*T)^2;                        % index of diagonal elements of 
 d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            % index of diagonal elements of TxT matrices
 l   = Z(1:User.MaxIter);                        % initialize likelihood
 [n C DD]= FastFilter(F,P);                      % infer approximate MAP spike train, given initial parameter estimates
-% l(1) = GetLik_v2_01(DD,n,P,Meta);               % update likelihood
 l(1)    = -inf;
 l_max   = l(1);                                 % maximum likelihood achieved so far
 n_best  = n;                                    % best spike train
 P_best  = P;                                    % best parameter estimate
 
 for i=2:User.MaxIter
-
+    
     % update inferred spike train
     [n C DD]   = FastFilter(F,P);
 
@@ -152,15 +155,22 @@ for i=2:User.MaxIter
     P.sig   = sqrt(DD/T);
     nnorm   = n./repmat(max(n),Meta.T,1);
     P.lam   = sum(nnorm)'/(T*dt);
-
+        
     % update likelihood and keep results if they improved
-    l(i) = GetLik_v2_01(DD,n,P,Meta);           % update likelihood
-    if l(i)>l_max                               % if this is the best one, keep n and P
-        n_best=n;
-        P_best=P;
-    end
-    if abs((l(i)-l(i-1))/l(i))<1e-5; break; end % if lik doesn't change much (relatively), stop iterating
+    lik     = -Meta.T*Meta.Np*log(2*pi*P.sig^2)/2 -1/(2*P.sig^2)*DD;
+    prior   = Meta.T*sum(P.lam*Meta.dt) - Meta.dt*P.lam'*sum(n)';
+    l(i)    = lik + prior;
 
+     % if this is the best one, keep n and P
+    if l(i)>l_max                              
+        n_best  = n;
+        P_best  = P;
+        l_max   = l(i);
+    end
+
+    % if lik doesn't change much (relatively), stop iterating
+    if abs((l(i)-l(i-1))/l(i))<1e-5; break; end 
+    
     % plot results from this iteration
     if User.Plot == 1
         figure(400), nrows=1+Nc;                % plot spatial filter
@@ -185,6 +195,9 @@ for i=2:User.MaxIter
         set(gca,'XTickLabel',[])
         drawnow
     end
+    
+    % play sound to indicate iteration is over
+    sound(3*sin(linspace(0,90*pi,2000)))        
 
 end
 
@@ -193,10 +206,10 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
     function [n C DD] = FastFilter(F,P)
 
         % initialize n and C
-        z       = 1;                            % weight on barrier function
-        e       = 1/(2*P.sig^2);                % scale of variance
-        n       = repmat(z./P.lam,T,1);         % initialize spike train
-        C       = 0*n;                          % initialize calcium
+        z = 1;                                  % weight on barrier function
+        e = 1/(2*P.sig^2);                      % scale of variance
+        n = repmat(z./P.lam,T,1);               % initialize spike train
+        C = 0*n;                                % initialize calcium
         for j=1:Nc
             C(j:Nc:end) = filter(1,[1, -P.gam(j)],n(j:Nc:end));
         end
@@ -207,7 +220,7 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
         lnprior = lam.*sum(M)';                 % for grad
         aa      = repmat(diag(P.a'*P.a),T,1);   % for grad
         H1(d0)  = 2*e*aa;                       % for Hess
-        gg      = (F*P.a+repmat(P.b'*P.a,T,1))';% for grad
+        gg      = ((F+P.b)*P.a)';% for grad
         b       = (1+Z(1:T))*P.b';              % for lik
 
         % find C = argmin_{C_z} lik + prior + barrier_z

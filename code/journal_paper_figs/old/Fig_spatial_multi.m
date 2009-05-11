@@ -187,5 +187,5 @@ for j=1:Nc
     % print fig
     wh=[7 5];   %width and height
     set(fnum,'PaperPosition',[0 11-wh(2) wh]);
-    print('-depsc','spatial_multi')
+    print('-depsc','spatial_multi0')
 end

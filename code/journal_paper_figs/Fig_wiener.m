@@ -116,7 +116,7 @@ Pl.xlims= [5 Sim.T-101];                            % time steps to plot
 Pl.nticks=5;                                    % number of ticks along x-axis
 Pl.n    = double(n); Pl.n(Pl.n==0)=NaN;         % store spike train for plotting
 Pl      = PlotParams(Pl);                       % generate a number of other parameters for plotting
-Pl.vs   = 2;
+Pl.vs   = 4;
 Pl.colors(1,:) = [0 0 0];
 Pl.colors(2,:) = Pl.gray;
 Pl.colors(3,:) = [.5 0 0];
@@ -210,8 +210,10 @@ for q=qs
     xlabel('Time (sec)','FontSize',Pl.fs)
     %     linkaxes(h,'x')
 
-    % print fig
-    wh=[7 5];   %width and height
-    set(fnum,'PaperPosition',[0 11-wh(2) wh]);
-    print('-depsc','wiener')
 end
+
+% print fig
+wh=[7 5];   %width and height
+DirName = '../../docs/journal_paper/figs/';
+FileName = 'wiener';
+PrintFig(wh,DirName,FileName);

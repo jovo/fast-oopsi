@@ -56,9 +56,9 @@ P.b     = 0;                           % baseline is zero
 
 P.sig   = abs(P.a)/4;                                 % stan dev of noise (indep for each pixel)
 C_0     = 0;                                    % initial calcium
-tau     = round(100*rand(Sim.Nc,1))/100+0.05;   % decay time constant for each cell
+tau     = 0.1;   % decay time constant for each cell
 P.gam   = 1-Sim.dt./tau(1:Sim.Nc);
-P.lam   = 10;%round(10*rand(Sim.Nc,1))+5;           % rate-ish, ie, lam*dt=# spikes per second
+P.lam   = 5;%round(10*rand(Sim.Nc,1))+5;           % rate-ish, ie, lam*dt=# spikes per second
 
 % 3) simulate data
 n=zeros(Sim.T,Sim.Nc);
@@ -139,7 +139,7 @@ Pl.xlims= [5 Sim.T];                            % time steps to plot
 Pl.nticks=5;                                    % number of ticks along x-axis
 Pl.n    = double(n); Pl.n(Pl.n==0)=NaN;         % store spike train for plotting
 Pl      = PlotParams(Pl);                       % generate a number of other parameters for plotting
-Pl.vs   = 2;
+Pl.vs   = 4;
 Pl.colors(1,:) = [0 0 0];
 Pl.colors(2,:) = Pl.gray;
 Pl.colors(3,:) = [.5 0 0];
@@ -171,6 +171,7 @@ for q=qs
     i=i+1; h(i) = subplot(nrows,1,i);
     Pl.col(2,:)=[0 0 0];
     Pl.gray=[.5 .5 .5];
+    hold on
     Plot_n_MAP(Pl,I{q}.n);
 
     % set xlabel stuff
@@ -178,9 +179,10 @@ for q=qs
     set(gca,'XTick',Pl.XTicks,'XTickLabel',Pl.XTicks*Sim.dt,'FontSize',Pl.fs)
     xlabel('Time (sec)','FontSize',Pl.fs)
     linkaxes(h,'x')
-
-    % print fig
-    wh=[7 5];   %width and height
-    set(fnum,'PaperPosition',[0 11-wh(2) wh]);
-    print('-depsc','schem')
 end
+
+% print fig
+wh=[7 5];   %width and height
+DirName = '../../docs/journal_paper/figs/';
+FileName = 'schem';
+PrintFig(wh,DirName,FileName);
