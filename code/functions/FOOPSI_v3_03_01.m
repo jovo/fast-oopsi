@@ -134,11 +134,11 @@ for i=2:User.MaxIter
             nn      = Z(1:T);
             nn(n(:,j)<=nthr)=0;
             nn(n(:,j)>nthr)=1;
-            CC(:,j) = filter(1,[1 -P.gam(j)],nn);
+            CC(:,j) = filter(1,[1 -P.gam(j)],nn) + (1-P.gam(j))*P.b(j);
         end
-        X       = [CC 1+0*Z(1:T)];
+        X       = CC; %[CC 1+0*Z(1:T)];
     else
-        X       = [C 1+Z(1:T)];
+        X       = C; %[C 1+Z(1:T)];
     end
 
     % update spatial filter
@@ -148,7 +148,7 @@ for i=2:User.MaxIter
         for j=1:Nc
             P.a(ii,j) = B(j);
         end
-        P.b(ii) = B(end);
+%         P.b(ii) = B(end);
     end
 
     % estimate other parameters
@@ -169,20 +169,22 @@ for i=2:User.MaxIter
     end
 
     % if lik doesn't change much (relatively), stop iterating
-    if abs((l(i)-l(i-1))/l(i))<1e-5; break; end 
+    if abs((l(i)-l(i-1))/l(i))<1e-5 || l(i-1)-l(i)>1e5; break; end 
     
     % plot results from this iteration
     if User.Plot == 1
-        figure(400), nrows=1+Nc;                % plot spatial filter
+        figure(400), nrows=Nc;                % plot spatial filter
         for j=1:Nc, subplot(1,nrows,j),
             imagesc(reshape(z1(P.a(:,j)),Meta.h,Meta.w)),
             title('a')
         end
-        subplot(1,nrows,nrows), imagesc(reshape(z1(P.b),Meta.h,Meta.w)), title('b') % plot background
+%         subplot(1,nrows,nrows), imagesc(reshape(z1(P.b),Meta.h,Meta.w)), title('b') % plot background
 
         figure(401), ncols=Nc+1;
         for j=1:Nc                              % plot inferred spike train
-            subplot(ncols,1,j), bar(n(:,j));
+            subplot(ncols,1,j), 
+            bar(n(:,j));
+            
             if isfield(User,'n'), hold on,
                 stem(User.n(:,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
             end
@@ -211,7 +213,7 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
         n = repmat(z./P.lam,T,1);               % initialize spike train
         C = 0*n;                                % initialize calcium
         for j=1:Nc
-            C(j:Nc:end) = filter(1,[1, -P.gam(j)],n(j:Nc:end));
+            C(j:Nc:end) = filter(1,[1, -P.gam(j)],n(j:Nc:end)) + (1-P.gam(j))*P.b(j);
         end
 
         % precompute parameters required for evaluating and maximizing likelihood
@@ -220,13 +222,13 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
         lnprior = lam.*sum(M)';                 % for grad
         aa      = repmat(diag(P.a'*P.a),T,1);   % for grad
         H1(d0)  = 2*e*aa;                       % for Hess
-        gg      = ((F+P.b)*P.a)';% for grad
-        b       = (1+Z(1:T))*P.b';              % for lik
+        gg      = (F*P.a)';% for grad
+        b       = repmat((1-P.gam).*P.b,Meta.T,1);              % for lik
 
         % find C = argmin_{C_z} lik + prior + barrier_z
         while z>1e-13                           % this is an arbitrary threshold
 
-            D = F-reshape(C,Nc,T)'*P.a'-b;      % difference vector to be used in likelihood computation
+            D = F-reshape(C,Nc,T)'*P.a';      % difference vector to be used in likelihood computation
             L = e*D(:)'*D(:)+lam'*n-z*sum(log(n));% Likilihood function using C
 
             s = 1;                              % step size
@@ -246,8 +248,8 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
                 L1 = L+1;
                 while L1>=L+1e-7                % make sure newton step doesn't increase objective
                     C1  = C+s*d;
-                    n   = M*C1;
-                    D   = F-reshape(C1,Nc,T)'*P.a'-b;
+                    n   = M*C1-b;
+                    D   = F-reshape(C1,Nc,T)'*P.a';
                     DD  = D(:)'*D(:);
                     L1  = e*DD+lam'*n-z*sum(log(n));
                     s   = s/2;                  % if step increases objective function, decrease step size
