@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>full_movie.tex</string>
+	<string>overlapping.tex</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -13,7 +13,7 @@
 					<key>filename</key>
 					<string>main.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-08T07:44:32Z</date>
+					<date>2009-05-11T19:43:08Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
@@ -49,39 +49,39 @@
 					<key>filename</key>
 					<string>main_result.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-08T07:44:52Z</date>
+					<date>2009-05-11T20:01:25Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>wiener.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-08T07:45:01Z</date>
+					<date>2009-05-11T20:01:32Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>spatial.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-08T07:44:20Z</date>
+					<date>2009-05-11T20:07:08Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>in_vivo.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-08T07:45:14Z</date>
+					<date>2009-05-11T20:08:09Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>overlapping.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-08T07:45:22Z</date>
+					<date>2009-05-11T20:08:09Z</date>
+					<key>selected</key>
+					<true/>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>full_movie.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-08T07:45:22Z</date>
-					<key>selected</key>
-					<true/>
+					<date>2009-05-08T07:45:45Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
@@ -169,7 +169,7 @@
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>6</integer>
+				<integer>12</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -223,60 +223,28 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>9</integer>
+				<integer>24</integer>
 				<key>line</key>
-				<integer>136</integer>
+				<integer>8</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>117</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>1</integer>
-				<key>line</key>
-				<integer>136</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>9</integer>
-				<key>line</key>
-				<integer>136</integer>
-			</dict>
+			<integer>0</integer>
 		</dict>
 		<key>main_result.tex</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>8</integer>
+				<integer>597</integer>
 				<key>line</key>
-				<integer>7</integer>
+				<integer>4</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
-			<integer>0</integer>
+			<integer>192</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>7</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>8</integer>
-				<key>line</key>
-				<integer>7</integer>
-			</dict>
 		</dict>
 		<key>model.tex</key>
 		<dict>
@@ -297,9 +265,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>62</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>6</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -311,12 +279,12 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>585</integer>
 				<key>line</key>
-				<integer>32</integer>
+				<integer>30</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
-			<integer>192</integer>
+			<integer>485</integer>
 			<key>firstVisibleLine</key>
 			<integer>17</integer>
 		</dict>
@@ -325,9 +293,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>1318</integer>
 				<key>line</key>
-				<integer>3</integer>
+				<integer>5</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>197</integer>
@@ -355,6 +323,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{648, 132}, {766, 746}}</string>
+	<string>{{621, 71}, {766, 746}}</string>
 </dict>
 </plist>
