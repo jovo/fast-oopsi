@@ -3,10 +3,10 @@ We assume a simple discrete-time state-space model relating spikes, $n_t$, basel
 %. (1) spikes follow Poisson statistics with rate $\lam \Del$, (2) $C_t$ decays exponentially with decay $\gamma$ to baseline $\nu$, but jumps by $\rho$ after each spike, and (3) fluorescent observations are linear functions of $C_t$ with additive Gaussian noise with variance $\sig^2$.  Together, these assumptions imply the following model:
 
 \begin{align}
-F_t &= \alpha C_t + \beta +  \varepsilon_t, \qquad &\varepsilon_t \sim \mathcal{N}(0,\sig) \label{eq:obs} \\
+\bF_t &= \balpha (C_t + \beta) +  \ve{\varepsilon}_t, \qquad &\ve{\varepsilon}_t \sim \mathcal{N}(\ve{0},\sig^2 \bI) \label{eq:obs} \\
 C_t  &= \gamma  C_{t-1} + n_t,  \qquad &n_t \sim \text{Poisson}(n_t; \lam \Del) \label{eq:trans}  
 \end{align}
 
-\noindent where $\alpha$ and $\beta$ set the fluorescence baseline and offset respectively, $\sig$ indicates the variance of the noise, and $\gamma$ sets the decay rate. %Note that   . To enforce identifiability, we will let $\alpha=1$ and $\beta=0$, without loss of generality, as explained below.
+\noindent where $\balpha$ and $\beta$ set the fluorescence spatial filter and offset respectively, $\sig^2$ indicates the variance of the noise, and $\gamma$ sets the decay rate. %Note that   . To enforce identifiability, we will let $\balpha=1$ and $\beta=0$, without loss of generality, as explained below.
 
 

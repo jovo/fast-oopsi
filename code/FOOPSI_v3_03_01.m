@@ -114,7 +114,7 @@ H2  = I;                                        % another one
 d0  = 1:Nc*T+1:(Nc*T)^2;                        % index of diagonal elements of TxT matrices
 d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            % index of diagonal elements of TxT matrices
 l   = Z(1:User.MaxIter);                        % initialize likelihood
-[n C DD]= FastFilter(F,P);                      % infer approximate MAP spike train, given initial parameter estimates
+n   = FastFilter(F,P);                      % infer approximate MAP spike train, given initial parameter estimates
 l(1)    = -inf;
 l_max   = l(1);                                 % maximum likelihood achieved so far
 n_best  = n;                                    % best spike train
@@ -125,6 +125,10 @@ for i=2:User.MaxIter
     % update inferred spike train
     [n C DD]   = FastFilter(F,P);
 
+    if min(n(:))<0, 
+        disp('some shit is fucked'), keyboard
+    end
+    
     % generate regressor for spatial filter
     if User.Thresh==1
         CC=0*C;
@@ -136,19 +140,17 @@ for i=2:User.MaxIter
             nn(n(:,j)>nthr)=1;
             CC(:,j) = filter(1,[1 -P.gam(j)],nn) + (1-P.gam(j))*P.b(j);
         end
-        X       = CC; %[CC 1+0*Z(1:T)];
     else
-        X       = C; %[C 1+Z(1:T)];
+        CC      = C; 
     end
 
     % update spatial filter
     for ii=1:Meta.Np
         Y   = F(:,ii);
-        B   = X\Y;
+        B   = CC\Y;
         for j=1:Nc
             P.a(ii,j) = B(j);
         end
-%         P.b(ii) = B(end);
     end
 
     % estimate other parameters
@@ -178,12 +180,11 @@ for i=2:User.MaxIter
             imagesc(reshape(z1(P.a(:,j)),Meta.h,Meta.w)),
             title('a')
         end
-%         subplot(1,nrows,nrows), imagesc(reshape(z1(P.b),Meta.h,Meta.w)), title('b') % plot background
 
-        figure(401), ncols=Nc+1;
+        figure(401), clf, ncols=Nc+1;
         for j=1:Nc                              % plot inferred spike train
-            subplot(ncols,1,j), 
-            bar(n(:,j));
+            h(j)=subplot(ncols,1,j); 
+            bar(z1(n(:,j)))
             
             if isfield(User,'n'), hold on,
                 stem(User.n(:,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
@@ -193,8 +194,9 @@ for i=2:User.MaxIter
             axis('tight')
         end
         subplot(ncols,1,ncols), plot(l(2:i))    % plot record of likelihoods
-        title(['max lik ' num2str(l_max,4), 'lik ' num2str(l(i),4)])
+        title(['max lik ' num2str(l_max,4), ',   lik ' num2str(l(i),4)])
         set(gca,'XTickLabel',[])
+        linkaxes(h,'xy')
         drawnow
     end
     
@@ -222,19 +224,20 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
         lnprior = lam.*sum(M)';                 % for grad
         aa      = repmat(diag(P.a'*P.a),T,1);   % for grad
         H1(d0)  = 2*e*aa;                       % for Hess
-        gg      = (F*P.a)';% for grad
-        b       = repmat((1-P.gam).*P.b,Meta.T,1);              % for lik
-
+        gg      = P.a'*F;% for grad
+        b       = repmat(P.b,Meta.T,1)';
+        bb      = b(:);
+        
         % find C = argmin_{C_z} lik + prior + barrier_z
         while z>1e-13                           % this is an arbitrary threshold
 
-            D = F-reshape(C,Nc,T)'*P.a';      % difference vector to be used in likelihood computation
+            D = F-P.a*(reshape(C,Nc,T)+b);      % difference vector to be used in likelihood computation
             L = e*D(:)'*D(:)+lam'*n-z*sum(log(n));% Likilihood function using C
 
             s = 1;                              % step size
             d = 1;                              % direction
             while norm(d)>5e-2 && s > 1e-3      % converge for this z (again, these thresholds are arbitrary)
-                g   = 2*e*(aa.*C-gg(:)) + lnprior - z*M'*(n.^-1);  % gradient
+                g   = 2*e*(aa.*(C+bb)-gg(:)) + lnprior - z*M'*(n.^-1);  % gradient
                 H2(d0) = n.^-2;                 % part of the Hessian
                 H   = H1 + z*(M'*H2*M);         % Hessian
                 d   = -H\g;                     % direction to step using newton-raphson
@@ -248,11 +251,11 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
                 L1 = L+1;
                 while L1>=L+1e-7                % make sure newton step doesn't increase objective
                     C1  = C+s*d;
-                    n   = M*C1-b;
-                    D   = F-reshape(C1,Nc,T)'*P.a';
+                    n   = M*C1;
+                    D   = F-P.a*(reshape(C1,Nc,T)+b);
                     DD  = D(:)'*D(:);
                     L1  = e*DD+lam'*n-z*sum(log(n));
-                    s   = s/2;                  % if step increases objective function, decrease step size
+                    s   = s/10;                  % if step increases objective function, decrease step size
                 end
                 C = C1;                         % update C
                 L = L1;                         % update L

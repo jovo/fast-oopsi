@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>main.tex</string>
+	<string>inference.tex</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -13,9 +13,7 @@
 					<key>filename</key>
 					<string>main.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-25T19:59:46Z</date>
-					<key>selected</key>
-					<true/>
+					<date>2009-05-26T15:58:36Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
@@ -33,19 +31,21 @@
 					<key>filename</key>
 					<string>model.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-25T19:57:14Z</date>
+					<date>2009-05-26T15:17:35Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>inference.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-25T19:57:39Z</date>
+					<date>2009-05-26T15:58:36Z</date>
+					<key>selected</key>
+					<true/>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>learning.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-06T22:22:33Z</date>
+					<date>2009-05-26T15:20:18Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
@@ -75,7 +75,7 @@
 					<key>filename</key>
 					<string>overlapping.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-25T19:57:11Z</date>
+					<date>2009-05-26T15:21:35Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
@@ -181,14 +181,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>236</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>54</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>32</integer>
 		</dict>
 		<key>intro.tex</key>
 		<dict>
@@ -216,16 +216,16 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>78</integer>
 		</dict>
 		<key>main.tex</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>24</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>8</integer>
+				<integer>21</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -265,9 +265,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>73</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>1</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -321,8 +321,8 @@
 		<string>appendix.tex</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
-	<true/>
+	<false/>
 	<key>windowFrame</key>
-	<string>{{530, 96}, {766, 746}}</string>
+	<string>{{674, 199}, {759, 679}}</string>
 </dict>
 </plist>

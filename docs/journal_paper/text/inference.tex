@@ -3,22 +3,22 @@ Thus, the objective function that we'd like to solve may be written as:
 
 %\begin{subequations}
 \begin{align}
-\hnm &=  \ann P(\bn | \bF) = \ann P(\bF | \bn) P(\bn) \nonumber  \\
-&= \argmax_{n_t \in \mathbb{N}_0 \forall t} \prod_{t=1}^T  P(F_t | C_t)  P(n_t) = \argmax_{n_t \in \mathbb{N}_0 \forall t} \sum_{t=1}^T \big( \log P(F_t | C_t) + \log P(n_t)\big)  \nonumber \\
-&= \ann  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha C_t - \beta)^2  -  n_t \log \lam \Del + \log n_t! \bigg),   \label{eq:obj}
+\hnm &=  \ann P[\bn | \bF] = \ann P[\bF | \bn] P[\bn] \nonumber  \\
+&= \argmax_{n_t \in \mathbb{N}_0 \forall t} \prod_{t=1}^T  P[\bF_t | C_t]  P[n_t] = \argmax_{n_t \in \mathbb{N}_0 \forall t} \sum_{t=1}^T \big( \log P[\bF_t | C_t] + \log P[n_t]\big)  \nonumber \\
+&= \ann  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}\norm{\bF_t - \balpha(C_t + \beta)}^2  -  n_t \log \lam \Del + \log n_t! \bigg),   \label{eq:obj}
 \end{align}
 %\end{subequations}
 
 \noindent where $\mathbb{N}_0 = \{0, 1, 2, \ldots\}$, and $C_t$ is implicitly a function of $n_t$.  Unfortunately, the computational complexity of solving Eq. \eqref{eq:obj} scales exponentially with $T$, i.e., is $O($e$^T)$, making Eq. \eqref{eq:obj} an NP-hard problem.  Thus, instead of an exact solution, we propose to make an approximation that reduces the complexity to be \emph{polynomial} in $T$.  In particular, we relax the assumption that we must have an integer number of spikes at any time step, by approximating the Poisson distribution with an exponential.  Note that this is a common approximation technique in the machine learning literature \cite{HastieFriedman01}, as it is the closest convex relaxation to its non-convex counterpart.  The constraint on $n_t$ in Eq. \eqref{eq:obj} is therefore relaxed from  $n_t \in \mathbb{N}_0$ to $n_t \geq 0$:
 
 \begin{align} \label{eq:obj2}
-\hnm &\approx \an  \sum_{t=1}^T \left( \frac{1}{2 \sig^2}(F_t -\alpha C_t - \beta)^2  +  n_t  \lam \Del \right).
+\hnm &\approx \an  \sum_{t=1}^T \left( \frac{1}{2 \sig^2}(\norm{\bF_t -\balpha (C_t + \beta)}^2  +  n_t  \lam \Del \right).
 \end{align}
 
 While this convex relaxation makes the problem tractable, the ``sharp'' threshold imposed by the nonnegativity constraint prohibits the use of standard gradient ascent techniques \cite{CONV04}. We therefore take an ``interior-point'' (or ``barrier'') approach, in which we drop the sharp threshold, and add a barrier term, which must approach $-\infty$ as $n_t$ approaches zero (e.g., $-\log n_t$) \cite{CONV04}.  By iteratively reducing the weight of the barrier term, $\zzz > 0$, we are guaranteed to converge to the correct solution \cite{CONV04}, $\hnm$.  Thus, our goal is to efficiently solve:
 
 \begin{align} \label{eq:eta}
-\hbn_{\zzz} &= \argmin_{n_t \forall t}  \sum_{t=1}^T \left( \frac{1}{2 \sig^2}(F_t -\alpha C_t - \beta)^2  +  n_t  \lam \Del - \zzz \log(n_t) \right),
+\hbn_{\zzz} &= \argmin_{n_t \forall t}  \sum_{t=1}^T \left( \frac{1}{2 \sig^2}\norm{\bF_t -\balpha (C_t + \beta)}^2  +  n_t  \lam \Del - \zzz \log(n_t) \right),
 \end{align}
 
 \noindent which is concave and may therefore be solved exactly and efficiently using a gradient ascent technique. To see how, we first note that   
@@ -48,12 +48,12 @@ n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
 = \bn
 \end{align}
 
-\noindent where $\ve{M} \in \mathbb{R}^{T \times T}$ is a bidiagonal matrix,  and $\bb$, $\bC=[C_1,\ldots, C_T]$, and $\bn$ are $T$ dimensional column vectors. Given Eq. \eqref{eq:M}, we may rewrite Eq. \eqref{eq:eta} in terms of $\bC$:
+\noindent where $\ve{M} \in \mathbb{R}^{T \times T}$ is a bidiagonal matrix,  and $\bC=\trans{(C_1,\ldots, C_T)}$ and $\bn$ are $T$ dimensional column vectors ($\trans{}$ indicates matrix transpose). Given Eq. \eqref{eq:M}, we may rewrite Eq. \eqref{eq:eta} in terms of $\bC$:
 
 %\begin{subequations}  
 \begin{align} 
-\hbC_{\zzz} &= \argmin_{C_t - \gamma C_{t-1} \geq 0 \forall t} \sum_{t=1}^{T} \left( \frac{1}{2 \sig^2}(F_t - \alpha C_t - \beta)^2  + (C_t - \gamma C_{t-1}) \lam \Del - \zzz \log(C_t - \gamma C_{-1} -\nu ) \right) \nonumber \\
-&= \az  \frac{1}{2 \sig^2} \norm{\bF - \alpha \bC -\beta \ve{1} }^2 + \lam \Del (\bM \bC )' \ve{1}  - \zzz \log(\bM \bC)'\ve{1},  \label{eq:eta2}
+\hbC_{\zzz} &= \argmin_{C_t - \gamma C_{t-1} \geq 0 \forall t} \sum_{t=1}^{T} \left( \frac{1}{2 \sig^2}\norm{\bF_t -\balpha (C_t + \beta)}^2  + (C_t - \gamma C_{t-1}) \lam \Del - \zzz \log(C_t - \gamma C_{-1} -\nu ) \right) \nonumber \\
+&= \az  \frac{1}{2 \sig^2} \norm{\bF - \balpha (\trans{\bC} +\beta)}^2 + \lam \Del (\bM \bC )\T \ve{1}  - \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta2}
 \end{align}
 %\end{subequations}
 
@@ -65,8 +65,8 @@ n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
 \begin{align}
 \hbC_{\zzz} &\leftarrow \hbC_{\zzz} + s \bd \\
 \bH \bd &= \bg \\
-\ve{g} &= -\frac{\alpha}{\sig^2}(\bF -\alpha \hbC_{\zzz} - \beta) + \lam \Del \ve{M}' \ve{1} - \zzz \ve{M}' (\ve{M} \hbC_{\zzz})^{-1} \label{eq:g} \\
-\ve{H} &= \frac{\alpha^2}{\sig^2} \ve{I} + \zzz \ve{M}' (\ve{M} \hbC_{\zzz})^{-2} \ve{M} \label{eq:H}
+\ve{g} &= -\frac{\balpha}{\sig^2}(\bF -\balpha({\hbC\T}_{\zzz} + \beta)) + \lam \Del \ve{M}\T \ve{1} - \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-1} \label{eq:g} \\
+\ve{H} &= \frac{\balpha^2}{\sig^2} \ve{I} + \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-2} \ve{M} \label{eq:H}
 \end{align}
 \end{subequations}
 

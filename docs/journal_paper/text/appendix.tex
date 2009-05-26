@@ -23,7 +23,7 @@ Note that this solution is the optimal linear solution, under the assumption tha
 
 \begin{subequations}
 \begin{align} \label{eq:w_par}
-\hbth_w &\approx \argmax_{\bth_w}P(\ve{F}| \hbn_w, \thet_w) P(\hbn_w | \thet_w) \\
+\hbth_w &\approx \argmax_{\bth_w}P[\ve{F}| \hbn_w, \thet_w) P[\hbn_w | \thet_w) \\
 %&= \argmax_{\bth_w} \sum_{t=1}^T \left(-\frac{1}{2} \log (2\pi\sig^2)-\frac{1}{2\sig^2} (F_t - \gamma \hC_{t-1} - \hn_t - \beta)^2 \right) \nonumber \\
 %&\qquad \qquad \qquad + \sum_{t=1}^T \bigg(-\frac{1}{2} \log (2\pi\lam\Del)-\frac{1}{2\lam\Del} (\hn_t - \lam\Del)^2 \bigg) \\
 &= \argmax_{\bth_w} -\frac{T}{2} \log (4\pi^2\sig^2\lam\Del) - \frac{1}{2\sig^2} \norm{\bY_w + \ve{\eta}_w \bX_w}^2 - \frac{1}{2\lam\Del} \norm{\hbn_w - \lam\Del\ve{1}}^2
