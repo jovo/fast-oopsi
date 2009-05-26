@@ -27,10 +27,10 @@ Eqs \eqref{eq:Obs} and \eqref{eq:trans} into \eqref{eq:par1}, to obtain:
 
 
 \begin{figure}[H]
-\centering \includegraphics[width=.9\linewidth]{../figs/spatial}
+\centering \includegraphics[width=.9\linewidth]{../graphics/spatial}
 \caption{A simulation demonstrating that using a better spatial filter can significantly enhance the effective SNR (see Supplementary Movie 1 for the full movie associated with this simulation).  Top: four movie frames.  Middle left: projection of the entire movie onto the optimal spatial filter, yielding a 1D fluorescence time series, with a large SNR. Bottom left: fast filter's inferred spike train using the optimal spatial filter.  Middle right: projection of the entire movie onto the ``mean'' spatial filter, yielding a 1D fluorescence time series with a small SNR. Bottom right: fast filter's inferred spike train using the mean spatial filter. Parameters different from Fig \ref{fig:schem}: $\balpha$ is a mixture of two 2D-Gaussians, with mean $\mu_1=\mu_2=[0, 0]$ and covariance matrices, $\Sigma_i=\sig_i^2 \ve{I}$, with $\sig_1=2$ and $\sig_2=4$ and $\ve{I}$ is the identity matrix. $\bbeta=1$.} \label{fig:spatial} \end{figure} 
 
 \begin{figure}[H]
-\centering \includegraphics[width=.9\linewidth]{../figs/spatial_EM}
+\centering \includegraphics[width=.9\linewidth]{../graphics/spatial_EM}
 \caption{A simulation demonstrating that given only the fluorescence movie, the parameters may be estimated, and the spike train inferred (c.f. Supplementary Movie 2). Top left panel: true spatial filter.  Middle left panel: projection of movie onto true spatial filter. Bottom left panel: inferred spike train using true parameters. Right panels: same as left except estimating parameters.  $\balpha$ initialized with the first singular value of $\bF$.  $\bbeta$ initialized with $\ve{0}$.  $\lam$ and $\sig$ were initialized at double their true value.  $\tau$ was assumed known. Parameters same as above.} \label{fig:spatial_EM}
 \end{figure}

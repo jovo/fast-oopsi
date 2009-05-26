@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  11 MAY 2009 18:52
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  25 MAY 2009 18:49
 entering extended mode
 **main
 (./main.tex
@@ -184,11 +184,7 @@ Package: times 2004/09/15 PSNFSS-v9.2 (SPQR)
 (/Users/joshyv/Research/misc/latex_commands.tex
 \c@thm=\count108
 \c@defi=\count109
-)) (./main.aux
-
-LaTeX Warning: Label `fig:spatial_multi' multiply defined.
-
-)
+)) (./main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
@@ -204,7 +200,8 @@ LaTeX Font Info:    ... okay on input line 34.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
 LaTeX Font Info:    ... okay on input line 34.
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 34.
- (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+
+(/opt/local/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 (/opt/local/share/texmf-dist/tex/context/base/supp-pdf.tex
@@ -268,12 +265,12 @@ LaTeX Font Info:    Try loading font information for OT1+pcr on input line 41.
 (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )) [4]
-(./main_result.tex <../figs/schem.pdf, id=83, 505.89pt x 361.35pt>
-File: ../figs/schem.pdf Graphic file (type pdf)
+(./main_result.tex <../graphics/schem.pdf, id=83, 505.89pt x 361.35pt>
+File: ../graphics/schem.pdf Graphic file (type pdf)
 
-<use ../figs/schem.pdf>) [5
+<use ../graphics/schem.pdf>) [5
 
- <../figs/schem.pdf>] (./wiener.tex
+ <../graphics/schem.pdf>] (./wiener.tex
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
 
@@ -281,72 +278,68 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 LaTeX Warning: Reference `fig:FastSpiking' on page 6 undefined on input line 1.
 
 
-<../figs/wiener.pdf, id=91, 505.89pt x 361.35pt>
-File: ../figs/wiener.pdf Graphic file (type pdf)
- <use ../figs/wiener.pdf>)
-[6
+<../graphics/wiener.pdf, id=91, 505.89pt x 361.35pt>
+File: ../graphics/wiener.pdf Graphic file (type pdf)
 
- <../figs/wiener.pdf>] (./spatial.tex
-<../figs/spatial.pdf, id=99, 505.89pt x 361.35pt>
-File: ../figs/spatial.pdf Graphic file (type pdf)
- <use ../figs/spatial.pdf>
-[7
+<use ../graphics/wiener.pdf>) [6
 
-] <../figs/spatial_EM.pdf, id=104, 505.89pt x 361.35pt>
-File: ../figs/spatial_EM.pdf Graphic file (type pdf)
+ <../graphics/wiener.pdf>] (./spatial.tex
+<../graphics/spatial.pdf, id=99, 505.89pt x 361.35pt>
+File: ../graphics/spatial.pdf Graphic file (type pdf)
 
-<use ../figs/spatial_EM.pdf>) [8 <../figs/spatial.pdf>] [9 <../figs/spatial_EM.
-pdf>] (./in_vivo.tex <../figs/spatial_data.pdf, id=119, 505.89pt x 144.54pt>
-File: ../figs/spatial_data.pdf Graphic file (type pdf)
+<use ../graphics/spatial.pdf> [7
 
-<use ../figs/spatial_data.pdf>) [10
+]
+<../graphics/spatial_EM.pdf, id=104, 505.89pt x 361.35pt>
+File: ../graphics/spatial_EM.pdf Graphic file (type pdf)
 
- <../figs/spatial_data.pdf>]
-(./overlapping.tex <../figs/spatial_multi2.pdf, id=127, 542.025pt x 505.89pt>
-File: ../figs/spatial_multi2.pdf Graphic file (type pdf)
+<use ../graphics/spatial_EM.pdf>) [8 <../graphics/spatial.pdf>] [9 <../graphics
+/spatial_EM.pdf>] (./in_vivo.tex
+<../graphics/spatial_data.pdf, id=119, 505.89pt x 505.89pt>
+File: ../graphics/spatial_data.pdf Graphic file (type pdf)
 
-<use ../figs/spatial_multi2.pdf>
-<../figs/multi_hist1.pdf, id=128, 542.025pt x 505.89pt>
-File: ../figs/multi_hist1.pdf Graphic file (type pdf)
+<use ../graphics/spatial_data.pdf>) [10
 
-<use ../figs/multi_hist1.pdf> [11
+ <../graphics/spatial_data.pdf>]
+(./overlapping.tex
+<../graphics/spatial_multi2.pdf, id=136, 542.025pt x 505.89pt>
+File: ../graphics/spatial_multi2.pdf Graphic file (type pdf)
 
- <../figs/spatial_multi2.pdf>]) [12 <../figs/multi_hist1.pdf>] (./full_movie.te
-x) [13
+<use ../graphics/spatial_multi2.pdf>) [11
+
+ <../graphics/spatial_multi2.pdf>]
+(./full_movie.tex) [12
 
 ] (./discussion.tex
 
-LaTeX Warning: Reference `fig:demo' on page 14 undefined on input line 1.
+LaTeX Warning: Reference `fig:demo' on page 13 undefined on input line 1.
 
 
-LaTeX Warning: Reference `fig:comp' on page 14 undefined on input line 1.
+LaTeX Warning: Reference `fig:comp' on page 13 undefined on input line 1.
 
 
-LaTeX Warning: Reference `fig:real' on page 14 undefined on input line 1.
+LaTeX Warning: Reference `fig:real' on page 13 undefined on input line 1.
 
 
-LaTeX Warning: Reference `fig:real' on page 14 undefined on input line 1.
+LaTeX Warning: Reference `fig:real' on page 13 undefined on input line 1.
 
-) (./main.bbl [14]) (./appendix.tex) [15] (./main.aux)
+) (./main.bbl [13]) (./appendix.tex) [14] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: There were multiply-defined labels.
-
  ) 
 Here is how much of TeX's memory you used:
- 2845 strings out of 94500
- 30000 string characters out of 1155413
- 91938 words of memory out of 1000000
- 5905 multiletter control sequences out of 10000+50000
+ 2846 strings out of 94500
+ 30008 string characters out of 1155413
+ 91968 words of memory out of 1000000
+ 5907 multiletter control sequences out of 10000+50000
  35116 words of font info for 83 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
  29i,17n,43p,1663b,286s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 152 PDF objects out of 300000
+ 153 PDF objects out of 300000
  0 named destinations out of 131072
- 36 words of extra memory for PDF output out of 65536
+ 31 words of extra memory for PDF output out of 65536
 {/opt/local/share/texmf-dist/fonts/enc/dvips/psnfss/8r.enc}</opt/local/share/
 texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/local/share/texmf-dist/font
 s/type1/bluesky/cm/cmbx10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/
@@ -367,4 +360,4 @@ opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr9.pfb></opt/local/share/te
 xmf-dist/fonts/type1/bluesky/cm/cmmi9.pfb></opt/local/share/texmf-dist/fonts/ty
 pe1/urw/times/utmb8a.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utm
 r8a.pfb>
-Output written on main.pdf (15 pages, 284954 bytes).
+Output written on main.pdf (14 pages, 264254 bytes).

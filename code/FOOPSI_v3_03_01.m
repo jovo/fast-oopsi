@@ -193,7 +193,7 @@ for i=2:User.MaxIter
             axis('tight')
         end
         subplot(ncols,1,ncols), plot(l(2:i))    % plot record of likelihoods
-        title(['max lik ' num2str(l_max), 'lik ' num2str(l(i))])
+        title(['max lik ' num2str(l_max,4), 'lik ' num2str(l(i),4)])
         set(gca,'XTickLabel',[])
         drawnow
     end
