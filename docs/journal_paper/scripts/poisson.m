@@ -20,8 +20,8 @@ g1      = zeros(Npixs,Nc);
 g2      = 0*g1;
 Sigma1  = diag([1,1])*3;                    % var of positive gaussian
 Sigma2  = diag([1,1])*5;                    % var of negative gaussian
-mu      = [1 1]'*linspace(-1.4,1.4,Nc);     % means of gaussians for each cell (distributed across pixel space)
-w       = ones(Nc,1); %Nc:-1:1;             % weights of each filter
+mu      = [1 1]'*linspace(-1.3,1.3,Nc);     % means of gaussians for each cell (distributed across pixel space)
+w       = 10*ones(Nc,1); %Nc:-1:1;             % weights of each filter
 for i=1:Nc
     g1(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma1);
     g2(:,i)  = 0*w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma2);
@@ -38,11 +38,12 @@ Meta.w       = width;                       % width of frame (pixels)
 for i=1:Nc
     P.a(:,i)=g1(:,i)-g2(:,i);
 end
-P.b     = linspace(0.05,0.15,Nc).*max(P.a); % baseline is a scaled down version of the sum of the spatial filters
+P.a     = P.a/mean(P.a);
+P.b     = 0.5;% linspace(.25,.75,Nc).*max(P.a); % baseline is a scaled down version of the sum of the spatial filters
 
 P.sig   = 0.01;                             % stan dev of noise (indep for each pixel)
-C_0     = 0;                                % initial calcium
-tau     = round(100*rand(Nc,1))/100+0.05;   % decay time constant for each cell
+C_0     = 4;                                % initial calcium
+tau     = round(100*rand(Nc,1))/200+0.05;   % decay time constant for each cell
 P.gam   = 1-Meta.dt./tau(1:Nc);             % set gam
 P.lam   = linspace(15,30,Nc)'.*ones(Nc,1);  % rate-ish, ie, lam*dt=# spikes per second
 
@@ -50,9 +51,9 @@ P.lam   = linspace(15,30,Nc)'.*ones(Nc,1);  % rate-ish, ie, lam*dt=# spikes per 
 n=zeros(Meta.T,Nc);                         % pre-allocate memory for spike train
 C=n;                                        % pre-allocate memory for calcium
 for i=1:Nc
-    n(1,i)      = C_0;
     n(2:end,i)  = poissrnd(P.lam(i)*Meta.dt*ones(Meta.T-1,1));  % simulate spike train
     n(n>1)      = 1;                                            % make only 1 spike per bin
+    n(1,i)      = C_0;
     C(:,i)      = filter(1,[1 -P.gam(i)],n(:,i));               % calcium concentration
 end
 F = poissrnd(P.a*(C+repmat(P.b,Meta.T,1))');
@@ -62,7 +63,7 @@ User.MaxIter = 25;                          % # iterations of EM to estimate par
 User.Nc      = Nc;                          % # cells per ROI
 User.Plot    = 1;                           % whether to plot filter with each iteration
 User.Thresh  = 1;                           % whether to threshold spike train before estimating params (we always keep this on)
-User.Poiss   = 1;
+User.Poiss   = 1;                           % whether observations are poisson or gaussian
 
 save(['../data/' fname '.mat'],'F','n','P','Meta','User')
 
@@ -85,7 +86,7 @@ for q=1
     [I{q}.n I{q}.P] = FOOPSI_v3_04_01(F,PP,Meta,User);
 end
 
-save([fname '.mat'],'-append','I')
+save(['../data/' fname '.mat'],'-append','I')
 
 %% plot results
 

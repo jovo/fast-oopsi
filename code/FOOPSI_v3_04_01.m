@@ -80,13 +80,14 @@ function [n_best P_best]=FOOPSI_v3_04_01(F,P,Meta,User)
 % 3_02_03:  no more GetLik function, just inline, also plot true n if
 %           available from User structure, and plot max lik
 % 3_03_01:  made background a scalar, inference works, learning does not
-% 3_04_01: added possibility of using Poisson observation noise
+% 3_04_01:  added possibility of using Poisson observation noise, and
+%           cleaned up some stuff
 
 %% initialize stuff
 
 % if none or only some are defined by user, use defaults
 if nargin == 3
-    User=U;
+    User=struct;
 else
     if isfield(User,'Plot'),    else User.Plot      = 1; end
     if isfield(User,'MaxIter'), else User.MaxIter   = 1; end
@@ -235,15 +236,21 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
             D = F-P.a*(reshape(C,Nc,T)+b);      % difference vector to be used in likelihood computation
             L = e*D(:)'*D(:)+lam'*n-z*sum(log(n));% Likilihood function using C
             if User.Poiss==1
-                lam = P.a*(C+b)';
-                L = exp(-lam + F .* log(lam) - gammaln(F + 1));
+                lam1 = P.a*(C+b')';
+                L = sum(sum(exp(-lam1 + F .* log(lam1) - gammaln(F + 1))));
             end
             s = 1;                              % step size
             d = 1;                              % direction
             while norm(d)>5e-2 && s > 1e-3      % converge for this z (again, these thresholds are arbitrary)
-                g   = 2*e*(aa.*(C+bb)-gg(:)) + lnprior - z*M'*(n.^-1);  % gradient
-                H2(d0) = n.^-2;                 % part of the Hessian
-                H   = H1 + z*(M'*H2*M);         % Hessian
+                if User.Poiss==1
+                    g   = (-sum(P.a) + sum(F)./(C+b')')';
+                    H1(d0) = sum(F)'.*(C+b').^(-2);
+                    H   = H1;
+                else
+                    g   = 2*e*(aa.*(C+bb)-gg(:)) + lnprior - z*M'*(n.^-1);  % gradient
+                    H2(d0) = n.^-2;                 % part of the Hessian
+                    H   = H1 + z*(M'*H2*M);         % Hessian
+                end
                 d   = -H\g;                     % direction to step using newton-raphson
                 hit = -n./(M*d);                % step within constraint boundaries
                 hit(hit<0)=[];                  % ignore negative hits
@@ -256,10 +263,15 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
                 while L1>=L+1e-7                % make sure newton step doesn't increase objective
                     C1  = C+s*d;
                     n   = M*C1;
-                    D   = F-P.a*(reshape(C1,Nc,T)+b);
-                    DD  = D(:)'*D(:);
-                    L1  = e*DD+lam'*n-z*sum(log(n));
-                    s   = s/10;                  % if step increases objective function, decrease step size
+                    if User.Poiss==1
+                        lam1 = P.a*(C1+b')';
+                        L1 = sum(sum(exp(-lam1 + F .* log(lam1) - gammaln(F + 1))));
+                    else
+                        D   = F-P.a*(reshape(C1,Nc,T)+b);
+                        DD  = D(:)'*D(:);
+                        L1  = e*DD+lam'*n-z*sum(log(n));
+                    end
+                    s   = s/5;                  % if step increases objective function, decrease step size
                 end
                 C = C1;                         % update C
                 L = L1;                         % update L
