@@ -2,10 +2,10 @@
 % calls the most recent FOOPSI function to infer spike trains and
 % parameters
 
-clear, clc, 
+clear, clc,
 fname = 'spatial_multi';
 
-%% set parameters 
+%% set parameters
 
 % generate spatial filters
 Nc      = 2;                                % # of cells in the ROI
@@ -21,7 +21,7 @@ g2      = 0*g1;
 Sigma1  = diag([1,1])*3;                    % var of positive gaussian
 Sigma2  = diag([1,1])*5;                    % var of negative gaussian
 mu      = [1 1]'*linspace(-1.4,1.4,Nc);     % means of gaussians for each cell (distributed across pixel space)
-w       = ones(Nc,1); %Nc:-1:1;                          % weights of each filter
+w       = ones(Nc,1); %Nc:-1:1;             % weights of each filter
 for i=1:Nc
     g1(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma1);
     g2(:,i)  = 0*w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma2);
@@ -38,7 +38,7 @@ Meta.w       = width;                       % width of frame (pixels)
 for i=1:Nc
     P.a(:,i)=g1(:,i)-g2(:,i);
 end
-P.b     = linspace(0.05,0.15,Nc).*max(P.a);                   % baseline is a scaled down version of the sum of the spatial filters
+P.b     = linspace(0.05,0.15,Nc).*max(P.a); % baseline is a scaled down version of the sum of the spatial filters
 
 P.sig   = 0.01;                             % stan dev of noise (indep for each pixel)
 C_0     = 0;                                % initial calcium
@@ -68,19 +68,19 @@ save([fname '.mat'],'F','n','P','Meta','User')
 
 %% infer spike trains and parameters
 
-for q=1
+for q=1:2
     if q==1;                                % use true params
         PP=P;
         User.MaxIter = 1;
     elseif q==2                             % use svd spatial filter
-        [U,S,V]=pca_approx(F,User.Nc);
+        User.MaxIter = 0;
         PP=P;
+        [U,S,V]=pca_approx(F',User.Nc);
         for j=1:User.Nc, PP.a(:,j)=V(:,j); end
-%         User.MaxIter = 0;
-%     elseif q==3                           % estimate params
-%         PP=P;
-%         for j=1:User.Nc, PP.a(:,j)=V(:,j); end
-        User.MaxIter = 20;
+        %         User.MaxIter = 0;
+        %     elseif q==3                           % estimate params
+        %         PP=P;
+        %         for j=1:User.Nc, PP.a(:,j)=V(:,j); end
     end
     [I{q}.n I{q}.P] = FOOPSI_v3_03_01(F,PP,Meta,User);
 end
@@ -103,9 +103,9 @@ Pl.lw   = 2;                    % line width
 Pl.n    = n; Pl.n(Pl.n==0)=NaN; % true spike train (0's are NaN's so they don't plot)
 Pl.T    = Meta.T;
 Pl.c    = [0 0 0; Pl.g; 1 1 1]; % colors: black, grey, white
-Pl.m    = ['v','^'];
+Pl.m    = ['v','v'];
 Pl.xlim = [200 300]+14;        % limits of x-axis
-Pl.shift= [0 .99];
+Pl.shift= [0 .03];
 Pl.x_range = Pl.xlim(1):Pl.xlim(2);
 Pl.XTick= [Pl.xlim(1) round(mean(Pl.xlim)) Pl.xlim(2)];
 Pl.XTickLabel = round((Pl.XTick-min(Pl.XTick))*Meta.dt*100)/100;
@@ -148,7 +148,14 @@ for q=1:length(I)
     imagesc(reshape(sum(E{q}.a,2),Meta.h,Meta.w))
     set(gca,'XTick',[],'YTick',[])
     colormap gray
-    if q==1, title(['Sum of Spatial Filters'],'FontSize',Pl.fs); end
+    if q==1, 
+        title(['Sum of Spatial Filters'],'FontSize',Pl.fs); 
+        ylab=ylabel([{'Truth'}]);
+    else
+        ylab=ylabel([{'Estimate'}]);
+        
+    end
+        set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle','FontSize',Pl.fs)
 
     % plot spatial filters
     for j=1:Nc,
@@ -161,26 +168,38 @@ for q=1:length(I)
     % plot F and n for neurons
     subplot(nrows,ncols,(q-1)*2*ncols+ncols+1), hold on
     for j=1:User.Nc
-        F_proj=E{q}.a(:,j)\(F);
-        plot(0.9*z1(F_proj(Pl.x_range))+0.05,'Color',Pl.c(j,:),'LineWidth',Pl.lw)
-%         bar(Pl.n(Pl.x_range,j),'FaceColor',Pl.c(j,:),'EdgeColor',Pl.c(j,:),'LineWidth',2)
+        F_proj=E{q}.a(:,j)\F;
+        plot(0.9*z1(F_proj(Pl.x_range)),'Color',Pl.c(j,:),'LineWidth',Pl.lw)
         stem(Pl.n(Pl.x_range,j)-Pl.shift(j),'LineStyle','none','Marker',Pl.m(j),'MarkerEdgeColor',Pl.c(j,:),'MarkerFaceColor',Pl.c(j,:),'MarkerSize',Pl.ms)
         axis([Pl.xlim-Pl.xlim(1) 0 1])
-        set(gca,'XTick',Pl.XTick,'XTickLabel',[])
         set(gca,'YTick',[0 1 2.5],'YTickLabel',[])
-        set(gca,'XTick',Pl.XTick,'XTickLabel',[])
+        if q==length(I)
+            set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',[])
+        else
+            title('Fluorescence Projection','FontSize',Pl.fs)
+            set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',(Pl.XTick-min(Pl.XTick))*Meta.dt)
+            xlabel('Time (sec)','FontSize',Pl.fs)
+        end
+
     end
 
     % plot inferred spike train
     for j=1:User.Nc
         subplot(nrows,ncols,(q-1)*2*ncols+ncols+1+j)
         hold on
-        stem(Pl.x_range,Pl.n(Pl.x_range,j),'LineStyle','none','Marker','v','MarkerEdgeColor',Pl.g,'MarkerFaceColor',Pl.g,'MarkerSize',Pl.ms)
+        stem(Pl.x_range,Pl.n(Pl.x_range,j)+.03,'LineStyle','none','Marker','v','MarkerEdgeColor',Pl.c(j,:),'MarkerFaceColor',Pl.c(j,:),'MarkerSize',Pl.ms)
         if j==1, k=2; else k=1; end
-        bar(Pl.x_range,I{q}.n(Pl.x_range,j_inf(j))/max(I{q}.n(Pl.x_range,j_inf(j))))
+        bar(Pl.x_range,I{q}.n(Pl.x_range,j_inf(j))/max(I{q}.n(Pl.x_range,j_inf(j))),'EdgeColor',Pl.c(j,:),'FaceColor',Pl.c(j,:))
         axis('tight')
         set(gca,'YTick',[0 1],'YTickLabel',[])
-        set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',[])
+        if q~=length(I)
+            title('Spike Inference','FontSize',Pl.fs)
+            set(gca,'XTick',Pl.XTick,'XTickLabel',(Pl.XTick-min(Pl.XTick))*Meta.dt)
+            xlabel('Time (sec)','FontSize',Pl.fs)
+        else
+            set(gca,'XTick',Pl.XTick,'XTickLabel',[])
+        end
+
     end
 
 end
@@ -188,12 +207,11 @@ end
 % print fig
 wh=[7.5 7];   %width and height
 DirName = '../graphics/';
-FileName = 'spatial_multi';
-PrintFig(wh,DirName,FileName);
+PrintFig(wh,DirName,fname);
 
 %% other shit that i'm not doing now
 % %% make hist stuff
-% 
+%
 % edges=linspace(0,1,20);
 % for q=1:length(I)
 %     D{q}.n      = I{q}.n;
@@ -201,45 +219,45 @@ PrintFig(wh,DirName,FileName);
 %     D{q}.no_sp  = [];
 %     for j=1:User.Nc
 %         D{q}.n(:,j)=I{q}.n(:,j)/max(I{q}.n(:,j));
-% 
+%
 %         D{q,j}.sp       = D{q}.n(:,j);
 %         D{q,j}.no_sp    = D{q,j}.sp; %D{q}.n(:,j);
-% 
+%
 %         D{q,j}.sp(n(:,j_inf(j))==0)=[];
 %         D{q}.sp=[D{q}.sp; D{q,j}.sp];
-% 
-% 
+%
+%
 %         D{q,j}.no_sp(n(:,j_inf(j))==1)=[];
 %         D{q}.no_sp=[D{q}.no_sp; D{q,j}.no_sp];
-% 
+%
 %         D{q,j}.hist(:,1)=histc(D{q,j}.no_sp,edges);
 %         D{q,j}.hist(:,2)=histc(D{q,j}.sp,edges);
 %     end
 % end
-% 
+%
 % %% multi_hist1
 % figure(9), clf, hold on
-% 
+%
 % ncols=2;%length(I);
 % nrows=2;
 % xticks=[0 .5 1];
 % for q=1:length(I)
 %     for k=1:2
 %         joint_hist=[];
-% 
+%
 %         for j=1:User.Nc
 %             joint_hist=[joint_hist D{q,j}.hist(:,k)];
 %         end
 %         joint_hist=joint_hist./repmat(sum(joint_hist),length(joint_hist),1);
-%         
+%
 %         subplot(nrows,ncols,q+(k-1)*nrows)
 %         hold on
-% 
+%
 %         for j=1:User.Nc
 %             bar(edges+diff(edges(1:2)/User.Nc),joint_hist(:,j),'FaceColor',Pl.c(j,:),'EdgeColor',Pl.c(j,:),'BarWidth',1/User.Nc)
 %         end
 % %         bar(edges,joint_hist(:,1),'FaceColor','k','EdgeColor','k','BarWidth',0.5)
-% 
+%
 %         set(gca,'XTick',xticks,'XTickLabel',xticks,'YTickLabel',[])
 %         axis('tight')
 %         if q==1 && k==1
@@ -247,22 +265,22 @@ PrintFig(wh,DirName,FileName);
 %             title('Optimal Spatial Filters','FontSize',Pl.fs)
 %         elseif q==1 && k==2
 %             ylab=ylabel(['P(n_{MAP} | n=0)'],'FontSize',Pl.fs);
-% 
+%
 %         elseif q==2 && k==1
 %             title('Estimated Spatial Filters','FontSize',Pl.fs)
 %         end
 %         set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
 %     end
 % end
-% 
+%
 % % print fig
 % wh=[7.5 7];   %width and height
 % DirName = '../../docs/journal_paper/figs/';
 % FileName = 'multi_hist1';
 % PrintFig(wh,DirName,FileName);
-% 
-% %% plot distribution of spikes 
-% 
+%
+% %% plot distribution of spikes
+%
 % % edges=linspace(0,1,20);
 % % for q=1:length(I)
 % %     D{q}.n=I{q}.n;
@@ -270,49 +288,49 @@ PrintFig(wh,DirName,FileName);
 % %     D{q}.no_sp=[];
 % %     for j=1:User.Nc
 % %         D{q}.n(:,j)=D{q}.n(:,j)/max(D{q}.n(:,j));
-% % 
+% %
 % %         D{q,j}.sp=D{q}.n(:,j);
 % %         D{q,j}.sp(n(:,j_inf(j))==0)=[];
 % %         D{q}.sp=[D{q}.sp; D{q,j}.sp];
-% % 
-% % 
+% %
+% %
 % %         D{q,j}.no_sp=D{q}.n(:,j);
 % %         D{q,j}.no_sp(n(:,j_inf(j))==1)=[];
 % %         D{q}.no_sp=[D{q}.no_sp; D{q,j}.no_sp];
 % %     end
 % % end
-% % 
+% %
 % % xspace=.207;
 % % yspace=.285;
 % % w=xspace/2;
 % % h=yspace/2;
-% % 
+% %
 % % for q=1:length(I)
 % %     for j=1:User.Nc
-% %         subplot('Position',[0.75 0.68+h .157/2 h]), 
+% %         subplot('Position',[0.75 0.68+h .157/2 h]),
 % %         D{q,j}.hist=histc(D{q,j}.no_sp,edges);
 % %         bar(edges,D{q,j}.hist)
 % %         set(gca,'XTick',[0 .5 1],'XTickLabel',[],'YTickLabel',[])
-% % 
+% %
 % %         %    subplot(nrows,ncols,7+0.4*j)
 % %         %    D{q,j}.hist=histc(D{q,j}.sp,edges);
 % %         %    bar(edges,D{q,j}.hist)
 % %         %    set(gca,'XTickLabel',[0 .5 1],'XTickLabel',[],'YTickLabel',[])
 % %     end
 % % end
-% % 
+% %
 % % %%
 % % figure(9),
 % % for q=1:length(I)
 % %     D{q}.sp=[];
 % %     D{q}.no_sp=[];
 % %     for j=1:User.Nc
-% % 
+% %
 % %         D{q,j}.sp=D{q}.n(:,j);
 % %         D{q,j}.sp(n(:,j_inf(j))==0)=NaN;
 % %         D{q}.sp=[D{q}.sp; D{q,j}.sp];
-% % 
-% % 
+% %
+% %
 % %         D{q,j}.no_sp=D{q}.n(:,j);
 % %         D{q,j}.no_sp(n(:,j_inf(j))==1)=NaN;
 % %         D{q}.no_sp=[D{q}.no_sp; D{q,j}.no_sp];

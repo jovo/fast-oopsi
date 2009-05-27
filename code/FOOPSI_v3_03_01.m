@@ -79,7 +79,7 @@ function [n_best P_best]=FOOPSI_v3_03_01(F,P,Meta,User)
 %           rearranged some code, added some comments
 % 3_02_03:  no more GetLik function, just inline, also plot true n if
 %           available from User structure, and plot max lik
-% 3_03_01:  made background a scalar
+% 3_03_01:  made background a scalar, inference works, learning does not
 
 %% initialize stuff
 
@@ -121,71 +121,76 @@ n_best  = n;                                    % best spike train
 P_best  = P;                                    % best parameter estimate
 
 for i=2:User.MaxIter
-    
+
     % update inferred spike train
     [n C DD]   = FastFilter(F,P);
 
-    if min(n(:))<0, 
-        disp('some shit is fucked'), keyboard
+    if min(n(:))<0,
+        disp('somehow, a negative spike has arisen'), keyboard
     end
-    
+
     % generate regressor for spatial filter
     if User.Thresh==1
         CC=0*C;
         for j=1:Nc
             nsort   = sort(n(:,j));
-            nthr    = nsort(round(0.95*T));
+            nthr    = nsort(round(0.98*T));
             nn      = Z(1:T);
             nn(n(:,j)<=nthr)=0;
             nn(n(:,j)>nthr)=1;
             CC(:,j) = filter(1,[1 -P.gam(j)],nn) + (1-P.gam(j))*P.b(j);
         end
     else
-        CC      = C; 
+        CC      = C;
     end
+    CC = CC + b';
 
-    % update spatial filter
+    % update spatial filter and baseline
     for ii=1:Meta.Np
-        Y   = F(:,ii);
-        B   = CC\Y;
-        for j=1:Nc
-            P.a(ii,j) = B(j);
-        end
+        Y   = F(ii,:)';
+        P.a(ii,:) = CC\Y;
     end
+    a       = repmat(P.a,1,T);
+    P.b     = sum(sum((F-P.a*C').*a))/(a(:)'*a(:));
+    %     X       = F-P.a*C';
+    %     aa      = a(:);
+    %     P.b     = sum(sum(X.*a))/(aa'*aa);
+    %     P.b     = sum(sum((a\(F-P.a*C'))))/T;
 
     % estimate other parameters
-    P.sig   = sqrt(DD/T);
-    nnorm   = n./repmat(max(n),Meta.T,1);
-    P.lam   = sum(nnorm)'/(T*dt);
-        
+    %     P.sig   = sqrt(DD/T);
+    %     nnorm   = n./repmat(max(n),Meta.T,1);
+    %     P.lam   = sum(nnorm)'/(T*dt);
+
     % update likelihood and keep results if they improved
-    lik     = -Meta.T*Meta.Np*log(2*pi*P.sig^2)/2 -1/(2*P.sig^2)*DD;
+    D       = F-P.a*(reshape(C,Nc,T)+b);
+    lik     = -Meta.T*Meta.Np*log(2*pi*P.sig^2)/2 -1/(2*P.sig^2)*D(:)'*D(:);
     prior   = Meta.T*sum(P.lam*Meta.dt) - Meta.dt*P.lam'*sum(n)';
     l(i)    = lik + prior;
 
-     % if this is the best one, keep n and P
-    if l(i)>l_max                              
+    % if this is the best one, keep n and P
+    if l(i)>l_max
         n_best  = n;
         P_best  = P;
         l_max   = l(i);
     end
 
     % if lik doesn't change much (relatively), stop iterating
-    if abs((l(i)-l(i-1))/l(i))<1e-5 || l(i-1)-l(i)>1e5; break; end 
-    
+    if abs((l(i)-l(i-1))/l(i))<1e-5 || l(i-1)-l(i)>1e5; break; end
+
     % plot results from this iteration
     if User.Plot == 1
         figure(400), nrows=Nc;                % plot spatial filter
         for j=1:Nc, subplot(1,nrows,j),
-            imagesc(reshape(z1(P.a(:,j)),Meta.h,Meta.w)),
+            imagesc(reshape(P.a(:,j),Meta.h,Meta.w)),
             title('a')
         end
 
         figure(401), clf, ncols=Nc+1;
         for j=1:Nc                              % plot inferred spike train
-            h(j)=subplot(ncols,1,j); 
+            h(j)=subplot(ncols,1,j);
             bar(z1(n(:,j)))
-            
+
             if isfield(User,'n'), hold on,
                 stem(User.n(:,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
             end
@@ -199,9 +204,9 @@ for i=2:User.MaxIter
         linkaxes(h,'xy')
         drawnow
     end
-    
+
     % play sound to indicate iteration is over
-    sound(3*sin(linspace(0,90*pi,2000)))        
+    sound(3*sin(linspace(0,90*pi,2000)))
 
 end
 
@@ -227,7 +232,7 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
         gg      = P.a'*F;% for grad
         b       = repmat(P.b,Meta.T,1)';
         bb      = b(:);
-        
+
         % find C = argmin_{C_z} lik + prior + barrier_z
         while z>1e-13                           % this is an arbitrary threshold
 
