@@ -120,7 +120,7 @@ P_best  = P;                                    % best parameter estimate
 for i=2:User.MaxIter
 
     % update inferred spike train
-    [n C DD]   = FastFilter(F,P);
+    [n C]   = FastFilter(F,P);
 
     if min(n(:))<0,
         disp('somehow, a negative spike has arisen'), keyboard
@@ -209,7 +209,7 @@ end
 
 P_best.l=l(1:i);                                % keep record of likelihoods for record
 
-    function [n C DD] = FastFilter(F,P)
+    function [n C] = FastFilter(F,P)
 
         % initialize n and C
         z = 1;                                  % weight on barrier function

@@ -8,7 +8,7 @@ fname = 'spatial_multi';
 %% set parameters
 
 % generate spatial filters
-Nc      = 2;                                % # of cells in the ROI
+Nc      = 1;                                % # of cells in the ROI
 neur_w  = 10;                               % height per neuron
 height  = 15;                               % height of frame (pixels)
 width   = Nc*neur_w;                        % width of frame (pixels)
@@ -72,7 +72,7 @@ for q=1:2
         PP=P;
         User.MaxIter = 1;
     elseif q==2                             % use svd spatial filter
-        User.MaxIter = 0;
+        User.MaxIter = 2;
         PP=P;
         [U,S,V]=pca_approx(F',User.Nc);
         for j=1:User.Nc, PP.a(:,j)=V(:,j); end
