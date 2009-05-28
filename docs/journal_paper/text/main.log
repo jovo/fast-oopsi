@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=latex 2009.4.16)  27 MAY 2009 10:50
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  28 MAY 2009 01:41
 entering extended mode
 **main
 (./main.tex
@@ -100,10 +100,11 @@ Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 (/opt/local/share/texmf-dist/tex/latex/graphics/graphics.cfg
 File: graphics.cfg 2005/02/03 v1.3 graphics configuration of teTeX/TeXLive
 )
-Package graphics Info: Driver file: dvips.def on input line 80.
+Package graphics Info: Driver file: pdftex.def on input line 80.
 
-(/opt/local/share/texmf-dist/tex/latex/graphics/dvips.def
-File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+(/opt/local/share/texmf-dist/tex/latex/graphics/pdftex.def
+File: pdftex.def 2002/06/19 v0.03k graphics/color for pdftex
+\Gread@gobject=\count99
 ))
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
@@ -133,7 +134,7 @@ Package: algorithm
 Document Style `algorithm' - floating environment
 (/opt/local/share/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count99
+\c@float@type=\count100
 \float@exts=\toks26
 \float@box=\box28
 \@float@everytoks=\toks27
@@ -143,7 +144,7 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
 \@float@every@algorithm=\toks28
-\c@algorithm=\count100
+\c@algorithm=\count101
 )
 (/opt/local/share/texmf-dist/tex/latex/algorithms/algorithmic.sty
 Package: algorithmic 
@@ -151,19 +152,19 @@ Package: algorithmic
 Document Style `algorithmic' - environment
 (/opt/local/share/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 1998/07/07 v4.1b Infix arithmetic (KKT,FJ)
-\calc@Acount=\count101
-\calc@Bcount=\count102
+\calc@Acount=\count102
+\calc@Bcount=\count103
 \calc@Adimen=\dimen114
 \calc@Bdimen=\dimen115
 \calc@Askip=\skip49
 \calc@Bskip=\skip50
 LaTeX Info: Redefining \setlength on input line 59.
 LaTeX Info: Redefining \addtolength on input line 60.
-\calc@denominator=\count103
+\calc@denominator=\count104
 )
-\c@ALC@line=\count104
-\c@ALC@rem=\count105
-\c@ALC@depth=\count106
+\c@ALC@line=\count105
+\c@ALC@rem=\count106
+\c@ALC@depth=\count107
 \ALC@tlm=\skip51
 )
 (/opt/local/share/texmf-dist/tex/latex/psnfss/times.sty
@@ -181,8 +182,8 @@ Package: times 2004/09/15 PSNFSS-v9.2 (SPQR)
 \f@ncyO@orf=\skip60
 )
 (/Users/joshyv/Research/misc/latex_commands.tex
-\c@thm=\count107
-\c@defi=\count108
+\c@thm=\count108
+\c@defi=\count109
 )) (./main.aux)
 \openout1 = `main.aux'.
 
@@ -203,9 +204,42 @@ LaTeX Font Info:    Try loading font information for OT1+ptm on input line 36.
 (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
+(/opt/local/share/texmf-dist/tex/context/base/supp-pdf.tex
+(/opt/local/share/texmf-dist/tex/context/base/supp-mis.tex
+loading : Context Support Macros / Miscellaneous (2004.10.26)
+\protectiondepth=\count110
+\scratchcounter=\count111
+\scratchtoks=\toks29
+\scratchdimen=\dimen116
+\scratchskip=\skip61
+\scratchmuskip=\muskip11
+\scratchbox=\box30
+\scratchread=\read1
+\scratchwrite=\write3
+\zeropoint=\dimen117
+\onepoint=\dimen118
+\onebasepoint=\dimen119
+\minusone=\count112
+\thousandpoint=\dimen120
+\onerealpoint=\dimen121
+\emptytoks=\toks30
+\nextbox=\box31
+\nextdepth=\dimen122
+\everyline=\toks31
+\!!counta=\count113
+\!!countb=\count114
+\recursecounter=\count115
+)
+loading : Context Support Macros / PDF (2004.03.26)
+\nofMPsegments=\count116
+\nofMParguments=\count117
+\MPscratchCnt=\count118
+\MPscratchDim=\dimen123
+\MPnumerator=\count119
+\everyMPtoPDFconversion=\toks32
+)
 LaTeX Font Info:    Try loading font information for U+msa on input line 38.
-
-(/opt/local/share/texmf-dist/tex/latex/amsfonts/umsa.fd
+ (/opt/local/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2002/01/19 v2.2g AMS font definitions
 )
 LaTeX Font Info:    Try loading font information for U+msb on input line 38.
@@ -224,45 +258,57 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 50.
  (./model.tex) (./inference.tex [1
 
-] [2]) (./learning.tex [3]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 41.
+{/opt/local/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]) [3] (./ma
+in_result.tex
+<../graphics/schem.pdf, id=80, 505.89pt x 361.35pt>
+File: ../graphics/schem.pdf Graphic file (type pdf)
 
-(/opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-)) [4]
-(./main_result.tex
-File: ../graphics/schem.eps Graphic file (type eps)
- <../graphics/schem.eps>) [5
+<use ../graphics/schem.pdf>) [4
 
-] (./wiener.tex
+ <../graphics/schem.pdf>] (./wiener.tex
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
 
 
-LaTeX Warning: Reference `fig:FastSpiking' on page 6 undefined on input line 1.
+LaTeX Warning: Reference `fig:FastSpiking' on page 5 undefined on input line 1.
 
 
-File: ../graphics/wiener.eps Graphic file (type eps)
-<../graphics/wiener.eps>) [6
+<../graphics/wiener.pdf, id=88, 505.89pt x 361.35pt>
+File: ../graphics/wiener.pdf Graphic file (type pdf)
 
-] (./spatial.tex
-File: ../graphics/spatial.eps Graphic file (type eps)
- <../graphics/spatial.eps> [7
+<use ../graphics/wiener.pdf>) [5
+
+ <../graphics/wiener.pdf>] (./spatial.tex
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 33.
+
+(/opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+<../graphics/spatial.pdf, id=96, 505.89pt x 361.35pt>
+File: ../graphics/spatial.pdf Graphic file (type pdf)
+
+<use ../graphics/spatial.pdf> [6
 
 ]
-File: ../graphics/spatial_EM.eps Graphic file (type eps)
+<../graphics/spatial_EM.pdf, id=103, 505.89pt x 361.35pt>
+File: ../graphics/spatial_EM.pdf Graphic file (type pdf)
 
-<../graphics/spatial_EM.eps>) [8] [9] (./in_vivo.tex
-File: ../graphics/spatial_data.eps Graphic file (type eps)
+<use ../graphics/spatial_EM.pdf>) [7 <../graphics/spatial.pdf>] (./learning.tex
+[8 <../graphics/spatial_EM.pdf>]) [9] (./in_vivo.tex
+<../graphics/spatial_data.pdf, id=122, 505.89pt x 505.89pt>
+File: ../graphics/spatial_data.pdf Graphic file (type pdf)
 
-<../graphics/spatial_data.eps>) [10
+<use ../graphics/spatial_data.pdf>) [10
 
-] (./overlapping.tex
-File: ../graphics/spatial_multi.eps Graphic file (type eps)
+ <../graphics/spatial_data.pdf>]
+(./overlapping.tex
+<../graphics/spatial_multi.pdf, id=139, 542.025pt x 505.89pt>
+File: ../graphics/spatial_multi.pdf Graphic file (type pdf)
 
-<../graphics/spatial_multi.eps>) [11
+<use ../graphics/spatial_multi.pdf>) [11
 
-] (./full_movie.tex) [12
+ <../graphics/spatial_multi.pdf>]
+(./full_movie.tex) [12
 
 ] (./discussion.tex
 
@@ -277,18 +323,45 @@ LaTeX Warning: Reference `fig:real' on page 13 undefined on input line 1.
 
 LaTeX Warning: Reference `fig:real' on page 13 undefined on input line 1.
 
-) (./main.bbl [13]) (./appendix.tex) [14] (./main.aux)
+) (./main.bbl [13]) (./appendix.tex
+
+LaTeX Warning: Reference `sec:est' on page 14 undefined on input line 3.
+
+) [14] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 2460 strings out of 94501
- 24848 string characters out of 1155436
- 87054 words of memory out of 1000000
- 5540 multiletter control sequences out of 10000+50000
- 23212 words of font info for 75 fonts, out of 500000 for 2000
+ 2853 strings out of 94500
+ 30083 string characters out of 1155413
+ 91971 words of memory out of 1000000
+ 5912 multiletter control sequences out of 10000+50000
+ 36621 words of font info for 88 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
  29i,17n,43p,1663b,286s stack positions out of 1500i,500n,5000p,200000b,5000s
-
-Output written on main.dvi (14 pages, 50496 bytes).
+PDF statistics:
+ 156 PDF objects out of 300000
+ 0 named destinations out of 131072
+ 31 words of extra memory for PDF output out of 65536
+{/opt/local/share/texmf-dist/fonts/enc/dvips/psnfss/8r.enc}</opt/local/share/
+texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/local/share/texmf-dist/font
+s/type1/bluesky/cm/cmbx7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/c
+mextra/cmmib7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy5.pfb
+></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmss8.pfb></opt/local/shar
+e/texmf-dist/fonts/type1/bluesky/symbols/msbm10.pfb></opt/local/share/texmf-dis
+t/fonts/type1/bluesky/cm/cmr5.pfb></opt/local/share/texmf-dist/fonts/type1/blue
+sky/symbols/msbm7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi5
+.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmex10.pfb></opt/local
+/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></opt/local/share/texmf-dis
+t/fonts/type1/bluesky/cm/cmsy7.pfb></opt/local/share/texmf-dist/fonts/type1/blu
+esky/cm/cmr7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx10.pfb
+></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy10.pfb></opt/local/sha
+re/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/local/share/texmf-dist/fon
+ts/type1/bluesky/cm/cmmib10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesk
+y/cm/cmmi7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi10.pfb><
+/opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr6.pfb></opt/local/share/t
+exmf-dist/fonts/type1/bluesky/cm/cmr9.pfb></opt/local/share/texmf-dist/fonts/ty
+pe1/bluesky/cm/cmmi9.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utm
+b8a.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
+Output written on main.pdf (14 pages, 258722 bytes).

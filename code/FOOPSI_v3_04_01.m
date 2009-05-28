@@ -80,8 +80,8 @@ function [n_best P_best]=FOOPSI_v3_04_01(F,P,Meta,User)
 % 3_02_03:  no more GetLik function, just inline, also plot true n if
 %           available from User structure, and plot max lik
 % 3_03_01:  made background a scalar, inference works, learning does not
-% 3_04_01:  added possibility of using Poisson observation noise, and
-%           cleaned up some stuff
+% 3_04_01:  added possibility of using Poisson observation noise (but it is
+%           still buggy), and made learning work for gaussian observation
 
 %% initialize stuff
 
@@ -106,12 +106,20 @@ e       = 1/(2*P.sig^2);                        % scale of variance
 Z   = zeros(Nc*T,1);                            % zero vector
 M   = spdiags([repmat(-P.gam,T,1) repmat(Z,1,Nc-1) (1+Z)], -Nc:0,Nc*T,Nc*T);  % matrix transforming calcium into spikes, ie n=M*C
 I   = speye(Nc*T);                              % create out here cuz it must be reused
-H1  = I;                                        % initialize memory for Hessian matrix
-H2  = I;                                        % another one
 d0  = 1:Nc*T+1:(Nc*T)^2;                        % index of diagonal elements of TxT matrices
-d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            % index of diagonal elements of TxT matrices
+d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            % index of off-diagonal elements of TxT matrices
 l   = Z(1:User.MaxIter);                        % initialize likelihood
-n   = FastFilter(F,P);                          % infer approximate MAP spike train, given initial parameter estimates
+
+if User.Poiss==1
+    H       = I;                                % initialize memory for Hessian matrix
+    gamlnF  = gammaln(F+1);                     % for lik
+    sumF    = sum(F);                           % for Hess
+else
+    H1  = I;                                    % initialize memory for Hessian matrix
+    H2  = I;                                    % initialize memory for Hessian matrix
+end
+
+[n C mse_old] = FastFilter(F,P);                % infer approximate MAP spike train, given initial parameter estimates
 l(1)    = -inf;
 l_max   = l(1);                                 % maximum likelihood achieved so far
 n_best  = n;                                    % best spike train
@@ -140,15 +148,29 @@ for i=2:User.MaxIter
     else
         CC      = C;
     end
-    CC = CC + b';
 
     % update spatial filter and baseline
-    for ii=1:Meta.Np
-        Y   = F(ii,:)';
-        P.a(ii,:) = CC\Y;
+    mse = mse_old+1;
+    %     while mse > mse_old+1e-3
+    for jj=1:5
+        CC = CC + b';
+        for ii=1:Meta.Np
+            Y   = F(ii,:)';
+            P.a(ii,:) = CC\Y;
+        end
+        for j=1:Nc
+            P.b(j)     = P.a(:,j)\sum(F - P.a(:,j)*CC(:,j)',2)/T;
+        end
+        P.b(P.b<0)=0;
+        mse_old = mse;
+        b       = repmat(P.b,Meta.T,1)';
+        D       = F-P.a*(reshape(C,Nc,T)+b);
+        mse     = -D(:)'*D(:);
     end
-    a       = repmat(P.a,1,T);
-    P.b     = sum(sum((F-P.a*C').*a))/(a(:)'*a(:));
+
+
+    %     a       = repmat(P.a,1,T);
+    %     P.b     = sum(sum((F-P.a*C').*a))/(a(:)'*a(:));
     %     X       = F-P.a*C';
     %     aa      = a(:);
     %     P.b     = sum(sum(X.*a))/(aa'*aa);
@@ -160,8 +182,7 @@ for i=2:User.MaxIter
     %     P.lam   = sum(nnorm)'/(T*dt);
 
     % update likelihood and keep results if they improved
-    D       = F-P.a*(reshape(C,Nc,T)+b);
-    lik     = -Meta.T*Meta.Np*log(2*pi*P.sig^2)/2 -1/(2*P.sig^2)*D(:)'*D(:);
+    lik     = -Meta.T*Meta.Np*log(2*pi*P.sig^2)/2 + mse/(2*P.sig^2);
     prior   = Meta.T*sum(P.lam*Meta.dt) - Meta.dt*P.lam'*sum(n)';
     l(i)    = lik + prior;
 
@@ -172,9 +193,11 @@ for i=2:User.MaxIter
         l_max   = l(i);
     end
 
-    % if lik doesn't change much (relatively), stop iterating
-    if abs((l(i)-l(i-1))/l(i))<1e-5 || l(i-1)-l(i)>1e5; break; end
-
+    % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
+    if abs((l(i)-l(i-1))/l(i))<1e-5 || any(l(1:i-1)-l(i))<1e-5% abs((l(i)-l(i-1))/l(i))<1e-5 || l(i-1)-l(i)>1e5; 
+        break; 
+    end
+    
     % plot results from this iteration
     if User.Plot == 1
         figure(400), nrows=Nc;                % plot spatial filter
@@ -186,10 +209,10 @@ for i=2:User.MaxIter
         figure(401), clf, ncols=Nc+1;
         for j=1:Nc                              % plot inferred spike train
             h(j)=subplot(ncols,1,j);
-            bar(z1(n(:,j)))
+            bar(z1(n(2:end,j)))
 
             if isfield(User,'n'), hold on,
-                stem(User.n(:,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
+                stem(User.n(2:end,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
             end
             title(['iteration ' num2str(i)]),
             set(gca,'XTickLabel',[])
@@ -209,7 +232,7 @@ end
 
 P_best.l=l(1:i);                                % keep record of likelihoods for record
 
-    function [n C] = FastFilter(F,P)
+    function [n C DD] = FastFilter(F,P)
 
         % initialize n and C
         z = 1;                                  % weight on barrier function
@@ -221,35 +244,39 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
         end
 
         % precompute parameters required for evaluating and maximizing likelihood
-        M(d1)   = -repmat(P.gam,T-1,1);         % matrix transforming calcium into spikes, ie n=M*C
-        lam     = dt*repmat(P.lam,T,1);         % for lik
-        lnprior = lam.*sum(M)';                 % for grad
-        aa      = repmat(diag(P.a'*P.a),T,1);   % for grad
-        H1(d0)  = 2*e*aa;                       % for Hess
-        gg      = P.a'*F;% for grad
-        b       = repmat(P.b,Meta.T,1)';
-        bb      = b(:);
+        b           = repmat(P.b,Meta.T,1)';        % for lik
+        if User.Poiss==1
+            suma    = sum(P.a);                     % for grad
+        else
+            aF      = P.a'*F;                       % for grad
+            bb      = b(:);                         % for grad
+            M(d1)   = -repmat(P.gam,T-1,1);         % matrix transforming calcium into spikes, ie n=M*C
+            lam     = dt*repmat(P.lam,T,1);         % for lik
+            lnprior = lam.*sum(M)';                 % for grad
+            aa      = repmat(diag(P.a'*P.a),T,1);   % for grad
+            H1(d0)  = 2*e*aa;                       % for Hess
+        end
 
         % find C = argmin_{C_z} lik + prior + barrier_z
         while z>1e-13                           % this is an arbitrary threshold
 
-            D = F-P.a*(reshape(C,Nc,T)+b);      % difference vector to be used in likelihood computation
-            L = e*D(:)'*D(:)+lam'*n-z*sum(log(n));% Likilihood function using C
             if User.Poiss==1
-                lam1 = P.a*(C+b')';
-                L = sum(sum(exp(-lam1 + F .* log(lam1) - gammaln(F + 1))));
+                lam1 = P.a*(C+b')';             % expected poisson observation rate
+                L = sum(sum(exp(-lam1+ F.*log(lam1) - gamlnF)));
+            else
+                D = F-P.a*(reshape(C,Nc,T)+b);  % difference vector to be used in likelihood computation
+                L = e*D(:)'*D(:)+lam'*n-z*sum(log(n));% Likilihood function using C
             end
             s = 1;                              % step size
             d = 1;                              % direction
             while norm(d)>5e-2 && s > 1e-3      % converge for this z (again, these thresholds are arbitrary)
                 if User.Poiss==1
-                    g   = (-sum(P.a) + sum(F)./(C+b')')';
-                    H1(d0) = sum(F)'.*(C+b').^(-2);
-                    H   = H1;
+                    g   = (-suma + sumF./(C+b')')';
+                    H(d0) = sumF'.*(C+b').^(-2);
                 else
-                    g   = 2*e*(aa.*(C+bb)-gg(:)) + lnprior - z*M'*(n.^-1);  % gradient
-                    H2(d0) = n.^-2;                 % part of the Hessian
-                    H   = H1 + z*(M'*H2*M);         % Hessian
+                    g   = 2*e*(aa.*(C+bb)-aF(:)) + lnprior - z*M'*(n.^-1);  % gradient
+                    H2(d0) = n.^-2;             % part of the Hessian
+                    H   = H1 + z*(M'*H2*M);     % Hessian
                 end
                 d   = -H\g;                     % direction to step using newton-raphson
                 hit = -n./(M*d);                % step within constraint boundaries
@@ -265,13 +292,14 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
                     n   = M*C1;
                     if User.Poiss==1
                         lam1 = P.a*(C1+b')';
-                        L1 = sum(sum(exp(-lam1 + F .* log(lam1) - gammaln(F + 1))));
+                        L1 = sum(sum(exp(-lam1 + F.*log(lam1) - gamlnF)));
                     else
                         D   = F-P.a*(reshape(C1,Nc,T)+b);
                         DD  = D(:)'*D(:);
                         L1  = e*DD+lam'*n-z*sum(log(n));
                     end
                     s   = s/5;                  % if step increases objective function, decrease step size
+                    if s<1e-10; break; end      % if decreasing step size just doesn't do it
                 end
                 C = C1;                         % update C
                 L = L1;                         % update L

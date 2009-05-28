@@ -38,14 +38,14 @@ Meta.w       = width;                       % width of frame (pixels)
 for i=1:Nc
     P.a(:,i)=g1(:,i)-g2(:,i);
 end
-P.a     = P.a/mean(P.a);
-P.b     = 0.5;% linspace(.25,.75,Nc).*max(P.a); % baseline is a scaled down version of the sum of the spatial filters
+P.a     = 50*P.a/mean(P.a);
+P.b     = 0.01;% linspace(.25,.75,Nc).*max(P.a); % baseline is a scaled down version of the sum of the spatial filters
 
-P.sig   = 0.01;                             % stan dev of noise (indep for each pixel)
+P.sig   = 0;                             % stan dev of noise (indep for each pixel)
 C_0     = 4;                                % initial calcium
 tau     = round(100*rand(Nc,1))/200+0.05;   % decay time constant for each cell
 P.gam   = 1-Meta.dt./tau(1:Nc);             % set gam
-P.lam   = linspace(15,30,Nc)'.*ones(Nc,1);  % rate-ish, ie, lam*dt=# spikes per second
+P.lam   = linspace(5,30,Nc)'.*ones(Nc,1);  % rate-ish, ie, lam*dt=# spikes per second
 
 %% simulate data
 n=zeros(Meta.T,Nc);                         % pre-allocate memory for spike train

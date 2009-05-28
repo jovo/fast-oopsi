@@ -8,7 +8,7 @@ fname = 'spatial_multi';
 %% set parameters
 
 % generate spatial filters
-Nc      = 1;                                % # of cells in the ROI
+Nc      = 2;                                % # of cells in the ROI
 neur_w  = 10;                               % height per neuron
 height  = 15;                               % height of frame (pixels)
 width   = Nc*neur_w;                        % width of frame (pixels)
@@ -28,8 +28,8 @@ for i=1:Nc
 end
 
 % set simulation metadata
-Meta.T       = 2000;                        % # of time steps
-Meta.dt      = 0.005;                       % time step size
+Meta.T       = 3600;                        % # of time steps
+Meta.dt      = 1/60;                       % time step size
 Meta.Np      = Npixs;                       % # of pixels in each image
 Meta.h       = height;                      % height of frame (pixels)
 Meta.w       = width;                       % width of frame (pixels)
@@ -38,7 +38,7 @@ Meta.w       = width;                       % width of frame (pixels)
 for i=1:Nc
     P.a(:,i)=g1(:,i)-g2(:,i);
 end
-P.b     = linspace(0.05,0.15,Nc).*max(P.a); % baseline is a scaled down version of the sum of the spatial filters
+P.b     = 0.05.*max(P.a); % baseline is a scaled down version of the sum of the spatial filters
 
 P.sig   = 0.01;                             % stan dev of noise (indep for each pixel)
 C_0     = 0;                                % initial calcium
@@ -58,28 +58,31 @@ end
 F = P.a*(C+repmat(P.b,Meta.T,1))'+P.sig*rand(Npixs,Meta.T);
 
 % set user defined parameters
-User.MaxIter = 25;                          % # iterations of EM to estimate params
-User.Nc      = Nc;                          % # cells per ROI
-User.Plot    = 1;                           % whether to plot filter with each iteration
-User.Thresh  = 1;                           % whether to threshold spike train before estimating params (we always keep this on)
+User.MaxIter= 25;                           % # iterations of EM to estimate params
+User.Nc     = Nc;                           % # cells per ROI
+User.Plot   = 1;                            % whether to plot filter with each iteration
+User.Thresh = 1;                            % whether to threshold spike train before estimating params (we always keep this on)
+User.Poiss  = 0;
+User.n      = n;
 
 save([fname '.mat'],'F','n','P','Meta','User')
 
 %% infer spike trains and parameters
 
-for q=1:2
+qs=1:3;
+for q=qs
     if q==1;                                % use true params
         PP=P;
         User.MaxIter = 1;
     elseif q==2                             % use svd spatial filter
-        User.MaxIter = 2;
+        User.MaxIter = 1;
         PP=P;
         [U,S,V]=pca_approx(F',User.Nc);
         for j=1:User.Nc, PP.a(:,j)=V(:,j); end
-        %         User.MaxIter = 0;
-        %     elseif q==3                           % estimate params
-        %         PP=P;
-        %         for j=1:User.Nc, PP.a(:,j)=V(:,j); end
+    elseif q==3                           % estimate params
+        User.MaxIter = 20;
+        PP=P;
+        for j=1:User.Nc, PP.a(:,j)=V(:,j); end
     end
     [I{q}.n I{q}.P] = FOOPSI_v3_04_01(F,PP,Meta,User);
 end
@@ -88,7 +91,7 @@ save([fname '.mat'],'-append','I')
 
 %% plot results
 
-Pl.g    = [0.75 0.75 0.75];     % gray color
+Pl.g    = 0.65*ones(1,3);       % gray color
 Pl.fs   = 12;                   % font size
 Pl.w1   = 0.28;                 % width of subplot
 Pl.wh   = [Pl.w1 Pl.w1];        % width and height of subplots
@@ -103,26 +106,26 @@ Pl.n    = n; Pl.n(Pl.n==0)=NaN; % true spike train (0's are NaN's so they don't 
 Pl.T    = Meta.T;
 Pl.c    = [0 0 0; Pl.g; 1 1 1]; % colors: black, grey, white
 Pl.m    = ['v','v'];
-Pl.xlim = [200 300]+14;        % limits of x-axis
-Pl.shift= [0 .03];
+Pl.xlim = [200 260];        % limits of x-axis
+Pl.shift= [0 .07];
 Pl.x_range = Pl.xlim(1):Pl.xlim(2);
 Pl.XTick= [Pl.xlim(1) round(mean(Pl.xlim)) Pl.xlim(2)];
 Pl.XTickLabel = round((Pl.XTick-min(Pl.XTick))*Meta.dt*100)/100;
 
-%% show how our estimation procedure given truth and when estimating spatial filter
+% show how our estimation procedure given truth and when estimating spatial filter
 
 figure(1), clf, hold on
 nrows   = 2*length(I);
 ncols   = 1+User.Nc;
 
 Fmean=mean(F);
-for q=1:length(I)
+for q=qs
     E{q}.a=I{q}.P.a;
     E{q}.b=I{q}.P.b;
 end
 
 maxx=[]; minn=[];
-for q=1:length(I)
+for q=qs
     E{q}.a_max=max(E{q}.a(:));
     E{q}.a_min=min(E{q}.a(:));
     for j=1:User.Nc
@@ -130,7 +133,7 @@ for q=1:length(I)
     end
 end
 
-for q=1:length(I)
+for q=qs
 
     % align inferred cell with actual one
     j_inf=0*n(1:User.Nc);
@@ -150,9 +153,10 @@ for q=1:length(I)
     if q==1, 
         title(['Sum of Spatial Filters'],'FontSize',Pl.fs); 
         ylab=ylabel([{'Truth'}]);
-    else
-        ylab=ylabel([{'Estimate'}]);
-        
+    elseif q==2
+        ylab=ylabel([{'PCA'}]);
+    elseif q==3
+        ylab=ylabel([{'Estimated'}]);        
     end
         set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle','FontSize',Pl.fs)
 
@@ -171,13 +175,13 @@ for q=1:length(I)
         plot(0.9*z1(F_proj(Pl.x_range)),'Color',Pl.c(j,:),'LineWidth',Pl.lw)
         stem(Pl.n(Pl.x_range,j)-Pl.shift(j),'LineStyle','none','Marker',Pl.m(j),'MarkerEdgeColor',Pl.c(j,:),'MarkerFaceColor',Pl.c(j,:),'MarkerSize',Pl.ms)
         axis([Pl.xlim-Pl.xlim(1) 0 1])
-        set(gca,'YTick',[0 1 2.5],'YTickLabel',[])
-        if q==length(I)
-            set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',[])
-        else
+        set(gca,'YTick',[0 1],'YTickLabel',[])
+        if q==1
             title('Fluorescence Projection','FontSize',Pl.fs)
             set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',(Pl.XTick-min(Pl.XTick))*Meta.dt)
             xlabel('Time (sec)','FontSize',Pl.fs)
+        else
+            set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',[])
         end
 
     end
@@ -191,7 +195,7 @@ for q=1:length(I)
         bar(Pl.x_range,I{q}.n(Pl.x_range,j_inf(j))/max(I{q}.n(Pl.x_range,j_inf(j))),'EdgeColor',Pl.c(j,:),'FaceColor',Pl.c(j,:))
         axis('tight')
         set(gca,'YTick',[0 1],'YTickLabel',[])
-        if q~=length(I)
+        if q==1
             title('Spike Inference','FontSize',Pl.fs)
             set(gca,'XTick',Pl.XTick,'XTickLabel',(Pl.XTick-min(Pl.XTick))*Meta.dt)
             xlabel('Time (sec)','FontSize',Pl.fs)
@@ -204,7 +208,7 @@ for q=1:length(I)
 end
 
 % print fig
-wh=[7.5 7];   %width and height
+wh=[7.5 3.5*length(qs)];   %width and height
 DirName = '../graphics/';
 PrintFig(wh,DirName,fname);
 
@@ -212,7 +216,7 @@ PrintFig(wh,DirName,fname);
 % %% make hist stuff
 %
 % edges=linspace(0,1,20);
-% for q=1:length(I)
+% for q=qs
 %     D{q}.n      = I{q}.n;
 %     D{q}.sp     = [];
 %     D{q}.no_sp  = [];
@@ -237,10 +241,10 @@ PrintFig(wh,DirName,fname);
 % %% multi_hist1
 % figure(9), clf, hold on
 %
-% ncols=2;%length(I);
+% ncols=2;%length(qs);
 % nrows=2;
 % xticks=[0 .5 1];
-% for q=1:length(I)
+% for q=qs
 %     for k=1:2
 %         joint_hist=[];
 %
@@ -281,7 +285,7 @@ PrintFig(wh,DirName,fname);
 % %% plot distribution of spikes
 %
 % % edges=linspace(0,1,20);
-% % for q=1:length(I)
+% % for q=qs
 % %     D{q}.n=I{q}.n;
 % %     D{q}.sp=[];
 % %     D{q}.no_sp=[];
@@ -304,7 +308,7 @@ PrintFig(wh,DirName,fname);
 % % w=xspace/2;
 % % h=yspace/2;
 % %
-% % for q=1:length(I)
+% % for q=qs
 % %     for j=1:User.Nc
 % %         subplot('Position',[0.75 0.68+h .157/2 h]),
 % %         D{q,j}.hist=histc(D{q,j}.no_sp,edges);
@@ -320,7 +324,7 @@ PrintFig(wh,DirName,fname);
 % %
 % % %%
 % % figure(9),
-% % for q=1:length(I)
+% % for q=qs
 % %     D{q}.sp=[];
 % %     D{q}.no_sp=[];
 % %     for j=1:User.Nc
