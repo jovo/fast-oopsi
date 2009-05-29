@@ -28,8 +28,8 @@ for i=1:Nc
 end
 
 % set simulation metadata
-Meta.T       = 3600;                        % # of time steps
-Meta.dt      = 1/60;                       % time step size
+Meta.T       = 4800;                        % # of time steps
+Meta.dt      = 1/60;                        % time step size
 Meta.Np      = Npixs;                       % # of pixels in each image
 Meta.h       = height;                      % height of frame (pixels)
 Meta.w       = width;                       % width of frame (pixels)
@@ -69,8 +69,9 @@ save([fname '.mat'],'F','n','P','Meta','User')
 
 %% infer spike trains and parameters
 
-qs=1:3;
+qs=1:2;
 for q=qs
+    disp(q)
     if q==1;                                % use true params
         PP=P;
         User.MaxIter = 1;
@@ -82,7 +83,15 @@ for q=qs
     elseif q==3                           % estimate params
         User.MaxIter = 20;
         PP=P;
+        [U,S,V]=pca_approx(F',User.Nc);
+%         V(V<0)=0;
         for j=1:User.Nc, PP.a(:,j)=V(:,j); end
+    elseif q==4                           % estimate params
+        User.MaxIter = 20;
+        User.Thresh  = 0;
+        PP=P;
+        [U,S,V]=pca_approx(F',User.Nc);
+        for j=1:User.Nc, PP.a(:,j)=V(:,j); end        
     end
     [I{q}.n I{q}.P] = FOOPSI_v3_04_01(F,PP,Meta,User);
 end
@@ -137,14 +146,23 @@ for q=qs
 
     % align inferred cell with actual one
     j_inf=0*n(1:User.Nc);
+    cc=0*n(1:User.Nc,:);
     for j=1:User.Nc
-        cc=0*n(1:User.Nc);
         for k=1:User.Nc
-            cc_temp=corrcoef(n(:,j),I{q}.n(:,k)); cc(k)=cc_temp(2);
+            cc_temp = corrcoef(n(:,j),I{q}.n(:,k)); 
+            cc(k,j)   = cc_temp(2);
         end
-        [foo j_inf(j)]=max(cc);
     end
-
+    [foo ind] = max(cc);
+    sortI = sort(ind);
+    if ~any(diff(sortI)==0)
+        j_inf=ind;
+    else
+        [foo ind]=max(cc(:));
+        j_inf(1)=(ind+1)/2;
+        if j_inf(1)==1; j_inf(2)=2; else j_inf(2)=1; end
+    end
+    
     % plot mean image frame
     subplot(nrows,ncols, (q-1)*2*ncols+1)
     imagesc(reshape(sum(E{q}.a,2),Meta.h,Meta.w))
@@ -163,7 +181,7 @@ for q=qs
     % plot spatial filters
     for j=1:Nc,
         subplot(nrows,ncols,(q-1)*2*ncols+j+1)
-        image(reshape(E{q}.a(:,j),Meta.h,Meta.w)),
+        image(reshape(E{q}.a(:,j_inf(j)),Meta.h,Meta.w)),
         set(gca,'XTickLabel',[],'YTickLabel',[])
         if q==1, title(['Neuron ' num2str(j)],'FontSize',Pl.fs); end
     end

@@ -45,7 +45,7 @@ where $\bF_x=[F_{1,x}, \ldots, F_{T,x}]\T$. Given $\hbalpha$, we can estimate $\
 \end{align}
 
 \begin{align}
-\hbeta= \sum_{x=1}^N \left(\halpha_x \backslash \left(\sum_{t=1}^T F_{t,x} - \halpha_x C_t\right)\right)
+\hbeta= \halpha_x \backslash \left(\sum_{t=1}^T F_{t,x} - \halpha_x C_t\right)
 \end{align}
 
 %In the above, we assumed a one-dimensional (1-D) observation, $\bF$.  The raw data, however, is actually a series of multidimensional images. To get the 1-D time-series, two pre-processing steps are required.  First, for each neuron, one must define a region-of-interest (ROI), essentially assigning sets of pixels to neurons. This yields a vector time-series for each neuron, $\vbF_t \in \Real^m$.   Second, one must project the $m-$D observations into a 1-D time-series.  Typically, this step is performed by averaging all the pixels within the ROI.  In theory, one can improve on this uniform averaging by estimating the optimal spatial filter. Here, we provide details on how to incorporate this second step (projecting the $m-$D observations into 1-D) into our fast filter. First, we replace Eq \eqref{eq:obj} with:

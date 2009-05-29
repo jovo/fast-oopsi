@@ -119,12 +119,13 @@ else
     H2  = I;                                    % initialize memory for Hessian matrix
 end
 
-[n C mse_old] = FastFilter(F,P);                % infer approximate MAP spike train, given initial parameter estimates
+[n C]   = FastFilter(F,P);                % infer approximate MAP spike train, given initial parameter estimates
 l(1)    = -inf;
 l_max   = l(1);                                 % maximum likelihood achieved so far
 n_best  = n;                                    % best spike train
 P_best  = P;                                    % best parameter estimate
-
+options = optimset('Display','off');
+mse_old = -inf;
 for i=2:User.MaxIter
 
     % update inferred spike train
@@ -152,32 +153,23 @@ for i=2:User.MaxIter
     % update spatial filter and baseline
     mse = mse_old+1;
     %     while mse > mse_old+1e-3
-    for jj=1:5
+%     for jj=1:5
         CC = CC + b';
         for ii=1:Meta.Np
             Y   = F(ii,:)';
-            P.a(ii,:) = CC\Y;
+            P.a(ii,:) = CC\Y;     % P.a(ii,:) = quadprog(CC'*CC,-CC'*Y,[],[],[],[],[0 0],[inf inf],P.a(ii,:),options);
         end
-        for j=1:Nc
-            P.b(j)     = P.a(:,j)\sum(F - P.a(:,j)*CC(:,j)',2)/T;
-        end
-        P.b(P.b<0)=0;
+        % P.b     = (P.a\sum(F - P.a*CC',2)/T)'; %for j=1:Nc, P.b(j) = P.a(:,j)\sum(F - P.a(:,j)*CC(:,j)',2)/T; end; P.b(P.b<0)=0;
+        P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/T',[],[],[],[],[0 0],[inf inf],P.b,options);
+        P.b     = P.b';
         mse_old = mse;
         b       = repmat(P.b,Meta.T,1)';
         D       = F-P.a*(reshape(C,Nc,T)+b);
         mse     = -D(:)'*D(:);
-    end
-
-
-    %     a       = repmat(P.a,1,T);
-    %     P.b     = sum(sum((F-P.a*C').*a))/(a(:)'*a(:));
-    %     X       = F-P.a*C';
-    %     aa      = a(:);
-    %     P.b     = sum(sum(X.*a))/(aa'*aa);
-    %     P.b     = sum(sum((a\(F-P.a*C'))))/T;
+%     end
 
     % estimate other parameters
-    %     P.sig   = sqrt(DD/T);
+    %     P.sig   = sqrt(-mse/T);
     %     nnorm   = n./repmat(max(n),Meta.T,1);
     %     P.lam   = sum(nnorm)'/(T*dt);
 
@@ -194,10 +186,11 @@ for i=2:User.MaxIter
     end
 
     % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
-    if abs((l(i)-l(i-1))/l(i))<1e-5 || any(l(1:i-1)-l(i))<1e-5% abs((l(i)-l(i-1))/l(i))<1e-5 || l(i-1)-l(i)>1e5; 
-        break; 
+    if abs((l(i)-l(i-1))/l(i))<1e-5 || any(l(1:i-1)-l(i))<1e-5% abs((l(i)-l(i-1))/l(i))<1e-5 || l(i-1)-l(i)>1e5;
+        disp('modifying theta did not reduce likelihood enough to justify more of it')
+        break;
     end
-    
+
     % plot results from this iteration
     if User.Plot == 1
         figure(400), nrows=Nc;                % plot spatial filter
@@ -206,19 +199,19 @@ for i=2:User.MaxIter
             title('a')
         end
 
-        figure(401), clf, ncols=Nc+1;
+        figure(401), clf, ncols=Nc+1; END=min(T,200);
         for j=1:Nc                              % plot inferred spike train
             h(j)=subplot(ncols,1,j);
-            bar(z1(n(2:end,j)))
+            bar(z1(n(2:END,j)))
 
             if isfield(User,'n'), hold on,
-                stem(User.n(2:end,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
+                stem(User.n(2:END,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
             end
             title(['iteration ' num2str(i)]),
             set(gca,'XTickLabel',[])
             axis('tight')
         end
-        subplot(ncols,1,ncols), plot(l(2:i))    % plot record of likelihoods
+        subplot(ncols,1,ncols), semilogy(l(2:i))    % plot record of likelihoods
         title(['max lik ' num2str(l_max,4), ',   lik ' num2str(l(i),4)])
         set(gca,'XTickLabel',[])
         linkaxes(h,'xy')
@@ -299,7 +292,7 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
                         L1  = e*DD+lam'*n-z*sum(log(n));
                     end
                     s   = s/5;                  % if step increases objective function, decrease step size
-                    if s<1e-10; break; end      % if decreasing step size just doesn't do it
+                    if s<1e-20; disp('reducing s further did not increase likelihood'), break; end      % if decreasing step size just doesn't do it
                 end
                 C = C1;                         % update C
                 L = L1;                         % update L
