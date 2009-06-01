@@ -53,7 +53,7 @@ n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
 %\begin{subequations}  
 \begin{align} 
 \hbC_{\zzz} &= \argmin_{C_t - \gamma C_{t-1} \geq 0 \forall t} \sum_{t=1}^{T} \left( \frac{1}{2 \sig^2}\norm{\bF_t -\balpha (C_t + \beta)}^2  + (C_t - \gamma C_{t-1}) \lam \Del - \zzz \log(C_t - \gamma C_{-1} -\nu ) \right) \nonumber \\
-&= \az  \frac{1}{2 \sig^2} \norm{\bF - \balpha (\trans{\bC} +\beta)}^2 + \lam \Del (\bM \bC )\T \ve{1}  - \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta2}
+&= \az  \frac{1}{2 \sig^2} \norm{\bF - \balpha (\trans{\bC} +\beta+\ve{1}\T)}^2 + \lam \Del (\bM \bC )\T \ve{1}  - \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta2}
 \end{align}
 %\end{subequations}
 
@@ -66,7 +66,7 @@ n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
 \hbC_{\zzz} &\leftarrow \hbC_{\zzz} + s \bd \\
 \bH \bd &= \bg \\
 \ve{g} &= -\frac{\balpha}{\sig^2}(\bF -\balpha({\hbC\T}_{\zzz} + \beta)) + \lam \Del \ve{M}\T \ve{1} - \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-1} \label{eq:g} \\
-\ve{H} &= \frac{\balpha^2}{\sig^2} \ve{I} + \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-2} \ve{M} \label{eq:H}
+\ve{H} &= \frac{\balpha\T \balpha}{\sig^2} \ve{I} + \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-2} \ve{M} \label{eq:H}
 \end{align}
 \end{subequations}
 

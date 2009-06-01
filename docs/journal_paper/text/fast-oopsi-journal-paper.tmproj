@@ -37,7 +37,7 @@
 					<key>filename</key>
 					<string>inference.tex</string>
 					<key>lastUsed</key>
-					<date>2009-05-26T15:58:36Z</date>
+					<date>2009-05-27T13:50:20Z</date>
 					<key>selected</key>
 					<true/>
 				</dict>
@@ -181,9 +181,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>236</integer>
+				<integer>2</integer>
 				<key>line</key>
-				<integer>54</integer>
+				<integer>43</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
