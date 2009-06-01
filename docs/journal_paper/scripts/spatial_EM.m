@@ -26,7 +26,7 @@ g1      = zeros(Npixs,Nc);
 g2      = 0*g1;
 Sigma1  = diag([1,1])*3;                    % var of positive gaussian
 Sigma2  = diag([1,1])*5;                    % var of negative gaussian
-mu      = [0 0]; %[1 1]'*linspace(-2,2,Nc);         % means of gaussians for each cell (distributed across pixel space)
+mu      = [0 0]; %[1 1]'*linspace(-2,2,Nc); % means of gaussians for each cell (distributed across pixel space)
 w       = Nc:-1:1;                          % weights of each filter
 
 % spatial filter
