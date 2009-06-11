@@ -1,0 +1,94 @@
+Given the above model, our goal is to find the maximum \emph{a posteriori} (MAP) spike train, i.e., the most likely spike train, $\bn$,  given the fluorescence measurements, $\bF$. Formally, we have:
+
+\begin{subequations}  \label{eq:obj}
+\begin{align}
+\bn_{MAP}
+&=  \anx P[\bn | \bF] \label{eq:nhat1} \\
+&= \anx P[\bF | \bn] P[\bn]  \label{eq:nhat2} \\
+&= \argmax_{n_t \in \mathbb{N}_0 \forall t} \prod_{t=1}^T  P[F_t | C_t]  P[n_t] 
+= \argmax_{n_t \in \mathbb{N}_0 \forall t} \sum_{t=1}^T \big( \log P[F_t | C_t] + \log P[n_t]\big)  \label{eq:nhat3} \\
+&= \ann  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  -  n_t \log \lam \Del + \log n_t! \bigg), \label{eq:nhat4}   
+\end{align} 
+\end{subequations}
+
+\noindent where \ref{eq:nhat1} is the definition of the MAP spike train, \ref{eq:nhat2} follows from Bayes' Rule, \ref{eq:nhat3} and \ref{eq:nhat4} follow from the state-space nature of our problem, $\mathbb{N}_0$ is the set of natural numbers (i.e., $\mathbb{N}_0 = \{0, 1, 2, \ldots\}$), $T$ is the number of time steps in the recording, and $C_t$ is implicitly a function of $n_t$.  Unfortunately, the computational complexity of solving Eq. \eqref{eq:obj} scales exponentially with $T$, since finding the most likely spike train requires searching over all possible spike trains.  Even if $n_t$ were constrained to be some finite number, $k$, the number of possible spike trains would be $k^T$, which, for any reasonably sized $T$, is too many to search over.  Thus, instead of an exact solution, we propose to make an approximation that reduces the complexity to be \emph{polynomial} in $T$. In particular, we relax the assumption that we must have an integer number of spikes at any time step, by approximating the Poisson distribution with an exponential. Note that this is a common approximation technique in the machine learning literature \cite{HastieFriedman01}, as it is the closest convex relaxation to its non-convex counterpart. The constraint on $n_t$ in Eq. \eqref{eq:obj} is therefore relaxed from  $n_t \in \mathbb{N}_0$ to $n_t \geq 0$:
+
+\begin{align} \label{eq:obj2}
+\hnm &\approx \argmax_{n_t>0 \, \forall t}  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  + n_t \lam \Del \bigg), \qquad \hnm \sim \text{Exponential}(\lam \Del) %\an  \sum_{t=1}^T \left( \frac{1}{2 \sig^2}(\norm{\bF_t -\balpha (C_t + \beta)}^2  +  n_t  \lam \Del \right).
+\end{align}
+
+While this convex relaxation makes the problem tractable, the ``sharp'' threshold imposed by the nonnegativity constraint prohibits the use of standard gradient ascent techniques \cite{BoydVandenberghe04}. We therefore take an ``interior-point'' (or ``barrier'') approach, in which we drop the sharp threshold, and add a barrier term, which must approach $-\infty$ as $n_t$ approaches zero (e.g., $-\log n_t$) \cite{BoydVandenberghe04}.  By iteratively reducing the weight of the barrier term, we are guaranteed to converge to the correct solution \cite{BoydVandenberghe04}.  Thus, our goal is to efficiently solve:
+
+
+\begin{align} \label{eq:eta}
+\hbn_{\zzz} &= \argmin_{n_t \forall t}  \sum_{t=1}^T \left( \frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  +  n_t  \lam \Del - \zzz \log(n_t) \right),
+\end{align}
+
+Since spikes and calcium are related to one another via a simple linear transformation, namely, $n_t=C_t - \gam C_{t-1}$.  Thus, we may rewrite Eq. \eqref{eq:eta} in terms of $\bC$:
+
+\begin{align} 
+\hbC_{\zzz} &= \argmin_{C_t - \gamma C_{t-1} \geq 0 \forall t} \sum_{t=1}^{T} \left( \frac{1}{2 \sig^2} (F_t -\alpha (C_t + \beta))^2  + (C_t - \gamma C_{t-1}) \lam \Del - \zzz \log(C_t - \gamma C_{-1}) \right). \label{eq:eta2}
+\end{align}
+
+\noindent Since Eq. \eqref{eq:eta2} is concave, we can use any number of techniques guaranteed to find the global optimum.  And because the argument of Eq. \eqref{eq:eta2} is twice differentiable, we elect to use the Newton-Raphson technique. Importantly, the state-space nature of this problem yields a particularly efficient approach. Specifically, note that the Hessian is \emph{tridiagonal}, which is clear upon rewriting \eqref{eq:eta2} in matrix notation:
+
+\begin{align} 
+\hbC_{\zzz} %&= \argmin_{C_t - \gamma C_{t-1} \geq 0 \forall t} \sum_{t=1}^{T} \left( \frac{1}{2 \sig^2}\norm{\bF_t -\balpha (C_t + \beta)}^2  + (C_t - \gamma C_{t-1}) \lam \Del - \zzz \log(C_t - \gamma C_{-1} -\nu ) \right) \nonumber \\
+&= \az  \frac{1}{2 \sig^2} \norm{\bF - \alpha (\bC +\beta)}^2 + (\bM \bC )\T \blam  - \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta3}
+\end{align}
+
+\noindent where $\ve{M} \in \mathbb{R}^{T \times T}$ is a bidiagonal matrix, $\bM \bC \geq \ve{0}$ indicates that every element of $\bM \bC$ is greater than or equal to zero, $\T$ indicates transpose, $\ve{1}$ is a $T$ dimensional column vector, $\blam=\lam \Del \ve{1}\T$, and $\log(\cdot)$ indicates an element-wise logarithm.  Note that Eq. \eqref{eq:eta3} follows from writing $\bn$ in terms of $\bM$ and $\bC$:
+ 
+% such as Newton-Raphson, which, na\"{i}ely, requires inverting the Hessian (second derivative), an $O(T^3)$ operation.  
+%We have therefore reduced the computational burden from exponential to polynomial in $T$.   However, by utilizing the structure of Eq. \eqref{eq:trans}, we can devise an algorithm that further reduces computation burden from polynomial in $T$ to \emph{linear} in $T$.  In particular, we note here that 
+%, or, in matrix notation: 
+
+\begin{align} \label{eq:M}
+\ve{M} \bC = %- \bb=
+\begin{bmatrix}
+1 & 0  & 0 & \cdots & \cdots \\
+1 & -\gamma & 0 & \cdots & \cdots \\
+0 & 1 & -\gamma & 0 & \cdots  \\
+\vdots & \vdots & \vdots & \vdots & \vdots  \\
+0 & 0 & 0 & 1 & -\gamma
+\end{bmatrix}
+\begin{bmatrix}
+C_1 \\ C_2 \\ \vdots \\ \vdots \\ C_T  
+\end{bmatrix}
+%-\begin{bmatrix}
+%\nu/\rho \\ \nu/\rho \\ \vdots \\ \vdots \\ \nu/\rho 
+%\end{bmatrix}
+= 
+\begin{bmatrix}
+n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
+\end{bmatrix}
+= \bn
+\end{align}
+
+%\noindent and $\ve{M} \in \mathbb{R}^{T \times T}$ is a bidiagonal matrix. Given Eq. \eqref{eq:M}, we may rewrite Eq. \eqref{eq:eta} only in terms of $\bC$ (i.e., not $\bn$):
+%
+%\begin{subequations}  
+%\begin{align} 
+%\hbC_{\zzz} &= \argmin_{C_t - \gamma C_{t-1} \geq 0 \forall t} \sum_{t=1}^{T} \left( \frac{1}{2 \sig^2}\norm{\bF_t -\balpha (C_t + \beta)}^2  + (C_t - \gamma C_{t-1}) \lam \Del - \zzz \log(C_t - \gamma C_{-1} -\nu ) \right) \nonumber \\
+%&= \az  \frac{1}{2 \sig^2} \norm{\bF - \balpha (\trans{\bC} +\beta+\ve{1}\T)}^2 + \lam \Del (\bM \bC )\T \ve{1}  - \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta2}
+%\end{align}
+%\end{subequations}
+
+Thus, a little bit of calculus yields our update algorithm for $\bC_z$:
+
+%As \eqref{eq:eta2} is concave (it is identical to Eq. \eqref{eq:eta} with different notation), we may use any descent technique to find $\hbC_{\zzz}$.  We elect to use the Newton-Raphson approach: 
+
+%, i.e., update $\widehat{\ve{C}}_{\zzz}$ by adding to it the solution to $\ve{H}\ve{C} = \ve{g}$, weighted by $0<s\leq1$, where $\ve{H}$ and $\ve{g}$ are the Hessian and gradient of the argument in \eqref{eq:goal2}.  The step size, $s$, ensures that the posterior converges, by enforcing an increase in the objective with each step. Therefore, we have: 
+
+\begin{subequations} \label{eq:NR}
+\begin{align}
+\hbC_{\zzz} &\leftarrow \hbC_{\zzz} + s \bd \\
+\bH \bd &= \bg \\
+\ve{g} &= -\frac{\alpha}{\sig^2}(\bF -\alpha({\hbC\T}_{\zzz} + \beta)) + \ve{M}\T\blam - \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-1} \label{eq:g} \\
+\ve{H} &= \frac{\alpha^2}{\sig^2} \ve{I} + \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-2} \ve{M} \label{eq:H}
+\end{align}
+\end{subequations}
+
+\noindent where $s$ is the step size, $\bd$ is the step direction, and $\bg$ and $\bH$ are the gradient (first derivative) and Hessian (second derivative) of the argument in Eq. \eqref{eq:eta3} with respect to $\bC$, respectively, and the exponents indicate element-wise operations. Note that we use ``backtracking linesearches'', meaning that for each iteration, we find the maximal $s$ that is (i) between $0$ and $1$ and (ii) decreases the likelihood.
+
+Typically, implementing Newton-Raphson requires inverting the Hessian, i.e., $\bd = \bH^{-1} \bg$, a computation consuming $O(T^3)$ time. Here, because $\ve{M}$ is bidiagonal, the Hessian is tridiagonal, so the solution may be found in $O(T)$ time via standard banded Gaussian elimination techniques (which can be implemented efficiently in Matlab using $\bH \backslash \bg$). Thus, by recursively solving for $\hbC_z$ using Eq. \eqref{eq:NR}, we obtain $\hbn$, which is an approximation to to $\bn_{MAP}$.  We refer to this fast algorithm for solving \eqref{eq:obj2} the FAst Nonnegative Deconvolution (FAND) filter.  

@@ -1,0 +1,181 @@
+\begin{thebibliography}{10}
+
+\bibitem{YusteKonnerth06}
+R.~Yuste and A.~Konnerth.
+\newblock {\em {Imaging in Neuroscience and Development, A Laboratory Manual}},
+  2006.
+
+\bibitem{NagayamaChen07}
+Shin Nagayama, Shaoqun Zeng, Wenhui Xiong, Max~L Fletcher, Arjun~V Masurkar,
+  Douglas~J Davis, Vincent~A Pieribone, and Wei~R Chen.
+\newblock {In vivo simultaneous tracing and {Ca}$^{2+}$ imaging of local
+  neuronal circuits.}
+\newblock {\em Neuron}, 53(6):789--803, Mar 2007.
+
+\bibitem{GobelHelmchen07}
+Werner G\"{o}bel and Fritjof Helmchen.
+\newblock In vivo calcium imaging of neural network function.
+\newblock {\em Physiology (Bethesda)}, 22:358--365, Dec 2007.
+
+\bibitem{LuoSvoboda08}
+Liqun Luo, Edward~M Callaway, and Karel Svoboda.
+\newblock Genetic dissection of neural circuits.
+\newblock {\em Neuron}, 57(5):634--660, Mar 2008.
+
+\bibitem{GaraschukKonnerth07}
+Olga Garaschuk, Oliver Griesbeck, and Arthur Konnerth.
+\newblock Troponin c-based biosensors: a new family of genetically encoded
+  indicators for in vivo calcium imaging in the nervous system.
+\newblock {\em Cell Calcium}, 42(4-5):351--361, 2007.
+
+\bibitem{MankGriesbeck08}
+Marco Mank and Oliver Griesbeck.
+\newblock Genetically encoded calcium indicators.
+\newblock {\em Chem Rev}, 108(5):1550--1564, May 2008.
+
+\bibitem{WallaceHasan08}
+Damian~J Wallace, Stephan~Meyer zum Alten~Borgloh, Simone Astori, Ying Yang,
+  Melanie Bausen, Sebastian Kügler, Amy~E Palmer, Roger~Y Tsien, Rolf Sprengel,
+  Jason N~D Kerr, Winfried Denk, and Mazahir~T Hasan.
+\newblock Single-spike detection in vitro and in vivo with a genetic ca2+
+  sensor.
+\newblock {\em Nat Methods}, 5(9):797--804, Sep 2008.
+
+\bibitem{StosiekKonnerth03}
+Christoph Stosiek, Olga Garaschuk, Knut Holthoff, and Arthur Konnerth.
+\newblock In vivo two-photon calcium imaging of neuronal networks.
+\newblock {\em Proceedings of The National Academy Of Sciences Of The United
+  States Of America}, 100(12):7319--7324, Jun 2003.
+
+\bibitem{OhkiReid05}
+Kenichi Ohki, Sooyoung Chung, Yeang~H Ch'ng, Prakash Kara, and R~Clay Reid.
+\newblock Functional imaging with cellular resolution reveals precise
+  micro-architecture in visual cortex.
+\newblock {\em Nature}, 433(7026):597--603, Feb 2005.
+
+\bibitem{OhkiReid06}
+Kenichi Ohki, Sooyoung Chung, Prakash Kara, Mark H??bener, Tobias Bonhoeffer,
+  and R.~Clay Reid.
+\newblock Highly ordered arrangement of single neurons in orientation
+  pinwheels.
+\newblock {\em Nature}, 442(7105):925--928, Aug 2006.
+
+\bibitem{YaksiFriedrich07}
+Emre Yaksi, Benjamin Judkewitz, and Rainer~W Friedrich.
+\newblock Topological reorganization of odor representations in the olfactory
+  bulb.
+\newblock {\em PLoS Biol}, 5(7):e178, Jul 2007.
+
+\bibitem{SatoSvoboda07}
+Takashi~R Sato, Noah~W Gray, Zachary~F Mainen, and Karel Svoboda.
+\newblock The functional microarchitecture of the mouse barrel cortex.
+\newblock {\em PLoS Biol}, 5(7):e189, Jul 2007.
+
+\bibitem{KerrHelmchen07}
+J.N.D. Kerr, C.P.J. de~Kock, D.S. Greenberg, R.M. Bruno, B.~Sakmann, and
+  F.~Helmchen.
+\newblock {Spatial organization of neuronal population responses in layer 2/3
+  of rat barrel cortex}.
+\newblock {\em Journal of Neuroscience}, 27(48):13316, 2007.
+
+\bibitem{OzdenWang08}
+Ilker Ozden, H.~Megan Lee, Megan~R Sullivan, and Samuel S-H Wang.
+\newblock Identification and clustering of event patterns from in vivo
+  multiphoton optical recordings of neuronal ensembles.
+\newblock {\em J Neurophysiol}, 100(1):495--503, Jul 2008.
+
+\bibitem{GreenbergKerr08}
+David~S Greenberg, Arthur~R Houweling, and Jason N~D Kerr.
+\newblock Population imaging of ongoing neuronal activity in the visual cortex
+  of awake rats.
+\newblock {\em Nat Neurosci}, 11(7):749 -- 751, Jun 2008.
+
+\bibitem{VogelsteinPaninski09b}
+JT~Vogelstein, BO~Watson, Packer AM, R~Yuste, Jedynak B, and L~Paninski.
+\newblock Spike inference from calcium imaging using sequential monte carlo
+  methods.
+\newblock {\em Biophysical Journal}, 2009.
+
+\bibitem{HolekampHoly08}
+Terrence~F Holekamp, Diwakar Turaga, and Timothy~E Holy.
+\newblock Fast three-dimensional fluorescence imaging of activity in neural
+  populations by objective-coupled planar illumination microscopy.
+\newblock {\em Neuron}, 57(5):661--672, Mar 2008.
+
+\bibitem{LeeSeung99}
+D.~D. Lee and H.~S. Seung.
+\newblock Learning the parts of objects by non-negative matrix factorization.
+\newblock {\em Nature}, 401(6755):788--791, Oct 1999.
+
+\bibitem{LeeSeung01}
+D.D. Lee and H.S. Seung.
+\newblock {Algorithms for non-negative matrix factorization}.
+\newblock {\em Advances in Neural Information Processing Systems}, 13:556--562,
+  2001.
+
+\bibitem{HuysPaninski06}
+Quentin J~M Huys, Misha~B Ahrens, and Liam Paninski.
+\newblock Efficient estimation of detailed single-neuron models.
+\newblock {\em J Neurophysiol}, 96(2):872--890, Aug 2006.
+
+\bibitem{PortugalVicente94}
+L.F. Portugal, J.J. Judice, and L.N. Vicente.
+\newblock {A comparison of block pivoting and interior-point algorithms for
+  linear least squares problems with nonnegative variables}.
+\newblock {\em Mathematics of Computation}, 63(208):625--643, 1994.
+
+\bibitem{LeeNg06}
+H.~Lee, A.~Battle, R.~Raina, and A.~Ng.
+\newblock {Efficient sparse coding algorithms}.
+\newblock {\em Advances in Neural Information Processing Systems}, 2006.
+
+\bibitem{OGradyPearlmutter06}
+{O?Grady, P.D. and Pearlmutter, B.A.}
+\newblock {Convolutive non-negative matrix factorisation with a sparseness
+  constraint}.
+\newblock {\em Machine Learning for Signal Processing, 2006. Proceedings of the
+  2006 16th IEEE Signal Processing Society Workshop on}, pages 427--432, 2006.
+
+\bibitem{HastieFriedman01}
+T.~Hastie, R.~Tibshirani, and J.~Friedman.
+\newblock {\em {The Elements of Statistical Learning: Data Mining, Inference,
+  and Prediction}}.
+\newblock Springer, 2001.
+
+\bibitem{BoydVandenberghe04}
+S.~Boyd and L.~Vandenberghe.
+\newblock {\em Convex Optimization}.
+\newblock Oxford University Press, 2004.
+
+\bibitem{Wiener49}
+N.~Wiener.
+\newblock {\em {Extrapolation, interpolation, and smoothing of stationary time
+  series: with engineering applications}}.
+\newblock MIT Press, Cambridge, Mass., 1949.
+
+\bibitem{Rabiner89}
+Lawrence~R Rabiner.
+\newblock {A Tutorial on Hidden Markov Models and Selected Applications in
+  Speech Recognition}.
+\newblock {\em Proceedings of the IEEE}, 72(2):257--286, February 1989.
+
+\bibitem{IkegayaYuste04}
+Yuji Ikegaya, Gloster Aaron, Rosa Cossart, Dmitriy Aronov, Ilan Lampl, David
+  Ferster, and Rafael Yuste.
+\newblock Synfire chains and cortical songs: temporal modules of cortical
+  activity.
+\newblock {\em Science}, 304(5670):559--564, Apr 2004.
+
+\bibitem{NiellSmith05}
+Cristopher~M Niell and Stephen~J Smith.
+\newblock Functional imaging reveals rapid development of visual response
+  properties in the zebrafish tectum.
+\newblock {\em Neuron}, 45(6):941--951, Mar 2005.
+
+\bibitem{YaksiFriedrich06}
+Emre Yaksi and Rainer~W Friedrich.
+\newblock Reconstruction of firing rate changes across neuronal populations by
+  temporally deconvolved {Ca}$^{2+}$ imaging.
+\newblock {\em Nat Methods}, 3(5):377--383, May 2006.
+
+\end{thebibliography}

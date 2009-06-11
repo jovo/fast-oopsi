@@ -1,0 +1,9 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}
+\BOOKMARK [1][-]{section.2}{Methods}{}
+\BOOKMARK [2][-]{subsection.2.1}{Model}{section.2}
+\BOOKMARK [2][-]{subsection.2.2}{Inferring the spike times}{section.2}
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Barrier Method}{subsection.2.2}
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Projection Pursuit Regression \(PPR\)}{subsection.2.2}
+\BOOKMARK [2][-]{subsection.2.3}{Inferring the parameters}{section.2}
+\BOOKMARK [1][-]{section.3}{Results}{}
+\BOOKMARK [1][-]{section.4}{Figures}{}

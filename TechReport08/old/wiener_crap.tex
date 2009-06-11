@@ -1,0 +1,118 @@
+\section{Wiener Deconvolution} \label{sec:wiener}
+
+We can write the above model as a convolution:
+
+\begin{align}
+F(t) = y(t) \ast n(t) + \varepsilon(t)
+\end{align}
+
+\noindent where $y(t)=Ae^{-t/\tau}$ is the calcium convolution kernel. The goal is then to find some optimal deconvolution kernel, $g(t)$, so that we may estimate $n_t$ as follows:
+
+\begin{align} \label{eq:opt_n}
+\widehat{n}(t) = g(t) \ast F(t).
+\end{align}
+
+The Wiener deconvolution filter is most easily described in the frequency domain:
+
+\begin{align} \label{eq:G}
+G(f) = \frac{|Y^(f)| E[N(f)]^2}{|Y(f)|^2 E[N(f)]^2 + E[\epsilon(f)]^2}
+\end{align}
+
+\noindent where we use the notation $X(f)$ to indicate the Fourier transform of $x(t)$, and $E[X(f)]^2$ to indicate the power spectral density (PSD) of $x(t)$.  By assuming that $n(t)$ is Poisson (or binomial), and $\varepsilon(t)$ is Gaussian, we can write their PSD's analytically:
+
+\begin{align} \label{eq:psdN}
+E[N(f)]^2 &=\\ \label{eq:psde}
+E[\epsilon(f)]^2&=.
+\end{align}
+
+Similarly, because $y(t)$ is an exponential, we may write its Fourier transform as:
+
+\begin{align} \label{eq:Y}
+Y(f)=.
+\end{align}
+
+Thus, plugging in \eqref{eq:psdN},\eqref{eq:psde}, and \eqref{eq:Y} into \eqref{eq:G}, we have
+
+\begin{align}
+G(f)&=.
+\end{align}
+
+Finally, taking the inverse Fourier transform of $G(f)$, we are left with
+
+\begin{align}
+g(t)=,
+\end{align}
+
+\noindent which we may plug back into \eqref{eq:opt_n} to find $\widehat{n}(t)$.
+
+
+\subsection{Lin Alg way}
+
+Weiner deconv of exponential kernel.
+
+First note that the $\Ca_t$ is simply a convolution of the spike train with a linear kernel,
+
+\begin{align}
+\ve{\Ca} = Ae^{-\ve{t}/\tau_c} \ast \ve{n}
+\end{align}
+
+\noindent where $\ve{t}$ indicates the vector, $[A, Ae^{-\Delta/\tau_c},\ldots, Ae^{-L\Delta/\tau_c}]$, with $L$ the length of this linear kernel.  The spike train may also be written as a linear function of $\Ca_t$:
+
+
+\begin{align}
+\ve{n} = \ma{Y} \ve{\psi} + \ve{\varepsilon}
+\end{align}
+
+\noindent where $\ma{Y}$ is a $T \times L$ matrix
+
+\begin{equation}
+\begin{bmatrix}
+\Ca_0&\Ca_1&\ldots&\Ca_{L-1}&1\\
+\Ca_1&\Ca_2&\ldots&\Ca_L&1\\
+\vdots\\
+\Ca_{T-L}&\Ca_{T-L+1}&\ldots&\Ca_T&1
+\end{bmatrix}.
+\end{equation}
+
+The solution for the optimal $\ve{\psi}$ is thus given by,
+
+\begin{align}
+E[\ve{\psi}] &= E[(\ma{Y}^T\ma{Y})^{-1}(\ma{Y}^T\ve{n})]\\
+&=E[\ma{Y}^T\ma{Y}]^{-1}E[\ma{Y}^T\ve{n}]
+\end{align}
+
+Importantly, $\ma{Y}$ may be written as a linear function of $\ve{n}$:
+
+\begin{align} \label{eq:YKn}
+\ma{Y}&=\ma{K}\ve{n}+\ve{\varepsilon}\\
+\Rightarrow E[\ma{Y}] &= \ma{K}E[\ve{n}]
+\end{align}
+
+\noindent where $\ma{K}$ is the convolution kernel matrix:
+
+\begin{equation}
+\begin{bmatrix}
+A&0&\ldots&0\\
+Ae^{-\Delta/\tau_c}&A&0&\ldots\\
+Ae^{-2\Delta/\tau_c}&Ae^{-\Delta/\tau_c}&A&\ldots\\
+\vdots\\
+Ae^{-T\Delta/\tau_c}&\ldots&\ldots&A
+\end{bmatrix}.
+\end{equation}
+
+Thus, \eqref{eq:YKn} may be expanded
+
+\begin{align}
+E[\ma{Y}^T\ma{Y}]^{-1}E[\ma{Y}^T\ve{n}] &= (\ma{K}E[\ve{n}])^T(\ma{K}E[\ve{n})]^{-1} (\ma{K}E[\ve{n}])^T E[\ve{n}]\\
+&=\big((E[\ve{n}]^T\ma{K}^T)(\ma{K}E[\ve{n}])\big)^{-1}E[\ve{n}^T]\ma{K}^TE[\ve{n}].
+\end{align}
+
+Converting to the Fourier domain, we have
+
+\begin{align}
+\ma{K} &= \frac{1}{1+a\omega}\\
+\ma{K}^T\ma{K} &= \frac{1}{1+a\omega^2}\\
+\ma{K}^T\ma{K}+b\ma{I} &= b+\frac{1}{1+a\omega^2}\\
+E[\ve{n}] &= \lambda
+\end{align}
+
