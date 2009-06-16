@@ -97,7 +97,7 @@ Est.w       = width;                        % width of frame (pixels)
 
 % infer spike trains using a variety of techniques
 q=0;
-exps=[1 2 2.5];% 3 3.5];
+exps=[1];% 3 3.5];
 for qq=exps
     disp(qq)
     if qq==1;                                % use true params
