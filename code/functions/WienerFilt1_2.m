@@ -53,7 +53,7 @@ while conv == false
         
         W = -C(1:end-1);
         Y = -F(2:end)+N(2:end);
-        a = W'*Y/(W'*W);
+        a = W\Y; %W'*Y/(W'*W);
 
         E.tau   = dt/(1-a);
         E.sig   = sqrt((F-C)'*(F-C)/T);

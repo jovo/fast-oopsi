@@ -8,9 +8,9 @@ fname = 'spatial_multi';
 %% set parameters
 
 % generate spatial filters
-Nc      = 1;                                % # of cells in the ROI
-neur_w  = 2;                               % height per neuron
-height  = 2;                               % height of frame (pixels)
+Nc      = 2;                                % # of cells in the ROI
+neur_w  = 8;                               % height per neuron
+height  = 10;                               % height of frame (pixels)
 width   = Nc*neur_w;                        % width of frame (pixels)
 Npixs   = height*width;                     % # pixels in ROI
 x       = linspace(-5,5,width);
@@ -42,7 +42,7 @@ Meta.Poiss  = 0;                            % whether observations are poisson o
 Meta.MaxIter= 25;                           % # iterations of EM to estimate params
 
 % initialize other parameters
-P.sig   = max(P.a)*0.01;                             % stan dev of noise (indep for each pixel)
+P.sig   = max(P.a(:))*0.25;                             % stan dev of noise (indep for each pixel)
 C_0     = 0;                                % initial calcium
 tau     = rand(Meta.Nc,1)/2+.05;   % decay time constant for each cell
 P.gam   = 1-Meta.dt./tau(1:Nc);             % set gam
@@ -65,7 +65,7 @@ for i=1:Meta.Nc
 end
 F = P.a*(C+repmat(P.b,Meta.T,1))'+P.sig*rand(Npixs,Meta.T);
 
-save(['../../data/' fname '.mat'],'F','n','P','Meta','Est')
+save(['../../data/' fname '.mat'],'F','n','P','Meta')
 
 %% generate tif 
 
@@ -97,7 +97,7 @@ Est.w       = width;                        % width of frame (pixels)
 
 % infer spike trains using a variety of techniques
 q=0;
-exps=[1:2];% 3 3.5];
+exps=[1 2 2.5];% 3 3.5];
 for qq=exps
     disp(qq)
     if qq==1;                                % use true params
@@ -110,18 +110,15 @@ for qq=exps
         PP=P;
         PP.lam=mean(PP.lam);
         FF=F;
-        Est.Thresh = 0;
-%         [U,S,V]=pca_approx(F',Meta.Nc);
-%         for j=1:Meta.Nc, PP.a(:,j)=V(:,j); end
+        [U,S,V]=pca_approx(F',Meta.Nc);
+        for j=1:Meta.Nc, PP.a(:,j)=V(:,j); end
     elseif qq==2.5
-        Meta.MaxIter = 1;
+        Meta.MaxIter = 10;
         PP=P;
-        FF=zeros(2,Meta.T);
-        for j=1:Meta.Nc,
-            FF(j,:)=P.a(:,j)\F;
-        end
-        PP.a=mean(P.a)';
-        Meta.Np=2;
+        PP.lam=mean(PP.lam);
+        FF=F;
+        [U,S,V]=pca_approx(F',Meta.Nc);
+        for j=1:Meta.Nc, PP.a(:,j)=V(:,j); end
     elseif qq==3                           % estimate params
         Meta.MaxIter = 10;
         PP=P;
@@ -153,7 +150,7 @@ for qq=exps
     [I{q}.n I{q}.P] = FOOPSI_v3_05_01(FF,PP,Meta,Est);
 end
 
-save(['../../data/' fname '.mat'],'-append','I')
+save(['../../data/' fname '.mat'],'-append','I','Est')
 sound(10*sin(linspace(0,180*pi,2000)))
 
 %% plot results
@@ -172,9 +169,9 @@ Pl.lw   = 2;                    % line width
 Pl.n    = n; Pl.n(Pl.n==0)=NaN; % true spike train (0's are NaN's so they don't plot)
 Pl.T    = Meta.T;
 Pl.c    = [0 0 0; Pl.g; 1 1 1]; % colors: black, grey, white
-Pl.c    = get(0,'defaultAxesColorOrder');
+% Pl.c    = get(0,'defaultAxesColorOrder');
 Pl.m    = ['v','v'];
-Pl.xlim = [200 700]+500;        % limits of x-axis
+Pl.xlim = [200 700]+3000;        % limits of x-axis
 Pl.shift= [0 .07];
 Pl.x_range = Pl.xlim(1):Pl.xlim(2);
 Pl.XTick= [Pl.xlim(1) round(mean(Pl.xlim)) Pl.xlim(2)];
@@ -249,7 +246,7 @@ for q=1:length(exps)
     % plot F and n for neurons
     subplot(nrows,ncols,(q-1)*2*ncols+ncols+1), hold on
     for j=1:Meta.Nc
-        F_proj=E{q}.a(:,j)\F;
+        F_proj=E{q}.a(:,j_inf(j))\F;
         plot(0.9*z1(F_proj(Pl.x_range)),'Color',Pl.c(j,:),'LineWidth',Pl.lw)
         stem(Pl.n(Pl.x_range,j)-Pl.shift(j),'LineStyle','none','Marker',Pl.m(j),'MarkerEdgeColor',Pl.c(j,:),'MarkerFaceColor',Pl.c(j,:),'MarkerSize',Pl.ms)
         axis([Pl.xlim-Pl.xlim(1) 0 1])

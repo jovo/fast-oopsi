@@ -15,6 +15,7 @@ Pl.c    = get(0,'defaultAxesColorOrder');
 Pl.font = 'Arial';
 
 % make xticks
+if ~isfield(Pl,'xlims'), Pl.xlims=[1 100]; Pl.nticks=5; end
 TickSpace = round(Pl.xlims(2)/Pl.nticks);
 Pl.XTicks = TickSpace*(1:Pl.nticks);
 

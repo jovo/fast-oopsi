@@ -20,7 +20,7 @@ stem(Pl.n,'Marker','v','MarkerSize',Pl.vs,...   % plot real spike train
 
 
 axis([Pl.xlims min(min(min(n),0)) 1])
-ylab=ylabel(Pl.label,'Interpreter',Pl.inter,'FontSize',Pl.fs);
+ylab=ylabel(Pl.label,'Interpreter',Pl.inter,'FontSize',Pl.fs,'Interpreter',Pl.interp);
 set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
 set(gca,'YTick',0:1,'YTickLabel',[])
 set(gca,'XTick',Pl.XTicks,'XTickLabel',[])

@@ -232,8 +232,8 @@ for i=2:MaxIter
     end
 
     % update likelihood and keep results if they improved
-    lik     = -T*Np*log(2*pi*P.sig^2)/2 + mse/(2*P.sig^2);
-    prior   = sum(lam(:)) - lam'*n;
+    lik     = -T*Np*log(2*pi*P.sig^2)/2 - mse/(2*P.sig^2);
+    prior   = sum(lam(:)) - lam(:)'*n(:);
     l(i)    = lik + prior;
 
     % if this is the best one, keep n and P

@@ -1,5 +1,7 @@
 %\documentclass[12pt]{article}
 \input{/Users/joshyv/Research/misc/latex_paper.tex} 
+\usepackage{multicol}
+\usepackage{hyperref}
 %\newcommand{\hC}{\widehat{C}}
 %\newcommand{\hn}{\widehat{n}}
 \newcommand{\zzz}{z}
@@ -49,23 +51,30 @@
 \newpage
 \section{Methods} \label{sec:methods}
 
-\subsection{Model}
+\subsection{Model} \label{sec:model}
 \input{model}
+
+\subsection{Goal} \label{sec:goal}
+\input{goal}
 
 \subsection{Inference} \label{sec:inf}
 \input{inference}
+
+\subsection{Assessment} \label{sec:ass}
+\input{assess}
+
 
 \newpage
 \section{Results} \label{sec:results}
 \subsection{Main Result} \label{sec:main}
 \input{main_result}
 
-\clearpage\newpage
-\subsubsection{Comparison with Wiener filter}
-\input{wiener}
+%\clearpage\newpage
+%\subsubsection{Comparison with Wiener filter}
+%\input{wiener}
 
 \clearpage\newpage
-\subsubsection{Spatial Filtering}
+\subsection{Spatial Filtering}
 \input{spatial}
 
 \clearpage\newpage
@@ -93,16 +102,20 @@
 \input{poisson}
 
 \clearpage\newpage
-\subsection{Incorporating a nonlinear observation model}
-\input{nonlin_obs}
-
-\clearpage\newpage
-\subsection{in vivo data} \label{sec:vitro}
+\subsection{in vivo data} \label{sec:vivo}
 \input{in_vivo}
 
 \newpage
 \section{Discussion} \label{sec:dis}
 \input{discussion}
+
+\clearpage\newpage
+\subsection{Incorporating a nonlinear observation model} \label{sec:nonlin}
+\input{nonlin_obs}
+
+\clearpage\newpage
+\subsection{in vivo data} \label{sec:vivo}
+\input{in_vivo}
 
 \clearpage\newpage
 \subsection{Dynamic prior}

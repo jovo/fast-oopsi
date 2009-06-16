@@ -1,31 +1,35 @@
-\contentsline {section}{\numberline {1}Introduction}{2}
-\contentsline {section}{\numberline {2}Methods}{3}
-\contentsline {subsection}{\numberline {2.1}Model}{3}
-\contentsline {subsection}{\numberline {2.2}Inference}{4}
-\contentsline {section}{\numberline {3}Results}{7}
-\contentsline {subsection}{\numberline {3.1}Main Result}{7}
-\contentsline {subsubsection}{\numberline {3.1.1}Comparison with Wiener filter}{8}
-\contentsline {subsubsection}{\numberline {3.1.2}Spatial Filtering}{10}
-\contentsline {subsection}{\numberline {3.2}Learning}{12}
-\contentsline {subsection}{\numberline {3.3}in vitro data}{14}
-\contentsline {subsection}{\numberline {3.4}Overlapping spatial filters}{15}
-\contentsline {paragraph}{Model}{15}
-\contentsline {paragraph}{Inference}{15}
-\contentsline {paragraph}{Learning}{15}
-\contentsline {subsection}{\numberline {3.5}Population imaging}{17}
-\contentsline {subsection}{\numberline {3.6}Slow rise time}{18}
-\contentsline {subsection}{\numberline {3.7}Poisson observation model}{19}
-\contentsline {paragraph}{Model}{19}
-\contentsline {paragraph}{Inference}{19}
-\contentsline {subsection}{\numberline {3.8}Incorporating a nonlinear observation model}{20}
-\contentsline {subsection}{\numberline {3.9}in vivo data}{21}
-\contentsline {section}{\numberline {4}Discussion}{22}
-\contentsline {paragraph}{Summary}{22}
-\contentsline {paragraph}{Extensions}{22}
-\contentsline {paragraph}{Thresholding}{22}
-\contentsline {subsection}{\numberline {4.1}Dynamic prior}{23}
-\contentsline {paragraph}{Model}{23}
-\contentsline {paragraph}{Inference}{23}
-\contentsline {paragraph}{Acknowledgments}{23}
-\contentsline {section}{References}{24}
-\contentsline {section}{\numberline {A}Wiener Filter}{25}
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}
+\contentsline {section}{\numberline {2}Methods}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Model}{3}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Goal}{4}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Inference}{5}{subsection.2.3}
+\contentsline {paragraph}{FAst Non-negative Deconvolution (FAND) Filter}{5}{section*.2}
+\contentsline {paragraph}{Fast Wiener Filter}{7}{section*.3}
+\contentsline {subsection}{\numberline {2.4}Assessment}{7}{subsection.2.4}
+\contentsline {section}{\numberline {3}Results}{8}{section.3}
+\contentsline {subsection}{\numberline {3.1}Main Result}{8}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Spatial Filtering}{12}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Learning}{14}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}in vitro data}{16}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}Overlapping spatial filters}{17}{subsection.3.5}
+\contentsline {paragraph}{Model}{17}{section*.4}
+\contentsline {paragraph}{Inference}{17}{section*.5}
+\contentsline {paragraph}{Learning}{17}{section*.6}
+\contentsline {subsection}{\numberline {3.6}Population imaging}{19}{subsection.3.6}
+\contentsline {subsection}{\numberline {3.7}Slow rise time}{20}{subsection.3.7}
+\contentsline {subsection}{\numberline {3.8}Poisson observation model}{21}{subsection.3.8}
+\contentsline {paragraph}{Model}{21}{section*.7}
+\contentsline {paragraph}{Inference}{21}{equation.31}
+\contentsline {subsection}{\numberline {3.9}in vivo data}{22}{subsection.3.9}
+\contentsline {section}{\numberline {4}Discussion}{23}{section.4}
+\contentsline {paragraph}{Summary}{23}{section*.9}
+\contentsline {paragraph}{Extensions}{23}{section*.10}
+\contentsline {paragraph}{Thresholding}{23}{section*.11}
+\contentsline {subsection}{\numberline {4.1}Incorporating a nonlinear observation model}{24}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}in vivo data}{25}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Dynamic prior}{26}{subsection.4.3}
+\contentsline {paragraph}{Model}{26}{section*.12}
+\contentsline {paragraph}{Inference}{26}{equation.34}
+\contentsline {paragraph}{Acknowledgments}{26}{section*.14}
+\contentsline {section}{References}{27}{section*.15}
+\contentsline {section}{\numberline {A}Wiener Filter}{28}{section.A}

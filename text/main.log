@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  11 JUN 2009 18:20
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  16 JUN 2009 17:12
 entering extended mode
 **main
 (./main.tex
@@ -184,151 +184,290 @@ Package: times 2004/09/15 PSNFSS-v9.2 (SPQR)
 (/Users/joshyv/Research/misc/latex_commands.tex
 \c@thm=\count108
 \c@defi=\count109
-)) (./main.aux
+))
+(/opt/local/share/texmf-dist/tex/latex/tools/multicol.sty
+Package: multicol 2004/02/14 v1.6e multicolumn formatting (FMi)
+\c@tracingmulticols=\count110
+\mult@box=\box30
+\multicol@leftmargin=\dimen116
+\c@unbalance=\count111
+\c@collectmore=\count112
+\doublecol@number=\count113
+\multicoltolerance=\count114
+\multicolpretolerance=\count115
+\full@width=\dimen117
+\page@free=\dimen118
+\premulticols=\dimen119
+\postmulticols=\dimen120
+\multicolsep=\skip61
+\multicolbaselineskip=\skip62
+\partial@page=\box31
+\last@line=\box32
+\mult@rightbox=\box33
+\mult@grightbox=\box34
+\mult@gfirstbox=\box35
+\mult@firstbox=\box36
+\@tempa=\box37
+\@tempa=\box38
+\@tempa=\box39
+\@tempa=\box40
+\@tempa=\box41
+\@tempa=\box42
+\@tempa=\box43
+\@tempa=\box44
+\@tempa=\box45
+\@tempa=\box46
+\@tempa=\box47
+\@tempa=\box48
+\@tempa=\box49
+\@tempa=\box50
+\@tempa=\box51
+\@tempa=\box52
+\@tempa=\box53
+\c@columnbadness=\count116
+\c@finalcolumnbadness=\count117
+\last@try=\dimen121
+\multicolovershoot=\dimen122
+\multicolundershoot=\dimen123
+\mult@nat@firstbox=\box54
+\colbreak@box=\box55
+)
+(/opt/local/share/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2003/11/30 v6.74m Hypertext links for LaTeX
+\@linkdim=\dimen124
+\Hy@linkcounter=\count118
+\Hy@pagecounter=\count119
 
-LaTeX Warning: Label `sec:vitro' multiply defined.
+(/opt/local/share/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2003/11/30 v6.74m Hyperref: PDFDocEncoding definition (HO)
+)
+(/opt/local/share/texmf-dist/tex/latex/hyperref/hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive and teTeX
+)
+Package hyperref Info: Hyper figures OFF on input line 1880.
+Package hyperref Info: Link nesting OFF on input line 1885.
+Package hyperref Info: Hyper index ON on input line 1888.
+Package hyperref Info: Plain pages ON on input line 1893.
+Package hyperref Info: Backreferencing OFF on input line 1900.
+
+Implicit mode ON; LaTeX internals redefined
+Package hyperref Info: Bookmarks ON on input line 2004.
+(/opt/local/share/texmf-local/tex/latex/html/url.sty
+Package: url 1999/03/02  ver 1.4  Verb mode for urls, email addresses, and file
+ names
+)
+LaTeX Info: Redefining \url on input line 2143.
+\Fld@menulength=\count120
+\Field@Width=\dimen125
+\Fld@charsize=\dimen126
+\Choice@toks=\toks29
+\Field@toks=\toks30
+Package hyperref Info: Hyper figures OFF on input line 2618.
+Package hyperref Info: Link nesting OFF on input line 2623.
+Package hyperref Info: Hyper index ON on input line 2626.
+Package hyperref Info: backreferencing OFF on input line 2633.
+Package hyperref Info: Link coloring OFF on input line 2638.
+\c@Item=\count121
+\c@Hfootnote=\count122
+)
+*hyperref using default driver hpdftex*
+(/opt/local/share/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2003/11/30 v6.74m Hyperref driver for pdfTeX
+
+(/opt/local/share/texmf-dist/tex/latex/psnfss/pifont.sty
+Package: pifont 2004/09/15 PSNFSS-v9.2 Pi font support (SPQR) 
+LaTeX Font Info:    Try loading font information for U+pzd on input line 63.
+
+(/opt/local/share/texmf-dist/tex/latex/psnfss/upzd.fd
+File: upzd.fd 2001/06/04 font definitions for U/pzd.
+)
+LaTeX Font Info:    Try loading font information for U+psy on input line 64.
+
+(/opt/local/share/texmf-dist/tex/latex/psnfss/upsy.fd
+File: upsy.fd 2001/06/04 font definitions for U/psy.
+))
+\Fld@listcount=\count123
+\@outlinefile=\write3
+) (./main.aux
+
+LaTeX Warning: Label `sec:vivo' multiply defined.
+
+
+LaTeX Warning: Label `fig:spatial_data' multiply defined.
 
 )
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 37.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 39.
  (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 (/opt/local/share/texmf-dist/tex/context/base/supp-pdf.tex
 (/opt/local/share/texmf-dist/tex/context/base/supp-mis.tex
 loading : Context Support Macros / Miscellaneous (2004.10.26)
-\protectiondepth=\count110
-\scratchcounter=\count111
-\scratchtoks=\toks29
-\scratchdimen=\dimen116
-\scratchskip=\skip61
+\protectiondepth=\count124
+\scratchcounter=\count125
+\scratchtoks=\toks31
+\scratchdimen=\dimen127
+\scratchskip=\skip63
 \scratchmuskip=\muskip11
-\scratchbox=\box30
+\scratchbox=\box56
 \scratchread=\read1
-\scratchwrite=\write3
-\zeropoint=\dimen117
-\onepoint=\dimen118
-\onebasepoint=\dimen119
-\minusone=\count112
-\thousandpoint=\dimen120
-\onerealpoint=\dimen121
-\emptytoks=\toks30
-\nextbox=\box31
-\nextdepth=\dimen122
-\everyline=\toks31
-\!!counta=\count113
-\!!countb=\count114
-\recursecounter=\count115
+\scratchwrite=\write4
+\zeropoint=\dimen128
+\onepoint=\dimen129
+\onebasepoint=\dimen130
+\minusone=\count126
+\thousandpoint=\dimen131
+\onerealpoint=\dimen132
+\emptytoks=\toks32
+\nextbox=\box57
+\nextdepth=\dimen133
+\everyline=\toks33
+\!!counta=\count127
+\!!countb=\count128
+\recursecounter=\count129
 )
 loading : Context Support Macros / PDF (2004.03.26)
-\nofMPsegments=\count116
-\nofMParguments=\count117
-\MPscratchCnt=\count118
-\MPscratchDim=\dimen123
-\MPnumerator=\count119
-\everyMPtoPDFconversion=\toks32
+\nofMPsegments=\count130
+\nofMParguments=\count131
+\MPscratchCnt=\count132
+\MPscratchDim=\dimen134
+\MPnumerator=\count133
+\everyMPtoPDFconversion=\toks34
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 39.
+Package hyperref Info: Link coloring OFF on input line 39.
+ (/opt/local/share/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2003/12/03 v2.21 Cross-referencing by name of section
+\c@section@level=\count134
+)
+LaTeX Info: Redefining \ref on input line 39.
+LaTeX Info: Redefining \pageref on input line 39.
+ (./main.out)
+(./main.out)
+\openout3 = `main.out'.
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 42.
  (/opt/local/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2002/01/19 v2.2g AMS font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 39.
+LaTeX Font Info:    Try loading font information for U+msb on input line 42.
 
 (/opt/local/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2002/01/19 v2.2g AMS font definitions
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 40.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 42.
  (./main.toc
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
 )
-\tf@toc=\write4
-\openout4 = `main.toc'.
+\tf@toc=\write5
+\openout5 = `main.toc'.
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 41.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 43.
 
 (./abstract.tex) [1
 
 {/opt/local/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./intro.tex) 
 [2]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 52.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 54.
  (./model.tex
-
-LaTeX Warning: Reference `sec:nonlin' on page 3 undefined on input line 15.
-
-<../figs/schem.pdf, id=38, 505.89pt x 361.35pt>
+<../figs/schem.pdf, id=198, 505.89pt x 361.35pt>
 File: ../figs/schem.pdf Graphic file (type pdf)
  <use ../figs/schem.pdf>
-[3]) (./inference.tex [4 <../figs/schem.pdf>]) [5] [6] (./main_result.tex)
-[7] (./wiener.tex <../figs/wiener.pdf, id=116, 505.89pt x 361.35pt>
-File: ../figs/wiener.pdf Graphic file (type pdf)
+[3]) (./goal.tex [4 <../figs/schem.pdf>]
+<../figs/dist_comp.pdf, id=285, 578.16pt x 216.81pt>
+File: ../figs/dist_comp.pdf Graphic file (type pdf)
 
-<use ../figs/wiener.pdf> [8
+<use ../figs/dist_comp.pdf>) (./inference.tex
 
-]) [9 <../figs/wiener.pdf>] (./spatial.tex
-<../figs/spatial.pdf, id=127, 505.89pt x 361.35pt>
+LaTeX Warning: Reference `eq:naht3' on page 5 undefined on input line 9.
+
+[5 <../figs/dist_comp.pdf>] [6]) (./assess.tex) [7] (./main_result.tex
+
+LaTeX Warning: Reference `sec:app' on page 8 undefined on input line 3.
+
+<../figs/example_sim.pdf, id=360, 505.89pt x 361.35pt>
+File: ../figs/example_sim.pdf Graphic file (type pdf)
+
+<use ../figs/example_sim.pdf> [8]
+<../figs/stats.pdf, id=371, 505.89pt x 361.35pt>
+File: ../figs/stats.pdf Graphic file (type pdf)
+ <use ../figs/stats.pdf>
+[9 <../figs/example_sim.pdf>]
+<../figs/kernel.pdf, id=390, 505.89pt x 361.35pt>
+File: ../figs/kernel.pdf Graphic file (type pdf)
+ <use ../figs/kernel.pdf>
+[10 <../figs/stats.pdf>]) [11 <../figs/kernel.pdf>] (./spatial.tex
+<../figs/spatial.pdf, id=414, 505.89pt x 361.35pt>
 File: ../figs/spatial.pdf Graphic file (type pdf)
  <use ../figs/spatial.pdf>)
-[10
+[12
 
-] [11 <../figs/spatial.pdf>] (./learning.tex
+] [13 <../figs/spatial.pdf>] (./learning.tex
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 31.
 
 (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) [12
+) [14
 
 ]
-<../figs/spatial_EM.pdf, id=144, 505.89pt x 361.35pt>
+<../figs/spatial_EM.pdf, id=462, 505.89pt x 361.35pt>
 File: ../figs/spatial_EM.pdf Graphic file (type pdf)
 
-<use ../figs/spatial_EM.pdf>) [13 <../figs/spatial_EM.pdf>] (./in_vitro.tex)
-[14
+<use ../figs/spatial_EM.pdf>) [15 <../figs/spatial_EM.pdf>] (./in_vitro.tex)
+[16
 
 ] (./overlapping.tex
-<../figs/spatial_multi.pdf, id=156, 542.025pt x 505.89pt>
+<../figs/spatial_multi.pdf, id=479, 542.025pt x 758.835pt>
 File: ../figs/spatial_multi.pdf Graphic file (type pdf)
 
-<use ../figs/spatial_multi.pdf> [15
+<use ../figs/spatial_multi.pdf> [17
 
-]) [16 <../figs/spatial_multi.pdf>]
-(./pop.tex) [17
+]) [18 <../figs/spatial_multi.pdf>]
+(./pop.tex) [19
 
-] (./slow_rise_time.tex) [18
+] (./slow_rise_time.tex) [20
 
-] (./poisson.tex) [19
+] (./poisson.tex) [21
 
 ]
-(./nonlin_obs.tex) [20
-
-] (./in_vivo.tex
-<../figs/spatial_data.pdf, id=180, 505.89pt x 505.89pt>
+(./in_vivo.tex <../figs/spatial_data.pdf, id=523, 505.89pt x 505.89pt>
 File: ../figs/spatial_data.pdf Graphic file (type pdf)
 
-<use ../figs/spatial_data.pdf>) [21
+<use ../figs/spatial_data.pdf>) [22
 
  <../figs/spatial_data.pdf>]
-(./discussion.tex) [22] (./dynamic_prior.tex) (./main.bbl
-Missing character: There is no ü in font ptmr7t!
- [23
+(./discussion.tex) [23] (./nonlin_obs.tex) [24
 
-]) (./appendix.tex [24]) [25] (./main.aux)
+] (./in_vivo.tex
+File: ../figs/spatial_data.pdf Graphic file (type pdf)
+
+<use ../figs/spatial_data.pdf>) [25
+
+] (./dynamic_prior.tex) (./main.bbl
+Missing character: There is no ü in font ptmr7t!
+ [26
+
+])
+(./appendix.tex [27]) [28] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -337,39 +476,39 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2956 strings out of 94500
- 30758 string characters out of 1155413
- 91505 words of memory out of 1000000
- 5997 multiletter control sequences out of 10000+50000
- 36621 words of font info for 88 fonts, out of 500000 for 2000
+ 4862 strings out of 94500
+ 57817 string characters out of 1155413
+ 125381 words of memory out of 1000000
+ 7692 multiletter control sequences out of 10000+50000
+ 34679 words of font info for 83 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 29i,15n,43p,1729b,293s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 29i,15n,43p,1733b,314s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 209 PDF objects out of 300000
- 0 named destinations out of 131072
- 31 words of extra memory for PDF output out of 65536
+ 593 PDF objects out of 300000
+ 171 named destinations out of 131072
+ 238 words of extra memory for PDF output out of 65536
 {/opt/local/share/texmf-dist/fonts/enc/dvips/psnfss/8r.enc}</opt/local/share/
 texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/local/share/texmf-dist/font
-s/type1/bluesky/cm/cmss8.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/c
-m/cmbx7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cmextra/cmmib7.pfb
-></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx10.pfb></opt/local/sha
-re/texmf-dist/fonts/type1/bluesky/symbols/msbm10.pfb></opt/local/share/texmf-di
-st/fonts/type1/bluesky/cm/cmex10.pfb></opt/local/share/texmf-dist/fonts/type1/b
-luesky/symbols/msbm7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cm
-sy8.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr8.pfb></opt/loca
-l/share/texmf-dist/fonts/type1/bluesky/cm/cmr5.pfb></opt/local/share/texmf-dist
-/fonts/type1/bluesky/cm/cmsy5.pfb></opt/local/share/texmf-dist/fonts/type1/blue
-sky/cm/cmsy6.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi5.pfb>
-</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi6.pfb></opt/local/share
-/texmf-dist/fonts/type1/bluesky/cm/cmmi8.pfb></opt/local/share/texmf-dist/fonts
-/type1/bluesky/cm/cmsy7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm
-/cmr7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmib10.pfb></opt
-/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi7.pfb></opt/local/share/texm
-f-dist/fonts/type1/bluesky/cm/cmmi10.pfb></opt/local/share/texmf-dist/fonts/typ
-e1/urw/times/utmri8a.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cm
-r10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy10.pfb></opt/lo
-cal/share/texmf-dist/fonts/type1/bluesky/cm/cmr6.pfb></opt/local/share/texmf-di
-st/fonts/type1/bluesky/cm/cmr9.pfb></opt/local/share/texmf-dist/fonts/type1/blu
-esky/cm/cmmi9.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb
-></opt/local/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on main.pdf (25 pages, 321345 bytes).
+s/type1/public/tt2001/fmex7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesk
+y/cm/cmss8.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx7.pfb></
+opt/local/share/texmf-dist/fonts/type1/bluesky/cmextra/cmmib7.pfb></opt/local/s
+hare/texmf-dist/fonts/type1/bluesky/cm/cmbx10.pfb></opt/local/share/texmf-dist/
+fonts/type1/bluesky/symbols/msbm10.pfb></opt/local/share/texmf-dist/fonts/type1
+/bluesky/cm/cmex10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/symbols
+/msbm7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy8.pfb></opt/
+local/share/texmf-dist/fonts/type1/bluesky/cm/cmr8.pfb></opt/local/share/texmf-
+dist/fonts/type1/bluesky/cm/cmr6.pfb></opt/local/share/texmf-dist/fonts/type1/b
+luesky/cm/cmr5.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy5.pf
+b></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy6.pfb></opt/local/sha
+re/texmf-dist/fonts/type1/bluesky/cm/cmmi5.pfb></opt/local/share/texmf-dist/fon
+ts/type1/bluesky/cm/cmmi6.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/
+cm/cmmi8.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy7.pfb></op
+t/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb></opt/local/share/texm
+f-dist/fonts/type1/bluesky/cm/cmmib10.pfb></opt/local/share/texmf-dist/fonts/ty
+pe1/bluesky/cm/cmmi7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cm
+mi10.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></opt/l
+ocal/share/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/local/share/texmf-
+dist/fonts/type1/bluesky/cm/cmsy10.pfb></opt/local/share/texmf-dist/fonts/type1
+/urw/times/utmb8a.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utmr8a
+.pfb>
+Output written on main.pdf (28 pages, 453966 bytes).
