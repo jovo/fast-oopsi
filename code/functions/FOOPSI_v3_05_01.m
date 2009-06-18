@@ -128,6 +128,8 @@ if MaxIter>1;
     if ~isfield(Est,'b'),   Est.b     = 1; end
     if isfield(Est,'Thresh'),   Thresh = Est.Thresh; else Thresh = 1; end
     if isfield(Est,'Plot'),     DoPlot = Est.Plot;   else DoPlot = 1; end
+else
+    Est.a=1;
 end
 
 % make sure we have 1 spatial filter per neuron in ROI
@@ -290,7 +292,7 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
         % initialize n and C
         z = 1;                                  % weight on barrier function
         e = 1/(2*P.sig^2);                      % scale of variance
-        llam = reshape(lam',1,Nc*Meta.T)';
+        llam = reshape(lam',1,Nc*T)';
         n = z./llam;
         C = 0*n;                                % initialize calcium
         for j=1:Nc

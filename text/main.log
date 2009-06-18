@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  16 JUN 2009 17:12
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  18 JUN 2009 14:52
 entering extended mode
 **main
 (./main.tex
@@ -404,19 +404,19 @@ LaTeX Warning: Reference `eq:naht3' on page 5 undefined on input line 9.
 
 LaTeX Warning: Reference `sec:app' on page 8 undefined on input line 3.
 
-<../figs/example_sim.pdf, id=360, 505.89pt x 361.35pt>
+<../figs/example_sim.pdf, id=358, 505.89pt x 361.35pt>
 File: ../figs/example_sim.pdf Graphic file (type pdf)
 
 <use ../figs/example_sim.pdf> [8]
-<../figs/stats.pdf, id=371, 505.89pt x 361.35pt>
+<../figs/stats.pdf, id=369, 505.89pt x 361.35pt>
 File: ../figs/stats.pdf Graphic file (type pdf)
  <use ../figs/stats.pdf>
 [9 <../figs/example_sim.pdf>]
-<../figs/kernel.pdf, id=390, 505.89pt x 361.35pt>
+<../figs/kernel.pdf, id=392, 505.89pt x 361.35pt>
 File: ../figs/kernel.pdf Graphic file (type pdf)
  <use ../figs/kernel.pdf>
 [10 <../figs/stats.pdf>]) [11 <../figs/kernel.pdf>] (./spatial.tex
-<../figs/spatial.pdf, id=414, 505.89pt x 361.35pt>
+<../figs/spatial.pdf, id=417, 505.89pt x 361.35pt>
 File: ../figs/spatial.pdf Graphic file (type pdf)
  <use ../figs/spatial.pdf>)
 [12
@@ -429,14 +429,14 @@ File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 ) [14
 
 ]
-<../figs/spatial_EM.pdf, id=462, 505.89pt x 361.35pt>
+<../figs/spatial_EM.pdf, id=465, 505.89pt x 361.35pt>
 File: ../figs/spatial_EM.pdf Graphic file (type pdf)
 
 <use ../figs/spatial_EM.pdf>) [15 <../figs/spatial_EM.pdf>] (./in_vitro.tex)
 [16
 
 ] (./overlapping.tex
-<../figs/spatial_multi.pdf, id=479, 542.025pt x 758.835pt>
+<../figs/spatial_multi.pdf, id=482, 542.025pt x 758.835pt>
 File: ../figs/spatial_multi.pdf Graphic file (type pdf)
 
 <use ../figs/spatial_multi.pdf> [17
@@ -449,7 +449,7 @@ File: ../figs/spatial_multi.pdf Graphic file (type pdf)
 ] (./poisson.tex) [21
 
 ]
-(./in_vivo.tex <../figs/spatial_data.pdf, id=523, 505.89pt x 505.89pt>
+(./in_vivo.tex <../figs/spatial_data.pdf, id=526, 505.89pt x 505.89pt>
 File: ../figs/spatial_data.pdf Graphic file (type pdf)
 
 <use ../figs/spatial_data.pdf>) [22
@@ -476,16 +476,16 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 4862 strings out of 94500
- 57817 string characters out of 1155413
- 125381 words of memory out of 1000000
- 7692 multiletter control sequences out of 10000+50000
+ 4852 strings out of 94500
+ 57671 string characters out of 1155413
+ 124263 words of memory out of 1000000
+ 7687 multiletter control sequences out of 10000+50000
  34679 words of font info for 83 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 29i,15n,43p,1733b,314s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 29i,15n,43p,1993b,314s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
  593 PDF objects out of 300000
- 171 named destinations out of 131072
+ 166 named destinations out of 131072
  238 words of extra memory for PDF output out of 65536
 {/opt/local/share/texmf-dist/fonts/enc/dvips/psnfss/8r.enc}</opt/local/share/
 texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/local/share/texmf-dist/font
@@ -511,4 +511,4 @@ ocal/share/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/local/share/texmf-
 dist/fonts/type1/bluesky/cm/cmsy10.pfb></opt/local/share/texmf-dist/fonts/type1
 /urw/times/utmb8a.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utmr8a
 .pfb>
-Output written on main.pdf (28 pages, 453966 bytes).
+Output written on main.pdf (28 pages, 454030 bytes).

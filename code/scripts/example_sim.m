@@ -158,7 +158,7 @@ for kk=2%1:length(ks)
                     ass=conv(exp(-(linspace(-a,a,Sim.T)).^2),I{1,q}.n);
                     plot(ass(Sim.T/2+(Pl.xlims(1):Pl.xlims(2))),'Color','k','LineWidth',Pl.lw);
                     ass=conv(exp(-(linspace(-a,a,Sim.T)).^2),D{tt,q}.n);
-                    plot(ass(Sim.T/2+(Pl.xlims(1):Pl.xlims(2))),'Color',Pl.gray,'LineWidth',1);
+                    plot(ass(Sim.T/2+(Pl.xlims(1):Pl.xlims(2))),'Color',Pl.gray,'LineWidth',Pl.lw);
                     ylab=ylabel(Pl.label,'Interpreter',Pl.inter,'FontSize',Pl.fs);
                     set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
                     set(gca,'YTick',[],'YTickLabel',[])
@@ -191,7 +191,7 @@ for kk=2%1:length(ks)
                     ass=conv(exp(-(linspace(-a,a,Sim.T)).^2),I{2,q}.n);
                     plot(ass(Sim.T/2+(Pl.xlims(1):Pl.xlims(2))),'Color','k','LineWidth',Pl.lw);
                     ass=conv(exp(-(linspace(-a,a,Sim.T)).^2),D{tt,q}.n);
-                    plot(ass(Sim.T/2+(Pl.xlims(1):Pl.xlims(2))),'Color',Pl.gray,'LineWidth',1);
+                    plot(ass(Sim.T/2+(Pl.xlims(1):Pl.xlims(2))),'Color',Pl.gray,'LineWidth',Pl.lw);
                     ylab=ylabel(Pl.label,'Interpreter',Pl.inter,'FontSize',Pl.fs);
                     set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
                     set(gca,'YTick',[],'YTickLabel',[])

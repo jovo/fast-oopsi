@@ -19,7 +19,7 @@
 \contentsline {subsection}{\numberline {3.7}Slow rise time}{20}{subsection.3.7}
 \contentsline {subsection}{\numberline {3.8}Poisson observation model}{21}{subsection.3.8}
 \contentsline {paragraph}{Model}{21}{section*.7}
-\contentsline {paragraph}{Inference}{21}{equation.31}
+\contentsline {paragraph}{Inference}{21}{equation.32}
 \contentsline {subsection}{\numberline {3.9}in vivo data}{22}{subsection.3.9}
 \contentsline {section}{\numberline {4}Discussion}{23}{section.4}
 \contentsline {paragraph}{Summary}{23}{section*.9}
@@ -29,7 +29,7 @@
 \contentsline {subsection}{\numberline {4.2}in vivo data}{25}{subsection.4.2}
 \contentsline {subsection}{\numberline {4.3}Dynamic prior}{26}{subsection.4.3}
 \contentsline {paragraph}{Model}{26}{section*.12}
-\contentsline {paragraph}{Inference}{26}{equation.34}
+\contentsline {paragraph}{Inference}{26}{equation.35}
 \contentsline {paragraph}{Acknowledgments}{26}{section*.14}
 \contentsline {section}{References}{27}{section*.15}
-\contentsline {section}{\numberline {A}Wiener Filter}{28}{section.A}
+\contentsline {section}{\numberline {A}Wiener Filter}{27}{section.A}

@@ -13,10 +13,11 @@ clear,
 clc
 Ntrials=5;
 ks=2.^(0:4);
+sig0=[1/16 1/2];
 for kk=1:length(ks)
-    disp(kk)
+    disp(['noise ' num2str(kk)])
     for tt=1:Ntrials
-        disp(tt)
+        disp(['trial ' num2str(tt)])
         % 1) generate spatial filters
 
         % % stuff required for each spatial filter
@@ -44,7 +45,7 @@ for kk=1:length(ks)
 
         % 2) set simulation metadata
         Sim.T       = 5000;                              % # of time steps
-        Sim.dt      = 0.005;                            % time step size
+        Sim.dt      = 0.05;                            % time step size
         Sim.MaxIter = 0;                                % # iterations of EM to estimate params
         Sim.Np      = Npixs;                            % # of pixels in each image
         Sim.w       = width;                            % width of frame (pixels)
@@ -52,9 +53,10 @@ for kk=1:length(ks)
         Sim.Nc      = Nc;                               % # cells
         Sim.plot    = 0;                                % whether to plot filter with each iteration
 
-        lam         = [10; Sim.T];
-        sigs        = [1/8 4]*ks(kk);
-        moda        = (sin(linspace(0,10*pi,Sim.T-1))+1)/2;
+        lam         = [1; 10];
+        sigs        = sig0*ks(kk);
+        moda        = (sin(linspace(0,10*pi,Sim.T-1))+1);
+        %         moda        = mean(moda)+0*moda;
         qs          = 1:2;
 
         for q=qs
@@ -68,7 +70,7 @@ for kk=1:length(ks)
 
             P.sig   = sigs(q);                                 % stan dev of noise (indep for each pixel)
             C_0     = 0;                                    % initial calcium
-            tau     = [.1 .5]; %round(100*rand(Sim.Nc,1))/100+0.05;   % decay time constant for each cell
+            tau     = 1; %round(100*rand(Sim.Nc,1))/100+0.05;   % decay time constant for each cell
             P.gam   = 1-Sim.dt./tau(1:Sim.Nc);
             P.lam   = lam(q);%round(10*rand(Sim.Nc,1))+5;           % rate-ish, ie, lam*dt=# spikes per second
 
@@ -106,8 +108,19 @@ for kk=1:length(ks)
             I{4,q}.n = [diff(F); 0];
             I{4,q}.time = toc;
 
+            a = 75;
+            gaus = exp(-(-Sim.T/2:Sim.T/2).^2);
+
+            tic
+            I{5,q}.n = conv2(exp(-(linspace(-a,a,Sim.T)).^2)',I{1,q}.n,'same');
+            I{5,q}.time = toc;
+
+            tic
+            I{6,q}.n = conv2(exp(-(linspace(-a,a,Sim.T)).^2)',I{2,q}.n,'same');
+            I{6,q}.time = toc;
+
             %% compute statistics
-            for i=1:4
+            for i=1:6
 
                 if q==1,
                     I{i,q}.n=I{i,q}.n/max(abs(I{i,q}.n));
@@ -129,33 +142,13 @@ for kk=1:length(ks)
 
         end
 
-
-        %     [I{1}.roc I{1}.auc] = roc2(I{1}.n, D{1}.n);
-        %     [I{3}.roc I{3}.auc] = roc2(I{3}.n, D{1}.n);
-        %     xc=corrcoef(I{1}.n,D{1}.n);
-        %     cc(tt,1)=xc(2);
-        %     xc=corrcoef(I{3}.n,D{1}.n);
-        %     cc(tt,2)=xc(2);
-        %     ass=I{3}.n; ass(ass<0)=0;
-        %     xc=corrcoef(ass,D{1}.n);
-        %     cc(tt,3)=xc(2);
-        %
-        %     snr(tt,1)=mean(I{1}.n(D{1}.n==1).^2)/mean(I{1}.n(D{1}.n==0).^2);
-        %     snr(tt,2)=mean(I{2}.n(D{1}.n==1).^2)/mean(I{2}.n(D{1}.n==0).^2);
-        %     snr(tt,3)=mean(I{3}.n(D{1}.n==1).^2)/mean(I{3}.n(D{1}.n==0).^2);
-        %     dF=diff(F)./F(2:end);
-        %     snr(tt,4)=mean(dF(D{1}.n(2:end)==1).^2)/mean(dF(D{1}.n(2:end)==0).^2);
-        %
-        %     [foo auc(tt,1)] = roc2(I{1}.n, D{q}.n);
-
-
         %% end) plot results
-        if tt==Ntrials && kk==2
+        if tt==11 && kk==2
             clear Pl
             nrows   = 2+Nc;                                  % set number of rows
             ncols   = 2;
             h       = zeros(nrows,1);
-            Pl.xlims= [5 Sim.T-101];                            % time steps to plot
+            Pl.xlims= [3001 3300];                            % time steps to plot
             Pl.nticks=5;                                    % number of ticks along x-axis
             Pl.n    = double(n); Pl.n(Pl.n==0)=NaN;         % store spike train for plotting
             Pl      = PlotParams(Pl);                       % generate a number of other parameters for plotting
@@ -182,8 +175,9 @@ for kk=1:length(ks)
                 Pl.color = 'k';
                 Plot_nX(Pl,D{tt,q}.F*Phat{tt,q}.a);
                 %     title(I{q}.label)
+                axis('tight')
 
-                % plot fast spike trains
+                % plot FAND filter
                 i=i+2; h(i) = subplot(nrows,ncols,i);
                 if q==1,
                     Pl.label = [{'$\mathbf{n}_{FAND}$'}];
@@ -204,6 +198,7 @@ for kk=1:length(ks)
                     set(gca,'XTick',Pl.XTicks,'XTickLabel',[],'FontSize',Pl.fs)
                     X=[I{1,q}.n D{tt,q}.n];
                     axis([Pl.xlims-Pl.xlims(1) min(X(:)) max(ass(:))])
+                    axis('tight')
                     box off
                 end
 
@@ -216,7 +211,7 @@ for kk=1:length(ks)
                 Pl.YTickLabels=Pl.YTicks;
                 set(gca,'YTick',Pl.YTicks,'YTickLabel',Pl.YTicks, 'FontSize',10)
 
-                % plot wiener spike trains
+                % plot wiener filter trains
                 i=i+2; h(i) = subplot(nrows,ncols,i);
                 if q==1,
                     Pl.label = [{'$\mathbf{n}_{Wiener}$'}];
@@ -237,6 +232,7 @@ for kk=1:length(ks)
                     set(gca,'XTick',Pl.XTicks,'XTickLabel',[],'FontSize',Pl.fs)
                     X=[I{2,q}.n D{tt,q}.n];
                     axis([Pl.xlims-Pl.xlims(1) min(X(:)) max(ass(:))])
+                    axis('tight')
                     box off
                 end
 
@@ -256,71 +252,23 @@ for kk=1:length(ks)
 
             end
 
-            % print fig
-            wh=[7 5];   %width and height
-            DirName = '../../figs/';
-            FileName = 'wiener';
-            PrintFig(wh,DirName,FileName);
+            %             % print fig
+            %             wh=[7 5];   %width and height
+            %             DirName = '../../figs/';
+            %             FileName = 'wiener';
+            %             PrintFig(wh,DirName,FileName);
         end
     end
 
+
+    %% make errorbar stats
+
     for tt=1:Ntrials
-        for i=1:4
+        for i=1:6
             auc.tn(tt,i)=sum(roc{1,tt,i}.tn);
             auc.tp(tt,i)=sum(roc{1,tt,i}.tp);
         end
     end
-
-    %% make table
-
-    if kk==2
-        for q=qs
-            y=zeros(4,10);
-
-            y(:,1)=mean(cc{q});
-            y(:,2)=std(cc{q});
-
-            y(:,3)=mean(mse{q});
-            y(:,4)=std(mse{q});
-
-            y(:,5)=mean(snr{q});
-            y(:,6)=std(snr{q});
-
-            y(:,7)=mean(auc.tp);
-            y(:,8)=std(auc.tp);
-
-            y(:,9)=mean(time{q});
-            y(:,10)=std(time{q});
-
-            if q==1
-                %         fprintf(fid,'Slow Firing Rate\n\n');
-                fid = fopen([DirName 'tab_slow.tex'],'w');
-            elseif q==2
-                fid = fopen([DirName 'tab_fast.tex'],'w');
-                %         fprintf(fid,'\n\nFast Firing Rate\n\n');
-                y(:,[5:8])=NaN;
-            end
-            fprintf(fid,'Filter & $R_{\\hbn}$ & $MSE$ & $SNR$ & $AUC$ & Time \\\\ \\hline \n');
-
-            for i=1:4
-                if i==1
-                    fprintf(fid,'FAND');
-                elseif i==2
-                    fprintf(fid,'Wiener');
-                elseif i==3
-                    fprintf(fid,'$[$Wiener$]_+$');
-                elseif i==4
-                    fprintf(fid,'dF/F');
-                end
-                fprintf(fid,'& %2.3f (%2.3f) & %2.3f (%2.3f) & %2.3f (%2.3f) & %2.3f (%2.3f) & %2.3f (%2.3f)',y(i,:));
-
-                if i<4, fprintf(fid,' \\\\ \n'); end
-            end
-            status = fclose(fid);
-        end
-    end
-
-    %% make errorbar stats
 
     for q=qs
         stats.cc{q}.means(kk,:) = mean(cc{q});
@@ -340,51 +288,110 @@ for kk=1:length(ks)
 
     end
 
+    %% make table
+
+    %     if kk==2
+    %         for q=qs
+    %             y=zeros(4,10);
+    %
+    %             y(:,1)=mean(cc{q});
+    %             y(:,2)=std(cc{q});
+    %
+    %             y(:,3)=mean(mse{q});
+    %             y(:,4)=std(mse{q});
+    %
+    %             y(:,5)=mean(snr{q});
+    %             y(:,6)=std(snr{q});
+    %
+    %             y(:,7)=mean(auc.tp);
+    %             y(:,8)=std(auc.tp);
+    %
+    %             y(:,9)=mean(time{q});
+    %             y(:,10)=std(time{q});
+    %
+    %             if q==1
+    %                 fid = fopen([DirName 'tab_slow.tex'],'w');
+    %             elseif q==2
+    %                 fid = fopen([DirName 'tab_fast.tex'],'w');
+    %                 y(:,[5:8])=NaN;
+    %             end
+    %             fprintf(fid,'Filter & $R_{\\hbn}$ & $MSE$ & $SNR$ & $AUC$ & Time \\\\ \\hline \n');
+    %
+    %             for i=1:4
+    %                 if i==1
+    %                     fprintf(fid,'FAND');
+    %                 elseif i==2
+    %                     fprintf(fid,'Wiener');
+    %                 elseif i==3
+    %                     fprintf(fid,'$[$Wiener$]_+$');
+    %                 elseif i==4
+    %                     fprintf(fid,'dF/F');
+    %                 end
+    %                 fprintf(fid,'& %2.3f (%2.3f) & %2.3f (%2.3f) & %2.3f (%2.3f) & %2.3f (%2.3f) & %2.3f (%2.3f)',y(i,:));
+    %
+    %                 if i<4, fprintf(fid,' \\\\ \n'); end
+    %             end
+    %             status = fclose(fid);
+    %         end
+    %     end
 
 end
+save('../../data/stats_fig.mat')
 
-%% make errorbar stats
+%% make fig
+load('../../data/stats_fig.mat')
+
+Pl.fs = 18;
+
 figure(2), clf
-nrows=2; ncols=3;
+nrows=2; ncols=2;
 for q=qs
-    
-    % plot corrcoef
-    subplot(nrows,ncols,1+(q-1)*ncols),
-    errorbar(stats.cc{q}.means,stats.cc{q}.std)
-    if q==1,
-        title('$\rho$','Interpreter','latex'),
-        ylab=ylabel([{'Sparsely'}; {'Spiking'}; {'Neuron'}]);
-    elseif q==2
-        ylab=ylabel([{'Fast'}; {'Spiking'}; {'Neuron'}]);
-    end
-    set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle','FontSize',12)
-
-    axis([1 5 0 1])
-    set(gca,'YScale','linear','YTick',[0 .5 1],'XTickLabel',[]);
-
-    % plot mse
-    subplot(nrows,ncols,2+(q-1)*ncols),
-    errorbar(stats.mse{q}.means,stats.mse{q}.std)
-    if q==1, title('MSE','Interpreter','none'), end
-    ymin=min(stats.mse{q}.means(:)+stats.mse{q}.std(:));
-    ymax=max(stats.mse{q}.means(:)+stats.mse{q}.std(:));
-    axis([1 5 ymin*.5 ymax])
-    set(gca,'YScale','log','YTick',10.^(-5:10),'XTickLabel',[]);
-    if q==2,
-        set(gca,'XTick',[1:5], 'XTickLabel',[{'4'}; {''}; {'16'}; {''}; {'32'}]);
-        xlabel('$\sigma$','Interpreter','latex')
-    end
 
     if q==1
-        subplot(nrows,ncols,3+(q-1)*ncols),
-        errorbar(stats.snr{q}.means,stats.snr{q}.std)
-        ymin=min(stats.snr{q}.means(:)+stats.snr{q}.std(:));
-        ymax=max(stats.snr{q}.means(:)+stats.snr{q}.std(:));
+        subplot(nrows,ncols,1),
+        errorbar(stats.snr{q}.means(:,1:4),stats.snr{q}.std(:,1:4),'LineWidth',2)
+        ymin=min(min(stats.snr{q}.means(:,1:4)+stats.snr{q}.std(:,1:4)));
+        ymax=max(max(stats.snr{q}.means(:,1:4)+stats.snr{q}.std(:,1:4)));
         axis([1 5  ymin*.9 ymax])
-        set(gca,'YScale','log','YTick',10.^(-5:10),'XTickLabel',[]);
-        title('SNR','Interpreter','none')
+        set(gca,'YScale','log','YTick',10.^(-5:10),'XTickLabel',[],'FontSize',Pl.fs);
+        set(gca,'YTick',10.^(0:1:5),'YTickLabel',10.^(0:1:5))
+        ylab=ylabel('eSNR','Interpreter','none');
+        set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle','FontSize',Pl.fs)
+        title('Sparse Spiking','FontSize',Pl.fs)
     end
 
+    %     % plot corrcoef
+    %     subplot(nrows,ncols,1+(q-1)*ncols),
+    %     errorbar(stats.cc{q}.means(:,1:4),stats.cc{q}.std(:,1:4))
+    %     if q==1,
+    %         title('$\rho$','Interpreter','latex'),
+    %         ylab=ylabel([{'Sparsely'}; {'Spiking'}; {'Neuron'}]);
+    %     elseif q==2
+    %         ylab=ylabel([{'Fast'}; {'Spiking'}; {'Neuron'}]);
+    %     end
+    %     set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle','FontSize',12)
+    %
+    %     axis([1 5 0 1])
+    %     set(gca,'YScale','linear','YTick',[0 .5 1],'XTickLabel',[]);
+
+    % plot mse
+    if q==2
+        subplot(nrows,ncols,ncols),
+        errorbar(stats.mse{q}.means(:,1:4),stats.mse{q}.std(:,1:4),'LineWidth',2)
+        if q==1, title('MSE','Interpreter','none'), end
+        ymin=min(min(stats.mse{q}.means(:,1:4)+stats.mse{q}.std(:,1:4)));
+        ymax=max(max(stats.mse{q}.means(:,1:4)+stats.mse{q}.std(:,1:4)));
+        axis([1 5 ymin*.5 ymax])
+        set(gca,'YScale','log','YTick',10.^(-5:10),'XTickLabel',[]);
+        set(gca,'YTick',10.^(0:1:5),'YTickLabel',10.^(0:1:5))
+        if q==2,
+            set(gca,'XTick',[1:5], 'XTickLabel',[{'4'}; {''}; {'16'}; {''}; {'32'}],'FontSize',Pl.fs);
+            xlabel('$\sigma$','Interpreter','latex');
+            ylab=ylabel('MSE','Interpreter','none');
+            set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle','FontSize',Pl.fs)
+        end
+        title('Fast Spiking','FontSize',Pl.fs)
+    end
     %     if q==1
     %         subplot(nrows,ncols,4+(q-1)*ncols),
     %         errorbar(stats.auc{q}.means,stats.auc{q}.std)
@@ -404,20 +411,56 @@ for q=qs
     %     set(gca,'YScale','log','YTick',10.^(-5:10),'XTickLabel',[]);
     %     if q==1, title('Time (sec)','Interpreter','none'), end
     if q==1
-        set(gca,'XTick',[1:5], 'XTickLabel',[{'1/8'}; {''}; {'1/2'}; {''}; {'2'}]);
-        xlabel('$\sigma$','Interpreter','latex')
+        set(gca,'XTick',[1:2:5], 'XTickLabel',[{'1/16'}; {'1/4'}; {'1'}]);
+    else
+        set(gca,'XTick',[1:2:5], 'XTickLabel',sig0(q)*ks(1:2:5));
     end
+    xlabel('$\sigma$','Interpreter','latex')
 end
 
-annotation('line',[0 1],[.5 .5])
-annotation('line',.64*ones(2,1),[0 .5])
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plot snr subfig
+load('../../data/snr.mat')
+clear Pl
+clc
+Pl.xlims= [5 Sim.T-101];                            % time steps to plot
+Pl.nticks=5;                                    % number of ticks along x-axis
+Pl.n    = double(n); Pl.n(Pl.n==0)=NaN;         % store spike train for plotting
+Pl      = PlotParams(Pl);                       % generate a number of other parameters for plotting
+Pl.vs   = 4;
+Pl.colors(1,:) = [0 0 0];
+Pl.colors(2,:) = Pl.gray;
+Pl.colors(3,:) = [.5 0 0];
+Pl.Nc   = Sim.Nc;
+Pl.interp = 'latex';
+Pl.fs = 18;
 
-save('stats_fig')
+subplot(nrows,ncols,ncols+1)
+h=errorbar(mean_snr',std_snr');
+set(gca,'YScale','log') %,'YTick',10.^(-5:10),'XTickLabel',[]);
+set(h,'LineWidth',2)
+ymax=max(mean_snr(:)+std_snr(:));
+ymin=max(.8,min(mean_snr(:)-std_snr(:)));
+axis([.9 5.1 ymin ymax*1.1])
+% set(gca,'YTick',logspace(log(ymin),log(ymax),5),'YTickLabel',0:5)
+set(gca,'XTick',1:2:5,'XTickLabel',lam(1:2:end),'FontSize',Pl.fs)
+set(gca,'YTick',10.^(0:1:5),'YTickLabel',10.^(0:1:5))
+xlabel('$\lambda$','FontSize',Pl.fs,'Interpreter','latex')
+ylab=ylabel([{'eSNR'}],'Interpreter','none','FontSize',Pl.fs,'Color','k');
+set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
 
-load('time_stuff')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plot time subfig
+load('../../data/time_stuff.mat')
+nrows=2; ncols=2; Pl.fs=18;
+% annotation('line',[0 1],.47*ones(2,1))
+% annotation('line',.5*ones(2,1),[0 .5])
+
 
 subplot(nrows,ncols,nrows*ncols)
-errorbar(mean_time(1:4,:)',std_time(1:4,:)')
+h=errorbar(repmat([1:5],4,1)',mean_snr',mean_snr'/100,std_snr');
+
+errorbar(repmat([1:8]',1,4),mean_time(1:4,:)',mean_time(1:4,:)'/100, std_time(1:4,:)','LineWidth',2)
 set(gca,'YScale','log') %,'YTick',10.^(-5:10),'XTickLabel',[]);
 
 ymax=max(mean_time(:)+std_time(:));
@@ -425,9 +468,10 @@ ymin=max(10^-5,min(mean_time(:)-std_time(:)));
 axis([.9 8.1 ymin ymax])
 % set(gca,'YTick',linspace(mink,maxk,5),'YTickLabel',0:5)
 set(gca,'XTick',[1 4 8],'XTickLabel',200*2.^([1 4 8]))
-set(gca,'YTick',10.^(-5:5),'YTickLabel',10.^(-5:5))
-xlabel('Number of Time Steps','FontSize',Pl.fs)
-ylab=ylabel([{'Computational Time'}],'Interpreter','none','FontSize',Pl.fs);
+yticks=10.^(-4:2:5);
+set(gca,'YTick',yticks,'YTickLabel',[{'1e-4'}; {'0.01'}; {'1'}],'FontSize',Pl.fs)
+xlabel('# of frames','FontSize',Pl.fs)
+ylab=ylabel(['Time (sec)'],'Interpreter','none','FontSize',Pl.fs);
 % set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
 
 

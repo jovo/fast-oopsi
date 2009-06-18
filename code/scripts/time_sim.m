@@ -21,7 +21,6 @@ height  = Nc*neur_w;                        % height of frame (pixels)
 Npixs   = width*height;                     % # pixels in ROI
 
 % 2) set simulation metadata
-Sim.T       = 800;                              % # of time steps
 Sim.dt      = 0.005;                            % time step size
 Sim.MaxIter = 0;                                % # iterations of EM to estimate params
 Sim.Np      = Npixs;                            % # of pixels in each image
@@ -41,8 +40,8 @@ C_0     = 0;                                    % initial calcium
 tau     = [.1 .5]; %round(100*rand(Sim.Nc,1))/100+0.05;   % decay time constant for each cell
 P.gam   = 1-Sim.dt./tau(1:Sim.Nc);
 dim     = 5;
-stim    = rand(Sim.T,dim)'*2;
-P.lam   = 1; %sin(linspace(0,pi,dim))';
+% stim    = rand(Sim.T,dim)'*2;
+P.lam   = 10; %sin(linspace(0,pi,dim))';
 
 
 % 3) simulate data
@@ -55,7 +54,7 @@ for tt=1:5
         n=zeros(Sim.T,Sim.Nc);
         C=n;
         n(1)      = C_0;
-        n(2:end)  = poissrnd(P.lam*Sim.dt);    % simulate spike train
+        n(2:end)  = poissrnd(P.lam*Sim.dt*ones(1,Sim.T-1));    % simulate spike train
         C         = filter(1,[1 -P.gam],n);               % calcium concentration
         F = C*P.a' + P.b'+P.sig*randn(Sim.T,Npixs);               % fluorescence
 
@@ -67,7 +66,7 @@ for tt=1:5
         I{q}.label='True Filter';
         display(I{q}.label)
         tic
-        I{1,q,tt}.n = FOOPSI2_59(GG,Phat{q},Tim);
+        I{1,q,tt}.n = FOOPSI_v3_05_01(GG',Phat{q},Tim);
         I{1,q,tt}.time = toc;
 
         tic
@@ -97,10 +96,12 @@ for q=1:length(T)
     end
 end
 
-save('time_stuff')
+save('../../data/time_stuff.mat')
 
 %% end) plot results
 clear Pl
+nrows   = 1;
+ncols   = 1;
 h       = zeros(nrows,1);
 Pl.xlims= [5 Sim.T-101];                            % time steps to plot
 Pl.nticks=5;                                    % number of ticks along x-axis

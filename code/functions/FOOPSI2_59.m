@@ -202,7 +202,7 @@ P_best.l=l;
                     D   = F-reshape(C1,Nc,T)'*P.a'-b;
                     DD  = D(:)'*D(:);
                     L1  = u*DD+lam'*n-z*sum(log(n));
-                    s   = s/2;                  % if step increases objective function, decrease step size
+                    s   = s/5;                  % if step increases objective function, decrease step size
                 end
                 C = C1;                         % update C
                 L = L1;                         % update L

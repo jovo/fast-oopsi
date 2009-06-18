@@ -77,35 +77,33 @@
 \newlabel{eq:obj3}{{13}{7}{Fast Wiener Filter\relax }{equation.13}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Assessment}{7}{subsection.2.4}}
 \newlabel{sec:ass}{{2.4}{7}{Assessment\relax }{subsection.2.4}{}}
-\newlabel{eq:stats}{{14}{7}{Assessment\relax }{equation.14}{}}
-\newlabel{eq:R}{{14a}{7}{Assessment\relax }{equation.14a}{}}
-\newlabel{eq:MSE}{{14b}{7}{Assessment\relax }{equation.14b}{}}
-\newlabel{eq:SNR}{{14c}{7}{Assessment\relax }{equation.14c}{}}
+\newlabel{eq:SNR}{{14}{7}{Assessment\relax }{equation.14}{}}
+\newlabel{eq:MSE}{{15}{7}{Assessment\relax }{equation.15}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Results}{8}{section.3}}
 \newlabel{sec:results}{{3}{8}{Results\relax }{section.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Main Result}{8}{subsection.3.1}}
 \newlabel{sec:main}{{3.1}{8}{Main Result\relax }{subsection.3.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces A simulation demonstrating that the FAND filter performs at least as well as the optimal linear (i.e., Wiener) filter. The left panels show that in the slow firing regime, the FAND filter outperforms the Wiener filter in terms of SNR. This ``makes sense'', given that if a neuron is spiking according to a Poisson distribution with a slow rate, an exponential distribution is a better approximation than a Gaussian distribution, and the FAND filter approximates the spike train distribution with an exponential, versus the Wiener filter's Gaussian. The right panels show that both approximations are sufficient in the fast firing regime. Top left panel: fluorescence time series for a neuron with a slow firing rate. Middle left panel: the FAND filter's inferred spike train. Bottom left panel: Wiener filter's inferred spike train. Note that (i) the Wiener filter does not impose a non-negativity constraint, and (ii) the effective SNR of the Wiener filter in this example is worse than the FAND filter's. Top right panel: same as top left panel, for a neuron with a high firing rate. Middle right panel: the FAND filter's inferred spike train smoothed with a Gaussian kernel for visualization purposes (black line), and the true spike train smoothed with the same Gaussian kernel (gray line). Bottom right panel: same as middle right panel, but with the Wiener filter. Parameters for left panels: same as above. Parameters for right panels: same as above, except: $\sigma =8$ photons, $\lambda =500$ Hz.}}{9}{figure.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces A simulation demonstrating the performance of the FAND filter in different firing regimes. The left panels show that in the sparse firing regime, the FAND filter outperforms the Wiener filter in terms of SNR. This follows because an exponential is a closer approximation to a Poisson than a Gaussian, when spiking is sparse. The right panels show that both approximations are good in the fast firing regime. Top left panel: fluorescence time series for a neuron with a slow firing rate. Middle left panel: the FAND filter's inferred spike train. Bottom left panel: Wiener filter's inferred spike train. Note that (i) the Wiener filter does not impose a non-negativity constraint, and (ii) the effective SNR of the Wiener filter in this example is worse than the FAND filter's. Top right panel: same as top left panel, for a neuron with a high firing rate. Middle right panel: the FAND filter's inferred spike train smoothed with a Gaussian kernel for visualization purposes (black line), and the true spike train smoothed with the same Gaussian kernel (gray line). Bottom right panel: same as middle right panel, but with the Wiener filter. Parameters for left panels: same as in Figure \ref  {fig:schem}. Parameters for right panels: same as Figure \ref  {fig:schem}, except: $\sigma =8$ photons, $\lambda =500$ Hz.}}{9}{figure.3}}
 \newlabel{fig:wiener}{{3}{9}{Main Result\relax }{figure.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces }}{10}{figure.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Quantitative assessment of the FAND filter's inference quality and speed. The left columns show that the FAND filter outperforms the Wiener filter in terms of eSNR --- Eq. \textup  {\hbox {\mathsurround \z@ \normalfont  (\ignorespaces \ref  {eq:SNR}\unskip \@@italiccorr )}} --- regardless of variance of observation noise (top) and expected firing rate (bottom). The top right panel show that when noise is low, even when firing rates are relatively (e.g. $\lambda \Delta =20$ Hz), the FAND filter and Wiener filter both perform well. Both algorithms scale linearly with the number of image frames, meaning that it takes about 1 second of computational time per 50,000 image frames, using either algorithm. Simulation details: 5 simulations for each point on all the plots, mean (solid line) and standard deviation (bars) are shown for each. Parameters: $\Delta = 0.005$ sec, $\alpha =1$, $\beta =0$. Top left: $\lambda =1$ Hz, $\tau =1$ sec. Top right: $\lambda =10$ Hz, $\tau =1$ sec. Bottom left: $\sigma =0.25$, $\tau =0.5$ sec. Bottom right: $\sigma =0.25$, $\tau =0.1$ sec, $\lambda =1$ Hz.}}{10}{figure.4}}
 \newlabel{fig:stats}{{4}{10}{Main Result\relax }{figure.4}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces XXX. Parameters: $T=800$, $\Delta =5$ msec, $\alpha =1$, $\beta =0$, $\tau =100$ msec, $x_{i,t} \sim \@mathcal {U}(0,0.2)$, $\sigma =1/4$.}}{11}{figure.5}}
 \newlabel{fig:kernel}{{5}{11}{Main Result\relax }{figure.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Spatial Filtering}{12}{subsection.3.2}}
-\newlabel{eq:bF}{{15}{12}{Spatial Filtering\relax }{equation.15}{}}
-\newlabel{eq:eta4}{{16}{12}{Spatial Filtering\relax }{equation.16}{}}
-\newlabel{eq:g2}{{17}{12}{Spatial Filtering\relax }{equation.17}{}}
-\newlabel{eq:H2}{{18}{12}{Spatial Filtering\relax }{equation.18}{}}
+\newlabel{eq:bF}{{16}{12}{Spatial Filtering\relax }{equation.16}{}}
+\newlabel{eq:eta4}{{17}{12}{Spatial Filtering\relax }{equation.17}{}}
+\newlabel{eq:g2}{{18}{12}{Spatial Filtering\relax }{equation.18}{}}
+\newlabel{eq:H2}{{19}{12}{Spatial Filtering\relax }{equation.19}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces A simulation demonstrating that using a better spatial filter can significantly enhance the effective SNR (see Supplementary Movie 1 for the full movie associated with this simulation). Top: four movie frames. Middle left: projection of the entire movie onto the optimal spatial filter, yielding a 1D fluorescence time series, with a large SNR. Bottom left: FAND filter's inferred spike train using the optimal spatial filter. Middle right: projection of the entire movie onto the ``mean'' spatial filter, yielding a 1D fluorescence time series with a small SNR. Bottom right: FAND filter's inferred spike train using the mean spatial filter. Parameters different from Fig \ref  {fig:schem}: $\boldsymbol  {\alpha }$ is a mixture of two 2D-Gaussians, with mean $\mu _1=\mu _2=[0, 0]$ and covariance matrices, $\Sigma _i=\sigma _i^2 \boldsymbol  {I}$, with $\sigma _1=2$ and $\sigma _2=4$ and $\boldsymbol  {I}$ is the identity matrix. $\boldsymbol  {\beta }=1$.}}{13}{figure.6}}
 \newlabel{fig:spatial}{{6}{13}{Spatial Filtering\relax }{figure.6}{}}
 \citation{VogelsteinPaninski09b}
 \citation{Rabiner89}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Learning}{14}{subsection.3.3}}
 \newlabel{sec:learn}{{3.3}{14}{Learning\relax }{subsection.3.3}{}}
-\newlabel{eq:par1}{{19}{14}{Learning\relax }{equation.19}{}}
-\newlabel{eq:par2}{{20}{14}{Learning\relax }{equation.20}{}}
+\newlabel{eq:par1}{{20}{14}{Learning\relax }{equation.20}{}}
+\newlabel{eq:par2}{{21}{14}{Learning\relax }{equation.21}{}}
 \citation{YaksiFriedrich07}
-\newlabel{eq:lam}{{25}{15}{Learning\relax }{equation.25}{}}
+\newlabel{eq:lam}{{26}{15}{Learning\relax }{equation.26}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces A simulation demonstrating that given only the fluorescence movie, the parameters may be estimated, and the spike train inferred (c.f. Supplementary Movie 2). Top left panel: true spatial filter. Middle left panel: projection of movie onto true spatial filter. Bottom left panel: inferred spike train using true parameters. Right panels: same as left except estimating parameters. $\boldsymbol  {\alpha }$ initialized with the first singular value of $\boldsymbol  {F}$. $\boldsymbol  {\beta }$ initialized with $\boldsymbol  {0}$. $\lambda $ and $\sigma $ were initialized at double their true value. $\tau $ was assumed known. Parameters same as above.}}{15}{figure.7}}
 \newlabel{fig:spatial_EM}{{7}{15}{Learning\relax }{figure.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}in vitro data}{16}{subsection.3.4}}
@@ -114,7 +112,7 @@
 \newlabel{sec:overlap}{{3.5}{17}{Overlapping spatial filters\relax }{subsection.3.5}{}}
 \@writefile{toc}{\contentsline {paragraph}{Model}{17}{section*.4}}
 \@writefile{toc}{\contentsline {paragraph}{Inference}{17}{section*.5}}
-\newlabel{eq:M2}{{28}{17}{Inference\relax }{equation.28}{}}
+\newlabel{eq:M2}{{29}{17}{Inference\relax }{equation.29}{}}
 \@writefile{toc}{\contentsline {paragraph}{Learning}{17}{section*.6}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Simulation showing that even when two neuron's spatial filters are largely overlapping}}{18}{figure.8}}
 \newlabel{fig:spatial_multi}{{8}{18}{Learning\relax }{figure.8}{}}
@@ -128,7 +126,7 @@
 \newlabel{fig:slow}{{10}{20}{Slow rise time\relax }{figure.10}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.8}Poisson observation model}{21}{subsection.3.8}}
 \@writefile{toc}{\contentsline {paragraph}{Model}{21}{section*.7}}
-\@writefile{toc}{\contentsline {paragraph}{Inference}{21}{equation.31}}
+\@writefile{toc}{\contentsline {paragraph}{Inference}{21}{equation.32}}
 \@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Poisson}}{21}{figure.11}}
 \newlabel{fig:poiss}{{11}{21}{Inference\relax }{figure.11}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.9}in vivo data}{22}{subsection.3.9}}
@@ -165,7 +163,7 @@
 \bibcite{OzdenWang08}{14}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Dynamic prior}{26}{subsection.4.3}}
 \@writefile{toc}{\contentsline {paragraph}{Model}{26}{section*.12}}
-\@writefile{toc}{\contentsline {paragraph}{Inference}{26}{equation.34}}
+\@writefile{toc}{\contentsline {paragraph}{Inference}{26}{equation.35}}
 \@writefile{toc}{\contentsline {paragraph}{Acknowledgments}{26}{section*.14}}
 \bibcite{GreenbergKerr08}{15}
 \bibcite{VogelsteinPaninski09b}{16}
@@ -180,13 +178,10 @@
 \bibcite{HastieFriedman01}{25}
 \bibcite{BoydVandenberghe04}{26}
 \bibcite{Rabiner89}{27}
-\bibcite{IkegayaYuste04}{28}
-\bibcite{NiellSmith05}{29}
-\bibcite{YaksiFriedrich06}{30}
 \bibstyle{unsrt}
 \@writefile{toc}{\contentsline {section}{References}{27}{section*.15}}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Wiener Filter}{28}{section.A}}
-\newlabel{sec:wiener}{{A}{28}{Wiener Filter\relax }{section.A}{}}
-\newlabel{eq:w1}{{35}{28}{Wiener Filter\relax }{equation.35}{}}
-\newlabel{eq:w2}{{36}{28}{Wiener Filter\relax }{equation.36}{}}
-\newlabel{eq:w_par}{{39a}{28}{Wiener Filter\relax }{equation.39a}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Wiener Filter}{27}{section.A}}
+\newlabel{sec:wiener}{{A}{27}{Wiener Filter\relax }{section.A}{}}
+\newlabel{eq:w1}{{36}{27}{Wiener Filter\relax }{equation.36}{}}
+\newlabel{eq:w2}{{37}{28}{Wiener Filter\relax }{equation.37}{}}
+\newlabel{eq:w_par}{{40a}{28}{Wiener Filter\relax }{equation.40a}{}}

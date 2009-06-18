@@ -159,23 +159,4 @@ Lawrence~R Rabiner.
   Speech Recognition}.
 \newblock {\em Proceedings of the IEEE}, 72(2):257--286, February 1989.
 
-\bibitem{IkegayaYuste04}
-Yuji Ikegaya, Gloster Aaron, Rosa Cossart, Dmitriy Aronov, Ilan Lampl, David
-  Ferster, and Rafael Yuste.
-\newblock Synfire chains and cortical songs: temporal modules of cortical
-  activity.
-\newblock {\em Science}, 304(5670):559--564, Apr 2004.
-
-\bibitem{NiellSmith05}
-Cristopher~M Niell and Stephen~J Smith.
-\newblock Functional imaging reveals rapid development of visual response
-  properties in the zebrafish tectum.
-\newblock {\em Neuron}, 45(6):941--951, Mar 2005.
-
-\bibitem{YaksiFriedrich06}
-Emre Yaksi and Rainer~W Friedrich.
-\newblock Reconstruction of firing rate changes across neuronal populations by
-  temporally deconvolved {Ca}$^{2+}$ imaging.
-\newblock {\em Nat Methods}, 3(5):377--383, May 2006.
-
 \end{thebibliography}
