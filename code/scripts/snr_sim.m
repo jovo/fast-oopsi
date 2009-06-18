@@ -109,7 +109,7 @@ Pl.fs = 18;
 subplot(nrows,ncols,nrows*ncols)
 % lb=max(mean_snr'*0.99,mean_snr'-std_snr');
 % h=errorbar(repmat([1:5],4,1),mean_snr',mean_snr'/100,std_snr');
-h=errorbar(mean_snr',std_snr');
+h=errorbar(mean_snr,std_snr);
 set(gca,'YScale','log') %,'YTick',10.^(-5:10),'XTickLabel',[]);
 set(h,'LineWidth',2)
 ymax=max(mean_snr(:)+std_snr(:));

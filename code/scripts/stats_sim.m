@@ -421,6 +421,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plot snr subfig
 load('../../data/snr.mat')
+nrows=2; ncols=2;
 clear Pl
 clc
 Pl.xlims= [5 Sim.T-101];                            % time steps to plot
@@ -436,7 +437,7 @@ Pl.interp = 'latex';
 Pl.fs = 18;
 
 subplot(nrows,ncols,ncols+1)
-h=errorbar(mean_snr',std_snr');
+h=errorbar(mean_snr,std_snr);
 set(gca,'YScale','log') %,'YTick',10.^(-5:10),'XTickLabel',[]);
 set(h,'LineWidth',2)
 ymax=max(mean_snr(:)+std_snr(:));
@@ -458,7 +459,7 @@ nrows=2; ncols=2; Pl.fs=18;
 
 
 subplot(nrows,ncols,nrows*ncols)
-h=errorbar(repmat([1:5],4,1)',mean_snr',mean_snr'/100,std_snr');
+% h=errorbar(repmat([1:5],4,1)',mean_snr',mean_snr'/100,std_snr');
 
 errorbar(repmat([1:8]',1,4),mean_time(1:4,:)',mean_time(1:4,:)'/100, std_time(1:4,:)','LineWidth',2)
 set(gca,'YScale','log') %,'YTick',10.^(-5:10),'XTickLabel',[]);
