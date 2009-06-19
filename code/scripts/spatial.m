@@ -15,8 +15,8 @@ clear, clc
 
 % % stuff required for each spatial filter
 Nc      = 1;                                % # of cells in the ROI
-neur_w  = 10;                               % width per neuron
-width   = 10;                               % width of frame (pixels)
+neur_w  = 15;                               % width per neuron
+width   = 15;                               % width of frame (pixels)
 height  = Nc*neur_w;                        % height of frame (pixels)
 Npixs   = width*height;                     % # pixels in ROI
 x       = linspace(-5,5,height);
@@ -25,15 +25,22 @@ y       = linspace(-5,5,width);
 g1      = zeros(Npixs,Nc);
 g2      = 0*g1;
 Sigma1  = diag([1,1])*2;                    % var of positive gaussian
-Sigma2  = diag([1,1])*3;                    % var of negative gaussian
+Sigma2  = diag([1,1])*2.5;                    % var of negative gaussian
 mu      = [0 0]; %[1 1]'*linspace(-2,2,Nc); % means of gaussians for each cell (distributed across pixel space)
-w       = [1 -15];                          % weights of each filter
+w       = 1;                          % weights of each filter
 
+% ix0 = [      96    97    98    99   100   111   112   113   114   115   126   127   128   129   130];
+ix0 = [81:85 96:100 111:115 126:130 141:145];
+ix0 = [97:99 112:114 127:129];
+% ix0 = [97:99 112:114];
 % spatial filter
 for i=1:Nc
     g1(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma1);
-    g2(:,i)  = w(i)*mvnpdf([X(:) Y(:)],[mu(:,i)+1]',Sigma2);
+    g2(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma2);
 end
+% 
+% g1=g1/norm(g1);
+% g2=g2/norm(g2);
 
 % 2) set simulation metadata
 Sim.T       = 400;                              % # of time steps
@@ -47,13 +54,14 @@ Sim.plot    = 0;                                % whether to plot filter with ea
 
 % 3) initialize params
 for i=1:Sim.Nc
-    P.a(:,i)=g1(:,i)-g2(:,i);
+    P.a(:,i)=g1(:,i)-1.1*g2(:,i);
 end
+% figure(2), imagesc(reshape(P.a,Sim.w,Sim.h)), colormap(gray), colorbar
+
 % P.a(56,1)=P.a(56,1)-P.a(56,1)/5;
+P.b     = 0;%*P.a(:,1);                           % baseline is zero
 
-P.b     = 0*P.a(:,1);                           % baseline is zero
-
-P.sig   = 0.03;                                 % stan dev of noise (indep for each pixel)
+P.sig   = 0.005;                                 % stan dev of noise (indep for each pixel)
 C_0     = 0;                                    % initial calcium
 tau     = round(100*rand(Sim.Nc,1))/100+0.05;   % decay time constant for each cell
 P.gam   = 1-Sim.dt./tau(1:Sim.Nc);
@@ -69,7 +77,7 @@ for i=1:Sim.Nc
     C(:,i)      = filter(1,[1 -P.gam(i)],n(:,i));               % calcium concentration
 end
 Z = 0*n(:,1);
-F = C*P.a' + (1+Z)*P.b'+P.sig*randn(Sim.T,Npixs);               % fluorescence
+F = C*P.a' + P.b + P.sig*randn(Sim.T,Npixs);               % fluorescence
 
 %% 4) other stuff
 
@@ -96,7 +104,7 @@ if GetROI
         save('ROIs','ROWS1','COLS1')
     end
 else
-    load('../data/ROIs.mat')
+    load('../../data/ROIs.mat')
 end
 
 
@@ -119,11 +127,13 @@ for q=qs
     elseif q==2,
         Phat{q}=P;
         Phat{q}.a=0*P.a;
-        Phat{q}.a([45 46 55 56]) = 1;
+        [asort ix]=sort(P.a);
+        Phat{q}.a(ix0) = 1;
+%         Phat{q}.a([45 46 55 56]) = 1;
         I{q}.label='Segmented Filter';
     end
     display(I{q}.label)
-    [I{q}.n I{q}.P] = FOOPSI2_59(GG,Phat{q},Tim);
+    [I{q}.n I{q}.P] = FOOPSI_v3_05_01(GG',Phat{q},Tim);
 end
 
 %% end) plot results
@@ -177,7 +187,8 @@ for i=1:Nframes
         title('Mean Frame','FontSize',Pl.fs)
         set(gca,'YTick',[],'XTick',[])
     else
-        image(movieslices([1:10]+(i-1)*10,:)'), colormap('gray')
+        imagesc(reshape(F(100,:),Sim.w,Sim.h))
+        %         image(movieslices([1:10]+(i-1)*10,:)'), colormap('gray')
         title([{'Example Frame'}],'FontSize',Pl.fs)
 %         set(gca,'Xtick',[6:Sim.h+1:Nframes*Sim.h],'XTickLabel',[num2str(Pl.XTicks(i)*Sim.dt) ' sec'],'FontSize',Pl.fs)
         set(gca,'YTick',[],'XTick',[])
@@ -217,6 +228,6 @@ end
 
 % print fig
 wh=[7 5];   %width and height
-DirName = '../graphics/';
+DirName = '../../figs/';
 FileName = 'spatial';
 PrintFig(wh,DirName,FileName);
