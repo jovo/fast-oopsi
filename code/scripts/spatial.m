@@ -178,11 +178,11 @@ for i=1:Nframes
 %         ylab=ylabel([{'Image'}; {'Frames'}],'FontSize',Pl.fs);
 %         set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
 
-    elseif i==2 
+    elseif i==3 
         imagesc(reshape(Phat{2}.a,Sim.w,Sim.h))
         title([{'Typical'}; {'Spatial Filter'}],'FontSize',Pl.fs)
         set(gca,'YTick',[],'XTick',[])
-    elseif i==3 
+    elseif i==2 
         imagesc(reshape(mean(F),Sim.w,Sim.h))
         title('Mean Frame','FontSize',Pl.fs)
         set(gca,'YTick',[],'XTick',[])
@@ -198,26 +198,28 @@ end
 
 for q=qs
     i=q+3;
+    if q==1, p=2; else p=1; end
     % plot fluorescence data
     i=i+1; h(i) = subplot(nrows,ncols,i);
-    if q==1,
+    if p==1,
         title([{'True Projection'}],'FontSize',Pl.fs+2);
-        Pl.label = 'Fluorescence';
+        Pl.label=[];
     else
+        Pl.label = '$\mathbf{F}$';
+        Pl.interp = 'latex';
         title([{'Typical Projection'}],'FontSize',Pl.fs+2)
-        Pl.label = [];
     end
     Pl.color = 'k';
-    Plot_nX(Pl,(Phat{q}.a\F')');
+    Plot_nX(Pl,(Phat{p}.a\F')');
 
     % plot inferred spike trains
-    if q==1, Pl.label = [{'Fast'}; {'Filter'}];
+    if q==1, Pl.label = [{'$\mathbf{n}_{FAND}$'}]; Pl.interp = 'latex';
     else Pl.label=[]; end
     i=i+2; h(i) = subplot(nrows,ncols,i);
     Pl.col(2,:)=[0 0 0];
     Pl.gray=[.5 .5 .5];
     hold on
-    Plot_n_MAP(Pl,I{q}.n);
+    Plot_n_MAP(Pl,I{p}.n);
 
     % set xlabel stuff
     subplot(nrows,ncols,i)
