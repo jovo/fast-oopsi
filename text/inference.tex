@@ -10,7 +10,7 @@ Our goal here is to develop an algorithm to efficiently approximate $\hbn_{MAP}$
 %, by replacing the Poisson distribution on $\bn$ with an exponential distribution. Plugging this approximation into Eq. \eqref{eq:nhat4} yields:
 
 \begin{align} \label{eq:obj2}
-\bn_{FAND} &= \argmax_{n_t>0 \, \forall t}  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  + n_t \lam \Del \bigg) %, \qquad n_t \overset{iid}{\sim} \text{Exponential}(\lam \Del) %\an  \sum_{t=1}^T \left( \frac{1}{2 \sig^2}(\norm{\bF_t -\balpha (C_t + \beta)}^2  +  n_t  \lam \Del \right).
+\bn^{FAND} &= \argmax_{n_t>0 \, \forall t}  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  + n_t \lam \Del \bigg) %, \qquad n_t \overset{iid}{\sim} \text{Exponential}(\lam \Del) %\an  \sum_{t=1}^T \left( \frac{1}{2 \sig^2}(\norm{\bF_t -\balpha (C_t + \beta)}^2  +  n_t  \lam \Del \right).
 \end{align}
 
 \noindent where the constraint on $\bn$ has been relaxed from  $n_t \in \mathbb{N}_0$ to $n_t \geq 0$ (since the support of an exponential distribution is the non-negative number line).  Note that this is a common approximation technique in the machine learning literature \cite{HastieFriedman01}, as it is the closest convex relaxation to its non-convex counterpart. While this convex relaxation makes the problem tractable, the ``sharp'' threshold imposed by the non-negativity constraint prohibits the use of standard gradient ascent techniques \cite{BoydVandenberghe04}. We therefore take an ``interior-point'' (or ``barrier'') approach, in which we drop the sharp threshold, and add a barrier term, which must approach $-\infty$ as $n_t$ approaches zero (e.g., $-\log n_t$) \cite{BoydVandenberghe04}.  By iteratively reducing the weight of the barrier term, we are guaranteed to converge to the correct solution \cite{BoydVandenberghe04}.  Thus, our goal is to efficiently solve:
@@ -100,7 +100,7 @@ Instead of replacing the Poisson distribution on spikes with an exponential, we 
 \noindent which, when plugged into Eq. \eqref{eq:nhat3} yields
 
 \begin{align} \label{eq:obj3}
-\bn_{Wiener} &= \argmax_{n_t}  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  + 
+\bn^{Wiener} &= \argmax_{n_t}  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  + 
  \frac{1}{2 \lam \Del}(n_t - \lam \Del)^2\bigg) 
 \end{align}
 

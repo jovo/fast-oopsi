@@ -38,9 +38,6 @@ for i=1:Nc
     g1(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma1);
     g2(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma2);
 end
-% 
-% g1=g1/norm(g1);
-% g2=g2/norm(g2);
 
 % 2) set simulation metadata
 Sim.T       = 400;                              % # of time steps
@@ -135,8 +132,9 @@ for q=qs
     display(I{q}.label)
     [I{q}.n I{q}.P] = FOOPSI_v3_05_01(GG',Phat{q},Tim);
 end
-
+save('../../data/spatial')
 %% end) plot results
+load('../../data/spatial')
 clear Pl
 nrows   = 3+Nc;                                  % set number of rows
 ncols   = 2;
@@ -205,7 +203,7 @@ for q=qs
         title([{'True Projection'}],'FontSize',Pl.fs+2);
         Pl.label=[];
     else
-        Pl.label = '$\mathbf{F}$';
+        Pl.label = '$F_{1:T}^x$';
         Pl.interp = 'latex';
         title([{'Typical Projection'}],'FontSize',Pl.fs+2)
     end

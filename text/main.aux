@@ -94,58 +94,59 @@
 \newlabel{eq:eta4}{{17}{12}{Spatial Filtering\relax }{equation.17}{}}
 \newlabel{eq:g2}{{18}{12}{Spatial Filtering\relax }{equation.18}{}}
 \newlabel{eq:H2}{{19}{12}{Spatial Filtering\relax }{equation.19}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces A simulation demonstrating that using a better spatial filter can significantly enhance the effective SNR (see Supplementary Movie 1 for the full movie associated with this simulation). Top left: true spatial filter. Top second from left: mean frame. Top second from right: typical spatial filter. Top right: example frame from move (frame number 100). Middle left: 1-dimensional fluorescence projection using typical spatial filter. Bottom left: $\boldsymbol  {n}_{FAND}$ using typical spatial filter. Middle right: 1-dimensional fluorescence projection using true spatial filter. Bottom right: $\boldsymbol  {n}_{FAND}$ using true spatial filter. Simulation details: $\boldsymbol  {\alpha }=\@mathcal {N}(\boldsymbol  {0},2 \boldsymbol  {I})-1.1 \@mathcal {N}(\boldsymbol  {0},2.5 \boldsymbol  {I})$ where $\@mathcal {N}(\boldsymbol  {mu},\boldsymbol  {\Sigma })$ indicates a Gaussian with mean $\boldsymbol  {\mu }$ and covariance matrix $\boldsymbol  {\Sigma }$, $\boldsymbol  {\beta }=1$, $\tau =0.85$ sec, $\lambda =5$ Hz.}}{13}{figure.6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces A simulation demonstrating that using a better spatial filter can significantly enhance the effective SNR (see Supplementary Movie 1 for the full movie associated with this simulation). Top left: true spatial filter. Top second from left: mean frame. Top second from right: typical spatial filter. Top right: example frame from move (frame number 100). Middle left: 1-dimensional fluorescence projection using typical spatial filter. Bottom left: $\boldsymbol  {n}^{FAND}$ using typical spatial filter. Middle right: 1-dimensional fluorescence projection using true spatial filter. Bottom right: $\boldsymbol  {n}^{FAND}$ using true spatial filter. Simulation details: $\boldsymbol  {\alpha }=\@mathcal {N}(\boldsymbol  {0},2 \boldsymbol  {I})-1.1 \@mathcal {N}(\boldsymbol  {0},2.5 \boldsymbol  {I})$ where $\@mathcal {N}(\boldsymbol  {mu},\boldsymbol  {\Sigma })$ indicates a Gaussian with mean $\boldsymbol  {\mu }$ and covariance matrix $\boldsymbol  {\Sigma }$, $\boldsymbol  {\beta }=1$, $\tau =0.85$ sec, $\lambda =5$ Hz.}}{13}{figure.6}}
 \newlabel{fig:spatial}{{6}{13}{Spatial Filtering\relax }{figure.6}{}}
 \citation{VogelsteinPaninski09b}
 \citation{Rabiner89}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Learning}{14}{subsection.3.3}}
 \newlabel{sec:learn}{{3.3}{14}{Learning\relax }{subsection.3.3}{}}
-\newlabel{eq:par1}{{20}{14}{Learning\relax }{equation.20}{}}
-\newlabel{eq:par2}{{21}{14}{Learning\relax }{equation.21}{}}
+\@writefile{toc}{\contentsline {paragraph}{Initializing the parameters}{14}{section*.4}}
+\@writefile{toc}{\contentsline {paragraph}{Estimating the parameters given $\setbox \z@ \hbox {\frozen@everymath \@emptytoks \mathsurround \z@ $\textstyle \boldsymbol  {n}$}\mathaccent "0362{\boldsymbol  {n}}$}{14}{section*.5}}
+\newlabel{eq:par1}{{20}{14}{Estimating the parameters given $\hbn $\relax }{equation.20}{}}
+\newlabel{eq:par2}{{21}{14}{Estimating the parameters given $\hbn $\relax }{equation.21}{}}
 \citation{YaksiFriedrich07}
-\newlabel{eq:lam}{{26}{15}{Learning\relax }{equation.26}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces A simulation demonstrating that given only the fluorescence movie, the parameters may be estimated, and the spike train inferred (c.f. Supplementary Movie 2). Top left panel: true spatial filter. Middle left panel: projection of movie onto true spatial filter. Bottom left panel: inferred spike train using true parameters. Right panels: same as left except estimating parameters. $\boldsymbol  {\alpha }$ initialized with the first singular value of $\boldsymbol  {F}$. $\boldsymbol  {\beta }$ initialized with $\boldsymbol  {0}$. $\lambda $ and $\sigma $ were initialized at double their true value. $\tau $ was assumed known. Parameters same as above.}}{15}{figure.7}}
-\newlabel{fig:spatial_EM}{{7}{15}{Learning\relax }{figure.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}in vitro data}{16}{subsection.3.4}}
-\newlabel{sec:vitro}{{3.4}{16}{in vitro data\relax }{subsection.3.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Overlapping spatial filters}{17}{subsection.3.5}}
-\newlabel{sec:overlap}{{3.5}{17}{Overlapping spatial filters\relax }{subsection.3.5}{}}
-\@writefile{toc}{\contentsline {paragraph}{Model}{17}{section*.4}}
-\@writefile{toc}{\contentsline {paragraph}{Inference}{17}{section*.5}}
-\newlabel{eq:M2}{{29}{17}{Inference\relax }{equation.29}{}}
-\@writefile{toc}{\contentsline {paragraph}{Learning}{17}{section*.6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Simulation showing that even when two neuron's spatial filters are largely overlapping}}{18}{figure.8}}
-\newlabel{fig:spatial_multi}{{8}{18}{Learning\relax }{figure.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Population imaging}{19}{subsection.3.6}}
-\newlabel{sec:pop}{{3.6}{19}{Population imaging\relax }{subsection.3.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces full movie, in vitro data}}{19}{figure.9}}
-\newlabel{fig:spatial_full_data}{{9}{19}{Population imaging\relax }{figure.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}Slow rise time}{20}{subsection.3.7}}
-\newlabel{sec:slow}{{3.7}{20}{Slow rise time\relax }{subsection.3.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Slow rise time}}{20}{figure.10}}
-\newlabel{fig:slow}{{10}{20}{Slow rise time\relax }{figure.10}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.8}Poisson observation model}{21}{subsection.3.8}}
-\@writefile{toc}{\contentsline {paragraph}{Model}{21}{section*.7}}
-\@writefile{toc}{\contentsline {paragraph}{Inference}{21}{equation.32}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Poisson}}{21}{figure.11}}
-\newlabel{fig:poiss}{{11}{21}{Inference\relax }{figure.11}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.9}in vivo data}{22}{subsection.3.9}}
-\newlabel{sec:vivo}{{3.9}{22}{in vivo data\relax }{subsection.3.9}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Given only a fluorescence movie, recorded in vivo, we can learn the parameters necessary to correctly infer the spike trains. Left: mean frame. Left: projection of movie onto mean frame. Left: the FAND filter's inference.}}{22}{figure.12}}
-\newlabel{fig:spatial_data}{{12}{22}{in vivo data\relax }{figure.12}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{23}{section.4}}
-\newlabel{sec:dis}{{4}{23}{Discussion\relax }{section.4}{}}
-\@writefile{toc}{\contentsline {paragraph}{Summary}{23}{section*.9}}
-\@writefile{toc}{\contentsline {paragraph}{Extensions}{23}{section*.10}}
-\@writefile{toc}{\contentsline {paragraph}{Thresholding}{23}{section*.11}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Incorporating a nonlinear observation model}{24}{subsection.4.1}}
-\newlabel{sec:nonlin}{{4.1}{24}{Incorporating a nonlinear observation model\relax }{subsection.4.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Saturation}}{24}{figure.13}}
-\newlabel{fig:satur}{{13}{24}{Incorporating a nonlinear observation model\relax }{figure.13}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}in vivo data}{25}{subsection.4.2}}
-\newlabel{sec:vivo}{{4.2}{25}{in vivo data\relax }{subsection.4.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Given only a fluorescence movie, recorded in vivo, we can learn the parameters necessary to correctly infer the spike trains. Left: mean frame. Left: projection of movie onto mean frame. Left: the FAND filter's inference.}}{25}{figure.14}}
-\newlabel{fig:spatial_data}{{14}{25}{in vivo data\relax }{figure.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces A simulation demonstrating that given only the fluorescence movie, the parameters may be estimated, and the spike train inferred (c.f. Supplementary Movie 2). Top left panel: true spatial filter. Middle left panel: projection of movie onto true spatial filter. Bottom left panel: inferred spike train using true parameters. Right panels: same as left except estimating parameters. All parameters estimated other than $\gamma $, which was assumed known. Parameters converged within 7 iterations. Simulation details: $T=1000$, $\Delta =5$ msec, $\boldsymbol  {\alpha }$ is the same as in Figure \ref  {fig:spatial}, $\beta =0$, $\tau =500$ msec, $\lambda =10$ Hz.}}{16}{figure.7}}
+\newlabel{fig:spatial_EM}{{7}{16}{Estimating the parameters given $\hbn $\relax }{figure.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}in vitro data}{17}{subsection.3.4}}
+\newlabel{sec:vitro}{{3.4}{17}{in vitro data\relax }{subsection.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Overlapping spatial filters}{18}{subsection.3.5}}
+\newlabel{sec:overlap}{{3.5}{18}{Overlapping spatial filters\relax }{subsection.3.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Model}{18}{section*.6}}
+\@writefile{toc}{\contentsline {paragraph}{Inference}{18}{section*.7}}
+\newlabel{eq:M2}{{27}{18}{Inference\relax }{equation.27}{}}
+\@writefile{toc}{\contentsline {paragraph}{Learning}{18}{section*.8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Simulation showing that even when two neuron's spatial filters are largely overlapping}}{19}{figure.8}}
+\newlabel{fig:spatial_multi}{{8}{19}{Learning\relax }{figure.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Population imaging}{20}{subsection.3.6}}
+\newlabel{sec:pop}{{3.6}{20}{Population imaging\relax }{subsection.3.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces full movie, in vitro data}}{20}{figure.9}}
+\newlabel{fig:spatial_full_data}{{9}{20}{Population imaging\relax }{figure.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}Slow rise time}{21}{subsection.3.7}}
+\newlabel{sec:slow}{{3.7}{21}{Slow rise time\relax }{subsection.3.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Slow rise time}}{21}{figure.10}}
+\newlabel{fig:slow}{{10}{21}{Slow rise time\relax }{figure.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.8}Poisson observation model}{22}{subsection.3.8}}
+\@writefile{toc}{\contentsline {paragraph}{Model}{22}{section*.9}}
+\@writefile{toc}{\contentsline {paragraph}{Inference}{22}{equation.30}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Poisson}}{22}{figure.11}}
+\newlabel{fig:poiss}{{11}{22}{Inference\relax }{figure.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.9}in vivo data}{23}{subsection.3.9}}
+\newlabel{sec:vivo}{{3.9}{23}{in vivo data\relax }{subsection.3.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Given only a fluorescence movie, recorded in vivo, we can learn the parameters necessary to correctly infer the spike trains. Left: mean frame. Left: projection of movie onto mean frame. Left: the FAND filter's inference.}}{23}{figure.12}}
+\newlabel{fig:spatial_data}{{12}{23}{in vivo data\relax }{figure.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{24}{section.4}}
+\newlabel{sec:dis}{{4}{24}{Discussion\relax }{section.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Summary}{24}{section*.11}}
+\@writefile{toc}{\contentsline {paragraph}{Extensions}{24}{section*.12}}
+\@writefile{toc}{\contentsline {paragraph}{Thresholding}{24}{section*.13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Incorporating a nonlinear observation model}{25}{subsection.4.1}}
+\newlabel{sec:nonlin}{{4.1}{25}{Incorporating a nonlinear observation model\relax }{subsection.4.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Saturation}}{25}{figure.13}}
+\newlabel{fig:satur}{{13}{25}{Incorporating a nonlinear observation model\relax }{figure.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}in vivo data}{26}{subsection.4.2}}
+\newlabel{sec:vivo}{{4.2}{26}{in vivo data\relax }{subsection.4.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Given only a fluorescence movie, recorded in vivo, we can learn the parameters necessary to correctly infer the spike trains. Left: mean frame. Left: projection of movie onto mean frame. Left: the FAND filter's inference.}}{26}{figure.14}}
+\newlabel{fig:spatial_data}{{14}{26}{in vivo data\relax }{figure.14}{}}
 \bibdata{/Users/joshyv/Research/misc/biblist}
 \bibcite{YusteKonnerth06}{1}
 \bibcite{NagayamaChen07}{2}
@@ -161,10 +162,10 @@
 \bibcite{SatoSvoboda07}{12}
 \bibcite{KerrHelmchen07}{13}
 \bibcite{OzdenWang08}{14}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Dynamic prior}{26}{subsection.4.3}}
-\@writefile{toc}{\contentsline {paragraph}{Model}{26}{section*.12}}
-\@writefile{toc}{\contentsline {paragraph}{Inference}{26}{equation.35}}
-\@writefile{toc}{\contentsline {paragraph}{Acknowledgments}{26}{section*.14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Dynamic prior}{27}{subsection.4.3}}
+\@writefile{toc}{\contentsline {paragraph}{Model}{27}{section*.14}}
+\@writefile{toc}{\contentsline {paragraph}{Inference}{27}{equation.33}}
+\@writefile{toc}{\contentsline {paragraph}{Acknowledgments}{27}{section*.16}}
 \bibcite{GreenbergKerr08}{15}
 \bibcite{VogelsteinPaninski09b}{16}
 \bibcite{HolekampHoly08}{17}
@@ -179,9 +180,9 @@
 \bibcite{BoydVandenberghe04}{26}
 \bibcite{Rabiner89}{27}
 \bibstyle{unsrt}
-\@writefile{toc}{\contentsline {section}{References}{27}{section*.15}}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Wiener Filter}{27}{section.A}}
-\newlabel{sec:wiener}{{A}{27}{Wiener Filter\relax }{section.A}{}}
-\newlabel{eq:w1}{{36}{27}{Wiener Filter\relax }{equation.36}{}}
-\newlabel{eq:w2}{{37}{28}{Wiener Filter\relax }{equation.37}{}}
-\newlabel{eq:w_par}{{40a}{28}{Wiener Filter\relax }{equation.40a}{}}
+\@writefile{toc}{\contentsline {section}{References}{28}{section*.17}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Wiener Filter}{28}{section.A}}
+\newlabel{sec:wiener}{{A}{28}{Wiener Filter\relax }{section.A}{}}
+\newlabel{eq:w1}{{34}{28}{Wiener Filter\relax }{equation.34}{}}
+\newlabel{eq:w2}{{35}{29}{Wiener Filter\relax }{equation.35}{}}
+\newlabel{eq:w_par}{{38a}{29}{Wiener Filter\relax }{equation.38a}{}}

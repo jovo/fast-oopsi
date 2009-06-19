@@ -1,4 +1,12 @@
-In the above, we assumed that the parameters governing our model, $\vth=\{\balpha, \beta, \sig, \gam, \lam\} \in \ve{\Theta}$, were known. In general, however, these parameters must be estimated from the data. To find the maximum likelihood estimator for the parameters, $\hvth$, we must integrate over all possible spike trains. Unfortunately, it is not currently known how to perform this integral exactly, and approximating this integral using Monte Carlo methods is relatively time consuming (see \cite{VogelsteinPaninski09b} for details).  Thus, we resort to a more drastic approximation, commonly used in state-space models.  For specifically, instead of integrating over all possibly spike trains, we only consider the most likely sequence (ofter referred to as the Viterbi path \cite{Rabiner89}): 
+In the above, we assumed that the parameters governing our model, $\vth=\{\balpha, \beta, \sig, \gam, \lam\} \in \ve{\Theta}$, were known. In general, however, these parameters must be estimated from the data. Therefore, we take an approximate expectation-maximization approach for computing $\bn^{FAND}$: initialize some estimate of the parameters, $\hbth$, recursively compute $\bn^{FAND}$ using those parameters and update $\hbth$ given $\bn^{FAND}$, stop recursing when some convergence criteria is met.  Below, we provide details for each of the above steps.
+
+\paragraph{Initializing the parameters}
+
+We initialize our estimate $\balpha$ using Principal Component Analysis (PCA). More specifically, we perform PCA on $\bF$ (the whole movie), and let $\balpha$ be the PC with the highest eigenvalue.  If the movie is very long, we either only use part of it, or simply take the mean frame.  Then, we let $\beta=0$.  $\sig$ is estimated by finding a sequence of the time series lacking any obvious spikes, and computing the root mean square of that segment (i.e., $\hsig=\sqrt{\vF_{s:t}.^2}/(t-s)$).  We typically set $\gam$ and $\lam$ based on our previous experience with these cells.  For instance, $\gam \approx 0.95$ is often reasonable, and $\lam$ is somewhere between 1 and 10 Hz.  
+
+\paragraph{Estimating the parameters given $\hbn$}
+
+To find the maximum likelihood estimator for the parameters, $\hvth$, we must integrate over all possible spike trains. Unfortunately, it is not currently known how to perform this integral exactly, and approximating this integral using Monte Carlo methods is relatively time consuming (see \cite{VogelsteinPaninski09b} for details).  Thus, we resort to a more drastic approximation, commonly used in state-space models.  For specifically, instead of integrating over all possibly spike trains, we only consider the most likely sequence (often referred to as the Viterbi path \cite{Rabiner89}): 
 
 %\begin{subequations} \label{eq:par}
 \begin{align} \label{eq:par1}
@@ -10,12 +18,11 @@ In the above, we assumed that the parameters governing our model, $\vth=\{\balph
 Due to the state space nature of the above model (Eqs \eqref{eq:bF} and \eqref{eq:C}), the optimization in Eq \eqref{eq:par1} simplifies significantly.  More specifically, we can write the argument from the right-hand-side of Eq \eqref{eq:par1} as a product of terms that we have defined in our model:
 
  \begin{align} \label{eq:par2}
-P[\bF| \hCm, \bth] P[\hCm | \bth] &= \prod_{t=1}^T P[F_t | \hC_t, \balpha, \beta,\sig] P[\hC_t | \hC_{t-1}, \hn_t, \gamma] P[\hn_t | \lam]
+P[\bF| \hCm, \bth] P[\hCm | \bth] &= \prod_{t=1}^T P[F_t | \hC_t; \balpha, \beta,\sig] P[\hC_t | \hC_{t-1}, \hn_t; \gamma] P[\hn_t | \lam].
 \end{align}
 
-\noindent Fortunately, this optimization simplifies into several separable problems: (1) $\{\balpha, \beta\}$, (2) $\sig$, (3) $\gam$, and (4) $\lam$.  
-
-Because solving for $\balpha$ and $\beta$ jointly is non-concave, we solve for each separately.  First consider $\balpha$ only:
+\noindent This optimization simplifies into several separable problems.  %: (1) $\{\balpha, \beta\}$, (2) $\sig$, (3) $\gam$, and (4) $\lam$.  
+First, we solve for $\balpha$ and $\beta$.  Because solving for them jointly is non-concave, we solve for each separately.  Consider $\balpha$ only:
 
 \begin{subequations}
 \begin{align}
@@ -28,12 +35,12 @@ Because solving for $\balpha$ and $\beta$ jointly is non-concave, we solve for e
 \end{align}
 \end{subequations}
 
-Therefore, we can solve for each of the $N_p$ $\halpha_x$'s separately and efficiently using Matlab's  \texttt{mldivide}, 
-
-\begin{align}
-	\halpha_x = (\bC + \beta\ve{1})\backslash \bF_x,
-\end{align}
-
+Therefore, we can solve for each of the $\halpha_x$'s separately and efficiently using Matlab's  \texttt{mldivide}: 
+%
+%\begin{align}
+	$\halpha_x = (\bC + \beta\ve{1})\backslash \bF_x$, 
+%\end{align}
+%
 where $\bF_x=[F_{1,x}, \ldots, F_{T,x}]\T$. Given $\hbalpha$, we can estimate $\beta$:
 
 \begin{align}
@@ -42,7 +49,7 @@ where $\bF_x=[F_{1,x}, \ldots, F_{T,x}]\T$. Given $\hbalpha$, we can estimate $\
 = \argmax_{\beta>0} \sum_{t,x=1}^{T,N} (F_{t,x} - \halpha_x C_t + \beta \halpha_x)^2 
 \end{align}
 
-\noindent which can be solved efficiently again using Matlab's \texttt{mldivide}: $\widetilde{\beta}= \halpha_x \backslash \left(\sum_{t=1}^T F_{t,x} - \halpha_x C_t\right)$.  If $\widetilde{\beta}<0$, we simply let $\hbeta=0$, else, $\hbeta=\widetilde{\beta}$.
+\noindent which can again be solved efficiently again using Matlab's \texttt{mldivide}: $\widetilde{\beta}= \halpha_x \backslash \left(\sum_{t=1}^T F_{t,x} - \halpha_x C_t\right)$.  If $\widetilde{\beta}<0$, we simply let $\hbeta=0$, else, $\hbeta=\widetilde{\beta}$.
 
 Given $\hbalpha$ and $\hbeta$, we can now estimate $\sig$ using the residuals, i.e.,
 
@@ -50,20 +57,21 @@ Given $\hbalpha$ and $\hbeta$, we can now estimate $\sig$ using the residuals, i
 	\hsig^2 = \frac{1}{T N_p}\norm{\vec{\bF} - \hbalpha(\bC\T + \beta \ve{1})}^2
 \end{align}
 
-Alternately, we could simply find a segment of time in which it is clear that no spikes occurred, $\vF_{s:t}$, and then let $\hsig=\V(\vF_{s:t})$, which is independent of our inference algorithm. 
+Estimating $\lam$ is also totally straightforward: $\widehat{\lam} = \hnm' \ve{1}/ (T \Del)$. 
+% 
+% \begin{align} 
+% \widehat{\lam} &=  \frac{1}{T \Del} \hnm' \ve{1} \label{eq:lam}
+% \end{align}
 
-Although estimating $\gam$ is rather straightforward, previous work \cite{YaksiFriedrich07} and unpublished results suggest that errors in estimating $\gam$ do not significantly impact inference quality, and that deviations in $\gam$ are relatively small across a population of neurons, so it can typically be ``eyeballed''.  
+We don't update $\gam$ as we have found that it does not improve inference quality (not shown), in agreement with previous work \cite{YaksiFriedrich07}.
 
-Estimating $\lam$ is also totally straightforward:
+%\paragraph{Convergence criteria}
 
-\begin{align} 
-\widehat{\lam} &=  \frac{1}{T \Del} \hnm' \ve{1} \label{eq:lam}
-\end{align}
-
+We stop iterating the parameter update whenever (i) iteration number exceeds some upper bound, or (ii) relative change in likelihood does not exceed some lower bound.  In practice, we find that parameters tend to converge after several iterations, given our initialization.  Figure \ref{fig:spatial_EM} shows a simulation demonstrating the efficacy of this procedure.  The left panel shows the true spatial filter (top), the 1-dimensional fluorescence projection using the true spatial filter, $\bF^{opt}$ (middle), and the inferred spike train using the true parameters (bottom).  The right panel shows the estimated spatial filter, the 1-dimensional fluorescence projection using the estimated filter, $\bF^{est}$, and the inferred spike train using the estimated filter.  Note that we seeded the algorithm with the movie, and parameter estimates that were at least a factor of 2 from the true values.
 
 \begin{figure}[H]
 \centering \includegraphics[width=.9\linewidth]{../figs/spatial_EM}
-\caption{A simulation demonstrating that given only the fluorescence movie, the parameters may be estimated, and the spike train inferred (c.f. Supplementary Movie 2). Top left panel: true spatial filter.  Middle left panel: projection of movie onto true spatial filter. Bottom left panel: inferred spike train using true parameters. Right panels: same as left except estimating parameters.  $\balpha$ initialized with the first singular value of $\bF$.  $\bbeta$ initialized with $\ve{0}$.  $\lam$ and $\sig$ were initialized at double their true value.  $\tau$ was assumed known. Parameters same as above.} \label{fig:spatial_EM}
+\caption{A simulation demonstrating that given only the fluorescence movie, the parameters may be estimated, and the spike train inferred (c.f. Supplementary Movie 2). Top left panel: true spatial filter.  Middle left panel: projection of movie onto true spatial filter. Bottom left panel: inferred spike train using true parameters. Right panels: same as left except estimating parameters.  All parameters estimated other than $\gam$, which was assumed known.  Parameters converged within 7 iterations.  Simulation details: $T=1000$, $\Del=5$ msec, $\balpha$ is the same as in Figure \ref{fig:spatial}, $\beta=0$, $\tau=500$ msec, $\lam=10$ Hz.} \label{fig:spatial_EM}
 \end{figure}
 
 %we solve:

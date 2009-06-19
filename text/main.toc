@@ -10,26 +10,28 @@
 \contentsline {subsection}{\numberline {3.1}Main Result}{8}{subsection.3.1}
 \contentsline {subsection}{\numberline {3.2}Spatial Filtering}{12}{subsection.3.2}
 \contentsline {subsection}{\numberline {3.3}Learning}{14}{subsection.3.3}
-\contentsline {subsection}{\numberline {3.4}in vitro data}{16}{subsection.3.4}
-\contentsline {subsection}{\numberline {3.5}Overlapping spatial filters}{17}{subsection.3.5}
-\contentsline {paragraph}{Model}{17}{section*.4}
-\contentsline {paragraph}{Inference}{17}{section*.5}
-\contentsline {paragraph}{Learning}{17}{section*.6}
-\contentsline {subsection}{\numberline {3.6}Population imaging}{19}{subsection.3.6}
-\contentsline {subsection}{\numberline {3.7}Slow rise time}{20}{subsection.3.7}
-\contentsline {subsection}{\numberline {3.8}Poisson observation model}{21}{subsection.3.8}
-\contentsline {paragraph}{Model}{21}{section*.7}
-\contentsline {paragraph}{Inference}{21}{equation.32}
-\contentsline {subsection}{\numberline {3.9}in vivo data}{22}{subsection.3.9}
-\contentsline {section}{\numberline {4}Discussion}{23}{section.4}
-\contentsline {paragraph}{Summary}{23}{section*.9}
-\contentsline {paragraph}{Extensions}{23}{section*.10}
-\contentsline {paragraph}{Thresholding}{23}{section*.11}
-\contentsline {subsection}{\numberline {4.1}Incorporating a nonlinear observation model}{24}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}in vivo data}{25}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Dynamic prior}{26}{subsection.4.3}
-\contentsline {paragraph}{Model}{26}{section*.12}
-\contentsline {paragraph}{Inference}{26}{equation.35}
-\contentsline {paragraph}{Acknowledgments}{26}{section*.14}
-\contentsline {section}{References}{27}{section*.15}
-\contentsline {section}{\numberline {A}Wiener Filter}{27}{section.A}
+\contentsline {paragraph}{Initializing the parameters}{14}{section*.4}
+\contentsline {paragraph}{Estimating the parameters given $\setbox \z@ \hbox {\frozen@everymath \@emptytoks \mathsurround \z@ $\textstyle \boldsymbol {n}$}\mathaccent "0362{\boldsymbol {n}}$}{14}{section*.5}
+\contentsline {subsection}{\numberline {3.4}in vitro data}{17}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}Overlapping spatial filters}{18}{subsection.3.5}
+\contentsline {paragraph}{Model}{18}{section*.6}
+\contentsline {paragraph}{Inference}{18}{section*.7}
+\contentsline {paragraph}{Learning}{18}{section*.8}
+\contentsline {subsection}{\numberline {3.6}Population imaging}{20}{subsection.3.6}
+\contentsline {subsection}{\numberline {3.7}Slow rise time}{21}{subsection.3.7}
+\contentsline {subsection}{\numberline {3.8}Poisson observation model}{22}{subsection.3.8}
+\contentsline {paragraph}{Model}{22}{section*.9}
+\contentsline {paragraph}{Inference}{22}{equation.30}
+\contentsline {subsection}{\numberline {3.9}in vivo data}{23}{subsection.3.9}
+\contentsline {section}{\numberline {4}Discussion}{24}{section.4}
+\contentsline {paragraph}{Summary}{24}{section*.11}
+\contentsline {paragraph}{Extensions}{24}{section*.12}
+\contentsline {paragraph}{Thresholding}{24}{section*.13}
+\contentsline {subsection}{\numberline {4.1}Incorporating a nonlinear observation model}{25}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}in vivo data}{26}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Dynamic prior}{27}{subsection.4.3}
+\contentsline {paragraph}{Model}{27}{section*.14}
+\contentsline {paragraph}{Inference}{27}{equation.33}
+\contentsline {paragraph}{Acknowledgments}{27}{section*.16}
+\contentsline {section}{References}{28}{section*.17}
+\contentsline {section}{\numberline {A}Wiener Filter}{28}{section.A}

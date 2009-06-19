@@ -30,11 +30,11 @@ function [n_best P_best]=FOOPSI_v3_05_01(F,P,Meta,Est)
 %   Poiss:  whether observations are assumed to come from a Poisson or Gaussian distribution
 %   MaxIter:maximum number of iterations of pseudo-EM   (typically set to 50)
 % Est.      structure of parameters necessary for estimating parameters
-%   sig:    whether to estimate sig
-%   lam:    whether to estimate lam
-%   gam:    whether to estimate gam
-%   b:      whether to estimate b
-%   a:      whether to estimate a
+%   sig:    whether to estimate sig (default 0)
+%   lam:    whether to estimate lam (default 0)
+%   gam:    whether to estimate gam (default 0) 
+%   b:      whether to estimate b   (default 1)
+%   a:      whether to estimate a   (default 1)
 %   Plot:   whether to plot results (only required is Est.a==1)
 %   Thresh: whether to threshold infered spike train before updating 'a' and 'b' (only required is Est.a==1)
 %   n:      if true spike train is known, and we are plotting, plot it (only required is Est.a==1)
@@ -211,7 +211,7 @@ for i=2:MaxIter
             end
         end
         if Est.b==1
-            P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/T',[],[],[],[],[0 0],[inf inf],P.b,options);
+            P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/T',[],[],[],[],Z(1:Nc),inf+Z(1:Nc),P.b,options);
             P.b     = P.b';
         end
         b       = repmat(P.b,T,1)';
@@ -220,7 +220,7 @@ for i=2:MaxIter
     end
 
     % estimate other parameters
-    if Est.sig==1, P.sig = sqrt(-mse/T); end
+    if Est.sig==1, P.sig = sqrt(-mse)/T; end
     if Est.lam==1,
         nnorm   = n./repmat(max(n),T,1);
         if numel(P.lam)==Nc
