@@ -163,6 +163,10 @@ else
     H2  = I;                                    % initialize memory for Hessian matrix
 end
 
+FigNum = 400;
+figure(FigNum), clf, 
+figure(FigNum+1), clf
+
 %% infer spike train using default/initialized parameters
 n = FastFilter(F,P);
 
@@ -243,6 +247,7 @@ for i=2:MaxIter
         n_best  = n;
         P_best  = P;
         l_max   = l(i);
+        i_best  = i;
     end
 
     % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
@@ -254,29 +259,37 @@ for i=2:MaxIter
     % plot results from this iteration
     if DoPlot == 1
         if isfield(Est,'h') && isfield(Est,'h')
-            figure(400), nrows=Nc;                % plot spatial filter
+            figure(FigNum), nrows=Nc;                % plot spatial filter
             for j=1:Nc, subplot(1,nrows,j),
                 imagesc(reshape(P.a(:,j),Est.h,Est.w)),
                 title('a')
             end
         end
 
-        figure(401), clf, ncols=Nc+1; END=min(T,200);
+        figure(FigNum+1),  ncols=Nc; nrows=3; END=min(T,200);
         for j=1:Nc                              % plot inferred spike train
-            h(j)=subplot(ncols,1,j);
+            h(j,1)=subplot(nrows,ncols,j); cla
+            if Meta.Np>1, Ftemp=mean(F); else Ftemp=F; end
+            plot(z1(Ftemp(2:END))+1), hold on, 
+            bar(z1(n_best(2:END,j)))
+            title(['iteration ' num2str(i_best)]),
+            axis('tight')
+            
+            h(j,2)=subplot(nrows,ncols,j+1);
             bar(z1(n(2:END,j)))
-
             if isfield(Est,'n'), hold on,
                 stem(Est.n(2:END,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
             end
-            title(['iteration ' num2str(i)]),
             set(gca,'XTickLabel',[])
+            title(['iteration ' num2str(i)]),
             axis('tight')
+
         end
-        subplot(ncols,1,ncols), semilogy(l(2:i))    % plot record of likelihoods
+        
+        subplot(nrows,ncols,j*nrows),
+        plot(l(2:i))    % plot record of likelihoods
         title(['max lik ' num2str(l_max,4), ',   lik ' num2str(l(i),4)])
-        set(gca,'XTickLabel',[])
-        linkaxes(h,'xy')
+        set(gca,'XTick',2:i,'XTickLabel',2:i)
         drawnow
     end
 

@@ -1,0 +1,47 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.4)
+The top-level auxiliary file: main.aux
+The style file: unsrt.bst
+Database file #1: /Users/joshyv/Research/misc/biblist.bib
+Warning--I didn't find a database entry for "??"
+You've used 20 entries,
+            1791 wiz_defined-function locations,
+            605 strings with 8147 characters,
+and the built_in function-call counts, 4780 in all, are:
+= -- 406
+> -- 257
+< -- 0
++ -- 93
+- -- 73
+* -- 404
+:= -- 787
+add.period$ -- 59
+call.type$ -- 20
+change.case$ -- 16
+chr.to.int$ -- 0
+cite$ -- 20
+duplicate$ -- 180
+empty$ -- 444
+format.name$ -- 73
+if$ -- 1013
+int.to.chr$ -- 0
+int.to.str$ -- 20
+missing$ -- 22
+newline$ -- 102
+num.names$ -- 20
+pop$ -- 43
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 62
+stack$ -- 0
+substring$ -- 360
+swap$ -- 21
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 47
+width$ -- 22
+write$ -- 215
+(There was 1 warning)
