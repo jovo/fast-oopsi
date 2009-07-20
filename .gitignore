@@ -1,5 +1,1 @@
-*.swo
-*.swp
-*.DS_Store
-/old
-*.m~
+data/real/*
