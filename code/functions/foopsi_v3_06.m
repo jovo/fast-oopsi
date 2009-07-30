@@ -1,4 +1,4 @@
-function [n_best P_best]=FOOPSI_v3_05_01(F,P,Meta,Est)
+function [n_best P_best]=foopsi_v3_06(F,P,Meta)
 % this function solves the following optimization problem:
 % (*) n_best = argmax_{n >= 0} P(n | F)
 % which is a MAP estimate for the most likely spike train given the
@@ -29,17 +29,23 @@ function [n_best P_best]=FOOPSI_v3_05_01(F,P,Meta,Est)
 %   Nc:     # of cells within ROI
 %   Poiss:  whether observations are assumed to come from a Poisson or Gaussian distribution
 %   MaxIter:maximum number of iterations of pseudo-EM   (typically set to 50)
-% Est.      structure of parameters necessary for estimating parameters
-%   sig:    whether to estimate sig (default 0)
-%   lam:    whether to estimate lam (default 0)
-%   gam:    whether to estimate gam (default 0) 
-%   b:      whether to estimate b   (default 1)
-%   a:      whether to estimate a   (default 1)
-%   Plot:   whether to plot results (only required is Est.a==1)
-%   Thresh: whether to threshold infered spike train before updating 'a' and 'b' (only required is Est.a==1)
-%   n:      if true spike train is known, and we are plotting, plot it (only required is Est.a==1)
-%   h:      height of ROI (assumes square ROI) (# of pixels) (only required is Est.a==1)
-%   w:      width of ROI (assumes square ROI) (# of pixels) (only required is Est.a==1)
+% 
+%   THE FOLLOWING FIELDS CORRESPOND TO CHOICES THAT THE USER MAKE
+% 
+%   Plot:   whether to plot results (only required is a_est==1)
+%   Thresh: whether to threshold infered spike train before updating 'a' and 'b' (only required is a_est==1)
+%   n:      if true spike train is known, and we are plotting, plot it (only required is a_est==1)
+%   h:      height of ROI (assumes square ROI) (# of pixels) (only required is a_est==1)
+%   w:      width of ROI (assumes square ROI) (# of pixels) (only required is a_est==1)
+% 
+%   THE BELOW FIELDS INDICATE WHETHER ONE WANTS TO ESTIMATE EACH OF THE
+%   PARAMETERS
+% 
+%   sig_est:    whether to estimate sig? (default 0)
+%   lam_est:    whether to estimate lam? (default 0)
+%   gam_est:    whether to estimate gam? (default 0) 
+%   b_est:      whether to estimate b?   (default 1)
+%   a_est:      whether to estimate a?   (default 1)
 %
 % Output---
 % n_best:   inferred spike train
@@ -90,13 +96,15 @@ function [n_best P_best]=FOOPSI_v3_05_01(F,P,Meta,Est)
 %           still buggy), and made learning work for gaussian observation
 % 3_04_02:  modified input structures (see above for details)
 % 3_05_01:  lam can be time-varying
+% 3_06_01:  removed the 'Est' structure, and put those fields (some
+%           renamed) in the 'Meta' structure
 
 %% initialize stuff
 
 % set default parameter values
 if nargin < 2, P = struct; end
-if ~isfield(P,'b'),     P.b=0; end
-if ~isfield(P,'sig'),   P.sig=0.01; end
+if ~isfield(P,'b'),     P.b=mean(F); end
+if ~isfield(P,'sig'),   P.sig=std(F); end
 if ~isfield(P,'gam'),   P.gam=0.975; end
 if ~isfield(P,'lam'),   P.lam=10; end
 if ~isfield(P,'a'),     [U,S,P.a] = pca_approx(F',1); end
@@ -119,24 +127,27 @@ if isfield(Meta,'MaxIter'), MaxIter = Meta.MaxIter; else
 end
 
 % set which parameters to estimate
-if nargin < 4, Est = struct; end
 if MaxIter>1;
-    if ~isfield(Est,'sig'), Est.sig   = 0; end
-    if ~isfield(Est,'lam'), Est.lam   = 0; end
-    if ~isfield(Est,'gam'), Est.gam   = 0; end
-    if ~isfield(Est,'a'),   Est.a     = 1; end
-    if ~isfield(Est,'b'),   Est.b     = 1; end
-    if isfield(Est,'Thresh'),   Thresh = Est.Thresh; else Thresh = 1; end
-    if isfield(Est,'Plot'),     DoPlot = Est.Plot;   else DoPlot = 1; end
+    if ~isfield(Meta,'sig'), Meta.sig_est   = 0; end
+    if ~isfield(Meta,'lam'), Meta.lam_est   = 0; end
+    if ~isfield(Meta,'gam'), Meta.gam_est   = 0; end
+    if ~isfield(Meta,'a'),   Meta.a_est     = 1; end
+    if ~isfield(Meta,'b'),   Meta.b_est     = 1; end
+    if isfield(Meta,'Thresh'), Thresh = Meta.Thresh; else Thresh = 1; end
+    if isfield(Meta,'Plot'), DoPlot = Meta.Plot;   else DoPlot = 1; end
 else
-    Est.a=1;
+    Meta.a_est=1;
 end
 
 % make sure we have 1 spatial filter per neuron in ROI
 siz=size(P.a);
-if Est.a==1 && siz(2)~=Nc
-    [U,S,V]=pca_approx(F',Nc);
-    for j=1:Nc, P.a(:,j)=V(:,j); end
+if Meta.a_est==1
+    if siz(2)~=Nc
+        [U,S,V]=pca_approx(F',Nc);
+        for j=1:Nc, P.a(:,j)=V(:,j); end
+    else
+        P.a=ones(Nc,1);
+    end
 end
 
 %% define some stuff needed for FastFilter function
@@ -187,11 +198,11 @@ for i=2:MaxIter
     [n C]   = FastFilter(F,P);
 
     if min(n(:))<0,
-        disp('somehow, a negative spike has arisen'), keyboard
+        warning('somehow, a negative spike has arisen'), keyboard
     end
 
     % generate regressor for spatial filter
-    if Est.a==1 || Est.b==1
+    if Meta.a_est==1 || Meta.b_est==1
         if Thresh==1
             CC=0*C;
             for j=1:Nc
@@ -208,13 +219,13 @@ for i=2:MaxIter
 
         % update spatial filter and baseline
         CC = CC + b';
-        if Est.a==1
+        if Meta.a_est==1
             for ii=1:Np
                 Y   = F(ii,:)';
                 P.a(ii,:) = CC\Y;
             end
         end
-        if Est.b==1
+        if Meta.b_est==1
             P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/T',[],[],[],[],Z(1:Nc),inf+Z(1:Nc),P.b,options);
             P.b     = P.b';
         end
@@ -224,8 +235,8 @@ for i=2:MaxIter
     end
 
     % estimate other parameters
-    if Est.sig==1, P.sig = sqrt(-mse)/T; end
-    if Est.lam==1,
+    if Meta.sig_est==1, P.sig = sqrt(-mse)/T; end
+    if Meta.lam_est==1,
         nnorm   = n./repmat(max(n),T,1);
         if numel(P.lam)==Nc
             P.lam   = sum(nnorm)'/(T*dt);
@@ -258,15 +269,15 @@ for i=2:MaxIter
 
     % plot results from this iteration
     if DoPlot == 1
-        if isfield(Est,'h') && isfield(Est,'h')
+        if Np>1
             figure(FigNum), nrows=Nc;                % plot spatial filter
             for j=1:Nc, subplot(1,nrows,j),
-                imagesc(reshape(P.a(:,j),Est.h,Est.w)),
+                imagesc(reshape(P.a(:,j),Meta.h,Meta.w)),
                 title('a')
             end
         end
 
-        figure(FigNum+1),  ncols=Nc; nrows=3; END=min(T,200);
+        figure(FigNum+1),  ncols=Nc; nrows=3; END=T;
         for j=1:Nc                              % plot inferred spike train
             h(j,1)=subplot(nrows,ncols,j); cla
             if Np>1, Ftemp=mean(F); else Ftemp=F; end
@@ -277,8 +288,8 @@ for i=2:MaxIter
             
             h(j,2)=subplot(nrows,ncols,j+1);
             bar(z1(n(2:END,j)))
-            if isfield(Est,'n'), hold on,
-                stem(Est.n(2:END,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
+            if isfield(Meta,'n'), hold on,
+                stem(Meta.n(2:END,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
             end
             set(gca,'XTickLabel',[])
             title(['iteration ' num2str(i)]),

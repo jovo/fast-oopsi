@@ -107,7 +107,7 @@ for q=qs
         I{q}.label='SVD no mean denoise, SVD init, est Filter';        
     end
     display(I{q}.label)
-    [I{q}.n I{q}.P] = FOOPSI2_59(GG,Phat{q},Tim);
+    [I{q}.n I{q}.P] = FOOPSI_v3_05_01(GG',Phat{q},Tim);
 end
 
 %% end) plot results
