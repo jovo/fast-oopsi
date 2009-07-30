@@ -128,13 +128,13 @@ end
 
 % set which parameters to estimate
 if MaxIter>1;
-    if ~isfield(Meta,'sig'), Meta.sig_est   = 0; end
-    if ~isfield(Meta,'lam'), Meta.lam_est   = 0; end
-    if ~isfield(Meta,'gam'), Meta.gam_est   = 0; end
-    if ~isfield(Meta,'a'),   Meta.a_est     = 1; end
-    if ~isfield(Meta,'b'),   Meta.b_est     = 1; end
-    if isfield(Meta,'Thresh'), Thresh = Meta.Thresh; else Thresh = 1; end
-    if isfield(Meta,'Plot'), DoPlot = Meta.Plot;   else DoPlot = 1; end
+    if ~isfield(Meta,'sig_est'),Meta.sig_est   = 0; end
+    if ~isfield(Meta,'lam_est'),Meta.lam_est   = 0; end
+    if ~isfield(Meta,'gam_est'),Meta.gam_est   = 0; end
+    if ~isfield(Meta,'a_est'),  Meta.a_est     = 1; end
+    if ~isfield(Meta,'b_est'),  Meta.b_est     = 1; end
+    if isfield(Meta,'Thresh'),  Thresh = Meta.Thresh; else Thresh = 1; end
+    if isfield(Meta,'Plot'),    DoPlot = Meta.Plot;   else DoPlot = 1; end
 else
     Meta.a_est=1;
 end
@@ -234,8 +234,12 @@ for i=2:MaxIter
         mse     = -D(:)'*D(:);
     end
 
+    if Meta.a_est==0 && Meta.b_est==0 && (Meta.sig_est==1 || Meta.lam_est==1), D = F-P.a*(reshape(C,Nc,T)+b); mse = -D(:)'*D(:); end
+
     % estimate other parameters
-    if Meta.sig_est==1, P.sig = sqrt(-mse)/T; end
+    if Meta.sig_est==1, 
+        P.sig = sqrt(-mse)/T; 
+    end
     if Meta.lam_est==1,
         nnorm   = n./repmat(max(n),T,1);
         if numel(P.lam)==Nc
