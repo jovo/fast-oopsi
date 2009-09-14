@@ -97,7 +97,8 @@ function [n_best P_best]=foopsi_v3_06(F,P,Meta)
 % 3_04_02:  modified input structures (see above for details)
 % 3_05_01:  lam can be time-varying
 % 3_06_01:  removed the 'Est' structure, and put those fields (some
-%           renamed) in the 'Meta' structure
+%           renamed) in the 'Meta' structure. currently assumes 1d
+%           fluorescence
 
 %% initialize stuff
 
@@ -105,9 +106,9 @@ function [n_best P_best]=foopsi_v3_06(F,P,Meta)
 if nargin < 2, P = struct; end
 if ~isfield(P,'b'),     P.b=mean(F); end
 if ~isfield(P,'sig'),   P.sig=std(F); end
-if ~isfield(P,'gam'),   P.gam=0.975; end
+if ~isfield(P,'gam'),   P.gam=1-(1/15)/1; end
 if ~isfield(P,'lam'),   P.lam=10; end
-if ~isfield(P,'a'),     [U,S,P.a] = pca_approx(F',1); end
+if ~isfield(P,'a'),     P.a=1; end
 
 % set meta parameter values
 if nargin < 3, Meta = struct; end
@@ -129,11 +130,11 @@ end
 % set which parameters to estimate
 if MaxIter>1;
     if ~isfield(Meta,'sig_est'),Meta.sig_est   = 0; end
-    if ~isfield(Meta,'lam_est'),Meta.lam_est   = 0; end
+    if ~isfield(Meta,'lam_est'),Meta.lam_est   = 1; end
     if ~isfield(Meta,'gam_est'),Meta.gam_est   = 0; end
-    if ~isfield(Meta,'a_est'),  Meta.a_est     = 1; end
-    if ~isfield(Meta,'b_est'),  Meta.b_est     = 1; end
-    if isfield(Meta,'Thresh'),  Thresh = Meta.Thresh; else Thresh = 1; end
+    if ~isfield(Meta,'a_est'),  Meta.a_est     = 0; end
+    if ~isfield(Meta,'b_est'),  Meta.b_est     = 0; end
+    if isfield(Meta,'Thresh'),  Thresh = Meta.Thresh; else Thresh = 0; end
     if isfield(Meta,'Plot'),    DoPlot = Meta.Plot;   else DoPlot = 1; end
 else
     Meta.a_est=1;
@@ -149,6 +150,10 @@ if Meta.a_est==1
         P.a=ones(Nc,1);
     end
 end
+if isfield(Meta,'n'), 
+    Meta.n(Meta.n==NaN)=0; 
+    siz=size(Meta.n); if siz(1)<siz(2), Meta.n=Meta.n'; end;
+end
 
 %% define some stuff needed for FastFilter function
 Z   = zeros(Nc*T,1);                            % zero vector
@@ -158,7 +163,7 @@ d0  = 1:Nc*T+1:(Nc*T)^2;                        % index of diagonal elements of 
 d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            % index of off-diagonal elements of TxT matrices
 l   = Z(1:MaxIter);                             % initialize likelihood
 if numel(P.lam)==Nc
-    lam = dt*repmat(P.lam,T,1);         % for lik
+    lam = dt*repmat(P.lam,T,1);                 % for lik
 elseif numel(P.lam)==Nc*T
     lam = dt*P.lam;
 else
@@ -226,8 +231,13 @@ for i=2:MaxIter
             end
         end
         if Meta.b_est==1
-            P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/T',[],[],[],[],Z(1:Nc),inf+Z(1:Nc),P.b,options);
-            P.b     = P.b';
+            if Np>1
+                P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/T',[],[],[],[],Z(1:Nc),inf+Z(1:Nc),P.b,options);
+                P.b     = P.b';
+            else
+                P.b = mean(F-P.a*C');
+                P.b(P.b<0)=0;
+            end
         end
         b       = repmat(P.b,T,1)';
         D       = F-P.a*(reshape(C,Nc,T)+b);

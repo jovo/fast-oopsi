@@ -1,4 +1,4 @@
-function [n_best P_best]=foopsi_v3_06(F,P,Meta)
+function [n_best P_best]=fast_oopsi(F,V,P)
 % this function solves the following optimization problem:
 % (*) n_best = argmax_{n >= 0} P(n | F)
 % which is a MAP estimate for the most likely spike train given the
@@ -16,13 +16,8 @@ function [n_best P_best]=foopsi_v3_06(F,P,Meta)
 %
 % Input---- only F is REQUIRED.  the others are optional
 % F:        fluorescence time series (can be a vector (1 x T) or a matrix (Np x T)
-% P.        structure of neuron parameters
-%   a:      spatial filter
-%   b:      baseline
-%   sig:    standard deviation
-%   gam:    decayish (ie, tau=dt/(1-gam)
-%   lam:    firing rate-ish
-% Meta.      structure of simulation parameters
+% 
+% V.        structure of algorithm Variables
 %   T:      # of time steps
 %   dt:     time step size
 %   Np:     # of pixels in ROI
@@ -46,13 +41,21 @@ function [n_best P_best]=foopsi_v3_06(F,P,Meta)
 %   gam_est:    whether to estimate gam? (default 0) 
 %   b_est:      whether to estimate b?   (default 1)
 %   a_est:      whether to estimate a?   (default 1)
+% 
+% P.        structure of neuron Model parameters
+% 
+%   a:      spatial filter
+%   b:      baseline
+%   sig:    standard deviation
+%   gam:    decayish (ie, tau=dt/(1-gam)
+%   lam:    firing rate-ish
 %
 % Output---
 % n_best:   inferred spike train
 % P_best:   inferred parameter structure
 %
 % Remarks on revisions:
-% 1_7:      no longer need to define Meta.Plot (ie, if it is not defined, default
+% 1_7:      no longer need to define V.Plot (ie, if it is not defined, default
 %           is to not plot, but if it is defined, one can either plot or not)
 % 1_8:      cleaned up code from 1_7, and made Identity matrix outside loop,
 %           which gets diagonal replaced inside loop (instead of calling speye in
@@ -60,7 +63,7 @@ function [n_best P_best]=foopsi_v3_06(F,P,Meta)
 % 1_9:      mean subtract and normalize max(F)=1 such that arbitrary scale and
 %           offset shifts do no change results.
 % 2:        removed normalize.  takes either a row or column vector.
-%           doesn't require any Meta fields other than Meta.dt. also, we estimate
+%           doesn't require any V fields other than V.dt. also, we estimate
 %           parameters now using FastParams code (which is the same as the one used
 %           to estimate params given the real spikes, for debugging purposes)
 % 2_1:      also estimate mu
@@ -72,8 +75,8 @@ function [n_best P_best]=foopsi_v3_06(F,P,Meta)
 % 2_41:     reparameterized for stability.  uses constrained optimization. this
 %           works assuming nu=0 and rho=1.
 % 2_42:     works for arbitrary rho
-% 2_43:     fixed bugs so that M is only T-1 x T-1. cleaned up names and stuff.
-% 2_431:    made M TxT again
+% 2_43:     fixed bugs so that P is only T-1 x T-1. cleaned up names and stuff.
+% 2_431:    made P TxT again
 % 2_432:    added baseline (in progress)
 % 2_5:      dunno
 % 2_51:     removed rho and nu
@@ -97,33 +100,30 @@ function [n_best P_best]=foopsi_v3_06(F,P,Meta)
 % 3_04_02:  modified input structures (see above for details)
 % 3_05_01:  lam can be time-varying
 % 3_06_01:  removed the 'Est' structure, and put those fields (some
-%           renamed) in the 'Meta' structure. currently assumes 1d
+%           renamed) in the 'V' structure. currently assumes 1d
 %           fluorescence
+% 3_06_02:  renamed structure of params to P, and meta-params to V, 
+%           renamed function to simply fast_oopsi.m
+%           switched order of input variables
 
-%% initialize stuff
-
-% set default parameter values
-if nargin < 2, P = struct; end
-if ~isfield(P,'b'),     P.b=mean(F); end
-if ~isfield(P,'sig'),   P.sig=std(F); end
-if ~isfield(P,'gam'),   P.gam=1-(1/15)/1; end
-if ~isfield(P,'lam'),   P.lam=10; end
-if ~isfield(P,'a'),     P.a=1; end
+%% initialize algorithm Variables
 
 % set meta parameter values
-if nargin < 3, Meta = struct; end
-if isfield(Meta,'Poiss'),   Poiss  = Meta.Poiss; else Poiss = 0; end
-if isfield(Meta,'Nc'),      Nc = Meta.Nc;   else Nc = 1; end
-numelF=numel(F); lenF=length(F); sizF = size(F);
-if isfield(Meta,'Np'),      Np = Meta.Np;   else 
-    if numelF == lenF, Np = lenF;
-    else sizF = size(F); Np = sizF(1); end, end
-if isfield(Meta,'T'),       T  = Meta.T;    else T  = sizF(2); end
-if isfield(Meta,'dt'),      dt = Meta.dt;   else
+if nargin < 2,          V = struct;         end
+if isfield(V,'Poiss'),  Poiss  = V.Poiss;   else Poiss = 0; end
+if isfield(V,'Nc'),     Nc = V.Nc;          else Nc = 1; end
+if isfield(V,'Np') && isfield(V,'T'), Np = V.Np; T = V.T; 
+else numelF=numel(F);   lenF=length(F);     sizF = size(F);             % assumes F is Np x T
+    if numelF == lenF,  Np = 1; T=numelF;                               % set Np and T when F is a vector
+        if sizF(1)>1; F=F'; end                                         % makes F be 1 x T          
+    else Np = sizF(1); T=sizeF(2);          
+    end 
+end
+if isfield(V,'dt'),     dt = V.dt;          else
     fr = input('what was the frame rate for this movie (in Hz)? ');
     dt = 1/fr;
 end
-if isfield(Meta,'MaxIter'), MaxIter = Meta.MaxIter; else
+if isfield(V,'MaxIter'), MaxIter = V.MaxIter; else
     reply = input('do you want to estimate parameters? y/n [y] (case sensitive): ', 's');
     if reply == 'y'; MaxIter = 10;
     else MaxIter = 0; end
@@ -131,20 +131,20 @@ end
 
 % set which parameters to estimate
 if MaxIter>1;
-    if ~isfield(Meta,'sig_est'),Meta.sig_est   = 0; end
-    if ~isfield(Meta,'lam_est'),Meta.lam_est   = 1; end
-    if ~isfield(Meta,'gam_est'),Meta.gam_est   = 0; end
-    if ~isfield(Meta,'a_est'),  Meta.a_est     = 0; end
-    if ~isfield(Meta,'b_est'),  Meta.b_est     = 0; end
-    if isfield(Meta,'Thresh'),  Thresh = Meta.Thresh; else Thresh = 0; end
-    if isfield(Meta,'Plot'),    DoPlot = Meta.Plot;   else DoPlot = 1; end
+    if ~isfield(V,'sig_est'),   V.sig_est   = 0; end
+    if ~isfield(V,'lam_est'),   V.lam_est   = 1; end
+    if ~isfield(V,'gam_est'),   V.gam_est   = 0; end
+    if ~isfield(V,'a_est'),     V.a_est     = 0; end
+    if ~isfield(V,'b_est'),     V.b_est     = 0; end
+    if isfield(V,'Thresh'),     Thresh = V.Thresh;  else Thresh = 0; end
+    if isfield(V,'Plot'),       DoPlot = V.Plot;    else DoPlot = 1; end
 else
-    Meta.a_est=1;
+    V.a_est=1;
 end
 
 % make sure we have 1 spatial filter per neuron in ROI
 siz=size(P.a);
-if Meta.a_est==1
+if V.a_est==1
     if siz(2)~=Nc
         [U,S,V]=pca_approx(F',Nc);
         for j=1:Nc, P.a(:,j)=V(:,j); end
@@ -152,10 +152,19 @@ if Meta.a_est==1
         P.a=ones(Nc,1);
     end
 end
-if isfield(Meta,'n'), 
-    Meta.n(Meta.n==NaN)=0; 
-    siz=size(Meta.n); if siz(1)<siz(2), Meta.n=Meta.n'; end;
+if isfield(V,'n'), 
+    V.n(isnan(V.n))=0; 
+    siz=size(V.n); if siz(1)<siz(2), V.n=V.n'; end;
 end
+
+%% set default Parameter values
+
+if nargin < 2,          P = struct;         end
+if ~isfield(P,'b'),     P.b=mean(F);        end
+if ~isfield(P,'sig'),   P.sig=std(F);       end
+if ~isfield(P,'gam'),   P.gam=1-(1/15)/1;   end
+if ~isfield(P,'lam'),   P.lam=10;           end
+if ~isfield(P,'a'),     P.a=1;              end
 
 %% define some stuff needed for FastFilter function
 Z   = zeros(Nc*T,1);                            % zero vector
@@ -196,7 +205,6 @@ l_max   = l(1);                                 % maximum likelihood achieved so
 n_best  = n;                                    % best spike train
 P_best  = P;                                    % best parameter estimate
 options = optimset('Display','off');
-mse_old = -inf;
 
 % iterate until MaxIter or lik stops changing
 for i=2:MaxIter
@@ -209,7 +217,7 @@ for i=2:MaxIter
     end
 
     % generate regressor for spatial filter
-    if Meta.a_est==1 || Meta.b_est==1
+    if V.a_est==1 || V.b_est==1
         if Thresh==1
             CC=0*C;
             for j=1:Nc
@@ -226,13 +234,13 @@ for i=2:MaxIter
 
         % update spatial filter and baseline
         CC = CC + b';
-        if Meta.a_est==1
+        if V.a_est==1
             for ii=1:Np
                 Y   = F(ii,:)';
                 P.a(ii,:) = CC\Y;
             end
         end
-        if Meta.b_est==1
+        if V.b_est==1
             if Np>1
                 P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/T',[],[],[],[],Z(1:Nc),inf+Z(1:Nc),P.b,options);
                 P.b     = P.b';
@@ -246,13 +254,13 @@ for i=2:MaxIter
         mse     = -D(:)'*D(:);
     end
 
-    if Meta.a_est==0 && Meta.b_est==0 && (Meta.sig_est==1 || Meta.lam_est==1), D = F-P.a*(reshape(C,Nc,T)+b); mse = -D(:)'*D(:); end
+    if V.a_est==0 && V.b_est==0 && (V.sig_est==1 || V.lam_est==1), D = F-P.a*(reshape(C,Nc,T)+b); mse = -D(:)'*D(:); end
 
     % estimate other parameters
-    if Meta.sig_est==1, 
+    if V.sig_est==1, 
         P.sig = sqrt(-mse)/T; 
     end
-    if Meta.lam_est==1,
+    if V.lam_est==1,
         nnorm   = n./repmat(max(n),T,1);
         if numel(P.lam)==Nc
             P.lam   = sum(nnorm)'/(T*dt);
@@ -288,7 +296,7 @@ for i=2:MaxIter
         if Np>1
             figure(FigNum), nrows=Nc;                % plot spatial filter
             for j=1:Nc, subplot(1,nrows,j),
-                imagesc(reshape(P.a(:,j),Meta.h,Meta.w)),
+                imagesc(reshape(P.a(:,j),V.h,V.w)),
                 title('a')
             end
         end
@@ -304,8 +312,8 @@ for i=2:MaxIter
             
             h(j,2)=subplot(nrows,ncols,j+1);
             bar(z1(n(2:END,j)))
-            if isfield(Meta,'n'), hold on,
-                stem(Meta.n(2:END,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
+            if isfield(V,'n'), hold on,
+                stem(V.n(2:END,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
             end
             set(gca,'XTickLabel',[])
             title(['iteration ' num2str(i)]),
