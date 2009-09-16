@@ -16,7 +16,7 @@ function [n_best P_best]=fast_oopsi(F,V,P)
 %
 % Input---- only F is REQUIRED.  the others are optional
 % F:        fluorescence time series (can be a vector (1 x T) or a matrix (Np x T)
-% 
+%
 % V.        structure of algorithm Variables
 %   T:      # of time steps
 %   dt:     time step size
@@ -24,26 +24,26 @@ function [n_best P_best]=fast_oopsi(F,V,P)
 %   Nc:     # of cells within ROI
 %   Poiss:  whether observations are assumed to come from a Poisson or Gaussian distribution
 %   MaxIter:maximum number of iterations of pseudo-EM   (typically set to 50)
-% 
+%
 %   THE FOLLOWING FIELDS CORRESPOND TO CHOICES THAT THE USER MAKE
-% 
+%
 %   Plot:   whether to plot results (only required is a_est==1)
 %   Thresh: whether to threshold infered spike train before updating 'a' and 'b' (only required is a_est==1)
 %   n:      if true spike train is known, and we are plotting, plot it (only required is a_est==1)
 %   h:      height of ROI (assumes square ROI) (# of pixels) (only required is a_est==1)
 %   w:      width of ROI (assumes square ROI) (# of pixels) (only required is a_est==1)
-% 
+%
 %   THE BELOW FIELDS INDICATE WHETHER ONE WANTS TO ESTIMATE EACH OF THE
 %   PARAMETERS
-% 
+%
 %   sig_est:    whether to estimate sig? (default 0)
 %   lam_est:    whether to estimate lam? (default 0)
-%   gam_est:    whether to estimate gam? (default 0) 
+%   gam_est:    whether to estimate gam? (default 0)
 %   b_est:      whether to estimate b?   (default 1)
 %   a_est:      whether to estimate a?   (default 1)
-% 
+%
 % P.        structure of neuron Model parameters
-% 
+%
 %   a:      spatial filter
 %   b:      baseline
 %   sig:    standard deviation
@@ -102,31 +102,37 @@ function [n_best P_best]=fast_oopsi(F,V,P)
 % 3_06_01:  removed the 'Est' structure, and put those fields (some
 %           renamed) in the 'V' structure. currently assumes 1d
 %           fluorescence
-% 3_06_02:  renamed structure of params to P, and meta-params to V, 
+% 3_06_02:  renamed structure of params to P, and meta-params to V,
 %           renamed function to simply fast_oopsi.m
 %           switched order of input variables
 
 %% initialize algorithm Variables
 
 % set meta parameter values
-if nargin < 2,          V = struct;         end
-if isfield(V,'Poiss'),  Poiss  = V.Poiss;   else Poiss = 0; end
-if isfield(V,'Nc'),     Nc = V.Nc;          else Nc = 1; end
-if isfield(V,'Np') && isfield(V,'T'), Np = V.Np; T = V.T; 
+if nargin < 2,          V       = struct;       end
+if isfield(V,'Poiss'),  Poiss   = V.Poiss;      else Poiss  = 0; end
+if isfield(V,'Nc'),     Nc      = V.Nc;         else Nc     = 1; end
+if isfield(V,'Np') && isfield(V,'T'), Np = V.Np; T = V.T;
 else numelF=numel(F);   lenF=length(F);     sizF = size(F);             % assumes F is Np x T
     if numelF == lenF,  Np = 1; T=numelF;                               % set Np and T when F is a vector
-        if sizF(1)>1; F=F'; end                                         % makes F be 1 x T          
-    else Np = sizF(1); T=sizeF(2);          
-    end 
+        if sizF(1)>1; F=F'; end                                         % makes F be 1 x T
+    else Np = sizF(1); T=sizeF(2);
+    end
 end
-if isfield(V,'dt'),     dt = V.dt;          else
+if isfield(V,'dt'),     dt = V.dt;              else
     fr = input('what was the frame rate for this movie (in Hz)? ');
     dt = 1/fr;
 end
-if isfield(V,'MaxIter'), MaxIter = V.MaxIter; else
+if isfield(V,'MaxIter'), MaxIter = V.MaxIter;   else
     reply = input('do you want to estimate parameters? y/n [y] (case sensitive): ', 's');
     if reply == 'y'; MaxIter = 10;
     else MaxIter = 0; end
+end
+if ~isfield(V,'Plot'),  V.Plot=1;   end
+if V.Plot==1
+    FigNum = 400;
+    if V.Np>1, figure(FigNum), clf, end                                 % figure showing estimated spatial filter
+    figure(FigNum+1), clf                                               % figure showing estimated spike trains
 end
 
 % set which parameters to estimate
@@ -136,11 +142,23 @@ if MaxIter>1;
     if ~isfield(V,'gam_est'),   V.gam_est   = 0; end
     if ~isfield(V,'a_est'),     V.a_est     = 0; end
     if ~isfield(V,'b_est'),     V.b_est     = 0; end
-    if isfield(V,'Thresh'),     Thresh = V.Thresh;  else Thresh = 0; end
-    if isfield(V,'Plot'),       DoPlot = V.Plot;    else DoPlot = 1; end
+    if ~isfield(V,'Plot'),      V.Plot      = 1; end
+    if ~isfield(V,'Thresh'),    V.Thresh    = 0; end
 else
     V.a_est=1;
 end
+
+
+%% set default model Parameters
+
+if nargin < 3,          P = struct;         end
+if ~isfield(P,'b'),     P.b=mean(F);        end
+if ~isfield(P,'sig'),   P.sig=std(F);       end
+if ~isfield(P,'gam'),   P.gam=1-(1/15)/1;   end
+if ~isfield(P,'lam'),   P.lam=10;           end
+if ~isfield(P,'a'),     P.a=1;              end
+
+%% define some stuff needed for FastFilter function
 
 % make sure we have 1 spatial filter per neuron in ROI
 siz=size(P.a);
@@ -152,21 +170,11 @@ if V.a_est==1
         P.a=ones(Nc,1);
     end
 end
-if isfield(V,'n'), 
-    V.n(isnan(V.n))=0; 
+if isfield(V,'n'),
+    V.n(isnan(V.n))=0;
     siz=size(V.n); if siz(1)<siz(2), V.n=V.n'; end;
 end
 
-%% set default Parameter values
-
-if nargin < 2,          P = struct;         end
-if ~isfield(P,'b'),     P.b=mean(F);        end
-if ~isfield(P,'sig'),   P.sig=std(F);       end
-if ~isfield(P,'gam'),   P.gam=1-(1/15)/1;   end
-if ~isfield(P,'lam'),   P.lam=10;           end
-if ~isfield(P,'a'),     P.a=1;              end
-
-%% define some stuff needed for FastFilter function
 Z   = zeros(Nc*T,1);                            % zero vector
 M   = spdiags([repmat(-P.gam,T,1) repmat(Z,1,Nc-1) (1+Z)], -Nc:0,Nc*T,Nc*T);  % matrix transforming calcium into spikes, ie n=M*C
 I   = speye(Nc*T);                              % create out here cuz it must be reused
@@ -190,174 +198,64 @@ else
     H2  = I;                                    % initialize memory for Hessian matrix
 end
 
-FigNum = 400;
-figure(FigNum), clf, 
-figure(FigNum+1), clf
 
 %% infer spike train using default/initialized parameters
-n = FastFilter(F,P);
+[n C] = FastFilter(F,P);
 
-%%  pseudo-EM iterations
+%%  if parameters are unknown, do pseudo-EM iterations
+if MaxIter>1
+    % set up stuff
+    l(1)    = -inf;
+    l_max   = l(1);                                 % maximum likelihood achieved so far
+    n_best  = n;                                    % best spike train
+    P_best  = P;                                    % best parameter estimate
+    options = optimset('Display','off');
+    i       = 1;
+    conv    = 0;
 
-% set up stuff
-l(1)    = -inf;
-l_max   = l(1);                                 % maximum likelihood achieved so far
-n_best  = n;                                    % best spike train
-P_best  = P;                                    % best parameter estimate
-options = optimset('Display','off');
+    while conv == 0
 
-% iterate until MaxIter or lik stops changing
-for i=2:MaxIter
+        i       = i+1;                              % iteratation number
+        P       = ParamUpdate(n,C,F,P,b);           % update parameters
+        [n C]   = FastFilter(F,P);                  % update inferred spike train
+        if conv == 1, disp('convergence criteria met'), break; end
+        if V.Plot == 1, MakePlot(n,F,P,V); end      % plot results from this iteration
+        sound(3*sin(linspace(0,90*pi,2000)))        % play sound to indicate iteration is over
 
-    % update inferred spike train
-    [n C]   = FastFilter(F,P);
-
-    if min(n(:))<0,
-        warning('somehow, a negative spike has arisen'), keyboard
     end
-
-    % generate regressor for spatial filter
-    if V.a_est==1 || V.b_est==1
-        if Thresh==1
-            CC=0*C;
-            for j=1:Nc
-                nsort   = sort(n(:,j));
-                nthr    = nsort(round(0.98*T));
-                nn      = Z(1:T);
-                nn(n(:,j)<=nthr)=0;
-                nn(n(:,j)>nthr)=1;
-                CC(:,j) = filter(1,[1 -P.gam(j)],nn) + (1-P.gam(j))*P.b(j);
-            end
-        else
-            CC      = C;
-        end
-
-        % update spatial filter and baseline
-        CC = CC + b';
-        if V.a_est==1
-            for ii=1:Np
-                Y   = F(ii,:)';
-                P.a(ii,:) = CC\Y;
-            end
-        end
-        if V.b_est==1
-            if Np>1
-                P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/T',[],[],[],[],Z(1:Nc),inf+Z(1:Nc),P.b,options);
-                P.b     = P.b';
-            else
-                P.b = mean(F-P.a*C');
-                P.b(P.b<0)=0;
-            end
-        end
-        b       = repmat(P.b,T,1)';
-        D       = F-P.a*(reshape(C,Nc,T)+b);
-        mse     = -D(:)'*D(:);
-    end
-
-    if V.a_est==0 && V.b_est==0 && (V.sig_est==1 || V.lam_est==1), D = F-P.a*(reshape(C,Nc,T)+b); mse = -D(:)'*D(:); end
-
-    % estimate other parameters
-    if V.sig_est==1, 
-        P.sig = sqrt(-mse)/T; 
-    end
-    if V.lam_est==1,
-        nnorm   = n./repmat(max(n),T,1);
-        if numel(P.lam)==Nc
-            P.lam   = sum(nnorm)'/(T*dt);
-            lam     = repmat(P.lam,T,1)*dt;
-        else
-            P.lam   = nnorm/(T*dt);
-            lam     = P.lam*dt; 
-        end
-        
-    end
-
-    % update likelihood and keep results if they improved
-    lik     = -T*Np*log(2*pi*P.sig^2)/2 - mse/(2*P.sig^2);
-    prior   = sum(lam(:)) - lam(:)'*n(:);
-    l(i)    = lik + prior;
-
-    % if this is the best one, keep n and P
-    if l(i)>l_max
-        n_best  = n;
-        P_best  = P;
-        l_max   = l(i);
-        i_best  = i;
-    end
-
-    % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
-    if abs((l(i)-l(i-1))/l(i))<1e-5 || any(l(1:i-1)-l(i))<1e-5% abs((l(i)-l(i-1))/l(i))<1e-5 || l(i-1)-l(i)>1e5;
-        disp('modifying theta did not reduce likelihood enough to justify more of it')
-        break;
-    end
-
-    % plot results from this iteration
-    if DoPlot == 1
-        if Np>1
-            figure(FigNum), nrows=Nc;                % plot spatial filter
-            for j=1:Nc, subplot(1,nrows,j),
-                imagesc(reshape(P.a(:,j),V.h,V.w)),
-                title('a')
-            end
-        end
-
-        figure(FigNum+1),  ncols=Nc; nrows=3; END=T;
-        for j=1:Nc                              % plot inferred spike train
-            h(j,1)=subplot(nrows,ncols,j); cla
-            if Np>1, Ftemp=mean(F); else Ftemp=F; end
-            plot(z1(Ftemp(2:END))+1), hold on, 
-            bar(z1(n_best(2:END,j)))
-            title(['iteration ' num2str(i_best)]),
-            axis('tight')
-            
-            h(j,2)=subplot(nrows,ncols,j+1);
-            bar(z1(n(2:END,j)))
-            if isfield(V,'n'), hold on,
-                stem(V.n(2:END,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
-            end
-            set(gca,'XTickLabel',[])
-            title(['iteration ' num2str(i)]),
-            axis('tight')
-
-        end
-        
-        subplot(nrows,ncols,j*nrows),
-        plot(l(2:i))    % plot record of likelihoods
-        title(['max lik ' num2str(l_max,4), ',   lik ' num2str(l(i),4)])
-        set(gca,'XTick',2:i,'XTickLabel',2:i)
-        drawnow
-    end
-
-    % play sound to indicate iteration is over
-    sound(3*sin(linspace(0,90*pi,2000)))
-
+    P_best.l=l(1:i);                                % keep record of likelihoods for record
+else
+    n_best = n;
+    P_best = P;
 end
 
-P_best.l=l(1:i);                                % keep record of likelihoods for record
-
+%% fast filter function
     function [n C DD] = FastFilter(F,P)
 
         % initialize n and C
         z = 1;                                  % weight on barrier function
         e = 1/(2*P.sig^2);                      % scale of variance
-        llam = reshape(lam',1,Nc*T)';
-        n = z./llam;
+        if 
+        if numel(P.lam)==Nc,        lam = dt*repmat(P.lam,T,1); % for lik
+        elseif numel(P.lam)==Nc*T,  lam = dt*P.lam; end
+        llam = -(reshape(lam',1,Nc*T)').^(-1);
+        n = z./llam;                            % initialize spike train
         C = 0*n;                                % initialize calcium
         for j=1:Nc
             C(j:Nc:end) = filter(1,[1, -P.gam(j)],n(j:Nc:end)) + (1-P.gam(j))*P.b(j);
         end
 
         % precompute parameters required for evaluating and maximizing likelihood
-        b           = repmat(P.b,T,1)';        % for lik
+        b           = repmat(P.b,T,1)';         % for lik
         if Poiss==1
-            suma    = sum(P.a);                     % for grad
+            suma    = sum(P.a);                 % for grad
         else
-            aF      = P.a'*F;                       % for grad
-            bb      = b(:);                         % for grad
-            M(d1)   = -repmat(P.gam,T-1,1);         % matrix transforming calcium into spikes, ie n=M*C
-            lnprior = llam.*sum(M)';                 % for grad
-            aa      = repmat(diag(P.a'*P.a),T,1);   % for grad
-            H1(d0)  = 2*e*aa;                       % for Hess
+            aF      = P.a'*F;                   % for grad
+            bb      = b(:);                     % for grad
+            M(d1)   = -repmat(P.gam,T-1,1);     % matrix transforming calcium into spikes, ie n=M*C
+            lnprior = llam.*sum(M)';            % for grad
+            aa      = repmat(diag(P.a'*P.a),T,1);% for grad
+            H1(d0)  = 2*e*aa;                   % for Hess
         end
 
         % find C = argmin_{C_z} lik + prior + barrier_z
@@ -415,4 +313,120 @@ P_best.l=l(1:i);                                % keep record of likelihoods for
         C=reshape(C,Nc,T)';
     end
 
+%% Parameter Update
+    function P = ParamUpdate(n,C,F,P,b)
+
+        % generate regressor for spatial filter
+        if V.a_est==1 || V.b_est==1
+            if V.Thresh==1
+                CC=0*C;
+                for j=1:Nc
+                    nsort   = sort(n(:,j));
+                    nthr    = nsort(round(0.98*T));
+                    nn      = Z(1:T);
+                    nn(n(:,j)<=nthr)=0;
+                    nn(n(:,j)>nthr)=1;
+                    CC(:,j) = filter(1,[1 -P.gam(j)],nn) + (1-P.gam(j))*P.b(j);
+                end
+            else
+                CC      = C;
+            end
+
+            % update spatial filter and baseline
+            CC = CC + b';
+            if V.a_est==1
+                for ii=1:Np
+                    Y   = F(ii,:)';
+                    P.a(ii,:) = CC\Y;
+                end
+            end
+            if V.b_est==1
+                if Np>1
+                    P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/T',[],[],[],[],Z(1:Nc),inf+Z(1:Nc),P.b,options);
+                    P.b     = P.b';
+                else
+                    P.b = mean(F-P.a*C');
+                    P.b(P.b<0)=0;
+                end
+            end
+            b       = repmat(P.b,T,1)';
+            D       = F-P.a*(reshape(C,Nc,T)+b);
+            mse     = -D(:)'*D(:);
+        end
+
+        if V.a_est==0 && V.b_est==0 && (V.sig_est==1 || V.lam_est==1), D = F-P.a*(reshape(C,Nc,T)+b); mse = -D(:)'*D(:); end
+
+        % estimate other parameters
+        if V.sig_est==1,
+            P.sig = sqrt(-mse)/T;
+        end
+        if V.lam_est==1,
+            nnorm   = n./repmat(max(n),T,1);
+            if numel(P.lam)==Nc
+                P.lam   = sum(nnorm)'/(T*dt);
+                lam     = repmat(P.lam,T,1)*dt;
+            else
+                P.lam   = nnorm/(T*dt);
+                lam     = P.lam*dt;
+            end
+
+        end
+
+        % update likelihood and keep results if they improved
+        lik     = -T*Np*log(2*pi*P.sig^2)/2 - mse/(2*P.sig^2);
+        prior   = sum(lam(:)) - lam(:)'*n(:);
+        l(i)    = lik + prior;
+
+        % if this is the best one, keep n and P
+        if l(i)>l_max
+            n_best  = n;
+            P_best  = P;
+            l_max   = l(i);
+        end
+
+        % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
+        if  i>=MaxIter || (abs((l(i)-l(i-1))/l(i))<1e-5 || any(l(1:i-1)-l(i))<1e-5)% abs((l(i)-l(i-1))/l(i))<1e-5 || l(i-1)-l(i)>1e5;
+            conv = 1;
+        end
+
+    end
+
+%% MakePlot
+    function MakePlot(n,F,P,V)
+        if V.Plot == 1
+            if Np>1                                     % plot spatial filter
+                figure(FigNum), nrows=Nc;
+                for j=1:Nc, subplot(1,nrows,j),
+                    imagesc(reshape(P.a(:,j),V.h,V.w)),
+                    title('a')
+                end
+            end
+
+            figure(FigNum+1),  ncols=Nc; nrows=3; END=T;
+            for j=1:Nc                                  % plot inferred spike train
+                h(j,1)=subplot(nrows,ncols,j); cla
+                if Np>1, Ftemp=mean(F); else Ftemp=F; end
+                plot(z1(Ftemp(2:END))+1), hold on,
+                bar(z1(n_best(2:END,j)))
+                title(['iteration ' num2str(i_best)]),
+                axis('tight')
+
+                h(j,2)=subplot(nrows,ncols,j+1);
+                bar(z1(n(2:END,j)))
+                if isfield(V,'n'), hold on,
+                    stem(V.n(2:END,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
+                end
+                set(gca,'XTickLabel',[])
+                title(['iteration ' num2str(i)]),
+                axis('tight')
+
+            end
+
+            subplot(nrows,ncols,j*nrows),
+            plot(l(2:i))    % plot record of likelihoods
+            title(['max lik ' num2str(l_max,4), ',   lik ' num2str(l(i),4)])
+            set(gca,'XTick',2:i,'XTickLabel',2:i)
+            drawnow
+        end
+    end
 end

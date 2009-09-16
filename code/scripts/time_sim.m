@@ -132,8 +132,8 @@ set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle'
 
 
 
-% % print fig
-% wh=[7 5];   %width and height
-% DirName = '../../figs/';
-% FileName = 'time_sim';
-% PrintFig(wh,DirName,FileName);
+% print fig
+wh=[7 5];   %width and height
+DirName = '../../figs/';
+FileName = 'time_sim';
+PrintFig(wh,DirName,FileName);

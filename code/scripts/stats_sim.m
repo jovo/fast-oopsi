@@ -20,28 +20,12 @@ for kk=1:length(ks)
         disp(['trial ' num2str(tt)])
         % 1) generate spatial filters
 
-        % % stuff required for each spatial filter
+        % stuff required for each spatial filter
         Nc      = 1;                                % # of cells in the ROI
         neur_w  = 1;                               % width per neuron
         width   = 1;                               % width of frame (pixels)
         height  = Nc*neur_w;                        % height of frame (pixels)
         Npixs   = width*height;                     % # pixels in ROI
-        % x1      = linspace(-5,5,height);
-        % x2      = linspace(-5,5,width);
-        % [X1,X2] = meshgrid(x1,x2);
-        % g1      = zeros(Npixs,Nc);
-        % g2      = 0*g1;
-        % Sigma1  = diag([1,1])*1;                    % var of positive gaussian
-        % Sigma2  = diag([1,1])*2;                    % var of negative gaussian
-        % mu      = [1 1]'*linspace(-2,2,Nc);         % means of gaussians for each cell (distributed across pixel space)
-        % w       = Nc:-1:1;                          % weights of each filter
-        %
-        % % spatial filter
-        % for i=1:Nc
-        %     g1(:,i)  = w(i)*mvnpdf([X1(:) X2(:)],mu(:,i)',Sigma1);
-        %     g2(:,i)  = w(i)*mvnpdf([X1(:) X2(:)],mu(:,i)',Sigma2);
-        % end
-        % a_b = sum(g1-g2,2);
 
         % 2) set simulation metadata
         Sim.T       = 5000;                              % # of time steps
@@ -56,17 +40,12 @@ for kk=1:length(ks)
         lam         = [1; 10];
         sigs        = sig0*ks(kk);
         moda        = (sin(linspace(0,10*pi,Sim.T-1))+1);
-        %         moda        = mean(moda)+0*moda;
         qs          = 1:2;
 
         for q=qs
             % 3) initialize params
             P.a     = 1;
-            % for i=1:Sim.Nc
-            %     P.a(:,i)=g1(:,i)-g2(:,i);
-            % end
             P.b     = 0;                           % baseline is zero
-            % P.b     = 0*P.a(:,1)+1;                           % baseline is zero
 
             P.sig   = sigs(q);                                 % stan dev of noise (indep for each pixel)
             C_0     = 0;                                    % initial calcium
@@ -94,7 +73,7 @@ for kk=1:length(ks)
             I{tt,q}.label='True Filter';
             display(I{tt,q}.label)
             tic
-            I{1,q}.n = FOOPSI2_59(GG,Phat{tt,q},Tim);
+            I{1,q}.n = fast_oopsi(GG',Tim,Phat{tt,q});
             I{1,q}.time = toc;
 
             tic
@@ -418,7 +397,7 @@ for q=qs
     xlabel('$\sigma$','Interpreter','latex')
 end
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plot snr subfig
 load('../../data/snr.mat')
 nrows=2; ncols=2;
@@ -440,7 +419,7 @@ subplot(nrows,ncols,ncols+1)
 h=errorbar(mean_snr,std_snr);
 set(gca,'YScale','log') %,'YTick',10.^(-5:10),'XTickLabel',[]);
 set(h,'LineWidth',2)
-ymax=max(mean_snr(:)+std_snr(:));
+ymax=20;%=max(mean_snr(:)+std_snr(:));
 ymin=max(.8,min(mean_snr(:)-std_snr(:)));
 axis([.9 5.1 ymin ymax*1.1])
 % set(gca,'YTick',logspace(log(ymin),log(ymax),5),'YTickLabel',0:5)
@@ -450,7 +429,7 @@ xlabel('$\lambda$','FontSize',Pl.fs,'Interpreter','latex')
 ylab=ylabel([{'eSNR'}],'Interpreter','none','FontSize',Pl.fs,'Color','k');
 set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plot time subfig
 load('../../data/time_stuff.mat')
 nrows=2; ncols=2; Pl.fs=18;
