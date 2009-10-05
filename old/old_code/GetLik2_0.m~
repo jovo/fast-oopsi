@@ -1,0 +1,22 @@
+function post = GetLik2_0(F,C,n,P,Sim)
+mse=zeros(Sim.Np,Sim.T);
+%     try
+for ii=1:Sim.Np
+    for t=1:Sim.T
+        mse(ii,t)=(F(t,ii)-P.a(ii,:)*C(t,:)'-P.b(ii))^2;
+    end
+end
+lik = -Sim.T*Sim.Np*log(2*pi*P.sig^2)/2 -1/(2*P.sig^2)*sum(mse(:));
+sound(5*sin(linspace(0,8*pi,1000)))
+prior = Sim.T*sum(P.lam) - P.lam'*sum(n)';
+post = lik+prior;
+
+%     catch
+%        ass=4; keyboard
+%     end
+%     aC=P.a*C';
+%     b=repmat(P.b,1,Sim.T);
+%     mse2=F(:)-aC(:)-b(:);
+%     mse2=sum(mse2.^2)/(Sim.T*Sim.Np);
+%     mse3=D(:)'*D(:);
+%     0.5*T*log(2*pi*P.sig^2) + norm(F'-P.a*C'-P.b*Z(1:T)')^2/(2*P.sig^2)- T*log(P.lam*dt) + P.lam*dt*sum(n);

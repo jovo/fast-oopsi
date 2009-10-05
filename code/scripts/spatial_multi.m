@@ -22,7 +22,7 @@ Sigma1  = diag([1,1])*3;                    % var of positive gaussian
 Sigma2  = diag([1,1])*5;                    % var of negative gaussian
 sp      = 1.8;
 mu      = [1 1]'*linspace(-sp,sp,Nc);     % means of gaussians for each cell (distributed across pixel space)
-w       = linspace(1,Nc,Nc); %Nc:-1:1;             % weights of each filter
+w       = ones(1,Nc); %linspace(1,Nc,Nc); %Nc:-1:1;             % weights of each filter
 for i=1:Nc
     g1(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma1);
     g2(:,i)  = 0*w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma2);
@@ -42,7 +42,7 @@ Meta.Poiss  = 0;                            % whether observations are poisson o
 Meta.MaxIter= 25;                           % # iterations of EM to estimate params
 
 % initialize other parameters
-P.sig   = max(P.a(:))*0.25;                             % stan dev of noise (indep for each pixel)
+P.sig   = 2.7*max(P.a(:));                             % stan dev of noise (indep for each pixel)
 C_0     = 0;                                % initial calcium
 tau     = rand(Meta.Nc,1)/2+.05;   % decay time constant for each cell
 P.gam   = 1-Meta.dt./tau(1:Nc);             % set gam
@@ -65,11 +65,13 @@ for i=1:Meta.Nc
 end
 F = P.a*(C+repmat(P.b,Meta.T,1))'+P.sig*rand(Npixs,Meta.T);
 
+figure(2), clf, hold off, plot(P.a(:,1)\F), hold all, plot(P.a(:,2)\F);
+
 save(['../../data/' fname '.mat'],'F','n','P','Meta')
 
 %% generate tif
 
-MakMov  = 1;
+MakMov  = 0;
 if MakMov==1
     FF=uint8(floor(255*z1(F)));
     for t=1:500
@@ -154,6 +156,9 @@ save(['../../data/' fname '.mat'],'-append','I','Est')
 sound(10*sin(linspace(0,180*pi,2000)))
 
 %% plot results
+fname='spatial_multi';
+load(['../../data/' fname])
+% I{3}=I{2};
 
 Pl.g    = 0.65*ones(1,3);       % gray color
 Pl.fs   = 8;                   % font size
@@ -164,7 +169,7 @@ Pl.l1   = 0.41;                 % left side of left subplot on right half
 Pl.l2   = Pl.l1+0.3;            % left side of right subplot on right half
 Pl.s1   = Pl.w1+0.043;          % space between subplots on right side
 Pl.s2   = .33;                  % space between subplots on left side
-Pl.ms   = 5;                    % marker size
+Pl.ms   = 2;                    % marker size
 Pl.lw   = 2;                    % line width
 Pl.n    = n; Pl.n(Pl.n==0)=NaN; % true spike train (0's are NaN's so they don't plot)
 Pl.T    = Meta.T;
@@ -182,7 +187,8 @@ Pl.XTickLabel = Pl.XTick;
 % show how our estimation procedure given truth and when estimating spatial filter
 
 figure(1), clf, hold on
-nrows   = length(I);
+% J{1}=I{1}; J{2}=I{3}; I=J;
+nrows   = 2; %length(I);
 ncols   = 3+Meta.Nc;
 
 Fmean=mean(F);
@@ -191,44 +197,34 @@ for q=1:length(exps)
     E{q}.b=I{q}.P.b;
 end
 
-maxx=[]; minn=[];
-for q=1:length(exps)
-    E{q}.a_max=max(E{q}.a(:));
-    E{q}.a_min=min(E{q}.a(:));
-    for j=1:Meta.Nc
-        E{q}.a(:,j)=60*(E{q}.a(:,j)-E{q}.a_min)/(E{q}.a_max-E{q}.a_min);
-    end
+% maxx=[]; minn=[];
+% for q=1:length(exps)
+%     E{q}.a_max=max(E{q}.a(:));
+%     E{q}.a_min=min(E{q}.a(:));
+%     for j=1:Meta.Nc
+%         E{q}.a(:,j)=60*(E{q}.a(:,j)-E{q}.a_min)/(E{q}.a_max-E{q}.a_min);
+%     end
+% end
+
+% make images on same scale
+immax=max((P.a(:)));
+immin=min((P.a(:)));
+for q=1:2
+    immax=max(immax,max(E{q}.a(:)));
+    immin=min(immin,min(E{q}.a(:)));
 end
 
-% plot mean image frame
-subplot(nrows,ncols,1)
-imagesc(reshape(sum(E{q}.a,2),Est.h,Est.w))
-set(gca,'XTick',[],'YTick',[])
-colormap gray
-ylabel([{'Crude'}; {'Multicellular ROI'}],'FontSize',Pl.fs);
+PP.a=60*(P.a-immin)/(immax-immin);
 
-% plot F and n for neurons
-q=1;
-subplot(nrows,ncols,ncols+1), hold on
-for j=1:Meta.Nc
-    F_proj=E{q}.a(:,j_inf(j))\F;
-    plot(0.9*z1(F_proj(Pl.x_range)),'Color',Pl.c(j,:),'LineWidth',Pl.lw)
-    stem(Pl.n(Pl.x_range,j)-Pl.shift(j),'LineStyle','none','Marker',Pl.m(j),'MarkerEdgeColor',Pl.c(j,:),'MarkerFaceColor',Pl.c(j,:),'MarkerSize',Pl.ms)
-    axis([Pl.xlim-Pl.xlim(1) 0 1])
-    set(gca,'YTick',[0 1],'YTickLabel',[])
-    if q==1
-        ylab=ylabel([{'Fluorescence'}; {'Projection'}],'FontSize',Pl.fs);
-        set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',(Pl.XTick-min(Pl.XTick))*Meta.dt,'FontSize',Pl.fs)
-        xlabel('Time (sec)','FontSize',Pl.fs)
-    else
-        set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',[])
+for q=1:2
+    for j=1:2
+        EE{q}.a(:,j)=60*(E{q}.a(:,j)-immin)/(immax-immin);
     end
 end
 
 
 
-for q=1:length(exps)
-
+for q=1:2
     % align inferred cell with actual one
     j_inf=0*n(1:Meta.Nc);
     cc=0*n(1:Meta.Nc,:);
@@ -248,15 +244,48 @@ for q=1:length(exps)
         if j_inf(1)==1; j_inf(2)=2;
         else j_inf(1)=2; j_inf(2)=1; end
     end
+end
+
+
+
+% plot mean image frame
+subplot(nrows,ncols,1)
+image(reshape(sum(PP.a,2),Est.h,Est.w))
+set(gca,'XTick',[],'YTick',[])
+colormap gray
+ylabel([{'Crude'}; {'Multicellular ROI'}],'FontSize',Pl.fs);
+
+% plot F
+q=1;
+subplot(nrows,ncols,ncols+1), hold on
+for j=1:Meta.Nc
+    F_proj=E{q}.a(:,j_inf(j))\F;
+    plot(0.9*z1(F_proj(Pl.x_range)),'Color',Pl.c(j,:),'LineWidth',1)
+    stem(Pl.n(Pl.x_range,j)-Pl.shift(j),'LineStyle','none','Marker',Pl.m(j),'MarkerEdgeColor',Pl.c(j,:),'MarkerFaceColor',Pl.c(j,:),'MarkerSize',Pl.ms)
+    axis([Pl.xlim-Pl.xlim(1) 0 1])
+    set(gca,'YTick',[0 1],'YTickLabel',[])
+    if q==1
+        ylab=ylabel([{'Fluorescence'}; {'Projection'}],'FontSize',Pl.fs);
+        set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',(Pl.XTick-min(Pl.XTick))*Meta.dt,'FontSize',Pl.fs)
+        xlabel('Time (sec)','FontSize',Pl.fs)
+    else
+        set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',[])
+    end
+end
+
+
+I{2}=I{3};
+
+for q=1:2%length(exps)
 
     % plot spatial filters
     for j=1:Meta.Nc,
         subplot(nrows,ncols,1+q+(j-1)*2)
-        image(reshape(E{q}.a(:,j_inf(j)),Est.h,Est.w)),
+        image(reshape(EE{q}.a(:,j_inf(j)),Est.h,Est.w)),
         set(gca,'XTickLabel',[],'YTickLabel',[])
 
         if q==1,
-%             ylabel(['Neuron ' num2str(j)],'FontSize',Pl.fs);
+            %             ylabel(['Neuron ' num2str(j)],'FontSize',Pl.fs);
             ylabel([{'Spatial'}; {'Filter'}],'FontSize',Pl.fs);
             title('Truth','FontSize',Pl.fs),
         else
@@ -272,25 +301,25 @@ for q=1:length(exps)
         hold on
         stem(Pl.x_range,Pl.n(Pl.x_range,j)+.03,'LineStyle','none','Marker','v','MarkerEdgeColor',Pl.c(j,:),'MarkerFaceColor',Pl.c(j,:),'MarkerSize',Pl.ms)
         if j==1, k=2; else k=1; end
-        bar(Pl.x_range,I{q}.n(Pl.x_range,j_inf(j))/max(I{q}.n(Pl.x_range,j_inf(j))),'EdgeColor',Pl.c(j,:),'FaceColor',Pl.c(j,:))
+        if q==1, kk=j; end %else if j==1, kk=2; else kk=1; end, end%j_inf(j);
+        kk=j;
+        bar(Pl.x_range,I{q}.n(Pl.x_range,kk)/max(I{q}.n(Pl.x_range,j_inf(j))),'EdgeColor',Pl.c(j,:),'FaceColor',Pl.c(j,:))
         axis('tight')
         set(gca,'YTick',[0 1],'YTickLabel',[])
         set(gca,'XTick',Pl.XTick,'XTickLabel',(Pl.XTick-min(Pl.XTick))*Meta.dt,'FontSize',Pl.fs)
         xlabel('Time (sec)','FontSize',Pl.fs)
         if q==1
             ylabel([{'Spike'}; {'Inference'}],'FontSize',Pl.fs)
-%             xlabel('Time (sec)','FontSize',Pl.fs)
+            %             xlabel('Time (sec)','FontSize',Pl.fs)
         else
         end
     end
 
 end
 
-annotation(gcf,'rectangle',[0.259 0.01 0.328 0.99],...
-    'FaceColor','flat');
+% neuron={'                 Neuron 1'};
+% annotation(gcf,'textbox',[0.2642 0 0.3248 0.6531],'String',neuron,'FitBoxToText','off');
 
-
-text(1,1,'asssssssssssssssssssssss')
 % print fig
 wh=[7 2];   %width and height
 DirName = '../../figs/';

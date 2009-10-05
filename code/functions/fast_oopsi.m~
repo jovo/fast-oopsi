@@ -1,15 +1,16 @@
-function [n_best P_best]=fast_oopsi(F,V,P)
+function [n_best P_best V]=fast_oopsi(F,V,P)
 % this function solves the following optimization problem:
 % (*) n_best = argmax_{n >= 0} P(n | F)
 % which is a MAP estimate for the most likely spike train given the
 % fluorescence signal.  given the model:
 %
-% C_t = gam C_{t-1} + nu + rho*n_t, n_t ~ Poisson(n_t; p_t)
-% F_t = alpha*C_t + beta + sigma*eps_t, eps_t ~ N(0,1)
+% C_t = gam*C_{t-1} + n_t,      n_t ~ Poisson(n_t; lam_t)
+% F_t = a*C_t + b + sig*eps_t,  eps_t ~ N(0,1)
 %
-% if F_t is a vector, then alpha and beta are BOTH vectors as well
-% we approx the Poisson with an Exponential. we take an
-% "interior-point" approach to impose the nonnegative contraint on (*). each step with solved in O(T)
+% if F_t is a vector, then 'a' is a vector as well
+% we approx the Poisson with an Exponential (which means we don't require integer numbers of spikes).
+% we take an "interior-point" approach to impose the nonnegative contraint on (*). 
+% each step is solved in O(T)
 % time by utilizing gaussian elimination on the tridiagonal hessian, as
 % opposed to the O(T^3) time typically required for non-negative
 % deconvolution.
@@ -23,24 +24,24 @@ function [n_best P_best]=fast_oopsi(F,V,P)
 %   Np:     # of pixels in ROI
 %   Nc:     # of cells within ROI
 %   Poiss:  whether observations are assumed to come from a Poisson or Gaussian distribution
-%   MaxIter:maximum number of iterations of pseudo-EM   (typically set to 50)
+%   fast_iter_max:  maximum number of iterations of pseudo-EM   (typically set to 50)
 %
 %   THE FOLLOWING FIELDS CORRESPOND TO CHOICES THAT THE USER MAKE
 %
-%   Plot:   whether to plot results (only required is a_est==1)
-%   Thresh: whether to threshold infered spike train before updating 'a' and 'b' (only required is a_est==1)
-%   n:      if true spike train is known, and we are plotting, plot it (only required is a_est==1)
-%   h:      height of ROI (assumes square ROI) (# of pixels) (only required is a_est==1)
-%   w:      width of ROI (assumes square ROI) (# of pixels) (only required is a_est==1)
+%   fast_plot:  whether to plot results (only required is est_a==1)
+%   fast_thr:   whether to threshold infered spike train before updating 'a' and 'b' (only required is est_a==1)
+%   n:          if true spike train is known, and we are plotting, plot it (only required is est_a==1)
+%   h:          height of ROI (assumes square ROI) (# of pixels) (only required if est_a==1 and we are plotting)
+%   w:          width of ROI (assumes square ROI) (# of pixels) (only required if est_a==1 and we are plotting)
 %
 %   THE BELOW FIELDS INDICATE WHETHER ONE WANTS TO ESTIMATE EACH OF THE
 %   PARAMETERS
 %
-%   sig_est:    whether to estimate sig? (default 0)
-%   lam_est:    whether to estimate lam? (default 0)
-%   gam_est:    whether to estimate gam? (default 0)
-%   b_est:      whether to estimate b?   (default 1)
-%   a_est:      whether to estimate a?   (default 1)
+%   est_sig:    whether to estimate sig? (default 1)
+%   est_lam:    whether to estimate lam? (default 1)
+%   est_gam:    whether to estimate gam? (default 0)
+%   est_b:      whether to estimate b?   (default 1)
+%   est_a:      whether to estimate a?   (default 1)
 %
 % P.        structure of neuron Model parameters
 %
@@ -53,116 +54,66 @@ function [n_best P_best]=fast_oopsi(F,V,P)
 % Output---
 % n_best:   inferred spike train
 % P_best:   inferred parameter structure
-%
-% Remarks on revisions:
-% 1_7:      no longer need to define V.Plot (ie, if it is not defined, default
-%           is to not plot, but if it is defined, one can either plot or not)
-% 1_8:      cleaned up code from 1_7, and made Identity matrix outside loop,
-%           which gets diagonal replaced inside loop (instead of calling speye in
-%           loo)
-% 1_9:      mean subtract and normalize max(F)=1 such that arbitrary scale and
-%           offset shifts do no change results.
-% 2:        removed normalize.  takes either a row or column vector.
-%           doesn't require any V fields other than V.dt. also, we estimate
-%           parameters now using FastParams code (which is the same as the one used
-%           to estimate params given the real spikes, for debugging purposes)
-% 2_1:      also estimate mu
-% 2_2:      forgot to make this one :)
-% 2_3:      fixed a bunch of bugs.  this version works to infer and learn, but
-%           fixes mu in above model.
-% 2_4:      to my knowledge, this one works, but requires fixing 'mu' and 'a' in
-%           the above model. I also normalize between 0 and 1
-% 2_41:     reparameterized for stability.  uses constrained optimization. this
-%           works assuming nu=0 and rho=1.
-% 2_42:     works for arbitrary rho
-% 2_43:     fixed bugs so that P is only T-1 x T-1. cleaned up names and stuff.
-% 2_431:    made P TxT again
-% 2_432:    added baseline (in progress)
-% 2_5:      dunno
-% 2_51:     removed rho and nu
-% 2_52:     a=alpha, b=beta, in code
-% 2_53:     threshold n s.t. n \in \{0,1\} before estimating parameters
-% 2_54:     allow for F to be a vector at each time step
-% 2_55:     fixed bugs, back to scalar F_t
-% 2_56:     back to vector case, but no param estimate
-% 2_57:     estimate spatial filter as well
-% 2_58:     multiple cells (buggy)
-% 2_59:     multiple cells, estimate {a,b}
-% 3_01_01:  cleaning up a bit
-% 3_02_01:  added input structure 'U' to control parameters that are 'User defined'
-% 3_02_02:  don't need to include U in input, default values are set, and
-%           rearranged some code, added some comments
-% 3_02_03:  no more GetLik function, just inline, also plot true n if
-%           available from User structure, and plot max lik
-% 3_03_01:  made background a scalar, inference works, learning does not
-% 3_04_01:  added possibility of using Poisson observation noise (but it is
-%           still buggy), and made learning work for gaussian observation
-% 3_04_02:  modified input structures (see above for details)
-% 3_05_01:  lam can be time-varying
-% 3_06_01:  removed the 'Est' structure, and put those fields (some
-%           renamed) in the 'V' structure. currently assumes 1d
-%           fluorescence
-% 3_06_02:  renamed structure of params to P, and meta-params to V,
-%           renamed function to simply fast_oopsi.m
-%           switched order of input variables
+% V:        structure of Variables for algorithm to run
 
 %% initialize algorithm Variables
-
+starttime = cputime;
 % set meta parameter values
 if nargin < 2,          V       = struct;       end
-if isfield(V,'Poiss'),  Poiss   = V.Poiss;      else Poiss  = 0; end
-if isfield(V,'Nc'),     Nc      = V.Nc;         else Nc     = 1; end
-if isfield(V,'Np') && isfield(V,'T'), Np = V.Np; T = V.T;
+if isfield(V,'Poiss'),  Poiss   = V.Poiss;      else Poiss  = 0; end    % whether observations are Poisson
+if isfield(V,'Nc'),     Nc      = V.Nc;         else Nc     = 1; end    % # of cells in image
+if isfield(V,'Np') && isfield(V,'T'), Np = V.Np; T = V.T;               % # of pixels and image frames
 else numelF=numel(F);   lenF=length(F);     sizF = size(F);             % assumes F is Np x T
     if numelF == lenF,  Np = 1; T=numelF;                               % set Np and T when F is a vector
         if sizF(1)>1; F=F'; end                                         % makes F be 1 x T
     else Np = sizF(1); T=sizeF(2);
     end
 end
-if isfield(V,'dt'),     dt = V.dt;              else
+if ~isfield(V,'T'),     V.T = length(F);        end                     % # of time steps
+if isfield(V,'dt'),     dt = V.dt;              else                    % frame rate
     fr = input('what was the frame rate for this movie (in Hz)? ');
-    dt = 1/fr;
+    dt = 1/fr; V.dt = dt;
 end
-if isfield(V,'MaxIter'), MaxIter = V.MaxIter;   else
+if isfield(V,'fast_iter_max'), fast_iter_max = V.fast_iter_max;   else
     reply = input('do you want to estimate parameters? y/n [y] (case sensitive): ', 's');
-    if reply == 'y'; MaxIter = 10;
-    else MaxIter = 0; end
+    if reply == 'y'; fast_iter_max = 10;
+    else fast_iter_max = 0; end
 end
-if ~isfield(V,'Plot'),  V.Plot=1;   end
-if V.Plot==1
+if ~isfield(V,'fast_plot'),  V.fast_plot=1;   end
+if V.fast_plot==1
     FigNum = 400;
-    if V.Np>1, figure(FigNum), clf, end                                 % figure showing estimated spatial filter
+    if Np>1, figure(FigNum), clf, end                                   % figure showing estimated spatial filter
     figure(FigNum+1), clf                                               % figure showing estimated spike trains
 end
 
 % set which parameters to estimate
-if MaxIter>1;
-    if ~isfield(V,'sig_est'),   V.sig_est   = 0; end
-    if ~isfield(V,'lam_est'),   V.lam_est   = 1; end
-    if ~isfield(V,'gam_est'),   V.gam_est   = 0; end
-    if ~isfield(V,'a_est'),     V.a_est     = 0; end
-    if ~isfield(V,'b_est'),     V.b_est     = 0; end
-    if ~isfield(V,'Plot'),      V.Plot      = 1; end
-    if ~isfield(V,'Thresh'),    V.Thresh    = 0; end
+if fast_iter_max>1;
+    if ~isfield(V,'est_sig'),   V.est_sig   = 1; end
+    if ~isfield(V,'est_lam'),   V.est_lam   = 1; end
+    if ~isfield(V,'est_gam'),   V.est_gam   = 0; end
+    if ~isfield(V,'est_a'),     V.est_a     = 0; end
+    if ~isfield(V,'est_b'),     V.est_b     = 1; end
+    if ~isfield(V,'fast_plot'), V.fast_plot = 1; end
+    if ~isfield(V,'fast_thr'),  V.fast_thr  = 1; end
 else
-    V.a_est=1;
+    V.est_a=1;
 end
 
 
 %% set default model Parameters
 
-if nargin < 3,          P = struct;         end
-if ~isfield(P,'b'),     P.b=mean(F);        end
-if ~isfield(P,'sig'),   P.sig=std(F);       end
-if ~isfield(P,'gam'),   P.gam=1-(1/15)/1;   end
-if ~isfield(P,'lam'),   P.lam=10;           end
-if ~isfield(P,'a'),     P.a=1;              end
+if nargin < 3,          P       = struct;   end
+if ~isfield(P,'b'),     P.b     = mean(F);  end
+if ~isfield(P,'sig'),   P.sig   = std(F);   end
+if ~isfield(P,'gam'),   P.gam   = 1-V.dt/1; end
+if ~isfield(P,'lam'),   P.lam   = 10;       end
+if ~isfield(P,'a'),     P.a     = 1;        end
 
 %% define some stuff needed for FastFilter function
 
 % make sure we have 1 spatial filter per neuron in ROI
 siz=size(P.a);
-if V.a_est==1
+if V.est_a==1
     if siz(2)~=Nc
         [U,S,V]=pca_approx(F',Nc);
         for j=1:Nc, P.a(:,j)=V(:,j); end
@@ -180,7 +131,7 @@ M   = spdiags([repmat(-P.gam,T,1) repmat(Z,1,Nc-1) (1+Z)], -Nc:0,Nc*T,Nc*T);  % 
 I   = speye(Nc*T);                              % create out here cuz it must be reused
 d0  = 1:Nc*T+1:(Nc*T)^2;                        % index of diagonal elements of TxT matrices
 d1  = 1+Nc:Nc*T+1:(Nc*T)*(Nc*(T-1));            % index of off-diagonal elements of TxT matrices
-l   = Z(1:MaxIter);                             % initialize likelihood
+l   = Z(1:fast_iter_max);                             % initialize likelihood
 if numel(P.lam)==Nc
     lam = dt*repmat(P.lam,T,1);                 % for lik
 elseif numel(P.lam)==Nc*T
@@ -203,31 +154,47 @@ end
 [n C] = FastFilter(F,P);
 
 %%  if parameters are unknown, do pseudo-EM iterations
-if MaxIter>1
+if fast_iter_max>1
+    
     % set up stuff
-    l(1)    = -inf;
+    D       = F-P.a*(reshape(C,Nc,T)+b);            % required to compute initial likelihood
+    mse     = -D(:)'*D(:);                          % required to compute initial likelihood
+    l(1)    = -T*Np*log(2*pi*P.sig^2)/2 - mse/(2*P.sig^2); % initial likelihood
     l_max   = l(1);                                 % maximum likelihood achieved so far
     n_best  = n;                                    % best spike train
     P_best  = P;                                    % best parameter estimate
-    options = optimset('Display','off');
-    i       = 1;
-    conv    = 0;
+    options = optimset('Display','off');            % don't show warnings for parameter estimation
+    i       = 1;                                    % iteration #
+    i_best  = i;                                    % iteration with highest likelihood
+    conv    = 0;                                    % whether algorithm has converged yet
 
     while conv == 0
 
-        i       = i+1;                              % iteratation number
-        P       = ParamUpdate(n,C,F,P,b);           % update parameters
-        [n C]   = FastFilter(F,P);                  % update inferred spike train
-        if conv == 1, disp('convergence criteria met'), break; end
-        if V.Plot == 1, MakePlot(n,F,P,V); end      % plot results from this iteration
-        sound(3*sin(linspace(0,90*pi,2000)))        % play sound to indicate iteration is over
+        if V.fast_plot == 1, MakePlot(n,F,P,V); end % plot results from previous iteration
+        i       = i+1;                              % update iteratation number
+        V.fast_iter_tot = i;                        % record of total # of iterations
+        P       = ParamUpdate(n,C,F,P,b);           % update parameters based on previous iteration
+        [n C]   = FastFilter(F,P);                  % update inferred spike train based on new parameters
 
+        if l(i)>l_max                               % if this is the best one, keep n and P
+            n_best  = n;                            % keep n
+            P_best  = P;                            % keep P
+            i_best  = i;                            % keep track of which was best
+            l_max   = l(i);                         % keep max posterior
+        end
+
+        if conv == 1, disp('convergence criteria met'), break; end
+        sound(3*sin(linspace(0,90*pi,2000)))        % play sound to indicate iteration is over
     end
     P_best.l=l(1:i);                                % keep record of likelihoods for record
-else
+else                                                % if not iterating, just output stuff from 1st iterati
     n_best = n;
     P_best = P;
+    V.fast_iter_tot = 1;
 end
+V.fast_time = cputime-starttime;
+V           = orderfields(V);
+P_best      = orderfields(P_best);
 
 %% fast filter function
     function [n C DD] = FastFilter(F,P)
@@ -235,11 +202,8 @@ end
         % initialize n and C
         z = 1;                                  % weight on barrier function
         e = 1/(2*P.sig^2);                      % scale of variance
-        if 
-        if numel(P.lam)==Nc,        lam = dt*repmat(P.lam,T,1); % for lik
-        elseif numel(P.lam)==Nc*T,  lam = dt*P.lam; end
-        llam = -(reshape(lam',1,Nc*T)').^(-1);
-        n = z./llam;                            % initialize spike train
+        llam = reshape(1./lam',1,Nc*T)';
+        n = z.*llam;                            % initialize spike train
         C = 0*n;                                % initialize calcium
         for j=1:Nc
             C(j:Nc:end) = filter(1,[1, -P.gam(j)],n(j:Nc:end)) + (1-P.gam(j))*P.b(j);
@@ -300,7 +264,8 @@ end
                         L1  = e*DD+llam'*n-z*sum(log(n));
                     end
                     s   = s/5;                  % if step increases objective function, decrease step size
-                    if s<1e-20; disp('reducing s further did not increase likelihood'), break; end      % if decreasing step size just doesn't do it
+                    if s<1e-20; 
+                        disp('reducing s further did not increase likelihood'), break; end      % if decreasing step size just doesn't do it
                 end
                 C = C1;                         % update C
                 L = L1;                         % update L
@@ -317,8 +282,8 @@ end
     function P = ParamUpdate(n,C,F,P,b)
 
         % generate regressor for spatial filter
-        if V.a_est==1 || V.b_est==1
-            if V.Thresh==1
+        if V.est_a==1 || V.est_b==1
+            if V.fast_thr==1
                 CC=0*C;
                 for j=1:Nc
                     nsort   = sort(n(:,j));
@@ -334,13 +299,13 @@ end
 
             % update spatial filter and baseline
             CC = CC + b';
-            if V.a_est==1
+            if V.est_a==1
                 for ii=1:Np
                     Y   = F(ii,:)';
                     P.a(ii,:) = CC\Y;
                 end
             end
-            if V.b_est==1
+            if V.est_b==1
                 if Np>1
                     P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/T',[],[],[],[],Z(1:Nc),inf+Z(1:Nc),P.b,options);
                     P.b     = P.b';
@@ -354,13 +319,13 @@ end
             mse     = -D(:)'*D(:);
         end
 
-        if V.a_est==0 && V.b_est==0 && (V.sig_est==1 || V.lam_est==1), D = F-P.a*(reshape(C,Nc,T)+b); mse = -D(:)'*D(:); end
+        if V.est_a==0 && V.est_b==0 && (V.est_sig==1 || V.est_lam==1), D = F-P.a*(reshape(C,Nc,T)+b); mse = -D(:)'*D(:); end
 
         % estimate other parameters
-        if V.sig_est==1,
+        if V.est_sig==1,
             P.sig = sqrt(-mse)/T;
         end
-        if V.lam_est==1,
+        if V.est_lam==1,
             nnorm   = n./repmat(max(n),T,1);
             if numel(P.lam)==Nc
                 P.lam   = sum(nnorm)'/(T*dt);
@@ -377,15 +342,8 @@ end
         prior   = sum(lam(:)) - lam(:)'*n(:);
         l(i)    = lik + prior;
 
-        % if this is the best one, keep n and P
-        if l(i)>l_max
-            n_best  = n;
-            P_best  = P;
-            l_max   = l(i);
-        end
-
         % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
-        if  i>=MaxIter || (abs((l(i)-l(i-1))/l(i))<1e-5 || any(l(1:i-1)-l(i))<1e-5)% abs((l(i)-l(i-1))/l(i))<1e-5 || l(i-1)-l(i)>1e5;
+        if  i>=fast_iter_max || (abs((l(i)-l(i-1))/l(i))<1e-5 || any(l(1:i-1)-l(i))<1e-5)% abs((l(i)-l(i-1))/l(i))<1e-5 || l(i-1)-l(i)>1e5;
             conv = 1;
         end
 
@@ -393,7 +351,7 @@ end
 
 %% MakePlot
     function MakePlot(n,F,P,V)
-        if V.Plot == 1
+        if V.fast_plot == 1
             if Np>1                                     % plot spatial filter
                 figure(FigNum), nrows=Nc;
                 for j=1:Nc, subplot(1,nrows,j),
@@ -408,7 +366,7 @@ end
                 if Np>1, Ftemp=mean(F); else Ftemp=F; end
                 plot(z1(Ftemp(2:END))+1), hold on,
                 bar(z1(n_best(2:END,j)))
-                title(['iteration ' num2str(i_best)]),
+                title(['best iteration ' num2str(i_best)]),
                 axis('tight')
 
                 h(j,2)=subplot(nrows,ncols,j+1);
@@ -417,13 +375,13 @@ end
                     stem(V.n(2:END,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
                 end
                 set(gca,'XTickLabel',[])
-                title(['iteration ' num2str(i)]),
+                title(['current iteration ' num2str(i)]),
                 axis('tight')
 
             end
 
             subplot(nrows,ncols,j*nrows),
-            plot(l(2:i))    % plot record of likelihoods
+            plot(l(1:i))    % plot record of likelihoods
             title(['max lik ' num2str(l_max,4), ',   lik ' num2str(l(i),4)])
             set(gca,'XTick',2:i,'XTickLabel',2:i)
             drawnow
