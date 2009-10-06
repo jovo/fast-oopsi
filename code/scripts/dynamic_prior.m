@@ -13,21 +13,14 @@ V.dt        = 1/60;             % time step size
 V.Np        = 1;                % # of pixels in each image
 V.Nc        = 1;                % # cells per ROI
 V.Poiss     = 0;                % whether observations are poisson or gaussian
-V.Thresh    = 1;                % whether to threshold spike train before estimating 'a' and 'b' (we always keep this on)
-V.Plot      = 0;                % whether to plot filter with each iteration
-V.MaxIter   = 25;               % # iterations of EM to estimate params
-if V.MaxIter>1                  % set which parameters to estimate (these are only used if MaxIter>1)
-    V.a_est     = 0;
-    V.b_est     = 1;
-    V.sig_est   = 1;
-    V.gam_est   = 0;
-    V.lam_est   = 0;
-end
+V.fast_thr  = 1;                % whether to threshold spike train before estimating 'a' and 'b' (we always keep this on)
+V.fast_plot = 0;                % whether to plot filter with each iteration
+V.fast_iter_max = 1;            % # iterations of EM to estimate params
 
 %% initialize model Parameters
 P.a     = 1;                    % scale of fluorescence data
 P.b     = 0.01*mean(P.a);       % baseline is a scaled down version of the sum of the spatial filters
-P.sig   = 30*max(P.a);          % stan dev of noise (indep for each pixel)
+P.sig   = 5*max(P.a);          % stan dev of noise (indep for each pixel)
 C_0     = 0;                    % initial calcium
 tau     = rand(V.Nc,1)/2+.05;   % decay time constant for each cell
 P.gam   = 1-V.dt./tau(1:V.Nc);  % set gam

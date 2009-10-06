@@ -31,7 +31,6 @@ save(['../../data/' fname '.mat'],'V','P')
 %% infer spike trains and parameters
 
 for q=1:2
-    if q==1, V.fast_poiss=0; else V.fast_poiss=1; end
     [I{q}.n I{q}.P] = fast_oopsi(V.F,V,P);
 end
 
