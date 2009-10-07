@@ -6,32 +6,34 @@ clear, clc,
 fname = 'poisson';
 
 % set simulation metadata
-T               = 2000;     % # of time steps
-V.dt            = 0.005;    % time step size
-V.fast_iter_max = 1;        % # iterations of EM to estimate params
+T               = 3000;     % # of time steps
+V.dt            = 1/200;    % time step size
+V.fast_iter_max = 5;        % # iterations of EM to estimate params
 V.fast_poiss    = 0;        % whether observations are poisson (1) or gaussian (0)
+V.fast_plot     = 1;
 
 % initialize params
-P.a     = 10;               % scale
-P.b     = 1;                % bias
+P.a     = 1;                % scale
+P.b     = 10;                % bias
 tau     = 1;                % decay time constant for each cell
 P.gam   = 1-V.dt/tau;       % set gam
-P.lam   = 1;                % rate
+P.lam   = 0.3;                % rate
 
 % simulate data
 V.n         = poissrnd(P.lam*V.dt*ones(T,1));   % simulate spike train
 V.n(V.n>1)  = 1;                                % make only 1 spike per bin
-V.C         = filter(1,[1 -P.gam],1.5*V.n);         % calcium concentration
+V.C         = filter(1,[1 -P.gam],8*V.n);         % calcium concentration
 V.F = poissrnd(P.a*(V.C+repmat(P.b,T,1))');
 
-figure(1), clf, hold off; plot(z1(V.F)+1); hold all; bar(V.n)
+figure(1), clf, hold off; plot(V.F+1); hold all; bar(10*V.n), 
 
 save(['../../data/' fname '.mat'],'V','P')
 
 %% infer spike trains and parameters
 
-for q=1:2
-    [I{q}.n I{q}.P] = fast_oopsi(V.F,V,P);
+for q=1
+    if q==1, V.fast_poiss=0; else V.fast_poiss=1; end
+    [I{q}.n I{q}.P I{q}.V] = fast_oopsi(V.F,V);
 end
 
 save(['../../data/' fname '.mat'],'-append','I')

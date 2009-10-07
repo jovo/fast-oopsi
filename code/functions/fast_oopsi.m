@@ -43,7 +43,7 @@ function [n_best P_best V]=fast_oopsi(F,V,P)
 %   est_b:      whether to estimate b?   (default 1)
 %   est_a:      whether to estimate a?   (default 1)
 %
-% P.        structure of neuron Model parameters
+% P.        structure of neuron model Parameters
 %
 %   a:      spatial filter
 %   b:      baseline
@@ -73,9 +73,8 @@ end
 % variables determined by the user
 if ~isfield(V,'fast_poiss'),V.fast_poiss = 0;   end     % whether observations are Poisson
 if ~isfield(V,'fast_iter_max'),                         % max # of iterations before convergence
-    reply = input('do you want to estimate parameters? y/n [y] (case sensitive): ', 's');
-    if reply == 'y'; fast_iter_max = 10;
-    else fast_iter_max = 1; end
+    reply = input('how many EM iterations would you like to perform to estimate parameters (0 means use default parameters): ', 's');
+    V.fast_iter_max = str2double(reply);
 end
 if ~isfield(V,'fast_plot'), V.fast_plot=0; end
 if V.fast_plot==1
@@ -119,16 +118,15 @@ if V.fast_iter_max>1 && V.est_a==1
     end
 end
 
-% for plotting purposes
-
-Z   = zeros(V.Ncells*V.T,1);                % zero vector
+% for brevity and expediency
+Z   = zeros(V.Ncells*V.T,1);                    % zero vector
 M   = spdiags([repmat(-P.gam,V.T,1) repmat(Z,1,V.Ncells-1) (1+Z)], -V.Ncells:0,V.Ncells*V.T,V.Ncells*V.T);  % matrix transforming calcium into spikes, ie n=M*C
-I   = speye(V.Ncells*V.T);                  % create out here cuz it must be reused
-d0  = 1:V.Ncells*V.T+1:(V.Ncells*V.T)^2;    % index of diagonal elements of TxT matrices
+I   = speye(V.Ncells*V.T);                      % create out here cuz it must be reused
+d0  = 1:V.Ncells*V.T+1:(V.Ncells*V.T)^2;        % index of diagonal elements of TxT matrices
 d1  = 1+V.Ncells:V.Ncells*V.T+1:(V.Ncells*V.T)*(V.Ncells*(V.T-1)); % index of off-diagonal elements of TxT matrices
-l   = Z(1:V.fast_iter_max);                 % initialize likelihood
+posts = Z(1:V.fast_iter_max);                   % initialize likelihood
 if numel(P.lam)==V.Ncells                   
-    lam = V.dt*repmat(P.lam,V.T,1);         % for lik
+    lam = V.dt*repmat(P.lam,V.T,1);             % for lik
 elseif numel(P.lam)==V.Ncells*V.T
     lam = V.dt*P.lam;
 else
@@ -136,12 +134,12 @@ else
 end
 
 if V.fast_poiss==1
-    H       = I;                            % initialize memory for Hessian matrix
-    gamlnF  = gammaln(F+1);                 % for lik
-    sumF    = sum(F);                       % for Hess
+    H       = I;                                % initialize memory for Hessian matrix
+    gamlnF  = gammaln(F+1);                     % for lik
+    sumF    = sum(F);                           % for Hess
 else
-    H1  = I;                                % initialize memory for Hessian matrix
-    H2  = I;                                % initialize memory for Hessian matrix
+    H1  = I;                                    % initialize memory for Hessian matrix
+    H2  = I;                                    % initialize memory for Hessian matrix
 end
 
 
@@ -153,46 +151,46 @@ if V.fast_iter_max>1
 
     % set up stuff
     if V.fast_poiss==0
-        D       = F-P.a*(reshape(C,V.Ncells,V.T)+b);% required to compute initial likelihood
-        mse     = -D(:)'*D(:);                      % required to compute initial likelihood
-        l(1)    = -V.T*V.Npixels*log(2*pi*P.sig^2)/2 - mse/(2*P.sig^2); % initial likelihood
+        D       = F-P.a*(reshape(C,V.Ncells,V.T)+b);                    % required to compute initial likelihood
+        mse     = -D(:)'*D(:);                                          % required to compute initial likelihood
+        posts(1)= -V.T*V.Npixels*log(2*pi*P.sig^2)/2 - mse/(2*P.sig^2); % initial likelihood
     else
-        l(1)    = -inf;
+        posts(1)= -inf;
     end
-    l_max   = l(1);                                 % maximum likelihood achieved so far
-    n_best  = n;                                    % best spike train
-    P_best  = P;                                    % best parameter estimate
-    options = optimset('Display','off');            % don't show warnings for parameter estimation
-    i       = 1;                                    % iteration #
-    i_best  = i;                                    % iteration with highest likelihood
-    conv    = 0;                                    % whether algorithm has converged yet
+    post_max = posts(1);                        % maximum likelihood achieved so far
+    n_best  = n;                                % best spike train
+    P_best  = P;                                % best parameter estimate
+    options = optimset('Display','off');        % don't show warnings for parameter estimation
+    i       = 1;                                % iteration #
+    i_best  = i;                                % iteration with highest likelihood
+    conv    = 0;                                % whether algorithm has converged yet
 
     while conv == 0
 
         if V.fast_plot == 1, MakePlot(n,F,P,V); end % plot results from previous iteration
-        i       = i+1;                              % update iteratation number
-        V.fast_iter_tot = i;                        % record of total # of iterations
-        P       = ParamUpdate(n,C,F,P,b);           % update parameters based on previous iteration
-        [n C]   = FastFilter(F,P);                  % update inferred spike train based on new parameters
+        i       = i+1;                          % update iteratation number
+        V.fast_iter_tot = i;                    % record of total # of iterations
+        P       = ParamUpdate(n,C,F,P,b);       % update parameters based on previous iteration
+        [n C]   = FastFilter(F,P);              % update inferred spike train based on new parameters
 
-        if l(i)>l_max                               % if this is the best one, keep n and P
-            n_best  = n;                            % keep n
-            P_best  = P;                            % keep P
-            i_best  = i;                            % keep track of which was best
-            l_max   = l(i);                         % keep max posterior
+        if posts(i)>post_max                    % if this is the best one, keep n and P
+            n_best  = n;                        % keep n
+            P_best  = P;                        % keep P
+            i_best  = i;                        % keep track of which was best
+            post_max= posts(i);                 % keep max posterior
         end
 
-        if conv == 1, disp('convergence criteria met'), break; end
-        sound(3*sin(linspace(0,90*pi,2000)))        % play sound to indicate iteration is over
+        if conv == 1, disp('convergence criteria met'), V.post=posts(1:i); break; end
+        sound(3*sin(linspace(0,90*pi,2000)))    % play sound to indicate iteration is over
     end
-    P_best.l=l(1:i);                                % keep record of likelihoods for record
-else                                                % if not iterating, just output stuff from 1st run
+else                                            % if not iterating, just output stuff from 1st run
     n_best = n;
     P_best = P;
     V.fast_iter_tot = 1;
+    V.post = post;
 end
-V.fast_time = cputime-starttime;                    % time to run code
-V           = orderfields(V);                       % order fields alphabetically to they are easier to read
+V.fast_time = cputime-starttime;                % time to run code
+V           = orderfields(V);                   % order fields alphabetically to they are easier to read
 P_best      = orderfields(P_best);
 
 %% fast filter function
@@ -226,10 +224,10 @@ P_best      = orderfields(P_best);
 
             if V.fast_poiss==1
                 Fexpected = P.a*(C+b')';        % expected poisson observation rate
-                L = sum(sum(exp(-Fexpected+ F.*log(Fexpected) - gamlnF)));
+                post = sum(sum(exp(-Fexpected+ F.*log(Fexpected) - gamlnF)));
             else
                 D = F-P.a*(reshape(C,V.Ncells,V.T)+b);  % difference vector to be used in likelihood computation
-                L = e*D(:)'*D(:)+llam'*n-z*sum(log(n)); % Likilihood function using C
+                post = e*D(:)'*D(:)+llam'*n-z*sum(log(n)); % Likilihood function using C
             end
             s = 1;                              % step size
             d = 1;                              % direction
@@ -250,24 +248,24 @@ P_best      = orderfields(P_best);
                 else
                     s = 1;
                 end
-                L1 = L+1;
-                while L1>=L+1e-7                % make sure newton step doesn't increase objective
+                post1 = post+1;
+                while post1>=post+1e-7          % make sure newton step doesn't increase objective
                     C1  = C+s*d;
                     n   = M*C1;
                     if V.fast_poiss==1
                         Fexpected = P.a*(C1+b')';
-                        L1 = sum(sum(exp(-Fexpected + F.*log(Fexpected) - gamlnF)));
+                        post1 = sum(sum(exp(-Fexpected + F.*log(Fexpected) - gamlnF)));
                     else
                         D   = F-P.a*(reshape(C1,V.Ncells,V.T)+b);
                         DD  = D(:)'*D(:);
-                        L1  = e*DD+llam'*n-z*sum(log(n));
+                        post1  = e*DD+llam'*n-z*sum(log(n));
                     end
                     s   = s/5;                  % if step increases objective function, decrease step size
                     if s<1e-20;
                         disp('reducing s further did not increase likelihood'), break; end      % if decreasing step size just doesn't do it
                 end
-                C = C1;                         % update C
-                L = L1;                         % update L
+                C    = C1;                      % update C
+                post = post1;                   % update post
             end
             z=z/10;                             % reduce z (sequence of z reductions is arbitrary)
         end
@@ -284,13 +282,13 @@ P_best      = orderfields(P_best);
         if V.est_a==1 || V.est_b==1
             if V.fast_thr==1
                 CC=0*C;
-                for j=1:V.Ncells
-                    nsort   = sort(n(:,j));
+                for jj=1:V.Ncells
+                    nsort   = sort(n(:,jj));
                     nthr    = nsort(round(0.98*V.T));
                     nn      = Z(1:V.T);
-                    nn(n(:,j)<=nthr)=0;
-                    nn(n(:,j)>nthr)=1;
-                    CC(:,j) = filter(1,[1 -P.gam(j)],nn) + (1-P.gam(j))*P.b(j);
+                    nn(n(:,jj)<=nthr)=0;
+                    nn(n(:,jj)>nthr)=1;
+                    CC(:,jj) = filter(1,[1 -P.gam(jj)],nn) + (1-P.gam(jj))*P.b(jj);
                 end
             else
                 CC      = C;
@@ -339,10 +337,10 @@ P_best      = orderfields(P_best);
         % update likelihood and keep results if they improved
         lik     = -V.T*V.Npixels*log(2*pi*P.sig^2)/2 - mse/(2*P.sig^2);
         prior   = sum(lam(:)) - lam(:)'*n(:);
-        l(i)    = lik + prior;
+        posts(i)    = lik + prior;
 
         % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
-        if  i>=V.fast_iter_max || (abs((l(i)-l(i-1))/l(i))<1e-5 || any(l(1:i-1)-l(i))<1e-5)% abs((l(i)-l(i-1))/l(i))<1e-5 || l(i-1)-l(i)>1e5;
+        if  i>=V.fast_iter_max || (abs((posts(i)-posts(i-1))/posts(i))<1e-5 || any(posts(1:i-1)-posts(i))<1e-5)% abs((posts(i)-posts(i-1))/posts(i))<1e-5 || posts(i-1)-posts(i)>1e5;
             conv = 1;
         end
 
@@ -380,8 +378,8 @@ P_best      = orderfields(P_best);
             end
 
             subplot(nrows,ncols,j*nrows),
-            plot(l(1:i))    % plot record of likelihoods
-            title(['max lik ' num2str(l_max,4), ',   lik ' num2str(l(i),4)])
+            plot(posts(1:i))    % plot record of likelihoods
+            title(['max lik ' num2str(post_max,4), ',   lik ' num2str(posts(i),4)])
             set(gca,'XTick',2:i,'XTickLabel',2:i)
             drawnow
         end
