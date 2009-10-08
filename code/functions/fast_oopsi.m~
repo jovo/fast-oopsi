@@ -193,8 +193,11 @@ P_best      = orderfields(P_best);
         % initialize n and C
         z = 1;                                  % weight on barrier function
         llam = reshape(1./lam',1,V.Ncells*V.T)';
-        
-        n = 0.001+0*llam;                           % initialize spike train
+        if V.fast_poiss==0
+            n = 1+0*llam;                           % initialize spike train
+        else
+            n = V.gauss
+        end
         C = 0*n;                                % initialize calcium
         for j=1:V.Ncells
             C(j:V.Ncells:end) = filter(1,[1, -P.gam(j)],n(j:V.Ncells:end)) + P.b(j); %(1-P.gam(j))*P.b(j);

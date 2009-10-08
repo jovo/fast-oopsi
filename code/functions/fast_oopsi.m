@@ -138,7 +138,7 @@ end
 if V.fast_poiss==1
     H       = I;                                % initialize memory for Hessian matrix
     gamlnF  = gammaln(F+1);                     % for lik
-    sumF    = sum(F)';                          % for grad & Hess
+    sumF    = sum(F,1)';                        % for grad & Hess
 end
 
 %% if not iterating to estimate parameters, only this is necessary
@@ -222,7 +222,7 @@ P_best      = orderfields(P_best);
 
             if V.fast_poiss==1
                 Fexpect = P.a*(C+b')';          % expected poisson observation rate
-                lik = sum(-Fexpect+ F.*log(Fexpect) - gamlnF); % lik
+                lik = sum(sum(-Fexpect+ F.*log(Fexpect) - gamlnF)); % lik
             else
                 D = F-P.a*(reshape(C,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
                 lik = e*D(:)'*D(:);             % lik
@@ -255,20 +255,20 @@ P_best      = orderfields(P_best);
                     n   = M*C1;
                     if V.fast_poiss==1
                         Fexpect = P.a*(C1+b')';
-                        lik1    = sum(-Fexpect+ F.*log(Fexpect) - gamlnF);
+                        lik1    = sum(sum(-Fexpect+ F.*log(Fexpect) - gamlnF));
                     else
                         D       = F-P.a*(reshape(C1,V.Ncells,V.T)+b);
                         DD      = D(:)'*D(:);
                         lik1    = e*DD;
                     end
                     post1 = lik1 + llam'*n - z*sum(log(n));
-                    s   = s/5;                  % if step increases objective function, decrease step size
+                    s   = s/2;                  % if step increases objective function, decrease step size
                     if s<1e-20; disp('reducing s further did not increase likelihood'), break; end      % if decreasing step size just doesn't do it
                 end
                 C    = C1;                      % update C
                 post = post1;                   % update post
             end
-            z=z/10;                             % reduce z (sequence of z reductions is arbitrary)
+            z=z/2;                             % reduce z (sequence of z reductions is arbitrary)
         end
 
         % reshape things in the case of multiple neurons within the ROI

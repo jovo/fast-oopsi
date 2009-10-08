@@ -26,7 +26,7 @@ V.C = filter(1,[1 -P.gam],V.n);         % calcium concentration
 V.F = poissrnd(P.a*(V.C+repmat(P.b,T,1))');
 % V.F = P.a*(V.C+repmat(P.b,T,1))'+2*randn(1,T);
 
-figure(1), clf, hold off; plot(V.F+1); hold all; bar(10*V.n), 
+figure(1), clf, hold off; plot(V.F+1); hold all; bar(10*V.n),
 
 if V.save, save(['../../data/' fname '.mat'],'V','P'); end
 
@@ -34,12 +34,12 @@ if V.save, save(['../../data/' fname '.mat'],'V','P'); end
 
 for q=1:2
     disp(['poisson=' num2str(V.fast_poiss)])
-    if q==1, 
-        V.fast_poiss=0; 
-        V.fast_iter_max=5;
+    if q==1,
+        V.fast_poiss=0;
+        V.fast_iter_max=10;
         [I{q}.n I{q}.P I{q}.V] = fast_oopsi(V.F,V);
     else
-        V.fast_poiss=1; 
+        V.fast_poiss=1;
         V.gauss_n=I{1}.n;
         V.fast_iter_max=1;
         [I{q}.n I{q}.P I{q}.V] = fast_oopsi(V.F,V,P);
@@ -60,7 +60,7 @@ Pl.ms   = 5;                    % marker size
 Pl.lw   = 1;                    % line width
 Pl.n    = V.n; Pl.n(Pl.n==0)=NaN; % true spike train (0's are NaN's so they don't plot)
 Pl.shift= .1;
-Pl.xlim = [2 T-10];
+Pl.xlim = [2 T-3];
 Pl.xlims= Pl.xlim(1):Pl.xlim(2);
 Pl.XTick= Pl.xlim(1):round(mean(T)/5):Pl.xlim(2);
 Pl.XTickLabel = round((Pl.XTick-min(Pl.XTick))*V.dt*100)/100;
