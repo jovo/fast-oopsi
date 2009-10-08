@@ -1,7 +1,7 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  6 JUL 2009 23:32
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  7 OCT 2009 14:23
 entering extended mode
-**main
-(./main.tex
+**tex/main.tex
+(./tex/main.tex
 LaTeX2e <2003/12/01>
 Babel <v3.8d> and hyphenation patterns for american, french, german, ngerman, b
 ahasa, basque, bulgarian, catalan, croatian, czech, danish, dutch, esperanto, e
@@ -128,85 +128,48 @@ Package: amsthm 2004/08/06 v2.20
 \thm@headsep=\skip48
 \dth@everypar=\toks25
 )
-(/opt/local/share/texmf-dist/tex/latex/algorithms/algorithm.sty
-Package: algorithm 
-
-Document Style `algorithm' - floating environment
-(/opt/local/share/texmf-dist/tex/latex/float/float.sty
-Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count100
-\float@exts=\toks26
-\float@box=\box28
-\@float@everytoks=\toks27
-\@floatcapt=\box29
-)
-(/opt/local/share/texmf-dist/tex/latex/base/ifthen.sty
-Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
-)
-\@float@every@algorithm=\toks28
-\c@algorithm=\count101
-)
-(/opt/local/share/texmf-dist/tex/latex/algorithms/algorithmic.sty
-Package: algorithmic 
-
-Document Style `algorithmic' - environment
-(/opt/local/share/texmf-dist/tex/latex/tools/calc.sty
-Package: calc 1998/07/07 v4.1b Infix arithmetic (KKT,FJ)
-\calc@Acount=\count102
-\calc@Bcount=\count103
-\calc@Adimen=\dimen114
-\calc@Bdimen=\dimen115
-\calc@Askip=\skip49
-\calc@Bskip=\skip50
-LaTeX Info: Redefining \setlength on input line 59.
-LaTeX Info: Redefining \addtolength on input line 60.
-\calc@denominator=\count104
-)
-\c@ALC@line=\count105
-\c@ALC@rem=\count106
-\c@ALC@depth=\count107
-\ALC@tlm=\skip51
-)
 (/opt/local/share/texmf-dist/tex/latex/psnfss/times.sty
 Package: times 2004/09/15 PSNFSS-v9.2 (SPQR) 
 )
 (/opt/local/share/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
-\fancy@headwidth=\skip52
-\f@ncyO@elh=\skip53
-\f@ncyO@erh=\skip54
-\f@ncyO@olh=\skip55
-\f@ncyO@orh=\skip56
-\f@ncyO@elf=\skip57
-\f@ncyO@erf=\skip58
-\f@ncyO@olf=\skip59
-\f@ncyO@orf=\skip60
+\fancy@headwidth=\skip49
+\f@ncyO@elh=\skip50
+\f@ncyO@erh=\skip51
+\f@ncyO@olh=\skip52
+\f@ncyO@orh=\skip53
+\f@ncyO@elf=\skip54
+\f@ncyO@erf=\skip55
+\f@ncyO@olf=\skip56
+\f@ncyO@orf=\skip57
 )
 (/Users/joshyv/Research/misc/latex_commands.tex
-\c@thm=\count108
-\c@defi=\count109
+\c@thm=\count100
+\c@defi=\count101
 ))
 (/opt/local/share/texmf-dist/tex/latex/tools/multicol.sty
 Package: multicol 2004/02/14 v1.6e multicolumn formatting (FMi)
-\c@tracingmulticols=\count110
-\mult@box=\box30
-\multicol@leftmargin=\dimen116
-\c@unbalance=\count111
-\c@collectmore=\count112
-\doublecol@number=\count113
-\multicoltolerance=\count114
-\multicolpretolerance=\count115
-\full@width=\dimen117
-\page@free=\dimen118
-\premulticols=\dimen119
-\postmulticols=\dimen120
-\multicolsep=\skip61
-\multicolbaselineskip=\skip62
-\partial@page=\box31
-\last@line=\box32
-\mult@rightbox=\box33
-\mult@grightbox=\box34
-\mult@gfirstbox=\box35
-\mult@firstbox=\box36
+\c@tracingmulticols=\count102
+\mult@box=\box28
+\multicol@leftmargin=\dimen114
+\c@unbalance=\count103
+\c@collectmore=\count104
+\doublecol@number=\count105
+\multicoltolerance=\count106
+\multicolpretolerance=\count107
+\full@width=\dimen115
+\page@free=\dimen116
+\premulticols=\dimen117
+\postmulticols=\dimen118
+\multicolsep=\skip58
+\multicolbaselineskip=\skip59
+\partial@page=\box29
+\last@line=\box30
+\mult@rightbox=\box31
+\mult@grightbox=\box32
+\mult@gfirstbox=\box33
+\mult@firstbox=\box34
+\@tempa=\box35
+\@tempa=\box36
 \@tempa=\box37
 \@tempa=\box38
 \@tempa=\box39
@@ -222,21 +185,19 @@ Package: multicol 2004/02/14 v1.6e multicolumn formatting (FMi)
 \@tempa=\box49
 \@tempa=\box50
 \@tempa=\box51
-\@tempa=\box52
-\@tempa=\box53
-\c@columnbadness=\count116
-\c@finalcolumnbadness=\count117
-\last@try=\dimen121
-\multicolovershoot=\dimen122
-\multicolundershoot=\dimen123
-\mult@nat@firstbox=\box54
-\colbreak@box=\box55
+\c@columnbadness=\count108
+\c@finalcolumnbadness=\count109
+\last@try=\dimen119
+\multicolovershoot=\dimen120
+\multicolundershoot=\dimen121
+\mult@nat@firstbox=\box52
+\colbreak@box=\box53
 )
 (/opt/local/share/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2003/11/30 v6.74m Hypertext links for LaTeX
-\@linkdim=\dimen124
-\Hy@linkcounter=\count118
-\Hy@pagecounter=\count119
+\@linkdim=\dimen122
+\Hy@linkcounter=\count110
+\Hy@pagecounter=\count111
 
 (/opt/local/share/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2003/11/30 v6.74m Hyperref: PDFDocEncoding definition (HO)
@@ -257,18 +218,18 @@ Package: url 1999/03/02  ver 1.4  Verb mode for urls, email addresses, and file
  names
 )
 LaTeX Info: Redefining \url on input line 2143.
-\Fld@menulength=\count120
-\Field@Width=\dimen125
-\Fld@charsize=\dimen126
-\Choice@toks=\toks29
-\Field@toks=\toks30
+\Fld@menulength=\count112
+\Field@Width=\dimen123
+\Fld@charsize=\dimen124
+\Choice@toks=\toks26
+\Field@toks=\toks27
 Package hyperref Info: Hyper figures OFF on input line 2618.
 Package hyperref Info: Link nesting OFF on input line 2623.
 Package hyperref Info: Hyper index ON on input line 2626.
 Package hyperref Info: backreferencing OFF on input line 2633.
 Package hyperref Info: Link coloring OFF on input line 2638.
-\c@Item=\count121
-\c@Hfootnote=\count122
+\c@Item=\count113
+\c@Hfootnote=\count114
 )
 *hyperref using default driver hpdftex*
 (/opt/local/share/texmf-dist/tex/latex/hyperref/hpdftex.def
@@ -286,13 +247,9 @@ LaTeX Font Info:    Try loading font information for U+psy on input line 64.
 (/opt/local/share/texmf-dist/tex/latex/psnfss/upsy.fd
 File: upsy.fd 2001/06/04 font definitions for U/psy.
 ))
-\Fld@listcount=\count123
+\Fld@listcount=\count115
 \@outlinefile=\write3
-) (./main.aux
-
-LaTeX Warning: Label `eq:nhat2' multiply defined.
-
-)
+) (./main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
@@ -310,47 +267,48 @@ LaTeX Font Info:    ... okay on input line 39.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 39.
 LaTeX Font Info:    ... okay on input line 39.
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 39.
- (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+
+(/opt/local/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 (/opt/local/share/texmf-dist/tex/context/base/supp-pdf.tex
 (/opt/local/share/texmf-dist/tex/context/base/supp-mis.tex
 loading : Context Support Macros / Miscellaneous (2004.10.26)
-\protectiondepth=\count124
-\scratchcounter=\count125
-\scratchtoks=\toks31
-\scratchdimen=\dimen127
-\scratchskip=\skip63
+\protectiondepth=\count116
+\scratchcounter=\count117
+\scratchtoks=\toks28
+\scratchdimen=\dimen125
+\scratchskip=\skip60
 \scratchmuskip=\muskip11
-\scratchbox=\box56
+\scratchbox=\box54
 \scratchread=\read1
 \scratchwrite=\write4
-\zeropoint=\dimen128
-\onepoint=\dimen129
-\onebasepoint=\dimen130
-\minusone=\count126
-\thousandpoint=\dimen131
-\onerealpoint=\dimen132
-\emptytoks=\toks32
-\nextbox=\box57
-\nextdepth=\dimen133
-\everyline=\toks33
-\!!counta=\count127
-\!!countb=\count128
-\recursecounter=\count129
+\zeropoint=\dimen126
+\onepoint=\dimen127
+\onebasepoint=\dimen128
+\minusone=\count118
+\thousandpoint=\dimen129
+\onerealpoint=\dimen130
+\emptytoks=\toks29
+\nextbox=\box55
+\nextdepth=\dimen131
+\everyline=\toks30
+\!!counta=\count119
+\!!countb=\count120
+\recursecounter=\count121
 )
 loading : Context Support Macros / PDF (2004.03.26)
-\nofMPsegments=\count130
-\nofMParguments=\count131
-\MPscratchCnt=\count132
-\MPscratchDim=\dimen134
-\MPnumerator=\count133
-\everyMPtoPDFconversion=\toks34
+\nofMPsegments=\count122
+\nofMParguments=\count123
+\MPscratchCnt=\count124
+\MPscratchDim=\dimen132
+\MPnumerator=\count125
+\everyMPtoPDFconversion=\toks31
 )
 Package hyperref Info: Link coloring OFF on input line 39.
  (/opt/local/share/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2003/12/03 v2.21 Cross-referencing by name of section
-\c@section@level=\count134
+\c@section@level=\count126
 )
 LaTeX Info: Redefining \ref on input line 39.
 LaTeX Info: Redefining \pageref on input line 39.
@@ -369,66 +327,306 @@ File: umsb.fd 2002/01/19 v2.2g AMS font definitions
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 42.
- (./main.toc
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
-)
+ (./main.toc)
 \tf@toc=\write5
 \openout5 = `main.toc'.
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 43.
 
-(../tex/abstract.tex [1
+(./tex/abstract.tex) [1
 
-{/opt/local/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]) [2] (../tex/i
-ntro.tex) [3] (../tex/methods.tex)
+{/opt/local/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./tex/intro.t
+ex
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 3.
+
+
+LaTeX Warning: Citation `YusteKonnerth06' on page 2 undefined on input line 3.
+
+
+LaTeX Warning: Citation `NagayamaChen07' on page 2 undefined on input line 3.
+
+
+LaTeX Warning: Citation `GobelHelmchen07' on page 2 undefined on input line 3.
+
+
+LaTeX Warning: Citation `LuoSvoboda08' on page 2 undefined on input line 3.
+
+
+LaTeX Warning: Citation `GaraschukKonnerth07' on page 2 undefined on input line
+ 3.
+
+
+LaTeX Warning: Citation `MankGriesbeck08' on page 2 undefined on input line 3.
+
+
+LaTeX Warning: Citation `WallaceHasan08' on page 2 undefined on input line 3.
+
+
+LaTeX Warning: Citation `OhkiReid06' on page 2 undefined on input line 11.
+
+
+LaTeX Warning: Citation `KerrHelmchen07' on page 2 undefined on input line 11.
+
+
+LaTeX Warning: Citation `GreenbergKerr08' on page 2 undefined on input line 17.
+
+
+
+LaTeX Warning: Citation `HolekampHoly08' on page 2 undefined on input line 17.
+
+
+LaTeX Warning: Citation `VogelsteinPaninski09b' on page 2 undefined on input li
+ne 17.
+
+
+LaTeX Warning: Citation `LeeSeung99' on page 2 undefined on input line 21.
+
+
+LaTeX Warning: Citation `LeeSeung01' on page 2 undefined on input line 21.
+
+
+LaTeX Warning: Citation `HuysPaninski06' on page 2 undefined on input line 21.
+
+) [2] (./tex/methods.tex
+
+LaTeX Warning: Reference `sec:model' on page 3 undefined on input line 1.
+
+
+LaTeX Warning: Reference `sec:goal' on page 3 undefined on input line 1.
+
+
+LaTeX Warning: Reference `sec:inf' on page 3 undefined on input line 1.
+
+
+LaTeX Warning: Reference `sec:spatial' on page 3 undefined on input line 1.
+
+
+LaTeX Warning: Reference `sec:overlap' on page 3 undefined on input line 1.
+
+
+LaTeX Warning: Reference `sec:poisson' on page 3 undefined on input line 1.
+
+
+LaTeX Warning: Reference `sec:slow' on page 3 undefined on input line 1.
+
+
+LaTeX Warning: Reference `sec:learn' on page 3 undefined on input line 1.
+
+
+LaTeX Warning: Reference `sec:ass' on page 3 undefined on input line 1.
+
+)
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 55.
- (../tex/model.tex
-<../figs/in_vitro_ex.pdf, id=175, 505.89pt x 361.35pt>
+ (./tex/model.tex
+
+LaTeX Warning: Reference `fig:in_vitro_ex' on page 3 undefined on input line 1.
+
+
+
+LaTeX Warning: Reference `sec:exp' on page 3 undefined on input line 1.
+
+
+LaTeX Warning: Citation `YusteKonnerth06' on page 3 undefined on input line 2.
+
+<../figs/in_vitro_ex.pdf, id=35, 505.89pt x 361.35pt>
 File: ../figs/in_vitro_ex.pdf Graphic file (type pdf)
 
-<use ../figs/in_vitro_ex.pdf> [4] [5 <../figs/in_vitro_ex.pdf>])
-(../tex/goal.tex
+<use ../figs/in_vitro_ex.pdf>
 
-LaTeX Warning: Citation `??' on page 6 undefined on input line 7.
+LaTeX Warning: Reference `sec:results' on page 3 undefined on input line 16.
 
-[6] <../figs/dist_comp.pdf, id=274, 578.16pt x 216.81pt>
+
+LaTeX Warning: Reference `sec:nonlin' on page 3 undefined on input line 27.
+
+
+LaTeX Warning: Reference `fig:in_vitro_ex' on page 3 undefined on input line 27
+.
+
+
+LaTeX Warning: Reference `eq:F' on page 3 undefined on input line 35.
+
+
+LaTeX Warning: Reference `eq:n' on page 3 undefined on input line 35.
+
+) [3] (./tex/goal.tex
+
+LaTeX Warning: Reference `eq:F' on page 4 undefined on input line 7.
+
+
+LaTeX Warning: Reference `eq:n' on page 4 undefined on input line 7.
+
+
+LaTeX Warning: Citation `DurbinKoopman01' on page 4 undefined on input line 7.
+
+
+LaTeX Warning: Reference `eq:nhat1' on page 4 undefined on input line 16.
+
+
+LaTeX Warning: Reference `eq:nhat1' on page 4 undefined on input line 29.
+
+
+LaTeX Warning: Reference `eq:ssm' on page 4 undefined on input line 29.
+
+
+LaTeX Warning: Reference `eq:nhat2' on page 4 undefined on input line 29.
+
+
+LaTeX Warning: Reference `eq:C' on page 4 undefined on input line 29.
+
+
+LaTeX Warning: Reference `eq:F' on page 4 undefined on input line 29.
+
+
+LaTeX Warning: Reference `eq:n' on page 4 undefined on input line 29.
+
+
+LaTeX Warning: Reference `eq:nhat2' on page 4 undefined on input line 29.
+
+
+LaTeX Warning: Reference `eq:MAP' on page 4 undefined on input line 35.
+
+
+LaTeX Warning: Reference `eq:MAP' on page 4 undefined on input line 35.
+
+
+LaTeX Warning: Reference `eq:C' on page 4 undefined on input line 35.
+
+
+LaTeX Warning: Reference `fig:dist_comp' on page 4 undefined on input line 37.
+
+
+LaTeX Warning: Citation `Wiener49' on page 4 undefined on input line 37.
+
+
+LaTeX Warning: Citation `HolekampHoly08' on page 4 undefined on input line 37.
+
+<../figs/dist_comp.pdf, id=66, 578.16pt x 216.81pt>
 File: ../figs/dist_comp.pdf Graphic file (type pdf)
 
-<use ../figs/dist_comp.pdf>) (../tex/inference.tex
+<use ../figs/dist_comp.pdf>) (./tex/inference.tex
 
-LaTeX Warning: Reference `eq:naht3' on page 7 undefined on input line 9.
+LaTeX Warning: Reference `eq:C' on page 4 undefined on input line 3.
 
-[7 <../figs/dist_comp.pdf>]
+[4]
 
-LaTeX Warning: Reference `eq:nhat3' on page 8 undefined on input line 100.
+LaTeX Warning: Reference `eq:C' on page 5 undefined on input line 9.
 
-[8]) (../tex/assess.tex) (../tex/exp.tex) [9] (../tex/main_result.tex
 
-LaTeX Warning: Reference `sec:app' on page 10 undefined on input line 3.
+LaTeX Warning: Reference `eq:C2' on page 5 undefined on input line 9.
 
-<../figs/example_sim.pdf, id=348, 505.89pt x 361.35pt>
+
+LaTeX Warning: Reference `eq:naht3' on page 5 undefined on input line 9.
+
+
+LaTeX Warning: Citation `HastieFriedman01' on page 5 undefined on input line 16
+.
+
+
+LaTeX Warning: Citation `BoydVandenberghe04' on page 5 undefined on input line 
+16.
+
+
+LaTeX Warning: Citation `BoydVandenberghe04' on page 5 undefined on input line 
+16.
+
+
+LaTeX Warning: Citation `BoydVandenberghe04' on page 5 undefined on input line 
+16.
+
+
+LaTeX Warning: Reference `eq:eta' on page 5 undefined on input line 22.
+
+
+LaTeX Warning: Reference `eq:eta2' on page 5 undefined on input line 28.
+
+
+LaTeX Warning: Reference `eq:eta2' on page 5 undefined on input line 28.
+
+
+LaTeX Warning: Reference `eq:eta2' on page 5 undefined on input line 28.
+
+
+LaTeX Warning: Reference `eq:eta3' on page 5 undefined on input line 35.
+
+[5]
+
+LaTeX Warning: Reference `eq:eta3' on page 6 undefined on input line 87.
+
+
+LaTeX Warning: Reference `eq:obj2' on page 6 undefined on input line 89.
+
+
+LaTeX Warning: Reference `eq:nhat3' on page 6 undefined on input line 100.
+
+
+LaTeX Warning: Reference `eq:obj3' on page 6 undefined on input line 107.
+
+
+LaTeX Warning: Reference `sec:wiener' on page 6 undefined on input line 107.
+
+) (./tex/assess.tex) (./tex/exp.tex) [6] (./tex/main_result.tex
+
+LaTeX Warning: Reference `fig:wiener' on page 7 undefined on input line 1.
+
+
+LaTeX Warning: Reference `eq:F' on page 7 undefined on input line 1.
+
+
+LaTeX Warning: Reference `eq:C' on page 7 undefined on input line 1.
+
+
+LaTeX Warning: Reference `fig:dist_comp' on page 7 undefined on input line 3.
+
+
+LaTeX Warning: Reference `fig:wiener' on page 7 undefined on input line 3.
+
+
+LaTeX Warning: Reference `sec:app' on page 7 undefined on input line 3.
+
+<../figs/example_sim.pdf, id=141, 505.89pt x 361.35pt>
 File: ../figs/example_sim.pdf Graphic file (type pdf)
 
 <use ../figs/example_sim.pdf>
 
-LaTeX Warning: Reference `fig:schem' on page 10 undefined on input line 7.
+LaTeX Warning: Reference `fig:schem' on page 7 undefined on input line 7.
 
 
-LaTeX Warning: Reference `fig:schem' on page 10 undefined on input line 7.
+LaTeX Warning: Reference `fig:schem' on page 7 undefined on input line 7.
 
 
-LaTeX Warning: Reference `fig:schem' on page 10 undefined on input line 7.
+LaTeX Warning: Reference `fig:schem' on page 7 undefined on input line 7.
 
 
-LaTeX Warning: Reference `fig:schem' on page 10 undefined on input line 7.
+LaTeX Warning: Reference `fig:schem' on page 7 undefined on input line 7.
 
-[10] <../figs/stats.pdf, id=359, 505.89pt x 361.35pt>
+
+LaTeX Warning: Reference `fig:stats' on page 7 undefined on input line 10.
+
+
+LaTeX Warning: Reference `fig:stats' on page 7 undefined on input line 12.
+
+
+LaTeX Warning: Reference `fig:stats' on page 7 undefined on input line 14.
+
+
+LaTeX Warning: Reference `fig:stats' on page 7 undefined on input line 16.
+
+<../figs/stats.pdf, id=142, 505.89pt x 361.35pt>
 File: ../figs/stats.pdf Graphic file (type pdf)
  <use ../figs/stats.pdf>
-[11 <../figs/example_sim.pdf>]
+
+LaTeX Warning: Reference `eq:SNR' on page 7 undefined on input line 26.
+
+
+LaTeX Warning: Reference `eq:SNR' on page 7 undefined on input line 26.
+
+
+LaTeX Warning: Reference `fig:kernel' on page 7 undefined on input line 54.
+
+
 Overfull \hbox (8.09912pt too wide) in paragraph at lines 54--55
 \OT1/ptm/m/n/10 cally, we let $\OML/cmm/m/it/10 ^^U[] \OT1/cmr/m/n/10 = [][][][
 ]$\OT1/ptm/m/n/10 , where $[]$ is a 5-dimensional lin-ear ker-nel, $[][]$ is th
@@ -437,78 +635,141 @@ e stim-u-lus at time $\OML/cmm/m/it/10 t$\OT1/ptm/m/n/10 , and $\OML/cmm/m/it/1
 sson($\OML/cmm/m/it/10 ^^U[]\OT1/cmr/m/n/10 ^^A$\OT1/ptm/m/n/10 ).
  []
 
-<../figs/kernel.pdf, id=381, 505.89pt x 361.35pt>
+<../figs/kernel.pdf, id=143, 505.89pt x 361.35pt>
 File: ../figs/kernel.pdf Graphic file (type pdf)
- <use ../figs/kernel.pdf>
-[12 <../figs/stats.pdf>]) [13 <../figs/kernel.pdf>] (../tex/spatial.tex
-<../figs/spatial.pdf, id=407, 505.89pt x 361.35pt>
+ <use ../figs/kernel.pdf>)
+[7] [8 <../figs/in_vitro_ex.pdf> <../figs/dist_comp.pdf>] [9 <../figs/example_s
+im.pdf>] [10 <../figs/stats.pdf>] [11 <../figs/kernel.pdf>] (./tex/spatial.tex
+
+LaTeX Warning: Reference `fig:spatial' on page 12 undefined on input line 16.
+
+<../figs/spatial.pdf, id=207, 505.89pt x 361.35pt>
 File: ../figs/spatial.pdf Graphic file (type pdf)
  <use ../figs/spatial.pdf>)
-[14
+[12
 
-] [15 <../figs/spatial.pdf>] (../tex/learning.tex
+] [13 <../figs/spatial.pdf>] (./tex/learning.tex
+
+LaTeX Warning: Citation `VogelsteinPaninski09b' on page 14 undefined on input l
+ine 9.
+
+
+LaTeX Warning: Citation `Rabiner89' on page 14 undefined on input line 9.
+
+
+LaTeX Warning: Reference `eq:par1' on page 14 undefined on input line 16.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 16.
+
+LaTeX Warning: Reference `eq:par1' on page 14 undefined on input line 16.
+
+
+LaTeX Warning: Reference `eq:bF' on page 14 undefined on input line 18.
+
+
+LaTeX Warning: Reference `eq:C' on page 14 undefined on input line 18.
+
+
+LaTeX Warning: Reference `eq:par1' on page 14 undefined on input line 18.
+
+
+LaTeX Warning: Reference `eq:par1' on page 14 undefined on input line 18.
+
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 38.
-
 (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) [16
+) [14
 
 ]
-<../figs/spatial_EM.pdf, id=466, 505.89pt x 361.35pt>
+
+LaTeX Warning: Citation `YaksiFriedrich07' on page 15 undefined on input line 6
+6.
+
+
+LaTeX Warning: Reference `fig:spatial_EM' on page 15 undefined on input line 70
+.
+
+<../figs/spatial_EM.pdf, id=259, 505.89pt x 361.35pt>
 File: ../figs/spatial_EM.pdf Graphic file (type pdf)
 
-<use ../figs/spatial_EM.pdf> [17]) [18 <../figs/spatial_EM.pdf>]
-(../tex/in_vitro.tex) [19
+<use ../figs/spatial_EM.pdf>
 
-] (../tex/overlapping.tex
-<../figs/spatial_multi.pdf, id=503, 542.025pt x 758.835pt>
-File: ../figs/spatial_multi.pdf Graphic file (type pdf)
+LaTeX Warning: Reference `fig:spatial' on page 15 undefined on input line 74.
 
-<use ../figs/spatial_multi.pdf> [20
 
-]) [21 <../figs/spatial_multi.pdf>]
-(../tex/pop.tex) [22
+LaTeX Warning: Reference `fig:spatial' on page 15 undefined on input line 74.
 
-] (../tex/slow_rise_time.tex) [23
-
-] (../tex/poisson.tex)
-[24
-
-] (../tex/in_vivo.tex
-<../figs/spatial_data.pdf, id=546, 505.89pt x 505.89pt>
-File: ../figs/spatial_data.pdf Graphic file (type pdf)
-
-<use ../figs/spatial_data.pdf>) [25
-
- <../figs/spatial_data.pdf>]
-(../tex/discussion.tex) [26] (../tex/nonlin_obs.tex) [27
+) [15] [16 <../figs/spatial_EM.pdf>] (./tex/in_vitro.tex) [17
 
 ]
-(../tex/dynamic_prior.tex) (./main.bbl
-Missing character: There is no ü in font ptmr7t!
- [28
+(./tex/overlapping.tex
+<../figs/spatial_multi.pdf, id=292, 144.54pt x 505.89pt>
+File: ../figs/spatial_multi.pdf Graphic file (type pdf)
 
-]) (../tex/appendix.tex) [29]
-(./main.aux)
+<use ../figs/spatial_multi.pdf>
+
+LaTeX Warning: Float too large for page by 853.53824pt on input line 42.
+
+) [18
+
+] [19 <../figs/spatial_multi.pdf, page is rotated 90 degrees>]
+(./tex/pop.tex) [20
+
+] [21] (./tex/slow_rise_time.tex) [22
+
+] [23]
+(./tex/poisson.tex) [24
+
+] [25] (./tex/in_vivo.tex
+<../figs/spatial_data.pdf, id=353, 505.89pt x 505.89pt>
+File: ../figs/spatial_data.pdf Graphic file (type pdf)
+
+<use ../figs/spatial_data.pdf>) [26
+
+] (./tex/discussion.tex) [27] [28 <../figs/spatial_data.pdf>] (./tex/nonlin_obs
+.tex) [29
+
+] [30] (./tex/dynamic_prior.tex)
+No file main.bbl.
+(./tex/appendix.tex
+
+LaTeX Warning: Reference `sec:inf' on page 31 undefined on input line 3.
+
+
+LaTeX Warning: Reference `eq:obj' on page 31 undefined on input line 3.
+
+
+LaTeX Warning: Reference `eq:obj2' on page 31 undefined on input line 3.
+
+
+LaTeX Warning: Reference `eq:w1' on page 31 undefined on input line 9.
+
+
+LaTeX Warning: Reference `eq:par1' on page 31 undefined on input line 33.
+
+) [31
+
+] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
 
-LaTeX Warning: There were multiply-defined labels.
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 4857 strings out of 94500
- 57900 string characters out of 1155413
- 123376 words of memory out of 1000000
- 7686 multiletter control sequences out of 10000+50000
- 35757 words of font info for 84 fonts, out of 500000 for 2000
+ 4555 strings out of 94500
+ 53683 string characters out of 1155413
+ 119919 words of memory out of 1000000
+ 7421 multiletter control sequences out of 10000+50000
+ 37383 words of font info for 86 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 29i,15n,43p,2007b,314s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 29i,15n,43p,2012b,244s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 604 PDF objects out of 300000
- 167 named destinations out of 131072
- 238 words of extra memory for PDF output out of 65536
+ 415 PDF objects out of 300000
+ 148 named destinations out of 131072
+ 70 words of extra memory for PDF output out of 65536
 {/opt/local/share/texmf-dist/fonts/enc/dvips/psnfss/8r.enc}</opt/local/share/
 texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/local/share/texmf-dist/font
 s/type1/public/tt2001/fmex7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesk
@@ -528,4 +789,4 @@ ky/cm/cmr10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmib10.pfb
 ></opt/local/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></opt/local/sha
 re/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/local/share/texmf-dist/fon
 ts/type1/urw/times/utmr8a.pfb>
-Output written on main.pdf (29 pages, 458748 bytes).
+Output written on main.pdf (31 pages, 370159 bytes).

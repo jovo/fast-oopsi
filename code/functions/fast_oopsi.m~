@@ -43,7 +43,7 @@ function [n_best P_best V]=fast_oopsi(F,V,P)
 %   est_b:      whether to estimate b?   (default 1)
 %   est_a:      whether to estimate a?   (default 1)
 %
-% P.        structure of neuron Model parameters
+% P.        structure of neuron model Parameters
 %
 %   a:      spatial filter
 %   b:      baseline
@@ -73,7 +73,7 @@ end
 % variables determined by the user
 if ~isfield(V,'fast_poiss'),V.fast_poiss = 0;   end     % whether observations are Poisson
 if ~isfield(V,'fast_iter_max'),                         % max # of iterations before convergence
-    reply = input('how many EM iterations would you like to perform to estimate parameters (0 means use default parameters): ', 's');
+    reply = str2double(input('how many EM iterations would you like to perform to estimate parameters (0 means use default parameters): ', 's'));
     V.fast_iter_max = reply;
 end
 if ~isfield(V,'fast_plot'), V.fast_plot=0; end
@@ -105,7 +105,7 @@ if ~isfield(P,'gam'),   P.gam   = 1-V.dt/1; end
 if ~isfield(P,'lam'),   P.lam   = 10;       end
 if ~isfield(P,'a'),     P.a     = 1;        end
 
-%% define some stuff needed for FastFilter function
+%% define some stuff needed for est_MAP function
 
 % make sure we have 1 spatial filter per neuron in ROI
 if V.fast_iter_max>1 && V.est_a==1
@@ -122,10 +122,12 @@ end
 Z   = zeros(V.Ncells*V.T,1);                    % zero vector
 M   = spdiags([repmat(-P.gam,V.T,1) repmat(Z,1,V.Ncells-1) (1+Z)], -V.Ncells:0,V.Ncells*V.T,V.Ncells*V.T);  % matrix transforming calcium into spikes, ie n=M*C
 I   = speye(V.Ncells*V.T);                      % create out here cuz it must be reused
+H1  = I;                                        % initialize memory for Hessian matrix
+H2  = I;                                        % initialize memory for Hessian matrix
 d0  = 1:V.Ncells*V.T+1:(V.Ncells*V.T)^2;        % index of diagonal elements of TxT matrices
 d1  = 1+V.Ncells:V.Ncells*V.T+1:(V.Ncells*V.T)*(V.Ncells*(V.T-1)); % index of off-diagonal elements of TxT matrices
 posts = Z(1:V.fast_iter_max);                   % initialize likelihood
-if numel(P.lam)==V.Ncells                   
+if numel(P.lam)==V.Ncells
     lam = V.dt*repmat(P.lam,V.T,1);             % for lik
 elseif numel(P.lam)==V.Ncells*V.T
     lam = V.dt*P.lam;
@@ -136,74 +138,66 @@ end
 if V.fast_poiss==1
     H       = I;                                % initialize memory for Hessian matrix
     gamlnF  = gammaln(F+1);                     % for lik
-    sumF    = sum(F);                           % for Hess
-else
-    H1  = I;                                    % initialize memory for Hessian matrix
-    H2  = I;                                    % initialize memory for Hessian matrix
+    sumF    = sum(F)';                          % for grad & Hess
 end
 
+%% if not iterating to estimate parameters, only this is necessary
+[n C posts(1)] = est_MAP(F,P);
+n_best = n;
+P_best = P;
+V.fast_iter_tot = 1;
+V.post = posts(1);
+post_max = posts(1);
 
-%% infer spike train using default/initialized parameters
-[n C] = FastFilter(F,P);
-
-%%  if parameters are unknown, do pseudo-EM iterations
 if V.fast_iter_max>1
-
-    % set up stuff
-    if V.fast_poiss==0
-        D       = F-P.a*(reshape(C,V.Ncells,V.T)+b);                    % required to compute initial likelihood
-        mse     = -D(:)'*D(:);                                          % required to compute initial likelihood
-        posts(1)= -V.T*V.Npixels*log(2*pi*P.sig^2)/2 - mse/(2*P.sig^2); % initial likelihood
-    else
-        posts(1)= -inf;
-    end
-    post_max = posts(1);                        % maximum likelihood achieved so far
-    n_best  = n;                                % best spike train
-    P_best  = P;                                % best parameter estimate
     options = optimset('Display','off');        % don't show warnings for parameter estimation
     i       = 1;                                % iteration #
     i_best  = i;                                % iteration with highest likelihood
     conv    = 0;                                % whether algorithm has converged yet
-
-    while conv == 0
-
-        if V.fast_plot == 1, MakePlot(n,F,P,V); end % plot results from previous iteration
-        i       = i+1;                          % update iteratation number
-        V.fast_iter_tot = i;                    % record of total # of iterations
-        P       = ParamUpdate(n,C,F,P,b);       % update parameters based on previous iteration
-        [n C]   = FastFilter(F,P);              % update inferred spike train based on new parameters
-
-        if posts(i)>post_max                    % if this is the best one, keep n and P
-            n_best  = n;                        % keep n
-            P_best  = P;                        % keep P
-            i_best  = i;                        % keep track of which was best
-            post_max= posts(i);                 % keep max posterior
-        end
-
-        if conv == 1, disp('convergence criteria met'), break; end
-        sound(3*sin(linspace(0,90*pi,2000)))    % play sound to indicate iteration is over
-    end
-else                                            % if not iterating, just output stuff from 1st run
-    n_best = n;
-    P_best = P;
-    V.fast_iter_tot = 1;
+else
+    conv    = 1;
 end
+
+%%  if parameters are unknown, do pseudo-EM iterations
+while conv == 0
+    if V.fast_plot == 1, MakePlot(n,F,P,V); end % plot results from previous iteration
+    i               = i+1;                      % update iteratation number
+    V.fast_iter_tot = i;                        % record of total # of iterations
+    P               = est_params(n,C,F,P,b);    % update parameters based on previous iteration
+    [n C posts(i)]  = est_MAP(F,P);             % update inferred spike train based on new parameters
+
+    if posts(i)>post_max                        % if this is the best one, keep n and P
+        n_best  = n;                            % keep n
+        P_best  = P;                            % keep P
+        i_best  = i;                            % keep track of which was best
+        post_max= posts(i);                     % keep max posterior
+    end
+
+    % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
+    if  i>=V.fast_iter_max || (abs((posts(i)-posts(i-1))/posts(i))<1e-5 || any(posts(1:i-1)-posts(i))<1e-5)% abs((posts(i)-posts(i-1))/posts(i))<1e-5 || posts(i-1)-posts(i)>1e5;
+        MakePlot(n,F,P,V);
+        disp('convergence criteria met')
+        V.post  = posts(1:i);
+        conv    = 1;
+    end
+    sound(3*sin(linspace(0,90*pi,2000)))        % play sound to indicate iteration is over
+end
+
 V.fast_time = cputime-starttime;                % time to run code
-V.posts     = posts(1:i);                       % keep record of likelihoods for record
 V           = orderfields(V);                   % order fields alphabetically to they are easier to read
 P_best      = orderfields(P_best);
 
 %% fast filter function
-    function [n C DD] = FastFilter(F,P)
+    function [n C post] = est_MAP(F,P)
 
         % initialize n and C
         z = 1;                                  % weight on barrier function
-        e = 1/(2*P.sig^2);                      % scale of variance
         llam = reshape(1./lam',1,V.Ncells*V.T)';
-        n = z.*llam;                            % initialize spike train
+        
+        n = 0.001+0*llam;                           % initialize spike train
         C = 0*n;                                % initialize calcium
         for j=1:V.Ncells
-            C(j:V.Ncells:end) = filter(1,[1, -P.gam(j)],n(j:V.Ncells:end)) + (1-P.gam(j))*P.b(j);
+            C(j:V.Ncells:end) = filter(1,[1, -P.gam(j)],n(j:V.Ncells:end)) + P.b(j); %(1-P.gam(j))*P.b(j);
         end
 
         % precompute parameters required for evaluating and maximizing likelihood
@@ -211,35 +205,39 @@ P_best      = orderfields(P_best);
         if V.fast_poiss==1
             suma    = sum(P.a);                 % for grad
         else
+            e = 1/(2*P.sig^2);                  % scale of variance
             aF      = P.a'*F;                   % for grad
             bb      = b(:);                     % for grad
             M(d1)   = -repmat(P.gam,V.T-1,1);   % matrix transforming calcium into spikes, ie n=M*C
-            lnprior = llam.*sum(M)';            % for grad
             aa      = repmat(diag(P.a'*P.a),V.T,1);% for grad
             H1(d0)  = 2*e*aa;                   % for Hess
         end
+        lnprior     = llam.*sum(M)';            % for grad
 
         % find C = argmin_{C_z} lik + prior + barrier_z
         while z>1e-13                           % this is an arbitrary threshold
 
             if V.fast_poiss==1
-                Fexpected = P.a*(C+b')';        % expected poisson observation rate
-                post = sum(sum(exp(-Fexpected+ F.*log(Fexpected) - gamlnF)));
+                Fexpect = P.a*(C+b')';          % expected poisson observation rate
+                lik = sum(-Fexpect+ F.*log(Fexpect) - gamlnF); % lik
             else
-                D = F-P.a*(reshape(C,V.Ncells,V.T)+b);  % difference vector to be used in likelihood computation
-                post = e*D(:)'*D(:)+llam'*n-z*sum(log(n)); % Likilihood function using C
+                D = F-P.a*(reshape(C,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
+                lik = e*D(:)'*D(:);             % lik
             end
-            s = 1;                              % step size
-            d = 1;                              % direction
+            post = lik + llam'*n - z*sum(log(n));
+            s    = 1;                           % step size
+            d    = 1;                           % direction
             while norm(d)>5e-2 && s > 1e-3      % converge for this z (again, these thresholds are arbitrary)
                 if V.fast_poiss==1
-                    g   = (-suma + sumF./(C+b')')';
-                    H(d0) = sumF'.*(C+b').^(-2);
+                    glik    = -suma + sumF./(C+b');
+                    H1(d0)  = -sumF.*(C+b').^(-2); % lik contribution to Hessian
                 else
-                    g   = 2*e*(aa.*(C+bb)-aF(:)) + lnprior - z*M'*(n.^-1);  % gradient
-                    H2(d0) = n.^-2;             % part of the Hessian
-                    H   = H1 + z*(M'*H2*M);     % Hessian
+                    glik    = 2*e*(aa.*(C+bb)-aF(:));  % gradient
                 end
+                g       = glik + lnprior - z*M'*(n.^-1);
+                H2(d0)  = n.^-2;                % log barrier part of the Hessian
+                H       = H1 + z*(M'*H2*M);     % Hessian
+
                 d   = -H\g;                     % direction to step using newton-raphson
                 hit = -n./(M*d);                % step within constraint boundaries
                 hit(hit<0)=[];                  % ignore negative hits
@@ -253,16 +251,16 @@ P_best      = orderfields(P_best);
                     C1  = C+s*d;
                     n   = M*C1;
                     if V.fast_poiss==1
-                        Fexpected = P.a*(C1+b')';
-                        post1 = sum(sum(exp(-Fexpected + F.*log(Fexpected) - gamlnF)));
+                        Fexpect = P.a*(C1+b')';
+                        lik1    = sum(-Fexpect+ F.*log(Fexpect) - gamlnF);
                     else
-                        D   = F-P.a*(reshape(C1,V.Ncells,V.T)+b);
-                        DD  = D(:)'*D(:);
-                        post1  = e*DD+llam'*n-z*sum(log(n));
+                        D       = F-P.a*(reshape(C1,V.Ncells,V.T)+b);
+                        DD      = D(:)'*D(:);
+                        lik1    = e*DD;
                     end
+                    post1 = lik1 + llam'*n - z*sum(log(n));
                     s   = s/5;                  % if step increases objective function, decrease step size
-                    if s<1e-20;
-                        disp('reducing s further did not increase likelihood'), break; end      % if decreasing step size just doesn't do it
+                    if s<1e-20; disp('reducing s further did not increase likelihood'), break; end      % if decreasing step size just doesn't do it
                 end
                 C    = C1;                      % update C
                 post = post1;                   % update post
@@ -276,19 +274,19 @@ P_best      = orderfields(P_best);
     end
 
 %% Parameter Update
-    function P = ParamUpdate(n,C,F,P,b)
+    function P = est_params(n,C,F,P,b)
 
         % generate regressor for spatial filter
         if V.est_a==1 || V.est_b==1
             if V.fast_thr==1
                 CC=0*C;
-                for jj=1:V.Ncells
-                    nsort   = sort(n(:,jj));
+                for j=1:V.Ncells
+                    nsort   = sort(n(:,j));
                     nthr    = nsort(round(0.98*V.T));
                     nn      = Z(1:V.T);
-                    nn(n(:,jj)<=nthr)=0;
-                    nn(n(:,jj)>nthr)=1;
-                    CC(:,jj) = filter(1,[1 -P.gam(jj)],nn) + (1-P.gam(jj))*P.b(jj);
+                    nn(n(:,j)<=nthr)=0;
+                    nn(n(:,j)>nthr)=1;
+                    CC(:,j) = filter(1,[1 -P.gam(j)],nn) + (1-P.gam(j))*P.b(j);
                 end
             else
                 CC      = C;
@@ -333,17 +331,6 @@ P_best      = orderfields(P_best);
             end
 
         end
-
-        % update likelihood and keep results if they improved
-        lik     = -V.T*V.Npixels*log(2*pi*P.sig^2)/2 - mse/(2*P.sig^2);
-        prior   = sum(lam(:)) - lam(:)'*n(:);
-        posts(i)    = lik + prior;
-
-        % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
-        if  i>=V.fast_iter_max || (abs((posts(i)-posts(i-1))/posts(i))<1e-5 || any(posts(1:i-1)-posts(i))<1e-5)% abs((posts(i)-posts(i-1))/posts(i))<1e-5 || posts(i-1)-posts(i)>1e5;
-            conv = 1;
-        end
-
     end
 
 %% MakePlot
@@ -357,7 +344,7 @@ P_best      = orderfields(P_best);
                 end
             end
 
-            figure(FigNum+1),  ncols=V.Ncells; nrows=3; END=V.T;
+            figure(FigNum+1),  ncols=V.Ncells; nrows=3; END=V.T; h=zeros(V.Ncells,2);
             for j=1:V.Ncells                                  % plot inferred spike train
                 h(j,1)=subplot(nrows,ncols,j); cla
                 if V.Npixels>1, Ftemp=mean(F); else Ftemp=F; end
@@ -378,7 +365,7 @@ P_best      = orderfields(P_best);
             end
 
             subplot(nrows,ncols,j*nrows),
-            plot(posts(1:i))    % plot record of likelihoods
+            plot(1:i,posts(1:i))    % plot record of likelihoods
             title(['max lik ' num2str(post_max,4), ',   lik ' num2str(posts(i),4)])
             set(gca,'XTick',2:i,'XTickLabel',2:i)
             drawnow
