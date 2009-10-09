@@ -9,7 +9,6 @@ fname = 'poisson';
 T               = 3000;     % # of time steps
 V.dt            = 1/200;    % time step size
 V.fast_iter_max = 1;        % # iterations of EM to estimate params
-V.fast_poiss    = 0;        % whether observations are poisson (1) or gaussian (0)
 V.fast_plot     = 1;        % whether to plot with each iteration
 V.save          = 0;        % whether to save results
 
@@ -33,7 +32,6 @@ if V.save, save(['../../data/' fname '.mat'],'V','P'); end
 %% infer spike trains and parameters
 
 for q=1:2
-    disp(['poisson=' num2str(V.fast_poiss)])
     if q==1,
         V.fast_poiss=0;
         V.fast_iter_max=10;

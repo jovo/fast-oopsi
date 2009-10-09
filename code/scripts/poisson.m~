@@ -3,30 +3,32 @@
 % parameters
 
 clear, clc,
-fname = 'poisson';
+fname = 'nonlin';
 
 % set simulation metadata
 T               = 3000;     % # of time steps
 V.dt            = 1/200;    % time step size
 V.fast_iter_max = 1;        % # iterations of EM to estimate params
-V.fast_poiss    = 0;        % whether observations are poisson (1) or gaussian (0)
 V.fast_plot     = 1;        % whether to plot with each iteration
 V.save          = 0;        % whether to save results
 
 % initialize params
-P.a     = 3;                % scale
-P.b     = 1/P.a;           % bias
+P.a     = 5;                % scale
+P.b     = 0.1;              % bias
 tau     = 1;                % decay time constant for each cell
 P.gam   = 1-V.dt/tau;       % set gam
 P.lam   = 1.0;              % rate
+P.k_d   = 200;              % dissociation constant
+P.sig   = 0.01;              % standard deviation
 
 % simulate data
 V.n = poissrnd(P.lam*V.dt*ones(T,1));   % simulate spike train
 V.C = filter(1,[1 -P.gam],V.n);         % calcium concentration
-V.F = poissrnd(P.a*(V.C+repmat(P.b,T,1))');
-% V.F = P.a*(V.C+repmat(P.b,T,1))'+2*randn(1,T);
+V.S = V.C./(V.C+P.k_d);
+V.F = P.a*(V.S+repmat(P.b,T,1))'+P.sig*randn(1,T);
 
-figure(1), clf, hold off; plot(V.F+1); hold all; bar(10*V.n), 
+figure(1), clf, hold off; plot(V.F+1); hold all; bar(V.n),
+plot(V.F); %hold all; bar(V.n),
 
 if V.save, save(['../../data/' fname '.mat'],'V','P'); end
 
@@ -34,23 +36,23 @@ if V.save, save(['../../data/' fname '.mat'],'V','P'); end
 
 for q=1:2
     disp(['poisson=' num2str(V.fast_poiss)])
-    if q==1, 
-        V.fast_poiss=0; 
-        V.fast_iter_max=5;
+    if q==1,
+        V.fast_poiss=0;
+        V.fast_iter_max=10;
         [I{q}.n I{q}.P I{q}.V] = fast_oopsi(V.F,V);
     else
-        V.fast_poiss=1; 
+        V.fast_poiss=1;
         V.gauss_n=I{1}.n;
         V.fast_iter_max=1;
         [I{q}.n I{q}.P I{q}.V] = fast_oopsi(V.F,V,P);
     end
 end
 
-% save(['../../data/' fname '.mat'],'-append','I')
+if V.save, save(['../../data/' fname '.mat'],'-append','I'); end
 
 %% plot results
 
-figure(1), clf, hold on
+fig=figure(1); clf, hold on
 nrows   = 1+length(I);
 ncols   = 1;
 
@@ -60,7 +62,7 @@ Pl.ms   = 5;                    % marker size
 Pl.lw   = 1;                    % line width
 Pl.n    = V.n; Pl.n(Pl.n==0)=NaN; % true spike train (0's are NaN's so they don't plot)
 Pl.shift= .1;
-Pl.xlim = [2 T-10];
+Pl.xlim = [2 T-3];
 Pl.xlims= Pl.xlim(1):Pl.xlim(2);
 Pl.XTick= Pl.xlim(1):round(mean(T)/5):Pl.xlim(2);
 Pl.XTickLabel = round((Pl.XTick-min(Pl.XTick))*V.dt*100)/100;
@@ -99,6 +101,7 @@ end
 if V.save
     wh=[7 3];   %width and height
     set(gcf,'PaperSize',wh,'PaperPosition',[0 0 wh],'Color','w');
+    DirName='../../figs/';
     print('-depsc',[DirName fname])
     print('-dpdf',[DirName fname])
     saveas(fig,[DirName fname])

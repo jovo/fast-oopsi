@@ -72,20 +72,34 @@ end
 
 % variables determined by the user
 if ~isfield(V,'fast_poiss'),V.fast_poiss = 0;   end     % whether observations are Poisson
+if ~isfield(V,'fast_nonlin'),   V.fast_nonlin   = 0; end
+if V.fast_poiss && V.fast_nonlin, 
+    reply = str2double(input('can be nonlinear observations and poisson, type 1 for nonlin, 2 for poisson, anything else for neither: ', 's'));
+    if reply==1,        V.fast_poiss = 0;   V.fast_nonlin = 1;
+    elseif reply==2,    V.fast_poiss = 1;   V.fast_nonlin = 0;
+    else                V.fast_poiss = 0;   V.fast_nonlin = 0;
+    end
+end
 if ~isfield(V,'fast_iter_max'),                         % max # of iterations before convergence
     reply = str2double(input('how many EM iterations would you like to perform to estimate parameters (0 means use default parameters): ', 's'));
     V.fast_iter_max = reply;
 end
-if ~isfield(V,'fast_plot'), V.fast_plot=0; end
-if V.fast_plot==1
-    FigNum = 400;
-    if V.Npixels>1, figure(FigNum), clf, end            % figure showing estimated spatial filter
-    figure(FigNum+1), clf                               % figure showing estimated spike trains
-    if isfield(V,'n'), V.n(isnan(V.n))=0; siz=size(V.n); if siz(1)<siz(2), V.n=V.n'; end; end
-end
 
-% variables that matter only if estimating parameters
+% things that matter if we are iterating to estimate parameters
 if V.fast_iter_max>1;
+    if V.fast_poiss || V.fast_nonlin,
+        disp('code does not currrently support estimating parameters for poisson or nonlinear observations');
+        V.fast_iter_max=1;
+    end
+    
+    if ~isfield(V,'fast_plot'),     V.fast_plot     = 0; end
+    if V.fast_plot==1
+        FigNum = 400;
+        if V.Npixels>1, figure(FigNum), clf, end        % figure showing estimated spatial filter
+        figure(FigNum+1), clf                           % figure showing estimated spike trains
+        if isfield(V,'n'), V.n(isnan(V.n))=0; siz=size(V.n); if siz(1)<siz(2), V.n=V.n'; end; end
+    end
+
     if ~isfield(V,'est_sig'),   V.est_sig   = 1; end    % whether to estimate sig
     if ~isfield(V,'est_lam'),   V.est_lam   = 1; end    % whether to estimate sig
     if ~isfield(V,'est_gam'),   V.est_gam   = 0; end    % whether to estimate sig
@@ -193,7 +207,7 @@ P_best      = orderfields(P_best);
         % initialize n and C
         z = 1;                                  % weight on barrier function
         llam = reshape(1./lam',1,V.Ncells*V.T)';
-        if V.fast_poiss==0
+        if V.fast_poiss==0 && V.fast_nonlin==0
             n = 1+0*llam;                       % initialize spike train
         else
             n = V.gauss_n+0.001;
@@ -208,7 +222,7 @@ P_best      = orderfields(P_best);
         if V.fast_poiss==1
             suma    = sum(P.a);                 % for grad
         else
-            e = 1/(2*P.sig^2);                  % scale of variance
+            e       = 1/(2*P.sig^2);            % scale of variance
             aF      = P.a'*F;                   % for grad
             bb      = b(:);                     % for grad
             M(d1)   = -repmat(P.gam,V.T-1,1);   % matrix transforming calcium into spikes, ie n=M*C
@@ -224,7 +238,12 @@ P_best      = orderfields(P_best);
                 Fexpect = P.a*(C+b')';          % expected poisson observation rate
                 lik = sum(sum(-Fexpect+ F.*log(Fexpect) - gamlnF)); % lik
             else
-                D = F-P.a*(reshape(C,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
+                if V.fast_nonlin==1
+                    S = C./(C+P.k_d);
+                else
+                    S = C;
+                end
+                D = F-P.a*(reshape(S,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
                 lik = e*D(:)'*D(:);             % lik
             end
             post = lik + llam'*n - z*sum(log(n));
@@ -234,6 +253,11 @@ P_best      = orderfields(P_best);
                 if V.fast_poiss==1
                     glik    = -suma + sumF./(C+b');
                     H1(d0)  = -sumF.*(C+b').^(-2); % lik contribution to Hessian
+                elseif V.fast_nonlin==1
+                    glik    = -2*D'*P.a*P.k_d.*(C+P.k_d).^-2;
+                    H1diag  = (-P.a*P.k_d-2*(C+P.k_d).*D').*((C+P.k_d).^-4);
+                    H1(d0)  = H1diag;
+
                 else
                     glik    = 2*e*(aa.*(C+bb)-aF(:));  % gradient
                 end
@@ -257,18 +281,23 @@ P_best      = orderfields(P_best);
                         Fexpect = P.a*(C1+b')';
                         lik1    = sum(sum(-Fexpect+ F.*log(Fexpect) - gamlnF));
                     else
-                        D       = F-P.a*(reshape(C1,V.Ncells,V.T)+b);
+                        if V.fast_nonlin==1
+                            S1 = C1./(C1+P.k_d);
+                        else
+                            S1 = C1;
+                        end
+                        D       = F-P.a*(reshape(S1,V.Ncells,V.T)+b);
                         DD      = D(:)'*D(:);
                         lik1    = e*DD;
                     end
                     post1 = lik1 + llam'*n - z*sum(log(n));
-                    s   = s/2;                  % if step increases objective function, decrease step size
+                    s   = s/5;                  % if step increases objective function, decrease step size
                     if s<1e-20; disp('reducing s further did not increase likelihood'), break; end      % if decreasing step size just doesn't do it
                 end
                 C    = C1;                      % update C
                 post = post1;                   % update post
             end
-            z=z/2;                             % reduce z (sequence of z reductions is arbitrary)
+            z=z/10;                             % reduce z (sequence of z reductions is arbitrary)
         end
 
         % reshape things in the case of multiple neurons within the ROI
