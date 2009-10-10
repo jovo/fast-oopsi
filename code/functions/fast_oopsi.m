@@ -66,7 +66,7 @@ if ~isfield(V,'Nc'),        V.Ncells = 1;       end     % # of cells in image
 if ~isfield(V,'T'),         V.T = siz(2);       end     % # of time steps
 if ~isfield(V,'Npixels'),   V.Npixels = siz(1); end     % # of pixels in ROI
 if ~isfield(V,'dt'),                                    % frame duration
-    fr = input('what was the frame rate for this movie (in Hz)? ');
+    fr = input('\nwhat was the frame rate for this movie (in Hz)?: ');
     V.dt = 1/fr;
 end
 
@@ -74,21 +74,21 @@ end
 if ~isfield(V,'fast_poiss'),V.fast_poiss = 0;   end     % whether observations are Poisson
 if ~isfield(V,'fast_nonlin'),   V.fast_nonlin   = 0; end
 if V.fast_poiss && V.fast_nonlin, 
-    reply = str2double(input('can be nonlinear observations and poisson, type 1 for nonlin, 2 for poisson, anything else for neither: ', 's'));
+    reply = input('\ncan be nonlinear observations and poisson, \ntype 1 for nonlin, 2 for poisson, anything else for neither: ', 's');
     if reply==1,        V.fast_poiss = 0;   V.fast_nonlin = 1;
     elseif reply==2,    V.fast_poiss = 1;   V.fast_nonlin = 0;
     else                V.fast_poiss = 0;   V.fast_nonlin = 0;
     end
 end
 if ~isfield(V,'fast_iter_max'),                         % max # of iterations before convergence
-    reply = str2double(input('how many EM iterations would you like to perform to estimate parameters (0 means use default parameters): ', 's'));
+    reply = input('\nhow many EM iterations would you like to perform \nto estimate parameters (0 means use default parameters): ', 's');
     V.fast_iter_max = reply;
 end
 
 % things that matter if we are iterating to estimate parameters
 if V.fast_iter_max>1;
     if V.fast_poiss || V.fast_nonlin,
-        disp('code does not currrently support estimating parameters for poisson or nonlinear observations');
+        disp('\ncode does not currrently support estimating parameters for \npoisson or nonlinear observations');
         V.fast_iter_max=1;
     end
     
