@@ -74,14 +74,14 @@ end
 if ~isfield(V,'fast_poiss'),V.fast_poiss = 0;   end     % whether observations are Poisson
 if ~isfield(V,'fast_nonlin'),   V.fast_nonlin   = 0; end
 if V.fast_poiss && V.fast_nonlin, 
-    reply = input('\ncan be nonlinear observations and poisson, \ntype 1 for nonlin, 2 for poisson, anything else for neither: ', 's');
+    reply = input('\ncan be nonlinear observations and poisson, \ntype 1 for nonlin, 2 for poisson, anything else for neither: ');
     if reply==1,        V.fast_poiss = 0;   V.fast_nonlin = 1;
     elseif reply==2,    V.fast_poiss = 1;   V.fast_nonlin = 0;
     else                V.fast_poiss = 0;   V.fast_nonlin = 0;
     end
 end
 if ~isfield(V,'fast_iter_max'),                         % max # of iterations before convergence
-    reply = input('\nhow many EM iterations would you like to perform \nto estimate parameters (0 means use default parameters): ', 's');
+    reply = input('\nhow many EM iterations would you like to perform \nto estimate parameters (0 means use default parameters): ');
     V.fast_iter_max = reply;
 end
 
@@ -109,6 +109,10 @@ if V.fast_iter_max>1;
     if ~isfield(V,'fast_thr'),  V.fast_thr  = 1; end    % whether to threshold spike train before estimating 'a' and 'b'
 end
 
+% normalize F if it is only a trace
+if V.Npixels==1
+   F=F-min(F); F=F/max(F); F=F+eps; 
+end
 
 %% set default model Parameters
 
@@ -208,7 +212,7 @@ P_best      = orderfields(P_best);
         z = 1;                                  % weight on barrier function
         llam = reshape(1./lam',1,V.Ncells*V.T)';
         if V.fast_poiss==0 && V.fast_nonlin==0
-            n = 1+0*llam;                       % initialize spike train
+            n = z.*llam;                       % initialize spike train
         else
             n = V.gauss_n+0.001;
         end
@@ -257,14 +261,12 @@ P_best      = orderfields(P_best);
                     glik    = -2*D'*P.a*P.k_d.*(C+P.k_d).^-2;
                     H1diag  = (-P.a*P.k_d-2*(C+P.k_d).*D').*((C+P.k_d).^-4);
                     H1(d0)  = H1diag;
-
                 else
                     glik    = 2*e*(aa.*(C+bb)-aF(:));  % gradient
                 end
                 g       = glik + lnprior - z*M'*(n.^-1);
                 H2(d0)  = n.^-2;                % log barrier part of the Hessian
                 H       = H1 + z*(M'*H2*M);     % Hessian
-
                 d   = -H\g;                     % direction to step using newton-raphson
                 hit = -n./(M*d);                % step within constraint boundaries
                 hit(hit<0)=[];                  % ignore negative hits
