@@ -3,24 +3,46 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>tex/main.tex</string>
+	<string>tex/goal.tex</string>
 	<key>documents</key>
 	<array>
+		<dict>
+			<key>filename</key>
+			<string>tex/main.tex</string>
+			<key>lastUsed</key>
+			<date>2009-10-26T22:38:29Z</date>
+		</dict>
 		<dict>
 			<key>filename</key>
 			<string>tex/abstract.tex</string>
 		</dict>
 		<dict>
 			<key>filename</key>
-			<string>tex/appendix.tex</string>
+			<string>tex/intro.tex</string>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>tex/methods.tex</string>
+			<key>lastUsed</key>
+			<date>2009-10-27T10:42:19Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>tex/goal.tex</string>
+			<key>lastUsed</key>
+			<date>2009-10-27T10:46:27Z</date>
+			<key>selected</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>tex/model.tex</string>
+			<key>lastUsed</key>
+			<date>2009-10-27T10:46:27Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>tex/assess.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/discussion.tex</string>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -29,10 +51,6 @@
 		<dict>
 			<key>filename</key>
 			<string>tex/exp.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/goal.tex</string>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -48,10 +66,6 @@
 		</dict>
 		<dict>
 			<key>filename</key>
-			<string>tex/intro.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
 			<string>tex/learning.tex</string>
 		</dict>
 		<dict>
@@ -59,22 +73,6 @@
 			<string>tex/main_result.tex</string>
 			<key>lastUsed</key>
 			<date>2009-10-07T18:22:09Z</date>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/main.tex</string>
-			<key>lastUsed</key>
-			<date>2009-10-07T18:22:09Z</date>
-			<key>selected</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/methods.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/model.tex</string>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -100,11 +98,33 @@
 			<key>filename</key>
 			<string>tex/pop.tex</string>
 		</dict>
+		<dict>
+			<key>filename</key>
+			<string>tex/discussion.tex</string>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>tex/appendix.tex</string>
+		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>200</integer>
 	<key>metaData</key>
 	<dict>
+		<key>tex/goal.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>438</integer>
+				<key>line</key>
+				<integer>6</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>tex/main.tex</key>
 		<dict>
 			<key>caret</key>
@@ -133,15 +153,46 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
+		<key>tex/methods.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>841</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>tex/model.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>79</integer>
+				<key>line</key>
+				<integer>34</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>33</integer>
+		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>tex/main.tex</string>
+		<string>tex/methods.tex</string>
+		<string>tex/model.tex</string>
+		<string>tex/goal.tex</string>
 		<string>tex/main_result.tex</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{59, 7}, {819, 867}}</string>
+	<string>{{4, 13}, {726, 865}}</string>
 </dict>
 </plist>

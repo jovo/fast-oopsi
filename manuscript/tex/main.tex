@@ -24,6 +24,7 @@
 \newcommand{\hCm}{\widehat{\bC}}
 \newcommand{\transpo}[1]{{#1}^{\ensuremath{\mathsf{T}}}}           % transpose
 \newcommand\transp{{\!\scriptscriptstyle\mathrm T}}
+\newcommand{\foopsi}{fast }
 %\newcommand{\hbm}{\widehat{\ve{\nu}}}
 %\newcommand{\hbn}{\widehat{\bn}}
 %\newcommand{\hbC}{\widehat{\bC}}
@@ -34,7 +35,7 @@
 
 \title{Fast spike train inference from calcium imaging}
 
-\author{Joshua T.~Vogelstein, others, Liam Paninski}
+\author{Joshua T.~Vogelstein, Adam Packer, Tim M.~Machado, Baktash Babadi, Rafael Yuste, Liam Paninski}
 
 \begin{document}
 
@@ -61,8 +62,15 @@
 \subsection{Inference} \label{sec:inf}
 \input{tex/inference}
 
-\subsection{Assessment} \label{sec:ass}
-\input{tex/assess}
+\clearpage\newpage
+\subsection{Learning} \label{sec:learn}
+\input{tex/learning}
+
+\subsection{Model generalizations} \label{sec:model2}
+\input{tex/model2}
+
+%\subsection{Assessment} \label{sec:ass}
+%\input{tex/assess}
 
 \subsection{Experimental Methods} \label{sec:exp}
 \input{tex/exp}
@@ -72,58 +80,55 @@
 \subsection{Main Result} \label{sec:main}
 \input{tex/main_result}
 
-%\clearpage\newpage
-%\subsubsection{Comparison with Wiener filter}
-%\input{tex/wiener}
-
-\clearpage\newpage
-\subsection{Spatial Filtering} \label{sec:spatial}
-\input{tex/spatial}
-
-\clearpage\newpage
-\subsection{Learning} \label{sec:learn}
-\input{tex/learning}
-
-\clearpage\newpage
-\subsection{in vitro data} \label{sec:vitro}
-\input{tex/in_vitro}
-
-\clearpage\newpage
-\subsection{Overlapping spatial filters} \label{sec:overlap}
-\input{tex/overlapping}
-
-\clearpage\newpage
-\subsection{Population imaging} \label{sec:pop}
-\input{tex/pop}
-
-\clearpage\newpage
-\subsection{Slow rise time} \label{sec:slow}
-\input{tex/slow_rise_time}
-
 \clearpage\newpage
 \subsection{Poisson observation model} \label{sec:poisson}
 \input{tex/poisson}
-
-\clearpage\newpage
-\subsection{in vivo data} \label{sec:vivo}
-\input{tex/in_vivo}
-
-\newpage
-\section{Discussion} \label{sec:dis}
-\input{tex/discussion}
 
 \clearpage\newpage
 \subsection{Incorporating a nonlinear observation model} \label{sec:nonlin}
 \input{tex/nonlin_obs}
 
 \clearpage\newpage
+\subsection{Slow rise time} \label{sec:slow}
+\input{tex/slow_rise_time}
+
+\clearpage\newpage
 \subsection{Dynamic prior}
 \input{tex/dynamic_prior}
+
+\clearpage\newpage
+\subsection{Initializing our sequential Monte Carlo filter}
+\input{tex/smc_init}
+
+\clearpage\newpage
+\subsection{Spatial Filtering} \label{sec:spatial}
+\input{tex/spatial}
+
+\clearpage\newpage
+\subsection{Overlapping spatial filters} \label{sec:overlap}
+\input{tex/overlapping}
+
+\newpage
+\section{Discussion} \label{sec:dis}
+\input{tex/discussion}
+
+\clearpage\newpage
+\subsection{Population imaging} \label{sec:pop}
+\input{tex/pop}
+
+\clearpage\newpage
+\subsection{in vitro data} \label{sec:vitro}
+\input{tex/in_vitro}
+
+\clearpage\newpage
+\subsection{in vivo data} \label{sec:vivo}
+\input{tex/in_vivo}
+
 
 
 \paragraph{Acknowledgments}
 
-Support for JTV was provided by NIDCD DC00109. LP is supported by an NSF CAREER award, by an Alfred P.\ Sloan Research Fellowship, and the McKnight Scholar Award. BOW was supported by NDS grant F30 NS051964. The authors would like to thank A.\ Packer for helpful discussions.
+The authors would like to express appreciation for helpful discussions with Vincent Bonin.  Support for JTV was provided by NIDCD DC00109. LP is supported by an NSF CAREER award, by an Alfred P.\ Sloan Research Fellowship, and the McKnight Scholar Award. RY's laboratory is supported by .  LP and RY share .
 
 %\subparagraph*{References}
 \bibliography{/Users/joshyv/Research/misc/biblist}
@@ -266,27 +271,27 @@ Support for JTV was provided by NIDCD DC00109. LP is supported by an NSF CAREER 
 %
 
 
-%\newpage \begin{figure}[H]
+%\newpage \begin{figure}[h!]
 %%\centering \includegraphics[width=.9\linewidth]{schem}
 %\caption{same as spatial EM, but now have slow rise time on F} \label{fig:slow_rise}
 %\end{figure}
 %
-%\newpage \begin{figure}[H]
+%\newpage \begin{figure}[h!]
 %%\centering \includegraphics[width=.9\linewidth]{schem}
 %\caption{same as spatial EM, but now have nonlinear observations} \label{fig:nonlin}
 %\end{figure}
 %
-%\newpage \begin{figure}[H]
+%\newpage \begin{figure}[h!]
 %%\centering \includegraphics[width=.9\linewidth]{schem}
 %\caption{same as spatial EM, but now have poisson observations} \label{fig:poisson}
 %\end{figure}
 %
-%\newpage \begin{figure}[H]
+%\newpage \begin{figure}[h!]
 %%\centering \includegraphics[width=.9\linewidth]{schem}
 %\caption{drift}
 %\end{figure}
 %
-%\newpage \begin{figure}[H]
+%\newpage \begin{figure}[h!]
 %%\centering \includegraphics[width=.9\linewidth]{schem}
 %\caption{thresholding}
 %\end{figure}

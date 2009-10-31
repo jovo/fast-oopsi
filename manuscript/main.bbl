@@ -1,0 +1,112 @@
+\begin{thebibliography}{10}
+
+\bibitem{ImagingManual}
+R.~Yuste, A.~Konnerth, B.R. Masters, et~al.
+\newblock {\em {Imaging in Neuroscience and Development, A Laboratory Manual}},
+  2006.
+
+\bibitem{NagayamaChen07}
+Shin Nagayama, Shaoqun Zeng, Wenhui Xiong, Max~L Fletcher, Arjun~V Masurkar,
+  Douglas~J Davis, Vincent~A Pieribone, and Wei~R Chen.
+\newblock {In vivo simultaneous tracing and {Ca}$^{2+}$ imaging of local
+  neuronal circuits.}
+\newblock {\em Neuron}, 53(6):789--803, Mar 2007.
+
+\bibitem{GobelHelmchen07}
+Werner Gobel and Fritjof Helmchen.
+\newblock In vivo calcium imaging of neural network function.
+\newblock {\em Physiology}, 22(6):358--365, 2007.
+
+\bibitem{LuoSvoboda08}
+L.~Luo, E.~M. Callaway, and K.~Svoboda.
+\newblock Genetic dissection of neural circuits.
+\newblock {\em Neuron}, 57:634--60, |2008|.
+
+\bibitem{GaraschukKonnerth07}
+Olga Garaschuk, Oliver Griesbeck, and Arthur Konnerth.
+\newblock Troponin c-based biosensors: a new family of genetically encoded
+  indicators for in vivo calcium imaging in the nervous system.
+\newblock {\em Cell Calcium}, 42(4-5):351--361, 2007.
+
+\bibitem{MankGriesbeck08}
+Marco Mank, Alexandre~Ferrão Santos, Stephan Direnberger, Thomas~D
+  Mrsic-Flogel, Sonja~B Hofer, Valentin Stein, Thomas Hendel, Dierk~F Reiff,
+  Christiaan Levelt, Alexander Borst, Tobias Bonhoeffer, Mark Hübener, and
+  Oliver Griesbeck.
+\newblock A genetically encoded calcium indicator for chronic in vivo
+  two-photon imaging.
+\newblock {\em Nat Methods}, 5(9):805--811, Sep 2008.
+
+\bibitem{WallaceHasan08}
+D.J. Wallace, S.M. zum Alten~Borgloh, S.~Astori, Y.~Yang, M.~Bausen, S.~Kugler,
+  A.E. Palmer, R.Y. Tsien, R.~Sprengel, J.N.D. Kerr, W.~Denk, and M.T. Hasan.
+\newblock {Single-spike detection in vitro and in vivo with a genetic Ca2+
+  sensor}.
+\newblock {\em Nature methods}, 5(9):797--804, 2008.
+
+\bibitem{OhkiReid06}
+Kenichi Ohki, Sooyoung Chung, Prakash Kara, Mark Hubener, Tobias Bonhoeffer,
+  and R.~Clay Reid.
+\newblock Highly ordered arrangement of single neurons in orientation
+  pinwheels.
+\newblock {\em Nature}, 442(7105):925--928, Aug 2006.
+
+\bibitem{KerrHelmchen07}
+Jason N~D Kerr, Christiaan P~J de~Kock, David~S Greenberg, Randy~M Bruno, Bert
+  Sakmann, and Fritjof Helmchen.
+\newblock Spatial organization of neuronal population responses in layer 2/3 of
+  rat barrel cortex.
+\newblock {\em J Neurosci}, 27(48):13316--13328, Nov 2007.
+
+\bibitem{GreenbergKerr08}
+David~S Greenberg, Arthur~R Houweling, and Jason N~D Kerr.
+\newblock Population imaging of ongoing neuronal activity in the visual cortex
+  of awake rats.
+\newblock {\em Nat Neurosci}, Jun 2008.
+
+\bibitem{HolekampHoly08}
+T.~Holekamp, D.~Turaga, and T.~Holy.
+\newblock Fast three-dimensional fluorescence imaging of activity in neural
+  populations by objective-coupled planar illumination microscopy.
+\newblock {\em Neuron}, 57:661--672, 2008.
+
+\bibitem{VogelsteinPaninski09}
+Joshua~T Vogelstein, Brendon~O Watson, Adam~M Packer, Rafael Yuste, Bruno
+  Jedynak, and Liam Paninski.
+\newblock Spike inference from calcium imaging using sequential monte carlo
+  methods.
+\newblock {\em Biophys J}, 97(2):636--655, Jul 2009.
+
+\bibitem{LeeSeung99}
+D.~D. Lee and H.~S. Seung.
+\newblock Learning the parts of objects by non-negative matrix factorization.
+\newblock {\em Nature}, 401(6755):788--791, Oct 1999.
+
+\bibitem{LeeSeung01}
+D.D. Lee and H.S. Seung.
+\newblock {Algorithms for non-negative matrix factorization}.
+\newblock {\em Advances in neural information processing systems}, pages
+  556--562, 2001.
+
+\bibitem{HuysPaninski06}
+Quentin J~M Huys, Misha~B Ahrens, and Liam Paninski.
+\newblock Efficient estimation of detailed single-neuron models.
+\newblock {\em J Neurophysiol}, 96(2):872--890, Aug 2006.
+
+\bibitem{TBF01}
+T.~Hastie, R.~Tibshirani, and J.~Friedman.
+\newblock {\em The Elements of Statistical Learning}.
+\newblock Springer, 2001.
+
+\bibitem{CONV04}
+S.~Boyd and L.~Vandenberghe.
+\newblock {\em Convex Optimization}.
+\newblock Oxford University Press, 2004.
+
+\bibitem{YaksiFriedrich06}
+Emre Yaksi and Rainer~W Friedrich.
+\newblock Reconstruction of firing rate changes across neuronal populations by
+  temporally deconvolved {Ca$^{2+}$} imaging.
+\newblock {\em Nature Methods}, 3(5):377--383, May 2006.
+
+\end{thebibliography}

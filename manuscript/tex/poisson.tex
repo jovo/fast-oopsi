@@ -1,22 +1,14 @@
-\paragraph{Model}
+% \begin{subequations} 
+% \begin{align}
+% \mL_{x,t} &= -\alpha_x (C_t + \beta) + F_{x,t} \log(\alpha_x(C_t + \beta)) - \log(F_{x,t}!)  \\
+% g_{x,t} &= -\alpha_x + F_{x,t}(C_t + \beta)^{-1} \\
+% H_{x,t} &= -F_{x,t} (C_t + \beta)^{-2}
+% \end{align}
+% \end{subequations}
+% 
+% \noindent where $\mL=\sum_{x,t} \mL_{x,t}$, $\bg=\sum_x (g_{x,1}, \ldots, g_{x,T})\T$, and $\bH=\text{diag}(\sum_x H_{x,t})$.
 
-\begin{align}
-	\bF_{x,t} \sim \text{Poisson}(\alpha_x (C_t + \beta))
-\end{align}
-
-\paragraph{Inference}
-
-\begin{subequations} 
-\begin{align}
-\mL_{x,t} &= -\alpha_x (C_t + \beta) + F_{x,t} \log(\alpha_x(C_t + \beta)) - \log(F_{x,t}!)  \\
-g_{x,t} &= -\alpha_x + F_{x,t}(C_t + \beta)^{-1} \\
-H_{x,t} &= -F_{x,t} (C_t + \beta)^{-2}
-\end{align}
-\end{subequations}
-
-\noindent where $\mL=\sum_{x,t} \mL_{x,t}$, $\bg=\sum_x (g_{x,1}, \ldots, g_{x,T})\T$, and $\bH=\text{diag}(\sum_x H_{x,t})$.
-
-\begin{figure}[H]
-%\centering \includegraphics[width=.9\linewidth]{schem}
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/poisson}
 \caption{Poisson} \label{fig:poiss}
 \end{figure}

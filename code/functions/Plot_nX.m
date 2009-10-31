@@ -7,5 +7,5 @@ ylab=ylabel(Pl.label,'Interpreter',Pl.inter,'FontSize',Pl.fs);
 set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle','Interpreter',Pl.interp,'FontName',Pl.font)
 set(gca,'YTick',[],'YTickLabel',[])
 set(gca,'XTick',Pl.XTicks,'XTickLabel',[],'FontSize',Pl.fs)
-axis([Pl.xlims-Pl.xlims(1) min(X(:)) max(X(:))])
+axis([Pl.xlims-Pl.xlims(1) min(X(:)) 1.1*max(X(:))])
 box off

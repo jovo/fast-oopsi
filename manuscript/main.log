@@ -1,6 +1,6 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  7 OCT 2009 14:23
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  29 OCT 2009 21:02
 entering extended mode
-**tex/main.tex
+**tex/main
 (./tex/main.tex
 LaTeX2e <2003/12/01>
 Babel <v3.8d> and hyphenation patterns for american, french, german, ngerman, b
@@ -249,26 +249,38 @@ File: upsy.fd 2001/06/04 font definitions for U/psy.
 ))
 \Fld@listcount=\count115
 \@outlinefile=\write3
-) (./main.aux)
+) (./main.aux
+
+LaTeX Warning: Label `eq:par2' multiply defined.
+
+
+LaTeX Warning: Label `eq:bF' multiply defined.
+
+
+LaTeX Warning: Label `eq:bF' multiply defined.
+
+
+LaTeX Warning: Label `fig:woopsi' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 39.
-
-(/opt/local/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 40.
+ (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 (/opt/local/share/texmf-dist/tex/context/base/supp-pdf.tex
@@ -305,488 +317,179 @@ loading : Context Support Macros / PDF (2004.03.26)
 \MPnumerator=\count125
 \everyMPtoPDFconversion=\toks31
 )
-Package hyperref Info: Link coloring OFF on input line 39.
+Package hyperref Info: Link coloring OFF on input line 40.
  (/opt/local/share/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2003/12/03 v2.21 Cross-referencing by name of section
 \c@section@level=\count126
 )
-LaTeX Info: Redefining \ref on input line 39.
-LaTeX Info: Redefining \pageref on input line 39.
+LaTeX Info: Redefining \ref on input line 40.
+LaTeX Info: Redefining \pageref on input line 40.
  (./main.out)
 (./main.out)
 \openout3 = `main.out'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 42.
+LaTeX Font Info:    Try loading font information for U+msa on input line 43.
  (/opt/local/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2002/01/19 v2.2g AMS font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 42.
+LaTeX Font Info:    Try loading font information for U+msb on input line 43.
 
 (/opt/local/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2002/01/19 v2.2g AMS font definitions
 )
+Overfull \hbox (24.91661pt too wide) in paragraph at lines 43--43
+ [][] 
+ []
+
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 42.
- (./main.toc)
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 43.
+(./main.toc
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
+)
 \tf@toc=\write5
 \openout5 = `main.toc'.
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 43.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 44.
+ (./tex/abstract.tex [1
 
-(./tex/abstract.tex) [1
+{/opt/local/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]) [2] (./tex/in
+tro.tex) [3] (./tex/methods.tex
 
-{/opt/local/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./tex/intro.t
-ex
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 3.
-
-
-LaTeX Warning: Citation `YusteKonnerth06' on page 2 undefined on input line 3.
+LaTeX Warning: Reference `sec:satur' on page 4 undefined on input line 1.
 
 
-LaTeX Warning: Citation `NagayamaChen07' on page 2 undefined on input line 3.
-
-
-LaTeX Warning: Citation `GobelHelmchen07' on page 2 undefined on input line 3.
-
-
-LaTeX Warning: Citation `LuoSvoboda08' on page 2 undefined on input line 3.
-
-
-LaTeX Warning: Citation `GaraschukKonnerth07' on page 2 undefined on input line
- 3.
-
-
-LaTeX Warning: Citation `MankGriesbeck08' on page 2 undefined on input line 3.
-
-
-LaTeX Warning: Citation `WallaceHasan08' on page 2 undefined on input line 3.
-
-
-LaTeX Warning: Citation `OhkiReid06' on page 2 undefined on input line 11.
-
-
-LaTeX Warning: Citation `KerrHelmchen07' on page 2 undefined on input line 11.
-
-
-LaTeX Warning: Citation `GreenbergKerr08' on page 2 undefined on input line 17.
-
-
-
-LaTeX Warning: Citation `HolekampHoly08' on page 2 undefined on input line 17.
-
-
-LaTeX Warning: Citation `VogelsteinPaninski09b' on page 2 undefined on input li
-ne 17.
-
-
-LaTeX Warning: Citation `LeeSeung99' on page 2 undefined on input line 21.
-
-
-LaTeX Warning: Citation `LeeSeung01' on page 2 undefined on input line 21.
-
-
-LaTeX Warning: Citation `HuysPaninski06' on page 2 undefined on input line 21.
-
-) [2] (./tex/methods.tex
-
-LaTeX Warning: Reference `sec:model' on page 3 undefined on input line 1.
-
-
-LaTeX Warning: Reference `sec:goal' on page 3 undefined on input line 1.
-
-
-LaTeX Warning: Reference `sec:inf' on page 3 undefined on input line 1.
-
-
-LaTeX Warning: Reference `sec:spatial' on page 3 undefined on input line 1.
-
-
-LaTeX Warning: Reference `sec:overlap' on page 3 undefined on input line 1.
-
-
-LaTeX Warning: Reference `sec:poisson' on page 3 undefined on input line 1.
-
-
-LaTeX Warning: Reference `sec:slow' on page 3 undefined on input line 1.
-
-
-LaTeX Warning: Reference `sec:learn' on page 3 undefined on input line 1.
-
-
-LaTeX Warning: Reference `sec:ass' on page 3 undefined on input line 1.
+LaTeX Warning: Reference `sec:ass' on page 4 undefined on input line 1.
 
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 55.
- (./tex/model.tex
-
-LaTeX Warning: Reference `fig:in_vitro_ex' on page 3 undefined on input line 1.
-
-
-
-LaTeX Warning: Reference `sec:exp' on page 3 undefined on input line 1.
-
-
-LaTeX Warning: Citation `YusteKonnerth06' on page 3 undefined on input line 2.
-
-<../figs/in_vitro_ex.pdf, id=35, 505.89pt x 361.35pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 56.
+ (./tex/model.tex <../figs/in_vitro_ex.pdf, id=205, 505.89pt x 361.35pt>
 File: ../figs/in_vitro_ex.pdf Graphic file (type pdf)
 
 <use ../figs/in_vitro_ex.pdf>
 
-LaTeX Warning: Reference `sec:results' on page 3 undefined on input line 16.
-
-
-LaTeX Warning: Reference `sec:nonlin' on page 3 undefined on input line 27.
-
-
-LaTeX Warning: Reference `fig:in_vitro_ex' on page 3 undefined on input line 27
-.
-
-
-LaTeX Warning: Reference `eq:F' on page 3 undefined on input line 35.
-
-
-LaTeX Warning: Reference `eq:n' on page 3 undefined on input line 35.
-
-) [3] (./tex/goal.tex
-
-LaTeX Warning: Reference `eq:F' on page 4 undefined on input line 7.
-
-
-LaTeX Warning: Reference `eq:n' on page 4 undefined on input line 7.
-
-
-LaTeX Warning: Citation `DurbinKoopman01' on page 4 undefined on input line 7.
-
-
-LaTeX Warning: Reference `eq:nhat1' on page 4 undefined on input line 16.
-
-
-LaTeX Warning: Reference `eq:nhat1' on page 4 undefined on input line 29.
-
-
-LaTeX Warning: Reference `eq:ssm' on page 4 undefined on input line 29.
-
-
-LaTeX Warning: Reference `eq:nhat2' on page 4 undefined on input line 29.
-
-
-LaTeX Warning: Reference `eq:C' on page 4 undefined on input line 29.
-
-
-LaTeX Warning: Reference `eq:F' on page 4 undefined on input line 29.
-
-
-LaTeX Warning: Reference `eq:n' on page 4 undefined on input line 29.
-
-
-LaTeX Warning: Reference `eq:nhat2' on page 4 undefined on input line 29.
-
-
-LaTeX Warning: Reference `eq:MAP' on page 4 undefined on input line 35.
-
-
-LaTeX Warning: Reference `eq:MAP' on page 4 undefined on input line 35.
-
-
-LaTeX Warning: Reference `eq:C' on page 4 undefined on input line 35.
-
-
-LaTeX Warning: Reference `fig:dist_comp' on page 4 undefined on input line 37.
-
-
-LaTeX Warning: Citation `Wiener49' on page 4 undefined on input line 37.
-
-
-LaTeX Warning: Citation `HolekampHoly08' on page 4 undefined on input line 37.
-
-<../figs/dist_comp.pdf, id=66, 578.16pt x 216.81pt>
-File: ../figs/dist_comp.pdf Graphic file (type pdf)
-
-<use ../figs/dist_comp.pdf>) (./tex/inference.tex
-
-LaTeX Warning: Reference `eq:C' on page 4 undefined on input line 3.
-
-[4]
-
-LaTeX Warning: Reference `eq:C' on page 5 undefined on input line 9.
-
-
-LaTeX Warning: Reference `eq:C2' on page 5 undefined on input line 9.
-
-
-LaTeX Warning: Reference `eq:naht3' on page 5 undefined on input line 9.
-
-
-LaTeX Warning: Citation `HastieFriedman01' on page 5 undefined on input line 16
-.
-
-
-LaTeX Warning: Citation `BoydVandenberghe04' on page 5 undefined on input line 
-16.
-
-
-LaTeX Warning: Citation `BoydVandenberghe04' on page 5 undefined on input line 
-16.
-
-
-LaTeX Warning: Citation `BoydVandenberghe04' on page 5 undefined on input line 
-16.
-
-
-LaTeX Warning: Reference `eq:eta' on page 5 undefined on input line 22.
-
-
-LaTeX Warning: Reference `eq:eta2' on page 5 undefined on input line 28.
-
-
-LaTeX Warning: Reference `eq:eta2' on page 5 undefined on input line 28.
-
-
-LaTeX Warning: Reference `eq:eta2' on page 5 undefined on input line 28.
-
-
-LaTeX Warning: Reference `eq:eta3' on page 5 undefined on input line 35.
-
-[5]
-
-LaTeX Warning: Reference `eq:eta3' on page 6 undefined on input line 87.
-
-
-LaTeX Warning: Reference `eq:obj2' on page 6 undefined on input line 89.
-
-
-LaTeX Warning: Reference `eq:nhat3' on page 6 undefined on input line 100.
-
-
-LaTeX Warning: Reference `eq:obj3' on page 6 undefined on input line 107.
-
-
-LaTeX Warning: Reference `sec:wiener' on page 6 undefined on input line 107.
-
-) (./tex/assess.tex) (./tex/exp.tex) [6] (./tex/main_result.tex
-
-LaTeX Warning: Reference `fig:wiener' on page 7 undefined on input line 1.
-
-
-LaTeX Warning: Reference `eq:F' on page 7 undefined on input line 1.
-
-
-LaTeX Warning: Reference `eq:C' on page 7 undefined on input line 1.
-
-
-LaTeX Warning: Reference `fig:dist_comp' on page 7 undefined on input line 3.
-
-
-LaTeX Warning: Reference `fig:wiener' on page 7 undefined on input line 3.
-
-
-LaTeX Warning: Reference `sec:app' on page 7 undefined on input line 3.
-
-<../figs/example_sim.pdf, id=141, 505.89pt x 361.35pt>
-File: ../figs/example_sim.pdf Graphic file (type pdf)
-
-<use ../figs/example_sim.pdf>
-
-LaTeX Warning: Reference `fig:schem' on page 7 undefined on input line 7.
-
-
-LaTeX Warning: Reference `fig:schem' on page 7 undefined on input line 7.
-
-
-LaTeX Warning: Reference `fig:schem' on page 7 undefined on input line 7.
-
-
-LaTeX Warning: Reference `fig:schem' on page 7 undefined on input line 7.
-
-
-LaTeX Warning: Reference `fig:stats' on page 7 undefined on input line 10.
-
-
-LaTeX Warning: Reference `fig:stats' on page 7 undefined on input line 12.
-
-
-LaTeX Warning: Reference `fig:stats' on page 7 undefined on input line 14.
-
-
-LaTeX Warning: Reference `fig:stats' on page 7 undefined on input line 16.
-
-<../figs/stats.pdf, id=142, 505.89pt x 361.35pt>
-File: ../figs/stats.pdf Graphic file (type pdf)
- <use ../figs/stats.pdf>
-
-LaTeX Warning: Reference `eq:SNR' on page 7 undefined on input line 26.
-
-
-LaTeX Warning: Reference `eq:SNR' on page 7 undefined on input line 26.
-
-
-LaTeX Warning: Reference `fig:kernel' on page 7 undefined on input line 54.
-
-
-Overfull \hbox (8.09912pt too wide) in paragraph at lines 54--55
-\OT1/ptm/m/n/10 cally, we let $\OML/cmm/m/it/10 ^^U[] \OT1/cmr/m/n/10 = [][][][
-]$\OT1/ptm/m/n/10 , where $[]$ is a 5-dimensional lin-ear ker-nel, $[][]$ is th
-e stim-u-lus at time $\OML/cmm/m/it/10 t$\OT1/ptm/m/n/10 , and $\OML/cmm/m/it/1
-0 P\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 n[]\OT1/cmr/m/n/10 ) =$\OT1/ptm/m/n/10 Poi
-sson($\OML/cmm/m/it/10 ^^U[]\OT1/cmr/m/n/10 ^^A$\OT1/ptm/m/n/10 ).
- []
-
-<../figs/kernel.pdf, id=143, 505.89pt x 361.35pt>
-File: ../figs/kernel.pdf Graphic file (type pdf)
- <use ../figs/kernel.pdf>)
-[7] [8 <../figs/in_vitro_ex.pdf> <../figs/dist_comp.pdf>] [9 <../figs/example_s
-im.pdf>] [10 <../figs/stats.pdf>] [11 <../figs/kernel.pdf>] (./tex/spatial.tex
-
-LaTeX Warning: Reference `fig:spatial' on page 12 undefined on input line 16.
-
-<../figs/spatial.pdf, id=207, 505.89pt x 361.35pt>
-File: ../figs/spatial.pdf Graphic file (type pdf)
- <use ../figs/spatial.pdf>)
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+) (./tex/goal.tex [4] [5 <../figs/in_vitro_ex.pdf>]) (./tex/inference.tex
+[6]) [7] (./tex/learning.tex) (./tex/model2.tex [8
+
+] [9]) (./tex/exp.tex
+
+LaTeX Warning: Citation `MacLeanYuste05' on page 10 undefined on input line 3.
+
+) [10] (./tex/main_result.tex
+<../figs/woopsi.pdf, id=396, 505.89pt x 361.35pt>
+File: ../figs/woopsi.pdf Graphic file (type pdf)
+ <use ../figs/woopsi.pdf>)
+[11 <../figs/woopsi.pdf>] (./tex/poisson.tex
+<../figs/poisson.pdf, id=408, 505.89pt x 216.81pt>
+File: ../figs/poisson.pdf Graphic file (type pdf)
+ <use ../figs/poisson.pdf>)
 [12
 
-] [13 <../figs/spatial.pdf>] (./tex/learning.tex
+ <../figs/poisson.pdf>] (./tex/nonlin_obs.tex
+<../figs/nonlin.pdf, id=418, 505.89pt x 216.81pt>
+File: ../figs/nonlin.pdf Graphic file (type pdf)
+ <use ../figs/nonlin.pdf>)
+[13
 
-LaTeX Warning: Citation `VogelsteinPaninski09b' on page 14 undefined on input l
-ine 9.
+ <../figs/nonlin.pdf>] (./tex/slow_rise_time.tex) [14
 
+]
+(./tex/dynamic_prior.tex
+<../figs/dynamic_prior.pdf, id=434, 542.025pt x 505.89pt>
+File: ../figs/dynamic_prior.pdf Graphic file (type pdf)
 
-LaTeX Warning: Citation `Rabiner89' on page 14 undefined on input line 9.
+<use ../figs/dynamic_prior.pdf>) [15
 
+ <../figs/dynamic_prior.pdf>]
+(./tex/smc_init.tex <../figs/smc_init.pdf, id=443, 505.89pt x 361.35pt>
+File: ../figs/smc_init.pdf Graphic file (type pdf)
 
-LaTeX Warning: Reference `eq:par1' on page 14 undefined on input line 16.
+<use ../figs/smc_init.pdf>) [16
 
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 16.
+ <../figs/smc_init.pdf>] (./tex/spatial.tex
+<../figs/spatial2.pdf, id=455, 505.89pt x 361.35pt>
+File: ../figs/spatial2.pdf Graphic file (type pdf)
+ <use ../figs/spatial2.pdf>) [17
 
-LaTeX Warning: Reference `eq:par1' on page 14 undefined on input line 16.
+ <../figs/spatial2.pdf>] (./tex/overlapping.tex
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 37.
 
-
-LaTeX Warning: Reference `eq:bF' on page 14 undefined on input line 18.
-
-
-LaTeX Warning: Reference `eq:C' on page 14 undefined on input line 18.
-
-
-LaTeX Warning: Reference `eq:par1' on page 14 undefined on input line 18.
-
-
-LaTeX Warning: Reference `eq:par1' on page 14 undefined on input line 18.
-
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 38.
 (/opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) [14
-
-]
-
-LaTeX Warning: Citation `YaksiFriedrich07' on page 15 undefined on input line 6
-6.
-
-
-LaTeX Warning: Reference `fig:spatial_EM' on page 15 undefined on input line 70
-.
-
-<../figs/spatial_EM.pdf, id=259, 505.89pt x 361.35pt>
-File: ../figs/spatial_EM.pdf Graphic file (type pdf)
-
-<use ../figs/spatial_EM.pdf>
-
-LaTeX Warning: Reference `fig:spatial' on page 15 undefined on input line 74.
-
-
-LaTeX Warning: Reference `fig:spatial' on page 15 undefined on input line 74.
-
-) [15] [16 <../figs/spatial_EM.pdf>] (./tex/in_vitro.tex) [17
-
-]
-(./tex/overlapping.tex
-<../figs/spatial_multi.pdf, id=292, 144.54pt x 505.89pt>
+)
+<../figs/spatial_multi.pdf, id=466, 144.54pt x 505.89pt>
 File: ../figs/spatial_multi.pdf Graphic file (type pdf)
 
 <use ../figs/spatial_multi.pdf>
 
 LaTeX Warning: Float too large for page by 853.53824pt on input line 42.
 
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 ) [18
 
-] [19 <../figs/spatial_multi.pdf, page is rotated 90 degrees>]
-(./tex/pop.tex) [20
+] (./tex/discussion.tex) [19] [20 <../figs/spatial_multi.pdf, page is rotated 9
+0 degrees>] (./tex/pop.tex) [21
 
-] [21] (./tex/slow_rise_time.tex) [22
+] (./tex/in_vitro.tex) [22
 
-] [23]
-(./tex/poisson.tex) [24
-
-] [25] (./tex/in_vivo.tex
-<../figs/spatial_data.pdf, id=353, 505.89pt x 505.89pt>
+]
+(./tex/in_vivo.tex <../figs/spatial_data.pdf, id=507, 505.89pt x 505.89pt>
 File: ../figs/spatial_data.pdf Graphic file (type pdf)
 
-<use ../figs/spatial_data.pdf>) [26
+<use ../figs/spatial_data.pdf>) (./main.bbl [23
 
-] (./tex/discussion.tex) [27] [28 <../figs/spatial_data.pdf>] (./tex/nonlin_obs
-.tex) [29
+ <../figs/spatial_data.pdf>]
+Missing character: There is no Ã in font ptmr7t!
+Missing character: There is no £ in font ptmr7t!
+Missing character: There is no Ã in font ptmr7t!
+Missing character: There is no ¼ in font ptmr7t!
+)
+(./tex/appendix.tex [24]
 
-] [30] (./tex/dynamic_prior.tex)
-No file main.bbl.
-(./tex/appendix.tex
+LaTeX Warning: Reference `eq:nhat3' on page 25 undefined on input line 11.
 
-LaTeX Warning: Reference `sec:inf' on page 31 undefined on input line 3.
-
-
-LaTeX Warning: Reference `eq:obj' on page 31 undefined on input line 3.
-
-
-LaTeX Warning: Reference `eq:obj2' on page 31 undefined on input line 3.
-
-
-LaTeX Warning: Reference `eq:w1' on page 31 undefined on input line 9.
-
-
-LaTeX Warning: Reference `eq:par1' on page 31 undefined on input line 33.
-
-) [31
-
-] (./main.aux)
+) [25] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 4555 strings out of 94500
- 53683 string characters out of 1155413
- 119919 words of memory out of 1000000
- 7421 multiletter control sequences out of 10000+50000
- 37383 words of font info for 86 fonts, out of 500000 for 2000
+ 4599 strings out of 94500
+ 54478 string characters out of 1155413
+ 118775 words of memory out of 1000000
+ 7445 multiletter control sequences out of 10000+50000
+ 35757 words of font info for 84 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 29i,15n,43p,2012b,244s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 29i,15n,43p,1902b,303s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 415 PDF objects out of 300000
- 148 named destinations out of 131072
- 70 words of extra memory for PDF output out of 65536
+ 552 PDF objects out of 300000
+ 166 named destinations out of 131072
+ 286 words of extra memory for PDF output out of 65536
 {/opt/local/share/texmf-dist/fonts/enc/dvips/psnfss/8r.enc}</opt/local/share/
 texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/local/share/texmf-dist/font
-s/type1/public/tt2001/fmex7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesk
-y/cm/cmbx10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmss8.pfb><
-/opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx7.pfb></opt/local/share/
-texmf-dist/fonts/type1/bluesky/cmextra/cmmib7.pfb></opt/local/share/texmf-dist/
-fonts/type1/bluesky/cm/cmsy5.pfb></opt/local/share/texmf-dist/fonts/type1/blues
-ky/cm/cmex10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/symbols/msbm1
-0.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr5.pfb></opt/local/
-share/texmf-dist/fonts/type1/bluesky/symbols/msbm7.pfb></opt/local/share/texmf-
-dist/fonts/type1/bluesky/cm/cmmi5.pfb></opt/local/share/texmf-dist/fonts/type1/
-bluesky/cm/cmsy7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy10
-.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi7.pfb></opt/local/
-share/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb></opt/local/share/texmf-dist/f
-onts/type1/bluesky/cm/cmmi10.pfb></opt/local/share/texmf-dist/fonts/type1/blues
-ky/cm/cmr10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmib10.pfb
-></opt/local/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></opt/local/sha
-re/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/local/share/texmf-dist/fon
-ts/type1/urw/times/utmr8a.pfb>
-Output written on main.pdf (31 pages, 370159 bytes).
+s/type1/bluesky/cm/cmbx7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/c
+mextra/cmmib7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmss8.pfb
+></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx10.pfb></opt/local/sha
+re/texmf-dist/fonts/type1/bluesky/cm/cmsy5.pfb></opt/local/share/texmf-dist/fon
+ts/type1/bluesky/symbols/msbm10.pfb></opt/local/share/texmf-dist/fonts/type1/bl
+uesky/cm/cmr5.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/symbols/msbm
+7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi5.pfb></opt/local
+/share/texmf-dist/fonts/type1/bluesky/cm/cmex10.pfb></opt/local/share/texmf-dis
+t/fonts/type1/urw/times/utmri8a.pfb></opt/local/share/texmf-dist/fonts/type1/bl
+uesky/cm/cmsy7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy10.p
+fb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi7.pfb></opt/local/sh
+are/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb></opt/local/share/texmf-dist/fon
+ts/type1/bluesky/cm/cmmi10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky
+/cm/cmmib10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb><
+/opt/local/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/local/share/
+texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
+Output written on main.pdf (25 pages, 593890 bytes).

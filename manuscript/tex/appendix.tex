@@ -1,5 +1,22 @@
 \section{Wiener Filter} \label{sec:wiener}
 
+\paragraph{Fast Wiener Filter}
+
+Instead of replacing the Poisson distribution on spikes with an exponential, we can replace it with a Gaussian:
+
+ \begin{align} \label{eq:C3}
+	C = \gam C_{t-1} + n_t, \qquad n_t \overset{iid}{\sim} \mN(\lam \Del, \lam \Del)
+\end{align}
+
+\noindent which, when plugged into Eq. \eqref{eq:nhat3} yields
+
+\begin{align} \label{eq:obj3}
+\bn^{Wiener} &= \argmax_{n_t}  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  + 
+ \frac{1}{2 \lam \Del}(n_t - \lam \Del)^2\bigg) 
+\end{align}
+
+Using the same tridiagonal trick as above, we can solve Eq. \eqref{eq:obj3} using Newton-Raphson once (since we have a quadratic problem here, see Appendix \ref{sec:wiener} for details).  Because we know only positive spikes are possible, at times we will also consider, $[$Wiener$]_+$, which is the Wiener filter half-wave rectified, i.e., all sub-zero values are set to zero.
+
 Sections \ref{sec:inf} outline one approach to solving Eq. \eqref{eq:obj}, by approximating the Poisson distribution with an exponential distribution, and imposing a non-negative constraint on the inferred $\hnm$.  Perhaps a more straightforward approach would be to approximate the Poission distribution with a Gaussian distribution.  In fact, as rate increases above about $10$ spikes/sec, a Poisson distribution with rate $\lam \Del$ is well approximated by a Gaussian with mean and variance $\lam \Del$.  Given such an approximation, instead of Eq. \eqref{eq:obj2}, we would obtain:
 
 \begin{align} \label{eq:w1}

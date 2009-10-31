@@ -1,16 +1,5 @@
-\paragraph{Model}
 
-let $\blam = (\lam_1, \ldots, \lam_T)\T$
-
-\begin{align}
-	C_t &= \gam C_{t-1} + n_t, \qquad n_t \sim \text{Poisson}(n_t; \lam_t \Del)
-\end{align}
-
-\paragraph{Inference}
-
-\begin{subequations} 
-\begin{align}
-\mL &=  \frac{1}{2 \sig^2} \norm{\bF - \balpha (\trans{\bC} +\beta+\ve{1}\T)}^2 + (\bM \bC )\T \blam \Del  - \zzz \log(\bM \bC)\T\ve{1} \\
-\ve{g} &= -\frac{\balpha}{\sig^2}(\bF -\balpha({\hbC\T}_{\zzz} + \beta)) + \ve{M}\T \blam \Del  - \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-1}
-\end{align}
-\end{subequations}
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/dynamic_prior}
+\caption{Can't find a regime in which it helps.} \label{fig:woopsi}
+\end{figure}

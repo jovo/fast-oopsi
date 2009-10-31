@@ -1,29 +1,30 @@
-% this script is a wrapper that loads some data (or simulates it) and then
-% calls the most recent FOOPSI function to infer spike trains and
-% parameters
+% this script simulates data with a poisson observation model, and then
+% infers spikes using both the gaussian and poisson assumptions. note that
+% i comment out the line that normalizes F to be betweeen eps and 1 in
+% fast_oopsi because i am feeding in the parameters for this code (ie, we
+% have not written code to estimate {a,b} for the poisson case).
 
 clear, clc,
 fname = 'poisson';
 
 % set simulation metadata
-T               = 3000;     % # of time steps
+T               = 1500;     % # of time steps
 V.dt            = 1/200;    % time step size
-V.fast_iter_max = 1;        % # iterations of EM to estimate params
 V.fast_plot     = 1;        % whether to plot with each iteration
-V.save          = 0;        % whether to save results
+V.save          = 1;        % whether to save results
 
 % initialize params
-P.a     = 3;                % scale
+P.a     = 200;                % scale
 P.b     = 1/P.a;           % bias
-tau     = 1;                % decay time constant for each cell
+tau     = 0.5;                % decay time constant for each cell
 P.gam   = 1-V.dt/tau;       % set gam
-P.lam   = 1.0;              % rate
+P.lam   = 2.0;              % rate
 
 % simulate data
 V.n = poissrnd(P.lam*V.dt*ones(T,1));   % simulate spike train
 V.C = filter(1,[1 -P.gam],V.n);         % calcium concentration
-V.F = poissrnd(P.a*(V.C+repmat(P.b,T,1))');
-% V.F = P.a*(V.C+repmat(P.b,T,1))'+2*randn(1,T);
+V.F = poissrnd(P.a*(V.C+P.b)');
+% V.F = P.a*(V.C+P.b)'+2*randn(1,T);
 
 figure(1), clf, hold off; plot(V.F+1); hold all; bar(10*V.n),
 
@@ -34,11 +35,13 @@ if V.save, save(['../../data/' fname '.mat'],'V','P'); end
 for q=1:2
     if q==1,
         V.fast_poiss=0;
-        V.fast_iter_max=10;
-        [I{q}.n I{q}.P I{q}.V] = fast_oopsi(V.F,V);
+        V.fast_iter_max=1;
+        V.est_sig=1;
+%         F=V.F-min(V.F); F=F/max(F); F=F+eps;
+        PP=P; PP.sig=std(V.F);
+        [I{q}.n I{q}.P I{q}.V] = fast_oopsi(V.F,V,PP);
     else
         V.fast_poiss=1;
-        V.gauss_n=I{1}.n;
         V.fast_iter_max=1;
         [I{q}.n I{q}.P I{q}.V] = fast_oopsi(V.F,V,P);
     end
@@ -68,10 +71,11 @@ subplot(nrows,ncols,1), hold on
 plot(V.F,'Color','k','LineWidth',Pl.lw)
 axis([Pl.xlim(1) Pl.xlim(2) 0 max(V.F)])
 set(gca,'YTick',[0:10:max(V.F)]);%,'YTickLabel',[])
-ylab=ylabel([{'Fluorescence'}; {'(photons/frame)'}],'FontSize',Pl.fs);
+ylab=ylabel([{'fluorescence'}; ],'FontSize',Pl.fs);
 set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
-title('Fluorescence Projection','FontSize',Pl.fs)
+% title('Fluorescence Projection','FontSize',Pl.fs)
 set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',[]); %(Pl.XTick-min(Pl.XTick))*V.dt)
+set(gca,'YTick',[])
 % xlabel('Time (sec)','FontSize',Pl.fs)
 
 % plot inferred spike train
@@ -83,10 +87,10 @@ for q=1:length(I)
     axis([Pl.xlim(1) Pl.xlim(2) 0 1+Pl.shift])
     set(gca,'YTick',[0 1],'YTickLabel',[])
     if q==1
-        ylab=ylabel([{'Gaussian'}; {'Observations'}],'FontSize',Pl.fs);
+        ylab=ylabel([{'Gaussian'}; {'observations'}],'FontSize',Pl.fs);
         set(gca,'XTick',Pl.XTick,'XTickLabel',[])
     else
-        ylab=ylabel([{'Poisson'}; {'Observations'}],'FontSize',Pl.fs);
+        ylab=ylabel([{'Poisson'}; {'observations'}],'FontSize',Pl.fs);
         set(gca,'XTick',Pl.XTick,'XTickLabel',(Pl.XTick-min(Pl.XTick))*V.dt)
         xlabel('Time (sec)','FontSize',Pl.fs)
     end

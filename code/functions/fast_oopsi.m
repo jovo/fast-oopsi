@@ -32,7 +32,7 @@ function [n_best P_best V]=fast_oopsi(F,V,P)
 %   fast_poiss: whether observations are assumed to come from a Poisson or Gaussian distribution
 %   fast_plot:  whether to plot results (only required is est_a==1)
 %   fast_thr:   whether to threshold infered spike train before updating 'a' and 'b' (only required is est_a==1)
-%   fast_iter_max: maximum number of iterations of pseudo-EM   (typically set to 50)
+%   fast_iter_max: maximum number of iterations of pseudo-EM   (typically set to 5)
 %
 %   THE BELOW FIELDS INDICATE WHETHER ONE WANTS TO ESTIMATE EACH OF THE
 %   PARAMETERS
@@ -58,11 +58,11 @@ function [n_best P_best V]=fast_oopsi(F,V,P)
 
 %% initialize algorithm Variables
 starttime   = cputime;
-siz         = size(F);
+siz         = size(F);      if siz(2)==1, F=F'; siz=size(F); end
 
 % variables determined by the data
 if nargin < 2,              V   = struct;       end
-if ~isfield(V,'Nc'),        V.Ncells = 1;       end     % # of cells in image
+if ~isfield(V,'Ncells'),    V.Ncells = 1;       end     % # of cells in image
 if ~isfield(V,'T'),         V.T = siz(2);       end     % # of time steps
 if ~isfield(V,'Npixels'),   V.Npixels = siz(1); end     % # of pixels in ROI
 if ~isfield(V,'dt'),                                    % frame duration
@@ -73,17 +73,14 @@ end
 % variables determined by the user
 if ~isfield(V,'fast_poiss'),V.fast_poiss = 0;   end     % whether observations are Poisson
 if ~isfield(V,'fast_nonlin'),   V.fast_nonlin   = 0; end
-if V.fast_poiss && V.fast_nonlin, 
+if V.fast_poiss && V.fast_nonlin,
     reply = input('\ncan be nonlinear observations and poisson, \ntype 1 for nonlin, 2 for poisson, anything else for neither: ');
     if reply==1,        V.fast_poiss = 0;   V.fast_nonlin = 1;
     elseif reply==2,    V.fast_poiss = 1;   V.fast_nonlin = 0;
     else                V.fast_poiss = 0;   V.fast_nonlin = 0;
     end
 end
-if ~isfield(V,'fast_iter_max'),                         % max # of iterations before convergence
-    reply = input('\nhow many EM iterations would you like to perform \nto estimate parameters (0 means use default parameters): ');
-    V.fast_iter_max = reply;
-end
+if ~isfield(V,'fast_iter_max'), V.fast_iter_max=1; end % max # of iterations before convergence
 
 % things that matter if we are iterating to estimate parameters
 if V.fast_iter_max>1;
@@ -91,7 +88,7 @@ if V.fast_iter_max>1;
         disp('\ncode does not currrently support estimating parameters for \npoisson or nonlinear observations');
         V.fast_iter_max=1;
     end
-    
+
     if ~isfield(V,'fast_plot'),     V.fast_plot     = 0; end
     if V.fast_plot==1
         FigNum = 400;
@@ -100,25 +97,25 @@ if V.fast_iter_max>1;
         if isfield(V,'n'), V.n(isnan(V.n))=0; siz=size(V.n); if siz(1)<siz(2), V.n=V.n'; end; end
     end
 
-    if ~isfield(V,'est_sig'),   V.est_sig   = 1; end    % whether to estimate sig
-    if ~isfield(V,'est_lam'),   V.est_lam   = 1; end    % whether to estimate sig
+    if ~isfield(V,'est_sig'),   V.est_sig   = 0; end    % whether to estimate sig
+    if ~isfield(V,'est_lam'),   V.est_lam   = 0; end    % whether to estimate sig
     if ~isfield(V,'est_gam'),   V.est_gam   = 0; end    % whether to estimate sig
     if ~isfield(V,'est_a'),     V.est_a     = 0; end    % whether to estimate sig
     if ~isfield(V,'est_b'),     V.est_b     = 1; end    % whether to estimate sig
     if ~isfield(V,'fast_plot'), V.fast_plot = 1; end    % whether to plot results from each iteration
-    if ~isfield(V,'fast_thr'),  V.fast_thr  = 1; end    % whether to threshold spike train before estimating 'a' and 'b'
+    if ~isfield(V,'fast_thr'),  V.fast_thr  = 0; end    % whether to threshold spike train before estimating 'a' and 'b'
 end
 
 % normalize F if it is only a trace
 if V.Npixels==1
-   F=F-min(F); F=F/max(F); F=F+eps; 
+%     F=F-min(F); F=F/max(F); F=F+eps;
 end
 
 %% set default model Parameters
 
 if nargin < 3,          P       = struct;   end
 if ~isfield(P,'b'),     P.b     = mean(F);  end
-if ~isfield(P,'sig'),   P.sig   = std(F);   end
+if ~isfield(P,'sig'),   P.sig   = std(F);  end
 if ~isfield(P,'gam'),   P.gam   = 1-V.dt/1; end
 if ~isfield(P,'lam'),   P.lam   = 10;       end
 if ~isfield(P,'a'),     P.a     = 1;        end
@@ -192,7 +189,7 @@ while conv == 0
     end
 
     % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
-    if  i>=V.fast_iter_max || (abs((posts(i)-posts(i-1))/posts(i))<1e-5 || any(posts(1:i-1)-posts(i))<1e-5)% abs((posts(i)-posts(i-1))/posts(i))<1e-5 || posts(i-1)-posts(i)>1e5;
+    if  i>=V.fast_iter_max || (abs((posts(i)-posts(i-1))/posts(i))<1e-3 || any(posts(1:i-1)-posts(i))<1e-5)% abs((posts(i)-posts(i-1))/posts(i))<1e-5 || posts(i-1)-posts(i)>1e5;
         MakePlot(n,F,P,V);
         disp('convergence criteria met')
         V.post  = posts(1:i);
@@ -211,10 +208,10 @@ P_best      = orderfields(P_best);
         % initialize n and C
         z = 1;                                  % weight on barrier function
         llam = reshape(1./lam',1,V.Ncells*V.T)';
-        if V.fast_poiss==0 && V.fast_nonlin==0
-            n = z.*llam;                       % initialize spike train
+        if V.fast_nonlin==1
+            n = V.gauss_n; 
         else
-            n = V.gauss_n+0.001;
+            n = 0.01+0*llam;                    % initialize spike train
         end
         C = 0*n;                                % initialize calcium
         for j=1:V.Ncells
@@ -233,14 +230,14 @@ P_best      = orderfields(P_best);
             aa      = repmat(diag(P.a'*P.a),V.T,1);% for grad
             H1(d0)  = 2*e*aa;                   % for Hess
         end
-        lnprior     = llam.*sum(M)';            % for grad
+        lnprior     = llam.*sum(M,2);            % for grad
 
         % find C = argmin_{C_z} lik + prior + barrier_z
         while z>1e-13                           % this is an arbitrary threshold
 
             if V.fast_poiss==1
                 Fexpect = P.a*(C+b')';          % expected poisson observation rate
-                lik = sum(sum(-Fexpect+ F.*log(Fexpect) - gamlnF)); % lik
+                lik = -sum(sum(-Fexpect+ F.*log(Fexpect) - gamlnF)); % lik
             else
                 if V.fast_nonlin==1
                     S = C./(C+P.k_d);
@@ -255,10 +252,10 @@ P_best      = orderfields(P_best);
             d    = 1;                           % direction
             while norm(d)>5e-2 && s > 1e-3      % converge for this z (again, these thresholds are arbitrary)
                 if V.fast_poiss==1
-                    glik    = -suma + sumF./(C+b');
-                    H1(d0)  = -sumF.*(C+b').^(-2); % lik contribution to Hessian
+                    glik    = suma - sumF./(C+b');
+                    H1(d0)  = sumF.*(C+b').^(-2); % lik contribution to Hessian
                 elseif V.fast_nonlin==1
-                    glik    = -2*D'*P.a*P.k_d.*(C+P.k_d).^-2;
+                    glik    = -2*P.a*P.k_d*D'.*(C+P.k_d).^-2;
                     H1diag  = (-P.a*P.k_d-2*(C+P.k_d).*D').*((C+P.k_d).^-4);
                     H1(d0)  = H1diag;
                 else
@@ -281,7 +278,7 @@ P_best      = orderfields(P_best);
                     n   = M*C1;
                     if V.fast_poiss==1
                         Fexpect = P.a*(C1+b')';
-                        lik1    = sum(sum(-Fexpect+ F.*log(Fexpect) - gamlnF));
+                        lik1    = -sum(sum(-Fexpect+ F.*log(Fexpect) - gamlnF));
                     else
                         if V.fast_nonlin==1
                             S1 = C1./(C1+P.k_d);
@@ -335,24 +332,27 @@ P_best      = orderfields(P_best);
                 end
             end
             if V.est_b==1
-                if V.Npixels>1
-                    P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/V.T',[],[],[],[],Z(1:V.Ncells),inf+Z(1:V.Ncells),P.b,options);
-                    P.b     = P.b';
-                else
+%                 if V.Npixels>1
+%                     P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/V.T',[],[],[],[],Z(1:V.Ncells),inf+Z(1:V.Ncells),P.b,options);
+%                     P.b     = P.b';
+%                 else
                     P.b = mean(F-P.a*C');
                     P.b(P.b<0)=0;
-                end
+%                 end
             end
             b       = repmat(P.b,V.T,1)';
             D       = F-P.a*(reshape(C,V.Ncells,V.T)+b);
-            mse     = -D(:)'*D(:);
+            mse     = D(:)'*D(:);
         end
 
-        if V.est_a==0 && V.est_b==0 && (V.est_sig==1 || V.est_lam==1), D = F-P.a*(reshape(C,V.Ncells,V.T)+b); mse = -D(:)'*D(:); end
+        if V.est_a==0 && V.est_b==0 && (V.est_sig==1 || V.est_lam==1), 
+            D   = F-P.a*(reshape(C,V.Ncells,V.T)+b); 
+            mse = D(:)'*D(:); 
+        end
 
         % estimate other parameters
         if V.est_sig==1,
-            P.sig = sqrt(-mse)/V.T;
+            P.sig = sqrt(mse)/V.T;
         end
         if V.est_lam==1,
             nnorm   = n./repmat(max(n),V.T,1);
@@ -387,7 +387,7 @@ P_best      = orderfields(P_best);
                 title(['best iteration ' num2str(i_best)]),
                 axis('tight')
 
-                h(j,2)=subplot(nrows,ncols,j+1);
+                h(j,2)=subplot(nrows,ncols,j+1); cla
                 bar(z1(n(2:END,j)))
                 if isfield(V,'n'), hold on,
                     stem(V.n(2:END,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
