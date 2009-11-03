@@ -1,0 +1,87 @@
+%\documentclass[12pt]{article}
+\input{/Users/joshyv/Research/misc/latex_paper.tex} 
+\usepackage{multicol}
+\usepackage{hyperref}
+\newcommand{\zzz}{z}
+\newcommand{\az}{\argmin_{\bM \bC \geq \ve{0}}}
+\newcommand{\anx}{\argmax_{n_t \in \mathbb{N}_0 \forall t}}
+\newcommand{\ann}{\argmin_{n_t \in \mathbb{N}_0 \forall t}}
+\newcommand{\foopsi}{fast }
+
+\lhead{Vogelstein JT, et al}
+\rhead{Fast spike train inference from calcium imaging}
+%\headheight=14.5pt
+
+\title{Fast spike train inference from calcium imaging}
+
+\author{Joshua T.~Vogelstein, Adam Packer, Tim M.~Machado, Baktash Babadi, Rafael Yuste, Liam Paninski}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\input{abstract} 
+
+\input{intro}
+
+\newpage
+\input{methods}
+
+\newpage
+\input{results}
+
+\newpage
+\section{Discussion} \label{sec:dis}
+\input{discussion}
+
+\clearpage\newpage
+\subsection{Population imaging} \label{sec:pop}
+\input{tex/pop}
+
+\clearpage\newpage
+\subsection{in vitro data} \label{sec:vitro}
+\input{tex/in_vitro}
+
+\clearpage\newpage
+\subsection{in vivo data} \label{sec:vivo}
+\input{tex/in_vivo}
+
+
+
+\paragraph{Acknowledgments}
+
+The authors would like to express appreciation for helpful discussions with Vincent Bonin.  Support for JTV was provided by NIDCD DC00109. LP is supported by an NSF CAREER award, by an Alfred P.\ Sloan Research Fellowship, and the McKnight Scholar Award. RY's laboratory is supported by .  LP and RY share .
+
+%\subparagraph*{References}
+\bibliography{/Users/joshyv/Research/misc/biblist}
+\addcontentsline{toc}{section}{References}
+%\bibliography{Science}
+%\bibliographystyle{apalike}
+\bibliographystyle{unsrt}
+%\bibliographystyle{nature}
+
+
+\appendix
+\input{appendix}
+
+\section{Model generalizations} \label{sec:model2}
+\input{tex/model2}
+
+% \clearpage\newpage
+% \subsection{Poisson observation model} \label{sec:poisson}
+% \input{tex/poisson}
+% 
+% \clearpage\newpage
+% \subsection{Incorporating a nonlinear observation model} \label{sec:nonlin}
+% \input{tex/nonlin_obs}
+% 
+% \clearpage\newpage
+% \subsection{Slow rise time} \label{sec:slow}
+% \input{tex/slow_rise_time}
+% 
+% \clearpage\newpage
+% \subsection{Dynamic prior}
+% \input{tex/dynamic_prior}
+
+
+\end{document}

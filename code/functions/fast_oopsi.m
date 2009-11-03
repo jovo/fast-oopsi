@@ -215,7 +215,7 @@ P_best      = orderfields(P_best);
         end
         C = 0*n;                                % initialize calcium
         for j=1:V.Ncells
-            C(j:V.Ncells:end) = filter(1,[1, -P.gam(j)],n(j:V.Ncells:end)) + P.b(j); %(1-P.gam(j))*P.b(j);
+            C(j:V.Ncells:end) = filter(1,[1, -P.gam(j)],n(j:V.Ncells:end)); %(1-P.gam(j))*P.b(j);
         end
 
         % precompute parameters required for evaluating and maximizing likelihood

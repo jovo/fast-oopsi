@@ -110,13 +110,13 @@ for q=qs
     GG=F; Tim=Sim;
     if q==1,
         Phat{q}=P;
-        I{q}.label='True Filter';
+        I{q}.label='True filter';
     elseif q==2,
         Phat{q}=P;
         Phat{q}.a=0*P.a;
         [asort ix]=sort(P.a);
         Phat{q}.a(ix0) = 1;
-        I{q}.label='Segmented Filter';
+        I{q}.label='Segmented filter';
     end
     display(I{q}.label)
     [I{q}.n I{q}.P] = fast_oopsi(GG',Tim,Phat{q});
@@ -153,21 +153,21 @@ movieslices=60*z1(movieslices);
 
 for i=1:Nframes
     subplot('Position',[0.132+(i-1)*0.21 0.6 .2 .28])
-    if i==3
+    if i==1
         imagesc(reshape(P.a,V.w,V.h))
-        colormap(gray)
-        title([{'True'}; {'Spatial Filter'}],'FontSize',Pl.fs)
-    elseif i==2 
+        colormap('gray')
+        title([{'true filter'}],'FontSize',Pl.fs)
+    elseif i==3 
         imagesc(reshape(Phat{2}.a,V.w,V.h))
-        title([{'Typical'}; {'Spatial Filter'}],'FontSize',Pl.fs)
+        title([{'typical filter'}],'FontSize',Pl.fs)
         set(gca,'YTick',[],'XTick',[])
     elseif i==4 
         imagesc(reshape(mean(F),V.w,V.h))
-        title('Mean Frame','FontSize',Pl.fs)
+        title('mean frame','FontSize',Pl.fs)
         set(gca,'YTick',[],'XTick',[])
-    elseif i==1
+    elseif i==2
         imagesc(reshape(F(100,:),V.w,V.h))
-        title([{'Example Frame'}],'FontSize',Pl.fs)
+        title([{'example frame'}],'FontSize',Pl.fs)
         set(gca,'YTick',[],'XTick',[])
     end
 end
@@ -178,15 +178,15 @@ for q=qs
     % plot fluorescence data
     i=i+1; h(i) = subplot(nrows,ncols,i);
     if q==1,
-        title([{'True Projection'}],'FontSize',Pl.fs+2);
+        title([{'typical filter'}],'FontSize',Pl.fs+2)
         Pl.label = 'fluorescence';
     else
         Pl.label=[];
         Pl.interp = 'none';
-        title([{'Typical Projection'}],'FontSize',Pl.fs+2)
+        title([{'true filter'}],'FontSize',Pl.fs+2);
     end
     Pl.color = 'k';
-    Plot_nX(Pl,(Phat{q}.a\F')');
+    Plot_nX(Pl,(Phat{p}.a\F')');
 
     % plot inferred spike trains
     if q==1, 
@@ -199,12 +199,12 @@ for q=qs
     Pl.col(2,:)=[0 0 0];
     Pl.gray=[.5 .5 .5];
     hold on
-    Plot_n_MAP(Pl,I{q}.n);
+    Plot_n_MAP(Pl,I{p}.n);
 
     % set xlabel stuff
     subplot(nrows,ncols,i)
     set(gca,'XTick',Pl.XTicks,'XTickLabel',Pl.XTicks*V.dt,'FontSize',Pl.fs)
-    xlabel('Time (sec)','FontSize',Pl.fs)
+    xlabel('time (sec)','FontSize',Pl.fs)
 end
 
 if V.save==1 % print fig

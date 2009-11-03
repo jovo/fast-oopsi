@@ -23,9 +23,10 @@ V.smc_plot      = 1;
 V.N             = 99;
 V.est_sig       = 1;
 V.est_t         = 0;
+V.name          = 'smc_init';
 P.lam           = 10;
 P.k_d           = 180;
-datasets        = 2;
+datasets        = 8;
 
 for i=datasets
     cc      = dataset.(char(names(i)));
@@ -43,7 +44,7 @@ for i=datasets
     n_t{i}  = zeros(size(F{i}));
     n_t{i}(spt{i}) = 1;
     V.n = n_t{i};
-    filters = [1 4];
+    filters = [0];
     for j=filters
         switch j
             case 0
@@ -76,7 +77,7 @@ for i=datasets
                 inf{i}.smc = M.nbar;
         end
     end
-    save(['../../data/adam'],'F','inf','spt','volt')
+    save(['../../data/' V.name],'F','inf','spt','volt')
 end
 
 
@@ -84,12 +85,12 @@ end
 % load(['../../data/adam'])
 % datasets=2;
 for j=datasets
-    V.name_fig = ['../../figs/adam' num2str(j)];                                 % filename for figure
+    V.name_fig = ['../../figs/' V.name];                                 % filename for figure
     fig     = figure(j); clf,
     V.T     = length(F{j});
     names   = fieldnames(inf{j});
     nrows   = 2 + length(names);
-    gray    = [.75 .75 .75];            % define gray color
+    gray    = [0 0 0];            % define gray color
     inter   = 'tex';                    % interpreter for axis labels
     xlims   = [250 V.T-150];                  % xmin and xmax for current plot
     fs      = 14;                       % font size
@@ -131,7 +132,7 @@ for j=datasets
         npos=find(n>0);
         stem(npos,n(npos),'Marker','none','LineWidth',sw,'Color','k')
 
-        stem(spt{j},n_t{j}(spt{j}),'Marker','v','MarkerSize',ms,'LineStyle','none','MarkerFaceColor',gray,'MarkerEdgeColor',gray)
+        stem(spt{j},n_t{j}(spt{j}),'Marker','+','MarkerSize',ms,'LineStyle','none','MarkerFaceColor',gray,'MarkerEdgeColor',gray)
         axis([xlims min(n) 1.1])
         hold off,
         ylab=ylabel([{char(names(k))}; {'filter'}],'Interpreter',inter,'FontSize',fs);

@@ -1,4 +1,4 @@
-\subsubsection{Poisson observations}
+\subsection{Poisson observations}
 \paragraph{Model}
 
 \begin{align}
@@ -21,8 +21,13 @@ H_{t} &= F_{t} (C_t + \beta)^{-2}
 
 \noindent where $\mL=\sum_{t} \mL_{t}$, $\bg=(g_{1}, \ldots, g_{T})\T$, and $\bH=\text{diag}((H_1, \ldots, H_T))$.
 
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/poisson}
+\caption{Poisson} \label{fig:poiss}
+\end{figure}
 
-\subsubsection{Nonlinear observations}
+
+\subsection{Nonlinear observations}
 \paragraph{Model}
 
 \begin{align}
@@ -41,9 +46,14 @@ H_{t} &= -\alpha k_d - 2(\bC + k_d) \ast (\bF-\bC-\beta) \ast (\bC + k_d)^{-4} +
 
 \noindent where $\ast$ indicates an element-wise multiplication and the exponents are all taken element-wise as well. Because the Hessian is not positive-semi-definite, this optimization problem is not concave.  Therefore, we provide an initial condition by first using the linear observation model.  
 
-\subsubsection{Slow rise time}
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/nonlin}
+\caption{Saturation} \label{fig:satur}
+\end{figure}
 
-\subsubsection{External stimulus}
+\subsection{Slow rise time}
+
+\subsection{External stimulus}
 
 \paragraph{Model}
 
@@ -56,23 +66,9 @@ H_{t} &= -\alpha k_d - 2(\bC + k_d) \ast (\bF-\bC-\beta) \ast (\bC + k_d)^{-4} +
 
 Above, we defined $\blam=\lam\Del\ve{1}\T$.  Here, $\blam=(\lam_1, \ldots, \lam_T) \Del$.  Everything follows as before.
 
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/dynamic_prior}
+\caption{Can't find a regime in which it helps.} \label{fig:woopsi}
+\end{figure}
 
-\subsubsection{Spatial filtering}
-
-In all the previous generalizations, we implicitly assumed that the raw movie of fluorescence measurements collected by the experimenter had undergone two stages of preprocessing.  First, the movie was segmented, to determine regions-of-interest (ROIs).  This yields a vector, $\vF_t=(F_{1,t}, \ldots, F_{N_p,t})$, corresponding to the fluorescence intensity at time $t$ for each of the $N_p$ pixels in the ROI.  Second, at each time $t$, we projected that vector into a scalar, yielding $F_t$, the assumed input.  In this section, we determine the optimal projection.  Formally, we posit a more general model:
-
-\begin{align} \label{eq:bF}
-F_{x,t} &= \alpha_x (C_{x,t} + \beta) +  \sig \vec{\varepsilon}_{x,t}, \qquad &\varepsilon_{x,t} \sim \mathcal{N}(0,1)   
-\end{align}
-
-\noindent where $\alpha_x$ scales each pixel, from which some number of photons are contributed due to calcium fluctuations, $C_t$, and others due to baseline fluorescence, $\beta$.  Further, we have assumed that the noise is spatially and temporally white, with variance, $\sig^2$, in each pixel (an assumption that can be relaxed quite easily).  Performing inference in this more general model proceeds nearly identical as before. In vector notation, we have:
-
-\begin{align} 
-\hbC_{\zzz} 
-&= \az  \frac{1}{2 \sig^2} \norm{\vec{\bF} - \valpha (\bC\T +\beta\ve{1}\T)}^2 + (\bM \bC )\T \blam  - \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta4}\\
-\ve{g} &= -\frac{\valpha}{\sig^2}(\vbF -\valpha({\hbC\T}_{\zzz} + \beta)) + \ve{M}\T\blam - \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-1} \label{eq:g2} \\
-\ve{H} &= \frac{\valpha\T \valpha}{\sig^2} \ve{I} + \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-2} \ve{M} \label{eq:H2}
-\end{align}
-
-\noindent where $\vbF$ is an $N_p$ by $T$ element matrix, $\valpha$ is column vectors of length $N_p$, and $\bI$ is an $N_p \times N_p$ identity matrix.  Typically, the spatial filter, $\valpha$ is unknown, and therefore must be estimated from the data.  To initialize the spatial filter, we let $\valpha=\langle \vbF \rangle_t$.  In practice, this is often sufficient.  To further refine this estimate, however, 
 

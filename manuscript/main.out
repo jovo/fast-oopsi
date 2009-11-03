@@ -4,25 +4,22 @@
 \BOOKMARK [2][-]{subsection.2.2}{Goal}{section.2}
 \BOOKMARK [2][-]{subsection.2.3}{Inference}{section.2}
 \BOOKMARK [2][-]{subsection.2.4}{Learning}{section.2}
-\BOOKMARK [2][-]{subsection.2.5}{Model generalizations}{section.2}
-\BOOKMARK [3][-]{subsubsection.2.5.1}{Poisson observations}{subsection.2.5}
-\BOOKMARK [3][-]{subsubsection.2.5.2}{Nonlinear observations}{subsection.2.5}
-\BOOKMARK [3][-]{subsubsection.2.5.3}{Slow rise time}{subsection.2.5}
-\BOOKMARK [3][-]{subsubsection.2.5.4}{External stimulus}{subsection.2.5}
-\BOOKMARK [3][-]{subsubsection.2.5.5}{Spatial filtering}{subsection.2.5}
-\BOOKMARK [2][-]{subsection.2.6}{Experimental Methods}{section.2}
+\BOOKMARK [2][-]{subsection.2.5}{Spatial filtering}{section.2}
+\BOOKMARK [2][-]{subsection.2.6}{Overlapping spatial filters}{section.2}
+\BOOKMARK [2][-]{subsection.2.7}{Experimental Methods}{section.2}
 \BOOKMARK [1][-]{section.3}{Results}{}
 \BOOKMARK [2][-]{subsection.3.1}{Main Result}{section.3}
-\BOOKMARK [2][-]{subsection.3.2}{Poisson observation model}{section.3}
-\BOOKMARK [2][-]{subsection.3.3}{Incorporating a nonlinear observation model}{section.3}
-\BOOKMARK [2][-]{subsection.3.4}{Slow rise time}{section.3}
-\BOOKMARK [2][-]{subsection.3.5}{Dynamic prior}{section.3}
-\BOOKMARK [2][-]{subsection.3.6}{Initializing our sequential Monte Carlo filter}{section.3}
-\BOOKMARK [2][-]{subsection.3.7}{Spatial Filtering}{section.3}
-\BOOKMARK [2][-]{subsection.3.8}{Overlapping spatial filters}{section.3}
+\BOOKMARK [2][-]{subsection.3.2}{Improving inference results}{section.3}
+\BOOKMARK [2][-]{subsection.3.3}{Spatial filter}{section.3}
+\BOOKMARK [2][-]{subsection.3.4}{Overlapping spatial filters}{section.3}
 \BOOKMARK [1][-]{section.4}{Discussion}{}
 \BOOKMARK [2][-]{subsection.4.1}{Population imaging}{section.4}
 \BOOKMARK [2][-]{subsection.4.2}{in vitro data}{section.4}
 \BOOKMARK [2][-]{subsection.4.3}{in vivo data}{section.4}
-\BOOKMARK [1][-]{section*.25}{References}{}
+\BOOKMARK [1][-]{section*.17}{References}{}
 \BOOKMARK [1][-]{section.A}{Wiener Filter}{}
+\BOOKMARK [1][-]{section.B}{Model generalizations}{}
+\BOOKMARK [2][-]{subsection.B.1}{Poisson observations}{section.B}
+\BOOKMARK [2][-]{subsection.B.2}{Nonlinear observations}{section.B}
+\BOOKMARK [2][-]{subsection.B.3}{Slow rise time}{section.B}
+\BOOKMARK [2][-]{subsection.B.4}{External stimulus}{section.B}

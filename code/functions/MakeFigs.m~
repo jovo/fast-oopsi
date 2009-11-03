@@ -1,60 +1,80 @@
-% SI_ANALYSIS Test Josh Vogelstein's spike inference algorithms
-% given a standard data structure. Plot electrophysiological data
-% and calcium transients against with the inferred spike times from
-% both the fast and slow spike inference techniques (oopsi).
-%
-% tamachado
+function MakeFigs(datasets,filters,name)
 
-clear; clear global; clc
-
-dataset = load('~/Research/oopsi/meta-oopsi/data/rafa/adam/2008/Imaging-SNR-Data.mat');
-% load '~/Research/oopsi/meta-oopsi/docs/posters/SFN09/oopsi.mat';
-names = fieldnames(dataset);
+if ~isempty(datasets)
+    dataset = load('~/Research/oopsi/meta-oopsi/data/rafa/adam/2008/Imaging-SNR-Data.mat');
+    names = fieldnames(dataset);
+end
 %%
-V.wiener_do     = 1;
-V.fast_do       = 1;
-V.smc_do        = 1;
+V.fast_iter_max = 1;
 V.save          = 0;
 V.plot          = 0;
 V.fast_plot     = 1;
-V.fast_iter_max = 1;
 V.smc_iter_max  = 5;
 V.smc_plot      = 1;
 V.N             = 99;
 V.est_sig       = 1;
 V.est_t         = 0;
+V.name          = name;
 P.lam           = 10;
 P.k_d           = 180;
-datasets        = 2;
 
 for i=datasets
-    cc      = dataset.(char(names(i)));
-    F{i}    = z1(cc.Fluorescence);
-    V.dt    = median(diff(cc.FluorescenceTime));
-    V.T     = length(F{i});
-    P.gam   = 1-V.dt/1;
-    volt1{i}= cc.chanDev1_ai0_VoltageCh1;
-    volt{i} = interp1(cc.time,volt1{i},cc.FluorescenceTime);
-    temp    = GetSpikeTimes(volt1{i},0.7);
-    spt{i}=[];
-    for t=1:length(temp)
-        spt{i} = [spt{i} find(cc.time(temp(t))<cc.FluorescenceTime,1)];
+    if datasets==13
+        V.dt    = 1/60;
+        V.T     = 600;
+        tau     = 1;                % decay time constant for each cell
+
+        P.gam   = 1-V.dt/tau;       % set gam
+        P.lam   = 0.5;              % rate
+        P.sig   = 0.3;             % standard deviation
+        P.a     = 1;
+        P.b     = 0;
+
+        V.n     = poissrnd(P.lam*V.dt*ones(V.T,1));
+        V.C     = filter(1,[1 -P.gam],V.n);         % calcium concentration
+        F{i}    = P.a*V.C'+P.b+P.sig*randn(1,V.T);
+        spt{i}  = find(V.n);
+        n_t{i}  = V.n;
+        volt{i} = V.n;
+
+    else
+        cc      = dataset.(char(names(i)));
+        F{i}    = z1(cc.Fluorescence);
+        V.dt    = median(diff(cc.FluorescenceTime));
+        V.T     = length(F{i});
+        P.gam   = 1-V.dt/1;
+        volt1{i}= cc.chanDev1_ai0_VoltageCh1;
+        volt{i} = interp1(cc.time,volt1{i},cc.FluorescenceTime);
+        temp    = GetSpikeTimes(volt1{i},0.7);
+        spt{i}=[];
+        for t=1:length(temp)
+            spt{i} = [spt{i} find(cc.time(temp(t))<cc.FluorescenceTime,1)];
+        end
+        n_t{i}  = zeros(size(F{i}));
+        n_t{i}(spt{i}) = 1;
+        V.n = n_t{i};
+        V.name = [V.name num2str(i)];
     end
-    n_t{i}  = zeros(size(F{i}));
-    n_t{i}(spt{i}) = 1;
-    V.n = n_t{i};
-    filters = [1 4];
     for j=filters
         switch j
-            case 0
+            case 0 % fast init smc
+                V.fast_iter_max = 10;
                 [fast smc] = run_oopsi(F{i},V,P);
+                V.fast_iter_max = 1;
                 inf{i}.fast = fast.n;
                 inf{i}.smc = smc.E.nbar;
-            case 1
+                PP = fast.P;
+            case 1 % fast with params
                 V.fast_poiss=0;
                 V.fast_nonlin=0;
                 [inf{i}.fast PP] = fast_oopsi(F{i},V,P);
-            case 2
+            case 1.5 % fast est params
+                V.fast_poiss=0;
+                V.fast_nonlin=0;
+                V.fast_iter_max=10;
+                [inf{i}.fast PP] = fast_oopsi(F{i},V);
+                V.fast_iter_max=1;
+            case 2 % nonlin
                 V.fast_poiss=0;
                 V.fast_nonlin=1;
                 V.gauss_n = inf{i}.fast + 0.0001;
@@ -65,37 +85,38 @@ for i=datasets
                 PN.a     = ab(1);                               % fluorescence scale
                 PN.b     = ab(2);                               % fluorescence offset        
                 inf{i}.nonlin = fast_oopsi(F{i},V,PN);
-            case 3
+            case 3 % poisson
                 V.fast_poiss=1;
                 V.fast_nonlin=0;
                 inf{i}.poisson = fast_oopsi(F{i},V,P);
-            case 4
+            case 4 % Wiener
+                
                 inf{i}.Wiener = wiener_oopsi(F{i},V.dt,PP);
-            case 5
+            case 5 % smc
                 [M P V] = smc_oopsi(F{i},V,P);
                 inf{i}.smc = M.nbar;
         end
     end
-    save(['../../data/adam'],'F','inf','spt','volt')
+    save(['../../data/' V.name],'F','inf','spt','volt')
 end
 
 
 %%
-% load(['../../data/adam'])
-% datasets=2;
+% load(['../../data/' V.name])
+% datasets=8;
 for j=datasets
-    V.name_fig = ['../../figs/adam' num2str(j)];                                 % filename for figure
+    V.name_fig = ['../../figs/' V.name];                                 % filename for figure
     fig     = figure(j); clf,
     V.T     = length(F{j});
     names   = fieldnames(inf{j});
     nrows   = 2 + length(names);
-    gray    = [.75 .75 .75];            % define gray color
+    gray    = [0.75 0.75 0.75];            % define gray color
     inter   = 'tex';                    % interpreter for axis labels
-    xlims   = [250 V.T-150];                  % xmin and xmax for current plot
     fs      = 14;                       % font size
     ms      = 5;                        % marker size for real spike
     sw      = 2;                        % spike width
     lw      = 2;                        % line width
+    xlims   = [1 V.T];
     xticks  = xlims(1):1/V.dt:xlims(2);             % XTick positions
     skip    = round(length(xticks)/5);
     xticks  = xticks(1:skip:end);
@@ -113,8 +134,13 @@ for j=datasets
     % plot voltage data
     i=i+1; h(i)=subplot(nrows,1,i); hold on
     volt{j}(spt{j})=max(volt{j});
-    plot(z1(volt{j}),'-k','LineWidth',lw);
-    ylab=ylabel([{'voltage'}],'Interpreter',inter,'FontSize',fs);
+    if datasets==13
+        stem(V.n,'Marker','none','LineWidth',sw,'Color','k')
+        ylab=ylabel([{'spike'}; {'train'}],'Interpreter',inter,'FontSize',fs);
+    else
+        plot(z1(volt{j}),'-k','LineWidth',lw);
+        ylab=ylabel([{'voltage'}],'Interpreter',inter,'FontSize',fs);
+    end
     set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
     set(gca,'YTick',[],'YTickLabel',[])
     set(gca,'XTick',xticks,'XTickLabel',[])
@@ -131,7 +157,7 @@ for j=datasets
         npos=find(n>0);
         stem(npos,n(npos),'Marker','none','LineWidth',sw,'Color','k')
 
-        stem(spt{j},n_t{j}(spt{j}),'Marker','v','MarkerSize',ms,'LineStyle','none','MarkerFaceColor',gray,'MarkerEdgeColor',gray)
+        stem(spt{j},n_t{j}(spt{j})+0.1,'Marker','+','MarkerSize',ms,'LineStyle','none','MarkerFaceColor','k','MarkerEdgeColor','k')
         axis([xlims min(n) 1.1])
         hold off,
         ylab=ylabel([{char(names(k))}; {'filter'}],'Interpreter',inter,'FontSize',fs);
@@ -143,7 +169,7 @@ for j=datasets
 
     % label last subplot
     set(gca,'XTick',xticks,'XTickLabel',(xticks-xticks(1))*V.dt)
-    xlabel('Time (sec)','FontSize',fs)
+    xlabel('time (sec)','FontSize',fs)
     linkaxes(h,'x')
 
     % print fig

@@ -1,9 +1,9 @@
-\contentsline {section}{\numberline {1}Introduction}{3}{section.1}
-\contentsline {paragraph}{Motivation}{3}{section*.2}
-\contentsline {paragraph}{Limitations of calcium imaging}{3}{section*.3}
-\contentsline {paragraph}{Computational tools as important as experimental tools}{3}{section*.4}
-\contentsline {paragraph}{Previous approaches}{3}{section*.5}
-\contentsline {paragraph}{Our approach}{3}{section*.6}
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}
+\contentsline {paragraph}{Motivation}{2}{section*.2}
+\contentsline {paragraph}{Limitations of calcium imaging}{2}{section*.3}
+\contentsline {paragraph}{Computational tools as important as experimental tools}{2}{section*.4}
+\contentsline {paragraph}{Previous approaches}{2}{section*.5}
+\contentsline {paragraph}{Our approach}{2}{section*.6}
 \contentsline {section}{\numberline {2}Methods}{4}{section.2}
 \contentsline {subsection}{\numberline {2.1}Data driven generative model}{4}{subsection.2.1}
 \contentsline {subsection}{\numberline {2.2}Goal}{5}{subsection.2.2}
@@ -12,41 +12,36 @@
 \contentsline {paragraph}{Initializing the parameters}{8}{section*.7}
 \contentsline {paragraph}{Estimating the parameters given $\setbox \z@ \hbox {\frozen@everymath \@emptytoks \mathsurround \z@ $\textstyle \boldsymbol {n}$}\mathaccent "0362{\boldsymbol {n}}$}{8}{section*.8}
 \contentsline {paragraph}{Convergence criteria}{8}{section*.9}
-\contentsline {subsection}{\numberline {2.5}Model generalizations}{8}{subsection.2.5}
-\contentsline {subsubsection}{\numberline {2.5.1}Poisson observations}{8}{subsubsection.2.5.1}
-\contentsline {paragraph}{Model}{8}{section*.10}
-\contentsline {paragraph}{Inference}{9}{equation.21}
-\contentsline {subsubsection}{\numberline {2.5.2}Nonlinear observations}{9}{subsubsection.2.5.2}
-\contentsline {paragraph}{Model}{9}{section*.12}
-\contentsline {paragraph}{Inference}{9}{equation.23}
-\contentsline {subsubsection}{\numberline {2.5.3}Slow rise time}{9}{subsubsection.2.5.3}
-\contentsline {subsubsection}{\numberline {2.5.4}External stimulus}{9}{subsubsection.2.5.4}
-\contentsline {paragraph}{Model}{9}{section*.14}
-\contentsline {paragraph}{Inference}{9}{section*.15}
-\contentsline {subsubsection}{\numberline {2.5.5}Spatial filtering}{9}{subsubsection.2.5.5}
-\contentsline {subsection}{\numberline {2.6}Experimental Methods}{10}{subsection.2.6}
-\contentsline {paragraph}{Slice Preparation and Imaging}{10}{section*.16}
-\contentsline {paragraph}{Electrophysiology}{10}{section*.17}
+\contentsline {subsection}{\numberline {2.5}Spatial filtering}{8}{subsection.2.5}
+\contentsline {subsection}{\numberline {2.6}Overlapping spatial filters}{9}{subsection.2.6}
+\contentsline {paragraph}{Learning}{9}{section*.10}
+\contentsline {subsection}{\numberline {2.7}Experimental Methods}{10}{subsection.2.7}
+\contentsline {paragraph}{Slice Preparation and Imaging}{10}{section*.11}
+\contentsline {paragraph}{Electrophysiology}{10}{section*.12}
 \contentsline {section}{\numberline {3}Results}{11}{section.3}
 \contentsline {subsection}{\numberline {3.1}Main Result}{11}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Poisson observation model}{12}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}Incorporating a nonlinear observation model}{13}{subsection.3.3}
-\contentsline {subsection}{\numberline {3.4}Slow rise time}{14}{subsection.3.4}
-\contentsline {subsection}{\numberline {3.5}Dynamic prior}{15}{subsection.3.5}
-\contentsline {subsection}{\numberline {3.6}Initializing our sequential Monte Carlo filter}{16}{subsection.3.6}
-\contentsline {subsection}{\numberline {3.7}Spatial Filtering}{17}{subsection.3.7}
-\contentsline {subsection}{\numberline {3.8}Overlapping spatial filters}{18}{subsection.3.8}
-\contentsline {paragraph}{Model}{18}{section*.18}
-\contentsline {paragraph}{Inference}{18}{section*.19}
-\contentsline {paragraph}{Learning}{18}{section*.20}
-\contentsline {section}{\numberline {4}Discussion}{19}{section.4}
-\contentsline {paragraph}{Summary}{19}{section*.21}
-\contentsline {paragraph}{Extensions}{19}{section*.22}
-\contentsline {paragraph}{Thresholding}{19}{section*.23}
-\contentsline {subsection}{\numberline {4.1}Population imaging}{21}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}in vitro data}{22}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}in vivo data}{23}{subsection.4.3}
-\contentsline {paragraph}{Acknowledgments}{23}{section*.24}
-\contentsline {section}{References}{24}{section*.25}
-\contentsline {section}{\numberline {A}Wiener Filter}{25}{section.A}
-\contentsline {paragraph}{Fast Wiener Filter}{25}{section*.26}
+\contentsline {subsection}{\numberline {3.2}Improving inference results}{12}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Spatial filter}{13}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Overlapping spatial filters}{15}{subsection.3.4}
+\contentsline {section}{\numberline {4}Discussion}{16}{section.4}
+\contentsline {paragraph}{Summary}{16}{section*.13}
+\contentsline {paragraph}{Extensions}{16}{section*.14}
+\contentsline {paragraph}{Thresholding}{16}{section*.15}
+\contentsline {subsection}{\numberline {4.1}Population imaging}{17}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}in vitro data}{18}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}in vivo data}{19}{subsection.4.3}
+\contentsline {paragraph}{Acknowledgments}{19}{section*.16}
+\contentsline {section}{References}{20}{section*.17}
+\contentsline {section}{\numberline {A}Wiener Filter}{21}{section.A}
+\contentsline {paragraph}{Fast Wiener Filter}{21}{section*.18}
+\contentsline {section}{\numberline {B}Model generalizations}{21}{section.B}
+\contentsline {subsection}{\numberline {B.1}Poisson observations}{21}{subsection.B.1}
+\contentsline {paragraph}{Model}{21}{section*.19}
+\contentsline {paragraph}{Inference}{22}{equation.40}
+\contentsline {subsection}{\numberline {B.2}Nonlinear observations}{22}{subsection.B.2}
+\contentsline {paragraph}{Model}{22}{section*.21}
+\contentsline {paragraph}{Inference}{22}{equation.42}
+\contentsline {subsection}{\numberline {B.3}Slow rise time}{22}{subsection.B.3}
+\contentsline {subsection}{\numberline {B.4}External stimulus}{22}{subsection.B.4}
+\contentsline {paragraph}{Model}{22}{section*.23}
+\contentsline {paragraph}{Inference}{22}{section*.24}

@@ -109,4 +109,10 @@ Emre Yaksi and Rainer~W Friedrich.
   temporally deconvolved {Ca$^{2+}$} imaging.
 \newblock {\em Nature Methods}, 3(5):377--383, May 2006.
 
+\bibitem{PologrutoSvoboda04}
+Thomas~A Pologruto, Ryohei Yasuda, and Karel Svoboda.
+\newblock Monitoring neural activity and [{Ca}$^{2+}$] with genetically encoded
+  {Ca}$^{2+}$ indicators.
+\newblock {\em J Neurosci}, 24(43):9572--9579, Oct 2004.
+
 \end{thebibliography}

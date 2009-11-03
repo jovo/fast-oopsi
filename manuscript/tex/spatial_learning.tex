@@ -10,15 +10,15 @@ To find the maximum likelihood estimator for the parameters, $\hvth$, we must in
 
 %\begin{subequations} \label{eq:par}
 \begin{align} \label{eq:par1}
-\widehat{\bth} &= \argmax_{\bth \in \ve{\Theta}} \int P[\bF|\bC, \bth] P[\bC | \bth]  d\bC  \approx \argmax_{\bth \in \ve{\Theta}}P[\bF| \hCm, \bth] P[\hCm, | \bth]
+\widehat{\bth} &= \argmax_{\bth \in \ve{\Theta}} \int P[\bF|\bC, \bth] P[\bC | \bth]  d\bC  \approx \argmax_{\bth \in \ve{\Theta}}P[\bF| \hbC, \bth] P[\hbC, | \bth]
 \end{align}
 
-\noindent where $\hCm$ is determined using the above described inference algorithm. The approximation in \eqref{eq:par1} is good whenever the likelihood is very peaky, meaning that most of the mass is around the MAP sequence.\footnote{The approximation in \eqref{eq:par1} may be considered a first-order Laplace approximation}  
+\noindent where $\hbC$ is determined using the above described inference algorithm. The approximation in \eqref{eq:par1} is good whenever the likelihood is very peaky, meaning that most of the mass is around the MAP sequence.\footnote{The approximation in \eqref{eq:par1} may be considered a first-order Laplace approximation}  
 
 Due to the state space nature of the above model (Eqs \eqref{eq:bF} and \eqref{eq:C}), the optimization in Eq \eqref{eq:par1} simplifies significantly.  More specifically, we can write the argument from the right-hand-side of Eq \eqref{eq:par1} as a product of terms that we have defined in our model:
 
  \begin{align} \label{eq:par2}
-P[\bF| \hCm, \bth] P[\hCm | \bth] &= \prod_{t=1}^T P[F_t | \hC_t; \balpha, \beta,\sig] P[\hC_t | \hC_{t-1}, \hn_t; \gamma] P[\hn_t | \lam].
+P[\bF| \hbC, \bth] P[\hbC | \bth] &= \prod_{t=1}^T P[F_t | \hC_t; \balpha, \beta,\sig] P[\hC_t | \hC_{t-1}, \hn_t; \gamma] P[\hn_t | \lam].
 \end{align}
 
 \noindent This optimization simplifies into several separable problems.  %: (1) $\{\balpha, \beta\}$, (2) $\sig$, (3) $\gam$, and (4) $\lam$.  
@@ -57,10 +57,10 @@ Given $\hbalpha$ and $\hbeta$, we can now estimate $\sig$ using the residuals, i
 	\hsig^2 = \frac{1}{T N_p}\norm{\vec{\bF} - \hbalpha(\bC\T + \beta \ve{1})}^2
 \end{align}
 
-Estimating $\lam$ is also totally straightforward: $\widehat{\lam} = \hnm' \ve{1}/ (T \Del)$. 
+Estimating $\lam$ is also totally straightforward: $\widehat{\lam} = \hbn' \ve{1}/ (T \Del)$. 
 % 
 % \begin{align} 
-% \widehat{\lam} &=  \frac{1}{T \Del} \hnm' \ve{1} \label{eq:lam}
+% \widehat{\lam} &=  \frac{1}{T \Del} \hbn' \ve{1} \label{eq:lam}
 % \end{align}
 
 We don't update $\gam$ as we have found that it does not improve inference quality (not shown), in agreement with previous work \cite{YaksiFriedrich07}.
@@ -80,7 +80,7 @@ We stop iterating the parameter update whenever (i) iteration number exceeds som
 %\{\halpha, \hbeta, \hsig\} &= \argmax_{\balpha, \beta, \sig > 0} \sum_{t=1}^T \log P[F_t | \hC_t, \balpha, \beta, \sig] \nonumber \\
 %&=  \argmax_{\balpha, \beta, \sig > 0} -\frac{T}{2} \log (2 \pi \sig^2)  - \frac{1}{2\sig^2} \sum_{t=1}^T (F_t - \balpha \hC_{t} - \beta )^2 \nonumber \\
 %&=   \argmax_{\balpha, \beta, \sig > 0} -\frac{T}{2} \log (2 \pi \sig^2)  - \frac{1}{2\sig^2} \norm{\bF- \hbX \ve{\eta}}^2 \label{eq:lik2}
-%%P[\bF | \hCm, \balpha, \beta, \sig) &= \prod_{t=1}^T P[F_t | \hC_t, \balpha, \beta, \sig) = \prod_{t=1}^T \frac{1}{\sqrt{2 \pi \sig^2}} \exp \left\{-\frac{1}{2\sig^2} (F_t - \balpha \hC_t - \beta )^2\right\}, \label{eq:lik}% \nonumber \\
+%%P[\bF | \hbC, \balpha, \beta, \sig) &= \prod_{t=1}^T P[F_t | \hC_t, \balpha, \beta, \sig) = \prod_{t=1}^T \frac{1}{\sqrt{2 \pi \sig^2}} \exp \left\{-\frac{1}{2\sig^2} (F_t - \balpha \hC_t - \beta )^2\right\}, \label{eq:lik}% \nonumber \\
 %%&= \prod_{t=1}^T \frac{1}{\sqrt{2 \pi \sig^2}} \exp \left\{-\frac{1}{2\sig^2} \big[F_t - \balpha (\gamma \hC_{t-1} + n_t) - \beta \big]^2\right\} \label{eq:lik}
 %\end{align}
 %
@@ -95,7 +95,7 @@ We stop iterating the parameter update whenever (i) iteration number exceeds som
 %%\noindent which emphasizes the over-parameterization in our model.  Thus, without loss of generality, we can assume that $\balpha=1$ and $\beta=0$. Taking logs in Eq \eqref{eq:lik} then yields:
 %%
 %%\begin{align} 
-%%\log P[\bF | \hnm, \bth) &=  -\frac{T}{2} \log (2 \pi \sig^2)  - \frac{1}{2\sig^2} \sum_{t=1}^T (F_t - \balpha \hC_{t} - \beta )^2 \nonumber \\
+%%\log P[\bF | \hbn, \bth) &=  -\frac{T}{2} \log (2 \pi \sig^2)  - \frac{1}{2\sig^2} \sum_{t=1}^T (F_t - \balpha \hC_{t} - \beta )^2 \nonumber \\
 %%&=  -\frac{T}{2} \log (2 \pi \sig^2)  - \frac{1}{2\sig^2} \norm{\bF- \hbX \ve{\eta}}^2
 %% \label{eq:lik2}
 %%\end{align}
@@ -106,10 +106,10 @@ We stop iterating the parameter update whenever (i) iteration number exceeds som
 %\widehat{\sig}^2 &= \frac{1}{T} \norm{\bF - \hbX \widehat{\ve{\eta}}}_2^2 \label{eq:sig}
 %\end{align}
 %
-%\noindent Similarly, taking the log of the prior term, $P[\hnm | \bth )$ yields:
+%\noindent Similarly, taking the log of the prior term, $P[\hbn | \bth )$ yields:
 %
 %\begin{align} \label{eq:prior}
-%\log P[\hnm | \bth] =  \sum _{t=1}^T \log(\lam \Del)  -\lam \Del \hn_t =T (\lam \Del) - \lam \Del \hnm' \ve{1} 
+%\log P[\hbn | \bth] =  \sum _{t=1}^T \log(\lam \Del)  -\lam \Del \hn_t =T (\lam \Del) - \lam \Del \hbn' \ve{1} 
 %\end{align}
 %
 %\noindent Plugging Eqs \eqref{eq:lik2} and \eqref{eq:prior} back into Eq \eqref{eq:par1}, and noting that log is a monotonic function, we have:
@@ -119,13 +119,13 @@ We stop iterating the parameter update whenever (i) iteration number exceeds som
 %
 %\begin{align} 
 %%\hvth &=\argmax_{\vth \in \ve{\Theta}}  \sum_{t=1}^T \left(- \frac{1}{2} \log (2\pi\sig^2)-\frac{1}{2\sig^2} (F_t - \gamma \hC_{t-1} -\nu  - \rho \hn_t)^2 \right) + \sum_{t=1}^T \big(\log (\lam \Del) -  \lam \Del n_t\big) \nonumber \\
-%\hvth &=\argmax_{\vth \in \ve{\Theta}} - \frac{T}{2} \log (2\pi\sig^2) - \frac{1}{2\sig^2} \norm{\bF - \hbX \ve{\eta}}_2^2 + T \log (\lam \Del) - \lam \Del \hnm' \ve{1} \label{eq:par} 
+%\hvth &=\argmax_{\vth \in \ve{\Theta}} - \frac{T}{2} \log (2\pi\sig^2) - \frac{1}{2\sig^2} \norm{\bF - \hbX \ve{\eta}}_2^2 + T \log (\lam \Del) - \lam \Del \hbn' \ve{1} \label{eq:par} 
 %%&=\argmin_{\vth}  \frac{T}{2} \log (2\pi\sig^2)  +  \frac{1}{2\sig^2} \norm{\bY + \ve{\eta} \bX}_2^2 + T \log (\lam \Del) - \lam \Del \bn' \ve{1} \label{eq:par} 
 %\end{align}
 %%\end{subequations}
 %
-%\noindent %where %$\bY=\bF- \hnm$, 
-%%$\bX=[\hCm, \,  \ve{1},\,  \hnm]'$, $\ve{\eta}=[\gamma, \nu, \rho]'$, and $\hCm=[\hC_1, \hC_2, \ldots, \hC_{T-1}]'$ is the inferred calcium concentration using the algorithm described in Section \ref{sec:inf} (and $\hnm$ is defined in a similar fashion). Note that had we not fixed $\balpha=1$ and $\beta=0$, then we would have had $\ve{\eta}=[\balpha \gamma, \balpha \nu + \beta, \balpha \nu]$, and then these parameters would not have been identifiable.  
+%\noindent %where %$\bY=\bF- \hbn$, 
+%%$\bX=[\hbC, \,  \ve{1},\,  \hbn]'$, $\ve{\eta}=[\gamma, \nu, \rho]'$, and $\hbC=[\hC_1, \hC_2, \ldots, \hC_{T-1}]'$ is the inferred calcium concentration using the algorithm described in Section \ref{sec:inf} (and $\hbn$ is defined in a similar fashion). Note that had we not fixed $\balpha=1$ and $\beta=0$, then we would have had $\ve{\eta}=[\balpha \gamma, \balpha \nu + \beta, \balpha \nu]$, and then these parameters would not have been identifiable.  
 %Estimating the parameters then separates into three log-concave problems.  In particular, solving for $\widehat{\ve{\eta}}$ is simply:
 %
 %\begin{align} 
@@ -139,7 +139,7 @@ We stop iterating the parameter update whenever (i) iteration number exceeds som
 %
 %\begin{align} 
 %\widehat{\sig}^2 &= \frac{1}{T} \norm{\bF - \hbX \widehat{\ve{\eta}}}_2^2 \label{eq:sig2}\\
-%\widehat{\lam} &=  \frac{1}{T \Del} \hnm' \ve{1} \label{eq:lam}
+%\widehat{\lam} &=  \frac{1}{T \Del} \hbn' \ve{1} \label{eq:lam}
 %\end{align}
 %
 %

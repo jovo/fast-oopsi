@@ -3,45 +3,45 @@ The top-level auxiliary file: main.aux
 The style file: unsrt.bst
 Database file #1: /Users/joshyv/Research/misc/biblist.bib
 Warning--I didn't find a database entry for "MacLeanYuste05"
-You've used 18 entries,
+You've used 19 entries,
             1791 wiz_defined-function locations,
-            590 strings with 7811 characters,
-and the built_in function-call counts, 4704 in all, are:
-= -- 392
-> -- 285
+            597 strings with 8008 characters,
+and the built_in function-call counts, 4977 in all, are:
+= -- 418
+> -- 296
 < -- 1
-+ -- 101
-- -- 83
-* -- 404
-:= -- 777
-add.period$ -- 53
-call.type$ -- 18
-change.case$ -- 15
++ -- 105
+- -- 86
+* -- 430
+:= -- 819
+add.period$ -- 56
+call.type$ -- 19
+change.case$ -- 16
 chr.to.int$ -- 0
-cite$ -- 18
-duplicate$ -- 170
-empty$ -- 410
-format.name$ -- 83
-if$ -- 995
+cite$ -- 19
+duplicate$ -- 179
+empty$ -- 436
+format.name$ -- 86
+if$ -- 1053
 int.to.chr$ -- 0
-int.to.str$ -- 18
-missing$ -- 19
-newline$ -- 92
-num.names$ -- 18
-pop$ -- 37
+int.to.str$ -- 19
+missing$ -- 20
+newline$ -- 97
+num.names$ -- 19
+pop$ -- 38
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 68
+skip$ -- 71
 stack$ -- 0
-substring$ -- 358
-swap$ -- 28
+substring$ -- 389
+swap$ -- 29
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 45
-width$ -- 20
-write$ -- 194
+while$ -- 48
+width$ -- 21
+write$ -- 205
 (There was 1 warning)
