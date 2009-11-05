@@ -21,9 +21,20 @@ In the above, we assumed that we knew the model parameters of interest.  However
 Given the above two results, we then applied this \foopsi filter to real data.  More specifically, by simultaneously recording electrophysiologically and imaging, we can determine the true spike times, and then compare the accuracy of the two filters.  Figure \ref{fig:woopsi_data} shows similar result for this typical in vitro data set.  These results are typical of the 12 joint electrophysiological and imaging experiments conducted (not shown).
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{../figs/woopsi_data}
+\centering \includegraphics[width=.9\linewidth]{../figs/woopsi_data1_4}
 \caption{The \foopsi filter significantly outperforms the Wiener filter on typical in vitro data-sets.  Note that all the parameters for the \foopsi filter were estimated from the data.} \label{fig:woopsi_data}
 \end{figure}
+
+\subsection{Online analysis of spike trains using the \foopsi filter}
+
+A central aim for this work was the development of a algorithm that infers spikes sufficiently efficiently to use online while imaging a large population (eg, $\approx 100$) of neurons.  Figure \ref{fig:pop} shows the result of running \foopsi on XX neurons, recorded simultaneously, as described in the Methods section.  Note that the filtered fluorescence signals much more clearly show fluctuations in spiking.  Inferring spike trains for all these neurons took only XXX seconds on a typical laptop computer.
+
+
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/pop}
+\caption{Applying the \foopsi filter in real time to a large population of neurons imaged simultaneously.  Left panel: Mean segmented image field.  Middle panel: example fluorescence traces.  Right panel: \foopsi filter.} \label{fig:pop}
+\end{figure}
+
 
 \subsection{Improving inference results}
 
@@ -61,11 +72,14 @@ The bottom panels of Figure \ref{fig:spatial} depict the effect of using the tru
 
 
 
-
 \subsection{Overlapping spatial filters}
 
+
+The above shows that if a ROI contains only a single neuron, we can enhance the effective SNR by spatially filtering.  However, this analysis assumes that only a single neuron is in the ROI.  Often, neural spatial filters are overlapping, or nearly overlapping, making the segmentation problem even more difficult.  Therefore, it is desirable to have an ability to crudely segment, yielding only a few neurons in each ROI, and then spatially filtering within each ROI to pick out the spike trains from each neuron.  We can do this in a principled manner by generalizing our model as described in Section \ref{sec:methods:overlapping}.  Figure \ref{fig:spatial_multi} shows an example of this approach on simulated data. Note that the spatial filters are sufficiently overlapping that some ``bleed-though'' can be seen across the traces.  Our estimated spatial filters show the inverse image of the other neurons to counteract this effect, and result in reasonable inferred spike trains from both neurons.
+
+
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{../figs/spatial_multi}
-\caption{Simulation showing that even when two neuron's spatial filters are largely overlapping} \label{fig:spatial_multi}
+\centering \includegraphics[width=.9\linewidth]{../figs/spatial_multi2}
+\caption{Simulation showing that even when two neuron's spatial filters are largely overlapping, we can infer the spatial filter of each, to separate the two signals.  } \label{fig:spatial_multi}
 \end{figure}
 

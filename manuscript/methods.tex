@@ -1,4 +1,3 @@
-\newpage
 \section{Methods} \label{sec:methods}
 
 As described above, to develop an algorithm to approximate the most likely spike train given fluorescence data, we first carefully analyze the statistics of typical data-sets.  We start by considering an in vitro experiment, for which the SNR is relatively high, and build an appropriate generative model (Section \ref{sec:model}).  Given this model, we can formally state our goal (Section \ref{sec:goal}).  And given this goal, we derive an approximately optimal inference algorithm (Section \ref{sec:inf}).  We then generalize our model in a number of ways, incorporating spatial filters (Section \ref{sec:spatial}), overlapping spatial filters (Section \ref{sec:overlap}), Poisson observations (Section \ref{sec:poisson}), fluorescence saturation (Section \ref{sec:satur}), and slow rise time for genetic sensors (Section \ref{sec:slow}).  Inferring the most likely spike train in all the above scenarios requires having an estimate of the parameters governing the relationship between the spikes and the movie.  Thus, we also develop an approach to efficiently approximate the maximum likelihood estimate (MLE) of the parameters (Section \ref{sec:learn}).  Finally, we describe several measures we use to assess and compare performance of our algorithm with others (Section \ref{sec:ass}).    
@@ -224,7 +223,7 @@ F_{x,t} &= \alpha_x (C_{x,t} + \beta) +  \sig \vec{\varepsilon}_{x,t}, \qquad &\
 
 
 
-\subsection{Overlapping spatial filters}
+\subsection{Overlapping spatial filters} \label{sec:methods:overlapping}
 
 In the above, we assumed that the image was first segmented, such that only a single neuron was within each ROI.  However, segmentation is itself a difficult problem \cite{}.  Therefore, we would like to be able to use a crude segmentation technique, that might not actually produce ROIs with only a single cell, and then build spatial filters for each neuron in the ROI.  As before, this requires a minor modification to Eq.~\eqref{eq:bF}.  Specifically, letting the superscript $i$ index the $N_c$ neurons in this ROI, we obtain:  
 
@@ -247,24 +246,7 @@ C^i_t &= \gam^i C^i_{t-1} + n^i_t, & n^i_t \sim \text{Poisson}(n^i_t; \lam_i \De
 \end{bmatrix}
 \end{align} 
 
-\noindent and proceed as above, making minor algorithmic adjustments to deal with dimensionality issues.  Since the parameters will be unknown, we must again estimate them. Letting $\balpha_x=[\alpha_x^1, \ldots, \alpha_x^{N_c}]\T$ and $\bbeta=[\beta^1, \ldots, \beta^{N_c}]\T$.  Assuming $\bbeta$ is known, we can estimate $\balpha_x$ using:
-
-\begin{align}
-\balpha_x = (\bC + \widetilde{\bbeta})\backslash \bF_x,
-\end{align}
-
-\noindent where $\widetilde{\bbeta}$ is $\bbeta$ reparameterized to be the same size as $\bC$.  Given this estimate of $\balpha_x$ for all $x$, we can then estimate $\beta^i=\norm{\vF - \valpha^i \bC^i}$.  In practice, iterating these two steps converged after several iterations, assuming enough spikes were present in the two neurons, and they were sufficiently uncorrelated.
-
-
-
-
-
-
-
-
-
-
-
+\noindent and proceed as above, making minor algorithmic adjustments to deal with dimensionality issues.  Since the parameters will be unknown, we must again estimate them. We define $\balpha_x=[\alpha_x^1, \ldots, \alpha_x^{N_c}]\T$ and $\bbeta=[\beta^1, \ldots, \beta^{N_c}]\T$.  To initialize, we let $\bbeta=\ve{0}$, and $\valpha^i$ be the $i^{th}$ principal component of $\vbF$.  Then we iterate the following two steps.  Given $\bbeta$, use a quadratic solver to update each $\balpha_x$ (eg, in Matlab, $\balpha_x = (\bC + \widetilde{\bbeta})\backslash \bF_x$, where $\widetilde{\bbeta}$ is $\bbeta$ reparameterized to be the same size as $\bC$).  Given this estimate of $\balpha_x$ for all $x$, update $\beta^i=\norm{\vF - \valpha^i \bC^i}$ for each $i$.  In practice, iterating these two steps converged after several iterations, assuming enough spikes were present in the two neurons, and they were sufficiently uncorrelated.
 
 
 

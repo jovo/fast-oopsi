@@ -2,46 +2,81 @@ This is BibTeX, Version 0.99c (Web2C 7.5.4)
 The top-level auxiliary file: main.aux
 The style file: unsrt.bst
 Database file #1: /Users/joshyv/Research/misc/biblist.bib
-Warning--I didn't find a database entry for "MacLeanYuste05"
-You've used 19 entries,
+Repeated entry---line 9613 of file /Users/joshyv/Research/misc/biblist.bib
+ : @article{GobelHelmchen07
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 9998 of file /Users/joshyv/Research/misc/biblist.bib
+ : @article{GreenbergKerr08
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 11957 of file /Users/joshyv/Research/misc/biblist.bib
+ : @article{HolekampHoly08
+ :                        ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 13986 of file /Users/joshyv/Research/misc/biblist.bib
+ : @article{KerrHelmchen07
+ :                        ,
+I'm skipping whatever remains of this entry
+"}" immediately follows an entry type---line 14025 of file /Users/joshyv/Research/misc/biblist.bib
+ :  D-69120 Heidelberg, Germany. jason@tuebingen.mpg.de
+ :                                                     },
+I'm skipping whatever remains of this entry
+Repeated entry---line 15342 of file /Users/joshyv/Research/misc/biblist.bib
+ : @article{LeeSeung01
+ :                    ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 16139 of file /Users/joshyv/Research/misc/biblist.bib
+ : @article{LuoSvoboda08
+ :                      ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 16961 of file /Users/joshyv/Research/misc/biblist.bib
+ : @article{MankGriesbeck08
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 29920 of file /Users/joshyv/Research/misc/biblist.bib
+ : @article{WallaceHasan08
+ :                        ,
+I'm skipping whatever remains of this entry
+You've used 20 entries,
             1791 wiz_defined-function locations,
-            597 strings with 8008 characters,
-and the built_in function-call counts, 4977 in all, are:
-= -- 418
-> -- 296
+            604 strings with 8054 characters,
+and the built_in function-call counts, 5058 in all, are:
+= -- 437
+> -- 277
 < -- 1
-+ -- 105
-- -- 86
-* -- 430
-:= -- 819
-add.period$ -- 56
-call.type$ -- 19
-change.case$ -- 16
++ -- 99
+- -- 79
+* -- 426
+:= -- 825
+add.period$ -- 59
+call.type$ -- 20
+change.case$ -- 17
 chr.to.int$ -- 0
-cite$ -- 19
-duplicate$ -- 179
-empty$ -- 436
-format.name$ -- 86
-if$ -- 1053
+cite$ -- 20
+duplicate$ -- 188
+empty$ -- 455
+format.name$ -- 79
+if$ -- 1076
 int.to.chr$ -- 0
-int.to.str$ -- 19
-missing$ -- 20
-newline$ -- 97
-num.names$ -- 19
-pop$ -- 38
+int.to.str$ -- 20
+missing$ -- 21
+newline$ -- 102
+num.names$ -- 20
+pop$ -- 39
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 71
+skip$ -- 75
 stack$ -- 0
-substring$ -- 389
-swap$ -- 29
+substring$ -- 402
+swap$ -- 30
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 48
-width$ -- 21
-write$ -- 205
-(There was 1 warning)
+while$ -- 51
+width$ -- 22
+write$ -- 216
+(There were 9 error messages)

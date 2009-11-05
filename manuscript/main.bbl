@@ -13,9 +13,9 @@ Shin Nagayama, Shaoqun Zeng, Wenhui Xiong, Max~L Fletcher, Arjun~V Masurkar,
 \newblock {\em Neuron}, 53(6):789--803, Mar 2007.
 
 \bibitem{GobelHelmchen07}
-Werner Gobel and Fritjof Helmchen.
+Werner G\"{o}bel and Fritjof Helmchen.
 \newblock In vivo calcium imaging of neural network function.
-\newblock {\em Physiology}, 22(6):358--365, 2007.
+\newblock {\em Physiology (Bethesda)}, 22:358--365, Dec 2007.
 
 \bibitem{LuoSvoboda08}
 L.~Luo, E.~M. Callaway, and K.~Svoboda.
@@ -29,13 +29,9 @@ Olga Garaschuk, Oliver Griesbeck, and Arthur Konnerth.
 \newblock {\em Cell Calcium}, 42(4-5):351--361, 2007.
 
 \bibitem{MankGriesbeck08}
-Marco Mank, Alexandre~Ferrão Santos, Stephan Direnberger, Thomas~D
-  Mrsic-Flogel, Sonja~B Hofer, Valentin Stein, Thomas Hendel, Dierk~F Reiff,
-  Christiaan Levelt, Alexander Borst, Tobias Bonhoeffer, Mark Hübener, and
-  Oliver Griesbeck.
-\newblock A genetically encoded calcium indicator for chronic in vivo
-  two-photon imaging.
-\newblock {\em Nat Methods}, 5(9):805--811, Sep 2008.
+Marco Mank and Oliver Griesbeck.
+\newblock Genetically encoded calcium indicators.
+\newblock {\em Chem Rev}, 108(5):1550--1564, May 2008.
 
 \bibitem{WallaceHasan08}
 D.J. Wallace, S.M. zum Alten~Borgloh, S.~Astori, Y.~Yang, M.~Bausen, S.~Kugler,
@@ -52,11 +48,11 @@ Kenichi Ohki, Sooyoung Chung, Prakash Kara, Mark Hubener, Tobias Bonhoeffer,
 \newblock {\em Nature}, 442(7105):925--928, Aug 2006.
 
 \bibitem{KerrHelmchen07}
-Jason N~D Kerr, Christiaan P~J de~Kock, David~S Greenberg, Randy~M Bruno, Bert
-  Sakmann, and Fritjof Helmchen.
-\newblock Spatial organization of neuronal population responses in layer 2/3 of
-  rat barrel cortex.
-\newblock {\em J Neurosci}, 27(48):13316--13328, Nov 2007.
+J.N.D. Kerr, C.P.J. de~Kock, D.S. Greenberg, R.M. Bruno, B.~Sakmann, and
+  F.~Helmchen.
+\newblock {Spatial organization of neuronal population responses in layer 2/3
+  of rat barrel cortex}.
+\newblock {\em Journal of Neuroscience}, 27(48):13316, 2007.
 
 \bibitem{GreenbergKerr08}
 David~S Greenberg, Arthur~R Houweling, and Jason N~D Kerr.
@@ -108,6 +104,12 @@ Emre Yaksi and Rainer~W Friedrich.
 \newblock Reconstruction of firing rate changes across neuronal populations by
   temporally deconvolved {Ca$^{2+}$} imaging.
 \newblock {\em Nature Methods}, 3(5):377--383, May 2006.
+
+\bibitem{MacLeanYuste05}
+Jason~N MacLean, Brendon~O Watson, Gloster~B Aaron, and Rafael Yuste.
+\newblock Internal dynamics determine the cortical response to thalamic
+  stimulation.
+\newblock {\em Neuron}, 48(5):811--823, Dec 2005.
 
 \bibitem{PologrutoSvoboda04}
 Thomas~A Pologruto, Ryohei Yasuda, and Karel Svoboda.

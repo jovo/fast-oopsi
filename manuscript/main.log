@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  3 NOV 2009 11:15
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  4 NOV 2009 23:34
 entering extended mode
 **main
 (./main.tex
@@ -328,7 +328,7 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 22.
 (/opt/local/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2002/01/19 v2.2g AMS font definitions
 )
-Overfull \hbox (24.91661pt too wide) in paragraph at lines 22--22
+Overfull \hbox (89.87256pt too wide) in paragraph at lines 22--22
  [][] 
  []
 
@@ -347,28 +347,28 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
  [1
 
 {/opt/local/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]) (./intro.tex)
- [2] [3] (./methods.tex
+ [2] (./methods.tex
 
-LaTeX Warning: Reference `sec:spatial' on page 4 undefined on input line 4.
-
-
-LaTeX Warning: Reference `sec:overlap' on page 4 undefined on input line 4.
+LaTeX Warning: Reference `sec:spatial' on page 3 undefined on input line 3.
 
 
-LaTeX Warning: Reference `sec:poisson' on page 4 undefined on input line 4.
+LaTeX Warning: Reference `sec:overlap' on page 3 undefined on input line 3.
 
 
-LaTeX Warning: Reference `sec:satur' on page 4 undefined on input line 4.
+LaTeX Warning: Reference `sec:poisson' on page 3 undefined on input line 3.
 
 
-LaTeX Warning: Reference `sec:slow' on page 4 undefined on input line 4.
+LaTeX Warning: Reference `sec:satur' on page 3 undefined on input line 3.
 
 
-LaTeX Warning: Reference `sec:ass' on page 4 undefined on input line 4.
+LaTeX Warning: Reference `sec:slow' on page 3 undefined on input line 3.
+
+
+LaTeX Warning: Reference `sec:ass' on page 3 undefined on input line 3.
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 6.
-<../figs/in_vitro_ex.pdf, id=190, 505.89pt x 361.35pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 5.
+<../figs/in_vitro_ex.pdf, id=186, 505.89pt x 361.35pt>
 File: ../figs/in_vitro_ex.pdf Graphic file (type pdf)
 
 <use ../figs/in_vitro_ex.pdf>
@@ -376,88 +376,93 @@ File: ../figs/in_vitro_ex.pdf Graphic file (type pdf)
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-LaTeX Warning: Reference `sec:nonlin' on page 4 undefined on input line 34.
+LaTeX Warning: Reference `sec:nonlin' on page 3 undefined on input line 33.
 
-[4] [5 <../figs/in_vitro_ex.pdf>] [6] [7] [8]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 262.
-
-
-(/opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) [9]
-
-LaTeX Warning: Citation `MacLeanYuste05' on page 10 undefined on input line 287
-.
-
-) [10] (./results.tex <../figs/woopsi_inf.pdf, id=368, 505.89pt x 361.35pt>
+[3] [4 <../figs/in_vitro_ex.pdf>] [5] [6] [7] [8]) (./results.tex
+<../figs/woopsi_inf.pdf, id=353, 505.89pt x 361.35pt>
 File: ../figs/woopsi_inf.pdf Graphic file (type pdf)
 
 <use ../figs/woopsi_inf.pdf>
-<../figs/woopsi_learn.pdf, id=369, 505.89pt x 361.35pt>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<../figs/woopsi_learn.pdf, id=354, 505.89pt x 361.35pt>
 File: ../figs/woopsi_learn.pdf Graphic file (type pdf)
 
-<use ../figs/woopsi_learn.pdf> [11 <../figs/woopsi_inf.pdf>]
+<use ../figs/woopsi_learn.pdf>
 
-! LaTeX Error: File `../figs/woopsi_data' not found.
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.24 ...s[width=.9\linewidth]{../figs/woopsi_data}
-                                                  
-? 
-[12 <../figs/woopsi_learn.pdf>]
-<../figs/smc_init.pdf, id=399, 505.89pt x 361.35pt>
+<../figs/woopsi_data1_4.pdf, id=355, 505.89pt x 361.35pt>
+File: ../figs/woopsi_data1_4.pdf Graphic file (type pdf)
+
+<use ../figs/woopsi_data1_4.pdf>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[9] <../figs/pop.pdf, id=371, 505.89pt x 144.54pt>
+File: ../figs/pop.pdf Graphic file (type pdf)
+ <use ../figs/pop.pdf>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[10 <../figs/woopsi_inf.pdf>]
+<../figs/smc_init.pdf, id=388, 505.89pt x 361.35pt>
 File: ../figs/smc_init.pdf Graphic file (type pdf)
  <use ../figs/smc_init.pdf>
-[13 <../figs/smc_init.pdf>]
-<../figs/spatial2.pdf, id=413, 505.89pt x 361.35pt>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[11 <../figs/woopsi_learn.pdf>] [12 <../figs/woopsi_data1_4.pdf> <../figs/pop.p
+df>] <../figs/spatial2.pdf, id=418, 505.89pt x 361.35pt>
 File: ../figs/spatial2.pdf Graphic file (type pdf)
- <use ../figs/spatial2.pdf>
-<../figs/spatial_multi.pdf, id=414, 505.89pt x 144.54pt>
-File: ../figs/spatial_multi.pdf Graphic file (type pdf)
 
-<use ../figs/spatial_multi.pdf> [14 <../figs/spatial2.pdf>]) [15 <../figs/spati
-al_multi.pdf>] (./discussion.tex) [16] (./tex/pop.tex) [17
+<use ../figs/spatial2.pdf>
 
-] (./tex/in_vitro.tex) [18
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-] (./tex/in_vivo.tex
-<../figs/spatial_data.pdf, id=468, 505.89pt x 505.89pt>
-File: ../figs/spatial_data.pdf Graphic file (type pdf)
+<../figs/spatial_multi2.pdf, id=419, 505.89pt x 144.54pt>
+File: ../figs/spatial_multi2.pdf Graphic file (type pdf)
 
-<use ../figs/spatial_data.pdf>) (./main.bbl [19
+<use ../figs/spatial_multi2.pdf>
 
- <../figs/spatial_data.pdf>]
-Missing character: There is no Ã in font ptmr7t!
-Missing character: There is no £ in font ptmr7t!
-Missing character: There is no Ã in font ptmr7t!
-Missing character: There is no ¼ in font ptmr7t!
-)
-(./appendix.tex [20]
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-LaTeX Warning: Reference `eq:nhat3' on page 21 undefined on input line 11.
+) (./discussion.tex) [13 <../figs/smc_init.pdf>] (./main.bbl [14 <../figs/spati
+al2.pdf> <../figs/spatial_multi2.pdf>] [15]) (./appendix.tex
 
-) (./tex/model2.tex [21] <../figs/poisson.pdf, id=516, 505.89pt x 216.81pt>
+LaTeX Warning: Reference `eq:nhat3' on page 16 undefined on input line 11.
+
+) (./tex/model2.tex [16] <../figs/poisson.pdf, id=474, 505.89pt x 216.81pt>
 File: ../figs/poisson.pdf Graphic file (type pdf)
 
-<use ../figs/poisson.pdf> <../figs/nonlin.pdf, id=517, 505.89pt x 216.81pt>
+<use ../figs/poisson.pdf> <../figs/nonlin.pdf, id=475, 505.89pt x 216.81pt>
 File: ../figs/nonlin.pdf Graphic file (type pdf)
 
 <use ../figs/nonlin.pdf>
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<../figs/dynamic_prior.pdf, id=518, 542.025pt x 505.89pt>
+[17 <../figs/poisson.pdf>]
+<../figs/dynamic_prior.pdf, id=499, 542.025pt x 505.89pt>
 File: ../figs/dynamic_prior.pdf Graphic file (type pdf)
 
 <use ../figs/dynamic_prior.pdf>
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-) [22 <../figs/poisson.pdf>] [23 <../figs/nonlin.pdf> <../figs/dynamic_prior.pd
-f>] (./main.aux)
+) [18 <../figs/nonlin.pdf>] [19 <../figs/dynamic_prior.pdf>] (./tex/pop.tex)
+[20
+
+] (./tex/in_vitro.tex) [21
+
+] (./tex/in_vivo.tex
+<../figs/spatial_data.pdf, id=531, 505.89pt x 505.89pt>
+File: ../figs/spatial_data.pdf Graphic file (type pdf)
+
+<use ../figs/spatial_data.pdf>) [22
+
+ <../figs/spatial_data.pdf>] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -466,33 +471,32 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 4558 strings out of 94500
- 53997 string characters out of 1155413
- 119464 words of memory out of 1000000
- 7434 multiletter control sequences out of 10000+50000
- 35757 words of font info for 84 fonts, out of 500000 for 2000
+ 4527 strings out of 94500
+ 53724 string characters out of 1155413
+ 119643 words of memory out of 1000000
+ 7416 multiletter control sequences out of 10000+50000
+ 35242 words of font info for 82 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 29i,15n,43p,1894b,303s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 29i,15n,43p,1894b,306s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 556 PDF objects out of 300000
- 163 named destinations out of 131072
- 267 words of extra memory for PDF output out of 65536
-{/opt/local/share/texmf-dist/fonts/enc/dvips/psnfss/8r.enc}</opt/local/share/
-texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/local/share/texmf-dist/font
-s/type1/bluesky/cm/cmbx7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/c
-mextra/cmmib7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmss8.pfb
-></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx10.pfb></opt/local/sha
-re/texmf-dist/fonts/type1/bluesky/cm/cmsy5.pfb></opt/local/share/texmf-dist/fon
-ts/type1/bluesky/symbols/msbm10.pfb></opt/local/share/texmf-dist/fonts/type1/bl
-uesky/cm/cmr5.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/symbols/msbm
-7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi5.pfb></opt/local
-/share/texmf-dist/fonts/type1/bluesky/cm/cmex10.pfb></opt/local/share/texmf-dis
-t/fonts/type1/urw/times/utmri8a.pfb></opt/local/share/texmf-dist/fonts/type1/bl
-uesky/cm/cmsy7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy10.p
-fb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi7.pfb></opt/local/sh
-are/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb></opt/local/share/texmf-dist/fon
-ts/type1/bluesky/cm/cmmi10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky
-/cm/cmmib10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb><
-/opt/local/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/local/share/
-texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on main.pdf (23 pages, 686501 bytes).
+ 549 PDF objects out of 300000
+ 158 named destinations out of 131072
+ 285 words of extra memory for PDF output out of 65536
+</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx7.pfb></opt/local/sha
+re/texmf-dist/fonts/type1/bluesky/cmextra/cmmib7.pfb></opt/local/share/texmf-di
+st/fonts/type1/bluesky/cm/cmss8.pfb></opt/local/share/texmf-dist/fonts/type1/bl
+uesky/cm/cmbx10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy5.p
+fb></opt/local/share/texmf-dist/fonts/type1/bluesky/symbols/msbm10.pfb></opt/lo
+cal/share/texmf-dist/fonts/type1/bluesky/cm/cmr5.pfb></opt/local/share/texmf-di
+st/fonts/type1/bluesky/symbols/msbm7.pfb></opt/local/share/texmf-dist/fonts/typ
+e1/bluesky/cm/cmmi5.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cme
+x10.pfb>{/opt/local/share/texmf-dist/fonts/enc/dvips/psnfss/8r.enc}</opt/local/
+share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></opt/local/share/texmf-dist
+/fonts/type1/bluesky/cm/cmsy7.pfb></opt/local/share/texmf-dist/fonts/type1/blue
+sky/cm/cmsy10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi7.pfb
+></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb></opt/local/share
+/texmf-dist/fonts/type1/bluesky/cm/cmmi10.pfb></opt/local/share/texmf-dist/font
+s/type1/bluesky/cm/cmmib10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky
+/cm/cmr10.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></o
+pt/local/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
+Output written on main.pdf (22 pages, 849778 bytes).

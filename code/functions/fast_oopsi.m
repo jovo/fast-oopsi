@@ -108,7 +108,7 @@ end
 
 % normalize F if it is only a trace
 if V.Npixels==1
-%     F=F-min(F); F=F/max(F); F=F+eps;
+    %     F=F-min(F); F=F/max(F); F=F+eps;
 end
 
 %% set default model Parameters
@@ -123,15 +123,15 @@ if ~isfield(P,'a'),     P.a     = 1;        end
 %% define some stuff needed for est_MAP function
 
 % make sure we have 1 spatial filter per neuron in ROI
-if V.fast_iter_max>1 && V.est_a==1
-    siz=size(P.a);
-    if siz(2)~=V.Ncells
-        [U,S,V]=pca_approx(F',V.Ncells);
-        for j=1:V.Ncells, P.a(:,j)=V(:,j); end
-    else
-        P.a=ones(V.Ncells,1);
-    end
-end
+% if V.fast_iter_max>1 && V.est_a==1
+%     siz=size(P.a);
+%     if siz(2)~=V.Ncells
+%         [U,S,VV]=pca_approx(F',V.Ncells);
+%         for j=1:V.Ncells, P.a(:,j)=VV(:,j); end
+%     else
+%         P.a=ones(V.Ncells,1);
+%     end
+% end
 
 % for brevity and expediency
 Z   = zeros(V.Ncells*V.T,1);                    % zero vector
@@ -181,12 +181,12 @@ while conv == 0
     P               = est_params(n,C,F,P,b);    % update parameters based on previous iteration
     [n C posts(i)]  = est_MAP(F,P);             % update inferred spike train based on new parameters
 
-    if posts(i)>post_max                        % if this is the best one, keep n and P
+%     if posts(i)>post_max                        % if this is the best one, keep n and P
         n_best  = n;                            % keep n
         P_best  = P;                            % keep P
         i_best  = i;                            % keep track of which was best
         post_max= posts(i);                     % keep max posterior
-    end
+%     end
 
     % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
     if  i>=V.fast_iter_max || (abs((posts(i)-posts(i-1))/posts(i))<1e-3 || any(posts(1:i-1)-posts(i))<1e-5)% abs((posts(i)-posts(i-1))/posts(i))<1e-5 || posts(i-1)-posts(i)>1e5;
@@ -209,7 +209,7 @@ P_best      = orderfields(P_best);
         z = 1;                                  % weight on barrier function
         llam = reshape(1./lam',1,V.Ncells*V.T)';
         if V.fast_nonlin==1
-            n = V.gauss_n; 
+            n = V.gauss_n;
         else
             n = 0.01+0*llam;                    % initialize spike train
         end
@@ -332,22 +332,25 @@ P_best      = orderfields(P_best);
                 end
             end
             if V.est_b==1
-%                 if V.Npixels>1
-%                     P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/V.T',[],[],[],[],Z(1:V.Ncells),inf+Z(1:V.Ncells),P.b,options);
-%                     P.b     = P.b';
-%                 else
-                    P.b = mean(F-P.a*C');
-                    P.b(P.b<0)=0;
-%                 end
+                %                 if V.Npixels>1
+                %                     P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/V.T',[],[],[],[],Z(1:V.Ncells),inf+Z(1:V.Ncells),P.b,options);
+                %                     P.b     = P.b';
+                %                 else
+                for jj=1:V.Ncells
+                    P.b(jj) = mean(mean(F-P.a(:,jj)*C(:,jj)'));
+                end
+                P.b(P.b<0)=0;
+                % P.b = mean(F-P.a*C');
+                %                 end
             end
             b       = repmat(P.b,V.T,1)';
             D       = F-P.a*(reshape(C,V.Ncells,V.T)+b);
             mse     = D(:)'*D(:);
         end
 
-        if V.est_a==0 && V.est_b==0 && (V.est_sig==1 || V.est_lam==1), 
-            D   = F-P.a*(reshape(C,V.Ncells,V.T)+b); 
-            mse = D(:)'*D(:); 
+        if V.est_a==0 && V.est_b==0 && (V.est_sig==1 || V.est_lam==1),
+            D   = F-P.a*(reshape(C,V.Ncells,V.T)+b);
+            mse = D(:)'*D(:);
         end
 
         % estimate other parameters

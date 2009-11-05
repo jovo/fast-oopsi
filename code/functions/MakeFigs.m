@@ -22,7 +22,7 @@ for i=datasets
     if datasets==13
         V.dt    = 1/60;
         V.T     = 600;
-        tau     = 1;                % decay time constant for each cell
+        tau     = 0.5;                % decay time constant for each cell
 
         P.gam   = 1-V.dt/tau;       % set gam
         P.lam   = 0.5;              % rate
@@ -71,8 +71,8 @@ for i=datasets
             case 1.5 % fast est params
                 V.fast_poiss=0;
                 V.fast_nonlin=0;
-                V.fast_iter_max=10;
-                [inf{i}.fast PP] = fast_oopsi(F{i},V);
+                V.fast_iter_max=3;
+                [inf{i}.fast2 PP] = fast_oopsi(F{i},V);
                 V.fast_iter_max=1;
             case 2 % nonlin
                 V.fast_poiss=0;
@@ -91,19 +91,21 @@ for i=datasets
                 inf{i}.poisson = fast_oopsi(F{i},V,P);
             case 4 % Wiener
                 PP.lam = sum(inf{i}.fast/max(inf{i}.fast))/(V.T*V.dt);
+                PP.sig = PP.lam;
                 inf{i}.Wiener = wiener_oopsi(F{i},V.dt,PP);
             case 5 % smc
                 [M P V] = smc_oopsi(F{i},V,P);
                 inf{i}.smc = M.nbar;
         end
     end
+    V.name = [name num2str(i)];
     save(['../../data/' V.name],'F','inf','spt','volt')
 end
 
 
 %%
-load(['../../data/' V.name])
-datasets=11;
+% load(['../../data/' V.name])
+% datasets=8;
 for j=datasets
     V.name_fig = ['../../figs/' V.name];                                 % filename for figure
     fig     = figure(j); clf,
@@ -116,7 +118,7 @@ for j=datasets
     ms      = 5;                        % marker size for real spike
     sw      = 2;                        % spike width
     lw      = 2;                        % line width
-    xlims   = [1 V.T];
+    xlims   = [5 V.T];
     xticks  = xlims(1):1/V.dt:xlims(2);             % XTick positions
     skip    = round(length(xticks)/5);
     xticks  = xticks(1:skip:end);
@@ -162,7 +164,7 @@ for j=datasets
         hold off,
         ylab=ylabel([{char(names(k))}; {'filter'}],'Interpreter',inter,'FontSize',fs);
         set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
-        set(gca,'YTick',0:2,'YTickLabel',[])
+        set(gca,'YTick',[],'YTickLabel',[])
         set(gca,'XTick',xticks,'XTickLabel',[])
         box off
     end

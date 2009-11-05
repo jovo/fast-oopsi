@@ -53,7 +53,7 @@ for i=datasets
         n_t{i}  = zeros(size(F{i}));
         n_t{i}(spt{i}) = 1;
         V.n = n_t{i};
-        V.name = [V.name num2str(i)];
+        V.name = [name num2str(i)];
     end
     for j=filters
         switch j
@@ -90,7 +90,7 @@ for i=datasets
                 V.fast_nonlin=0;
                 inf{i}.poisson = fast_oopsi(F{i},V,P);
             case 4 % Wiener
-                
+                PP.lam = sum(inf{i}.fast/max(inf{i}.fast))/(V.T*V.dt);
                 inf{i}.Wiener = wiener_oopsi(F{i},V.dt,PP);
             case 5 % smc
                 [M P V] = smc_oopsi(F{i},V,P);
@@ -102,8 +102,8 @@ end
 
 
 %%
-% load(['../../data/' V.name])
-% datasets=8;
+load(['../../data/' V.name])
+datasets=8;
 for j=datasets
     V.name_fig = ['../../figs/' V.name];                                 % filename for figure
     fig     = figure(j); clf,
@@ -116,7 +116,7 @@ for j=datasets
     ms      = 5;                        % marker size for real spike
     sw      = 2;                        % spike width
     lw      = 2;                        % line width
-    xlims   = [1 V.T];
+    xlims   = [2 V.T];
     xticks  = xlims(1):1/V.dt:xlims(2);             % XTick positions
     skip    = round(length(xticks)/5);
     xticks  = xticks(1:skip:end);
