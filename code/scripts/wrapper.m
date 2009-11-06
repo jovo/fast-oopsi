@@ -3,7 +3,7 @@
 % parameters
 
 clear, clc,
-fname = 'wrapper';
+fname = 'spatial_multi_inf';
 
 %% set parameters
 
@@ -106,6 +106,7 @@ save(['../../data/' fname '.mat'],'-append','I','Est')
 sound(10*sin(linspace(0,180*pi,2000)))
 
 %% plot results
+% load(['../../data/' fname])
 
 Pl.g    = 0.65*ones(1,3);       % gray color
 Pl.fs   = 12;                   % font size
@@ -177,8 +178,8 @@ for q=1:length(exps)
     set(gca,'XTick',[],'YTick',[])
     colormap gray
     if q==1,
-        title(['Sum of Spatial Filters'],'FontSize',Pl.fs);
-        ylab=ylabel([{'Truth'}]);
+        title(['sum of spatial filters'],'FontSize',Pl.fs);
+        ylab=ylabel([{'truth'}]);
     elseif q==2
         ylab=ylabel([{'PCA'}]);
     elseif q==3
@@ -191,7 +192,7 @@ for q=1:length(exps)
         subplot(nrows,ncols,(q-1)*2*ncols+j+1)
         image(reshape(E{q}.a(:,j_inf(j)),Est.h,Est.w)),
         set(gca,'XTickLabel',[],'YTickLabel',[])
-        if q==1, title(['Neuron ' num2str(j)],'FontSize',Pl.fs); end
+        if q==1, title(['neuron ' num2str(j)],'FontSize',Pl.fs); end
     end
 
     % plot F and n for neurons
@@ -203,9 +204,9 @@ for q=1:length(exps)
         axis([Pl.xlim-Pl.xlim(1) 0 1])
         set(gca,'YTick',[0 1],'YTickLabel',[])
         if q==1
-            title('Fluorescence Projection','FontSize',Pl.fs)
-            set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',(Pl.XTick-min(Pl.XTick))*Meta.dt)
-            xlabel('Time (sec)','FontSize',Pl.fs)
+            ylabel('fluorescence','FontSize',Pl.fs)
+            set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',round((Pl.XTick-min(Pl.XTick))*Meta.dt))
+            xlabel('time (sec)','FontSize',Pl.fs)
         else
             set(gca,'XTick',Pl.XTick-min(Pl.XTick),'XTickLabel',[])
         end
@@ -221,9 +222,9 @@ for q=1:length(exps)
         axis('tight')
         set(gca,'YTick',[0 1],'YTickLabel',[])
         if q==1
-            title('Spike Inference','FontSize',Pl.fs)
-            set(gca,'XTick',Pl.XTick,'XTickLabel',(Pl.XTick-min(Pl.XTick))*Meta.dt)
-            xlabel('Time (sec)','FontSize',Pl.fs)
+            ylabel('fast filter','FontSize',Pl.fs)
+            set(gca,'XTick',Pl.XTick,'XTickLabel',round((Pl.XTick-min(Pl.XTick))*Meta.dt))
+            xlabel('time (sec)','FontSize',Pl.fs)
         else
             set(gca,'XTick',Pl.XTick,'XTickLabel',[])
         end

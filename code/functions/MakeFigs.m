@@ -58,7 +58,8 @@ for i=datasets
     for j=filters
         switch j
             case 0 % fast init smc
-                V.fast_iter_max = 10;
+                V.fast_iter_max = 3;
+                V.smc_iter_max  = 5;
                 [fast smc] = run_oopsi(F{i},V,P);
                 V.fast_iter_max = 1;
                 inf{i}.fast = fast.n;
@@ -72,7 +73,7 @@ for i=datasets
                 V.fast_poiss=0;
                 V.fast_nonlin=0;
                 V.fast_iter_max=3;
-                [inf{i}.fast2 PP] = fast_oopsi(F{i},V);
+                [inf{i}.fast PP] = fast_oopsi(F{i},V);
                 V.fast_iter_max=1;
             case 2 % nonlin
                 V.fast_poiss=0;

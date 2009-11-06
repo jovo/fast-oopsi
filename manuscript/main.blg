@@ -38,45 +38,49 @@ Repeated entry---line 29920 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{WallaceHasan08
  :                        ,
 I'm skipping whatever remains of this entry
-You've used 20 entries,
+Name 1 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
+while executing---line 944 of file unsrt.bst
+Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
+while executing---line 944 of file unsrt.bst
+You've used 21 entries,
             1791 wiz_defined-function locations,
-            604 strings with 8054 characters,
-and the built_in function-call counts, 5058 in all, are:
-= -- 437
-> -- 277
+            610 strings with 8270 characters,
+and the built_in function-call counts, 5222 in all, are:
+= -- 450
+> -- 288
 < -- 1
-+ -- 99
-- -- 79
-* -- 426
-:= -- 825
-add.period$ -- 59
-call.type$ -- 20
-change.case$ -- 17
++ -- 103
+- -- 82
+* -- 435
+:= -- 856
+add.period$ -- 62
+call.type$ -- 21
+change.case$ -- 18
 chr.to.int$ -- 0
-cite$ -- 20
-duplicate$ -- 188
-empty$ -- 455
-format.name$ -- 79
-if$ -- 1076
+cite$ -- 21
+duplicate$ -- 196
+empty$ -- 469
+format.name$ -- 82
+if$ -- 1111
 int.to.chr$ -- 0
-int.to.str$ -- 20
-missing$ -- 21
-newline$ -- 102
-num.names$ -- 20
-pop$ -- 39
+int.to.str$ -- 21
+missing$ -- 22
+newline$ -- 107
+num.names$ -- 21
+pop$ -- 40
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 75
+skip$ -- 79
 stack$ -- 0
 substring$ -- 402
-swap$ -- 30
+swap$ -- 31
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 51
-width$ -- 22
-write$ -- 216
-(There were 9 error messages)
+while$ -- 52
+width$ -- 23
+write$ -- 227
+(There were 11 error messages)

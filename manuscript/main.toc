@@ -7,36 +7,18 @@
 \contentsline {paragraph}{Initializing the parameters}{7}{section*.2}
 \contentsline {paragraph}{Estimating the parameters given $\setbox \z@ \hbox {\frozen@everymath \@emptytoks \mathsurround \z@ $\textstyle \boldsymbol {n}$}\mathaccent "0362{\boldsymbol {n}}$}{7}{section*.3}
 \contentsline {paragraph}{Convergence criteria}{7}{section*.4}
-\contentsline {subsection}{\numberline {2.5}Spatial filtering}{8}{subsection.2.5}
+\contentsline {subsection}{\numberline {2.5}Spatial filtering}{7}{subsection.2.5}
 \contentsline {subsection}{\numberline {2.6}Overlapping spatial filters}{8}{subsection.2.6}
 \contentsline {subsection}{\numberline {2.7}Experimental Methods}{9}{subsection.2.7}
 \contentsline {paragraph}{Slice Preparation and Imaging}{9}{section*.5}
 \contentsline {paragraph}{Electrophysiology}{9}{section*.6}
 \contentsline {section}{\numberline {3}Results}{9}{section.3}
 \contentsline {subsection}{\numberline {3.1}Main Result}{9}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Online analysis of spike trains using the fast filter}{10}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.2}Online analysis of spike trains using the fast filter}{9}{subsection.3.2}
 \contentsline {subsection}{\numberline {3.3}Improving inference results}{10}{subsection.3.3}
 \contentsline {subsection}{\numberline {3.4}Spatial filter}{11}{subsection.3.4}
 \contentsline {subsection}{\numberline {3.5}Overlapping spatial filters}{13}{subsection.3.5}
 \contentsline {section}{\numberline {4}Discussion}{13}{section.4}
-\contentsline {paragraph}{Summary}{13}{section*.7}
-\contentsline {paragraph}{Extensions}{13}{section*.8}
-\contentsline {paragraph}{Thresholding}{14}{section*.9}
-\contentsline {paragraph}{Acknowledgments}{14}{section*.10}
-\contentsline {section}{References}{16}{section*.11}
-\contentsline {section}{\numberline {A}Wiener Filter}{16}{section.A}
-\contentsline {paragraph}{Fast Wiener Filter}{16}{section*.12}
-\contentsline {section}{\numberline {B}Model generalizations}{17}{section.B}
-\contentsline {subsection}{\numberline {B.1}Poisson observations}{17}{subsection.B.1}
-\contentsline {paragraph}{Model}{17}{section*.13}
-\contentsline {paragraph}{Inference}{17}{equation.39}
-\contentsline {subsection}{\numberline {B.2}Nonlinear observations}{17}{subsection.B.2}
-\contentsline {paragraph}{Model}{17}{section*.15}
-\contentsline {paragraph}{Inference}{17}{equation.41}
-\contentsline {subsection}{\numberline {B.3}Slow rise time}{18}{subsection.B.3}
-\contentsline {subsection}{\numberline {B.4}External stimulus}{18}{subsection.B.4}
-\contentsline {paragraph}{Model}{18}{section*.17}
-\contentsline {paragraph}{Inference}{18}{section*.18}
-\contentsline {subsection}{\numberline {B.5}Population imaging}{20}{subsection.B.5}
-\contentsline {subsection}{\numberline {B.6}in vitro data}{21}{subsection.B.6}
-\contentsline {subsection}{\numberline {B.7}in vivo data}{22}{subsection.B.7}
+\contentsline {paragraph}{Acknowledgments}{14}{section*.7}
+\contentsline {section}{References}{16}{section*.8}
+\contentsline {section}{\numberline {A}Wiener Filter}{17}{section.A}

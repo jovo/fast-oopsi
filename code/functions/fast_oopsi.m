@@ -336,7 +336,7 @@ P_best      = orderfields(P_best);
                 %                     P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/V.T',[],[],[],[],Z(1:V.Ncells),inf+Z(1:V.Ncells),P.b,options);
                 %                     P.b     = P.b';
                 %                 else
-                for jj=1:V.Ncells
+                for jj=1:V.Ncells  % THIS IS NOT CORRECT
                     P.b(jj) = mean(mean(F-P.a(:,jj)*C(:,jj)'));
                 end
                 P.b(P.b<0)=0;

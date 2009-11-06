@@ -1,0 +1,23 @@
+\section{Wiener Filter} \label{sec:wiener}
+
+Instead of replacing the Poisson distribution on spikes with an exponential, we can replace it with a Gaussian, ie,  $n_t \overset{iid}{\sim} \mN(\lam \Del, \lam \Del)$, which, when plugged into Eq. \eqref{eq:nhat2} yields:
+
+\begin{align} \label{eq:obj3}
+\hbn &= \argmax_{n_t}  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  + 
+ \frac{1}{2 \lam \Del}(n_t - \lam \Del)^2\bigg).
+\end{align}
+
+Using the same tridiagonal trick as above, we can solve Eq. \eqref{eq:obj3} using Newton-Raphson once (since we have a quadratic problem here).  Writing the above in matrix notation, substituting $C_t - \gam C_{t-1}$ for $n_t$, we obtain:
+
+\begin{align}   \label{eq:w2}
+\hbC&= \argmin_{\bC} \frac{1}{2\sig^2} \norm{\bF - \bC}^2 + \frac{1}{2\lam\Del} \norm{\bM \bC - \lam\Del\ve{1}}^2,
+\end{align}
+
+\noindent which is quadratic in $\bC$.  The gradient and Hessian are given by:
+
+\begin{align}
+\bg_w &= \frac{1}{\sig^2} (\bC - \bF) + \frac{1}{\lam\Del} ( (\bM \hbC)\T \bM - \lam\Del \bM\T \ve{1}), \\
+\bH_w &= \frac{1}{\sig^2} \ve{I} + \frac{1}{\lam\Del} \bM\T \bM.
+\end{align}
+
+Note that this solution is the optimal linear solution, under the assumption that spikes follow a Gaussian distribution, and if often referred to as the Wiener filter, regression with a smoothing prior, or ridge regression.  Estimating the parameters for this model follows similarly as above. 

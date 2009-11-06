@@ -117,4 +117,10 @@ Thomas~A Pologruto, Ryohei Yasuda, and Karel Svoboda.
   {Ca}$^{2+}$ indicators.
 \newblock {\em J Neurosci}, 24(43):9572--9579, Oct 2004.
 
+\bibitem{MishchenkoPaninski09}
+Mishchenko Y, Vogelstein JT, and Paninski L.
+\newblock A bayesian approach for inferring neuronal connectivity from calcium
+  fluorescent imaging data.
+\newblock {\em Annals of Applied Statistics}, in press, 2009.
+
 \end{thebibliography}
