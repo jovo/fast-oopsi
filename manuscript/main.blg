@@ -2,10 +2,6 @@ This is BibTeX, Version 0.99c (Web2C 7.5.4)
 The top-level auxiliary file: main.aux
 The style file: unsrt.bst
 Database file #1: /Users/joshyv/Research/misc/biblist.bib
-Repeated entry---line 9613 of file /Users/joshyv/Research/misc/biblist.bib
- : @article{GobelHelmchen07
- :                         ,
-I'm skipping whatever remains of this entry
 Repeated entry---line 9998 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{GreenbergKerr08
  :                         ,
@@ -14,73 +10,49 @@ Repeated entry---line 11957 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{HolekampHoly08
  :                        ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 13986 of file /Users/joshyv/Research/misc/biblist.bib
- : @article{KerrHelmchen07
- :                        ,
-I'm skipping whatever remains of this entry
-"}" immediately follows an entry type---line 14025 of file /Users/joshyv/Research/misc/biblist.bib
- :  D-69120 Heidelberg, Germany. jason@tuebingen.mpg.de
- :                                                     },
-I'm skipping whatever remains of this entry
-Repeated entry---line 15342 of file /Users/joshyv/Research/misc/biblist.bib
- : @article{LeeSeung01
- :                    ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 16139 of file /Users/joshyv/Research/misc/biblist.bib
- : @article{LuoSvoboda08
- :                      ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 16961 of file /Users/joshyv/Research/misc/biblist.bib
- : @article{MankGriesbeck08
- :                         ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 29920 of file /Users/joshyv/Research/misc/biblist.bib
- : @article{WallaceHasan08
- :                        ,
-I'm skipping whatever remains of this entry
 Name 1 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
 while executing---line 944 of file unsrt.bst
 Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
 while executing---line 944 of file unsrt.bst
-You've used 21 entries,
+You've used 14 entries,
             1791 wiz_defined-function locations,
-            610 strings with 8270 characters,
-and the built_in function-call counts, 5222 in all, are:
-= -- 450
-> -- 288
+            553 strings with 6766 characters,
+and the built_in function-call counts, 3265 in all, are:
+= -- 289
+> -- 161
 < -- 1
-+ -- 103
-- -- 82
-* -- 435
-:= -- 856
-add.period$ -- 62
-call.type$ -- 21
-change.case$ -- 18
++ -- 59
+- -- 45
+* -- 252
+:= -- 534
+add.period$ -- 41
+call.type$ -- 14
+change.case$ -- 12
 chr.to.int$ -- 0
-cite$ -- 21
-duplicate$ -- 196
-empty$ -- 469
-format.name$ -- 82
-if$ -- 1111
+cite$ -- 14
+duplicate$ -- 131
+empty$ -- 300
+format.name$ -- 45
+if$ -- 699
 int.to.chr$ -- 0
-int.to.str$ -- 21
-missing$ -- 22
-newline$ -- 107
-num.names$ -- 21
-pop$ -- 40
+int.to.str$ -- 14
+missing$ -- 14
+newline$ -- 72
+num.names$ -- 14
+pop$ -- 29
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 79
+skip$ -- 56
 stack$ -- 0
-substring$ -- 402
-swap$ -- 31
+substring$ -- 244
+swap$ -- 24
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 52
-width$ -- 23
-write$ -- 227
-(There were 11 error messages)
+while$ -- 33
+width$ -- 16
+write$ -- 150
+(There were 4 error messages)

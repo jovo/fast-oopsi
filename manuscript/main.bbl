@@ -1,59 +1,5 @@
 \begin{thebibliography}{10}
 
-\bibitem{ImagingManual}
-R.~Yuste, A.~Konnerth, B.R. Masters, et~al.
-\newblock {\em {Imaging in Neuroscience and Development, A Laboratory Manual}},
-  2006.
-
-\bibitem{NagayamaChen07}
-Shin Nagayama, Shaoqun Zeng, Wenhui Xiong, Max~L Fletcher, Arjun~V Masurkar,
-  Douglas~J Davis, Vincent~A Pieribone, and Wei~R Chen.
-\newblock {In vivo simultaneous tracing and {Ca}$^{2+}$ imaging of local
-  neuronal circuits.}
-\newblock {\em Neuron}, 53(6):789--803, Mar 2007.
-
-\bibitem{GobelHelmchen07}
-Werner G\"{o}bel and Fritjof Helmchen.
-\newblock In vivo calcium imaging of neural network function.
-\newblock {\em Physiology (Bethesda)}, 22:358--365, Dec 2007.
-
-\bibitem{LuoSvoboda08}
-L.~Luo, E.~M. Callaway, and K.~Svoboda.
-\newblock Genetic dissection of neural circuits.
-\newblock {\em Neuron}, 57:634--60, |2008|.
-
-\bibitem{GaraschukKonnerth07}
-Olga Garaschuk, Oliver Griesbeck, and Arthur Konnerth.
-\newblock Troponin c-based biosensors: a new family of genetically encoded
-  indicators for in vivo calcium imaging in the nervous system.
-\newblock {\em Cell Calcium}, 42(4-5):351--361, 2007.
-
-\bibitem{MankGriesbeck08}
-Marco Mank and Oliver Griesbeck.
-\newblock Genetically encoded calcium indicators.
-\newblock {\em Chem Rev}, 108(5):1550--1564, May 2008.
-
-\bibitem{WallaceHasan08}
-D.J. Wallace, S.M. zum Alten~Borgloh, S.~Astori, Y.~Yang, M.~Bausen, S.~Kugler,
-  A.E. Palmer, R.Y. Tsien, R.~Sprengel, J.N.D. Kerr, W.~Denk, and M.T. Hasan.
-\newblock {Single-spike detection in vitro and in vivo with a genetic Ca2+
-  sensor}.
-\newblock {\em Nature methods}, 5(9):797--804, 2008.
-
-\bibitem{OhkiReid06}
-Kenichi Ohki, Sooyoung Chung, Prakash Kara, Mark Hubener, Tobias Bonhoeffer,
-  and R.~Clay Reid.
-\newblock Highly ordered arrangement of single neurons in orientation
-  pinwheels.
-\newblock {\em Nature}, 442(7105):925--928, Aug 2006.
-
-\bibitem{KerrHelmchen07}
-J.N.D. Kerr, C.P.J. de~Kock, D.S. Greenberg, R.M. Bruno, B.~Sakmann, and
-  F.~Helmchen.
-\newblock {Spatial organization of neuronal population responses in layer 2/3
-  of rat barrel cortex}.
-\newblock {\em Journal of Neuroscience}, 27(48):13316, 2007.
-
 \bibitem{GreenbergKerr08}
 David~S Greenberg, Arthur~R Houweling, and Jason N~D Kerr.
 \newblock Population imaging of ongoing neuronal activity in the visual cortex
@@ -78,21 +24,21 @@ D.~D. Lee and H.~S. Seung.
 \newblock Learning the parts of objects by non-negative matrix factorization.
 \newblock {\em Nature}, 401(6755):788--791, Oct 1999.
 
-\bibitem{LeeSeung01}
-D.D. Lee and H.S. Seung.
-\newblock {Algorithms for non-negative matrix factorization}.
-\newblock {\em Advances in neural information processing systems}, pages
-  556--562, 2001.
-
 \bibitem{HuysPaninski06}
 Quentin J~M Huys, Misha~B Ahrens, and Liam Paninski.
 \newblock Efficient estimation of detailed single-neuron models.
 \newblock {\em J Neurophysiol}, 96(2):872--890, Aug 2006.
 
-\bibitem{TBF01}
-T.~Hastie, R.~Tibshirani, and J.~Friedman.
-\newblock {\em The Elements of Statistical Learning}.
-\newblock Springer, 2001.
+\bibitem{ImagingManual}
+R.~Yuste, A.~Konnerth, B.R. Masters, et~al.
+\newblock {\em {Imaging in Neuroscience and Development, A Laboratory Manual}},
+  2006.
+
+\bibitem{PaninskiWu09}
+Liam Paninski, Yashar Ahmadian, Daniel Ferreira, Shinsuke Koyama,
+  Kamiar~Rahnama Rad, Michael Vidne, Joshua Vogelstein, and Wei Wu.
+\newblock A new look at state-space models for neural data.
+\newblock {\em J Comput Neurosci}, Aug 2009.
 
 \bibitem{CONV04}
 S.~Boyd and L.~Vandenberghe.
@@ -117,10 +63,22 @@ Thomas~A Pologruto, Ryohei Yasuda, and Karel Svoboda.
   {Ca}$^{2+}$ indicators.
 \newblock {\em J Neurosci}, 24(43):9572--9579, Oct 2004.
 
+\bibitem{Hoyer04}
+P.O. Hoyer.
+\newblock {Non-negative matrix factorization with sparseness constraints}.
+\newblock {\em The Journal of Machine Learning Research}, 5:1457--1469, 2004.
+
+\bibitem{OGradyPearlmutter06}
+{O'Grady, P.D. and Pearlmutter, B.A.}
+\newblock {Convolutive non-negative matrix factorisation with a sparseness
+  constraint}.
+\newblock {\em Machine Learning for Signal Processing, 2006. Proceedings of the
+  2006 16th IEEE Signal Processing Society Workshop on}, pages 427--432, 2006.
+
 \bibitem{MishchenkoPaninski09}
 Mishchenko Y, Vogelstein JT, and Paninski L.
-\newblock A bayesian approach for inferring neuronal connectivity from calcium
-  fluorescent imaging data.
+\newblock {A Bayesian approach for inferring neuronal connectivity from calcium
+  fluorescent imaging data}.
 \newblock {\em Annals of Applied Statistics}, in press, 2009.
 
 \end{thebibliography}

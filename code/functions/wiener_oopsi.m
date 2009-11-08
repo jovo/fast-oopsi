@@ -27,14 +27,11 @@ function [n P]=wiener_oopsi(F,dt,E)
 
 siz = size(F);
 if siz(1)<siz(2), F=F'; end
-F = F/max(F);
+F = F-mean(F);
+F = F/max(abs(F));
 T = length(F);                                  %# frames
 o = 1+0*F;                                      %init a unity vector
-try
-    M = spdiags([-E.gam*o o], -1:0,T,T);            %matrix transforming calcium into spikes, ie n=M*C
-catch
-    ass=4;
-end
+M = spdiags([-E.gam*o o], -1:0,T,T);            %matrix transforming calcium into spikes, ie n=M*C
 C = o;                                          %initialize calcium
 P = E;
 n = M*C;

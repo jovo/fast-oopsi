@@ -19,14 +19,15 @@ P.lam           = 10;
 P.k_d           = 180;
 
 for i=datasets
-    if datasets==13
+    disp(i)
+    if i==13
         V.dt    = 1/60;
         V.T     = 600;
         tau     = 0.5;                % decay time constant for each cell
 
         P.gam   = 1-V.dt/tau;       % set gam
         P.lam   = 0.5;              % rate
-        P.sig   = 0.3;             % standard deviation
+        P.sig   = 0.5;             % standard deviation
         P.a     = 1;
         P.b     = 0;
 
@@ -40,6 +41,7 @@ for i=datasets
     else
         cc      = dataset.(char(names(i)));
         F{i}    = z1(cc.Fluorescence);
+        f=detrend(F{i}); y = fft(f); y(1:20)=0; iy=ifft(y); F{i}=z1(real(iy)); 
         V.dt    = median(diff(cc.FluorescenceTime));
         V.T     = length(F{i});
         P.gam   = 1-V.dt/1;
@@ -58,7 +60,7 @@ for i=datasets
     for j=filters
         switch j
             case 0 % fast init smc
-                V.fast_iter_max = 3;
+                V.fast_iter_max = 2;
                 V.smc_iter_max  = 5;
                 [fast smc] = run_oopsi(F{i},V,P);
                 V.fast_iter_max = 1;
@@ -72,7 +74,7 @@ for i=datasets
             case 1.5 % fast est params
                 V.fast_poiss=0;
                 V.fast_nonlin=0;
-                V.fast_iter_max=3;
+                V.fast_iter_max=2;
                 [inf{i}.fast PP] = fast_oopsi(F{i},V);
                 V.fast_iter_max=1;
             case 2 % nonlin
@@ -106,7 +108,7 @@ end
 
 %%
 % load(['../../data/' V.name])
-% datasets=8;
+% datasets=4;
 for j=datasets
     V.name_fig = ['../../figs/' V.name];                                 % filename for figure
     fig     = figure(j); clf,
@@ -119,7 +121,7 @@ for j=datasets
     ms      = 5;                        % marker size for real spike
     sw      = 2;                        % spike width
     lw      = 2;                        % line width
-    xlims   = [5 V.T];
+    xlims   = [5 V.T-50];
     xticks  = xlims(1):1/V.dt:xlims(2);             % XTick positions
     skip    = round(length(xticks)/5);
     xticks  = xticks(1:skip:end);

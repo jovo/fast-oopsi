@@ -114,8 +114,8 @@ end
 %% set default model Parameters
 
 if nargin < 3,          P       = struct;   end
-if ~isfield(P,'b'),     P.b     = mean(F);  end
-if ~isfield(P,'sig'),   P.sig   = std(F);  end
+if ~isfield(P,'b'),     P.b     = median(F);end
+if ~isfield(P,'sig'),   P.sig   = mad(F,1); end
 if ~isfield(P,'gam'),   P.gam   = 1-V.dt/1; end
 if ~isfield(P,'lam'),   P.lam   = 10;       end
 if ~isfield(P,'a'),     P.a     = 1;        end
@@ -181,12 +181,12 @@ while conv == 0
     P               = est_params(n,C,F,P,b);    % update parameters based on previous iteration
     [n C posts(i)]  = est_MAP(F,P);             % update inferred spike train based on new parameters
 
-%     if posts(i)>post_max                        % if this is the best one, keep n and P
+    if posts(i)>post_max                        % if this is the best one, keep n and P
         n_best  = n;                            % keep n
         P_best  = P;                            % keep P
         i_best  = i;                            % keep track of which was best
         post_max= posts(i);                     % keep max posterior
-%     end
+    end
 
     % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
     if  i>=V.fast_iter_max || (abs((posts(i)-posts(i-1))/posts(i))<1e-3 || any(posts(1:i-1)-posts(i))<1e-5)% abs((posts(i)-posts(i-1))/posts(i))<1e-5 || posts(i-1)-posts(i)>1e5;
@@ -332,16 +332,10 @@ P_best      = orderfields(P_best);
                 end
             end
             if V.est_b==1
-                %                 if V.Npixels>1
-                %                     P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/V.T',[],[],[],[],Z(1:V.Ncells),inf+Z(1:V.Ncells),P.b,options);
-                %                     P.b     = P.b';
-                %                 else
-                for jj=1:V.Ncells  % THIS IS NOT CORRECT
-                    P.b(jj) = mean(mean(F-P.a(:,jj)*C(:,jj)'));
+                for jj=1:V.Ncells
+                    P.b(jj) = mean(mean(F./repmat(P.a(:,jj),1,V.T)-repmat(C(:,jj)',V.Npixels,1)));
                 end
                 P.b(P.b<0)=0;
-                % P.b = mean(F-P.a*C');
-                %                 end
             end
             b       = repmat(P.b,V.T,1)';
             D       = F-P.a*(reshape(C,V.Ncells,V.T)+b);
