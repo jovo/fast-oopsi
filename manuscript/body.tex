@@ -1,3 +1,34 @@
+\section{Introduction}
+
+%\paragraph{Motivation}
+
+Simultaneously imaging large populations of neurons using calcium sensors is becoming increasingly popular.
+%, both in vitro  \cite{ImagingManual} and in vivo \cite{NagayamaChen07, GobelHelmchen07, LuoSvoboda08}, especially as the signal-to-noise-ratio (SNR) of genetic sensors continues to improve \cite{GaraschukKonnerth07, MankGriesbeck08, WallaceHasan08}. 
+Whereas the data from these experiments are movies of time-varying fluorescence signals, the desired signal is typically the spike trains of the observable neurons.  %Importantly, Because somatic calcium concentration has a relatively simple relationship to spikes, in theory, one could infer the most likely spike train of each neuron, given the fluorescence data.  
+% 
+%\paragraph{Limitations of calcium imaging}
+% 
+Unfortunately, finding the most likely spike train is a challenging computational task, due to poor signal-to-noise (SNR), poor temporal resolution, unknown parameters, and computational intractability.
+%for a number of reasons.  First, the signal-to-noise ratio (SNR) is often low, especially as one increases the image field and frame rate.  Second, fluorescence data typically has a low temporal resolution.  Third, to find the most likely spike train for a given fluorescence signal, one would have to search over all possible spike trains, a search that would take far too long, in practice.  
+% 
+%\paragraph{Computational tools as important as experimental tools}
+% 
+One is therefore effectively forced to find an approximately most likely spike train, or guess that the inferred spike train is most likely (but not really be sure).  %The precise details of these approximations, however, are crucial, especially as one approaches shot-noise limited data. For in vitro studies, one often uses 1-photon imaging --- either confocal or widefield --- in which case the number of photons per neuron is a function of magnification and frame rate (obviously, other parameters, such as number of sensors per neuron, are also important, but typically more difficult to control).  To maximize the amount of information one can extract from such preparations, one should increase the frame rate and image field until achieving the shot noise limited regime, assuming one has an inference algorithm that can operate in such a scenario.  For in vivo studies, 2-photon laser scanning microscopy is currently the method of choice, for which the SNR is relatively low,  because the dwell time per pixel is (frame duration)/($\#$ of pixels in frame).  To circumvent the low SNR for in vivo studies, some groups use long integration times (e.g., \cite{OhkiReid06}), whereas others use small image fields (e.g., \cite{KerrHelmchen07}).  One would prefer to neither sacrifice temporal resolution nor number of observable neurons, to get sufficient signal quality to perform reliable inference.  Therefore, it is of the utmost importance to extract as much information as possible from the signal; especially if one is asking quantitative questions about the statistics of the spike trains from the observable neurons --- either spontaneously or in relation to some sensorimotor stimulus or other spiking neurons.
+%
+%\paragraph{Previous approaches}
+
+A number of groups have therefore proposed algorithms to infer spike trains from calcium fluorescence data.  For instance, Greenberg et al. \cite{GreenbergKerr08} developed a novel template matching algorithm. %, which performed well on their data, but is not particularly computationally efficient
+Both Greenberg's approach and the approach developed here aim to optimize a similar objective function.  While they reduce the computational burden by restricting the search space of spike trains, here analytic approximations are made.  The advantage of their approach relative to this one is that the result is a spike train (ie, a binary sequence), whereas the approach developed herein is faster, and guaranteed to be optimal, given the approximations.  Holekamp et al. \cite{HolekampHoly08} took a very different strategy, by performing the optimal linear deconvolution (i.e., the Wiener filter) on the fluorescence data.  This approach is natural from a signal processing standpoint, but does not utilize the knowledge that spikes are always positive.  Previously, a sequential Monte Carlo method to efficiently compute the approximate probability of a spike in each image frame, given the entire fluorescence time series, was proposed \cite{VogelsteinPaninski09}.  While effective, that approach is not suitable for online analyses of populations of neurons, as the computations run in approximately real-time per neuron (i.e., analyzing one minute of data requires about one minute of computational time on a standard laptop computer), and real-time for a whole population of neurons would be desirable.
+
+
+The present work therefore takes a somewhat different approach.  It starts by first carefully considering the statistics of typical data-sets, and then writing down a generative model that accurately relates spiking to observations. Unfortunately, inferring the most likely spike train given this model is computationally intractable.  Making some well-justified approximations leads to an algorithm that infers the approximately most likely spike train, given the fluorescence data.  This algorithm has a few particularly noteworthy features, relative to other approaches.  First, spikes are assumed to be positive.  This assumption often improves filtering results when the underlying signal has this property \cite{LeeSeung99, HuysPaninski06}.  Second, the algorithm is extremely fast: it can process a calcium trace from 50,000 images in about one second on a standard laptop computer. In fact, filtering the signals for an entire population of about $100$ neurons runs \emph{faster} than real time. This speed facilitates using this filter online, as observations are being collected. In addition to these two features, the model may be generalized in a number of ways, including incorporating spatial filtering of the raw movie. The efficacy of the proposed filter is demonstrated on several real data-sets, suggesting this algorithm is a powerful and robust tool for online spike train inference.  The code (which is a simple Matlab script) is available from the authors upon request.
+
+
+
+
+
+
+
 \section{Methods} \label{sec:methods}
 
 As described above, to develop an algorithm to approximate the most likely spike train given fluorescence data, the statistics of typical data-sets are analyzed.  Starting with an in vitro experiment, for which the SNR is relatively high, an appropriate generative model is built (Section \ref{sec:model}).  Given this model, a goal can formalized (Section \ref{sec:goal}).  And given this goal, an approximately optimal inference algorithm is derived (Section \ref{sec:inf}) .  This algorithm depends on a number of unknown parameters, which can be estimated directly from the fluorescence observations (Secion \ref{sec:learn}).  The effective signal-to-noise ratio (SNR) of the fluorescence trace can be potentially improved by spatially filtering the movie (Section \ref{sec:spatial}), even when multiple neurons are within a region-of-interest (ROI) (Section \ref{sec:methods:overlapping}).  
@@ -263,3 +294,118 @@ All animal handling and experimentation was done according to the National Insti
 \paragraph{Electrophysiology}
 
 All recordings were made using the Multiclamp 700B amplifier (Molecular Devices, Sunnyvale, CA), digitized with National Instruments 6259 multichannel cards and recorded using custom software written using the LabView platform (National Instruments, Austin, TX) .  Waveforms were generated using Matlab and were given as current commands to the amplifier using the LabView and National Instruments system. The shape of the waveforms mimicked excitatory (inhibitory) synaptic inputs, with a maximal amplitude of $+70$ pA ($-70$ pA).
+
+
+
+
+
+
+
+
+
+\section{Results} \label{sec:results}
+
+\subsection{Main Result} \label{sec:main}
+
+The main result of this paper is that we can approximate $\hbn$ very efficiently, and that this approach outperforms a more \naive approach of a typical deconvolution filter, half-wave rectified (i.e., setting everything below zero equal to zero).  Fig. \ref{fig:woopsi_inf} depicts a simulation showing this result. Clearly, the \foopsi filter is outperforming the optimal linear deconvolution filter (also called a Wiener filter).  The Wiener filter implicitly approximates the Poisson spike rate with a Gaussian spike rate (see Appendix for details). While a Gaussian well approximates a Poisson distribution when rates are about $10$ spikes per frame, this example is obviously very far from that regime, and so the Gaussian approximation does very poorly. Furthermore, the Gaussian approximation allows for the inferred spike train to include negative numbers, which we do not want, as spike trains are non-negative entities.  To counteract the negative values, the Wiener filter then infers large positive values, contributing to a ``ringing'' effect.  The non-negative constraint imposed by the \foopsi filter ensures that such ringing does not take place.  Finally, by utilizing Gaussian elimination and interior-point methods, as described in the Methods section, the computational complexity of \foopsi filter is the same as an efficient implementation of the Wiener filter.  
+
+
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/woopsi_inf}
+\caption{The \foopsi filter significantly outperforms the optimal linear deconvolution (aka, Wiener) filter on typical simulated data-sets. Top panel: fluorescence trace.  Second panel: spike train.  Third panel: \foopsi filter inference.  Bottom panel: Wiener filter inference.  Gray '$+$'s in bottom two panels indicate true spike times.  Simulation details: $T=2930$ time steps, $\Del=5$ msec, $\alpha=1$, $\beta=0$, $\sig=0.3$, $\tau=1$ sec, $\lam=1$ Hz.} \label{fig:woopsi_inf}
+\end{figure}
+
+
+In the above, the model parameters were assumed to be known.  However, in the general case, the parameters are unknown, and must therefore be estimated from the data.  Section \ref{sec:learn} describes how the parameters of the model may be estimated directly from the observations.  Importantly, this obviates the need to conduct joint imaging and electrophyiological experiments to obtain ``training'' data, as the developed approach is fully unsupervised.  Figure \ref{fig:woopsi_learn} shows another simulated example; in this example, however, the parameters are estimated from the observed fluorescence trace.  Again, it is clear that the \foopsi filter far outperforms the Wiener filter.
+
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/woopsi_learn}
+\caption{The \foopsi filter significantly outperforms the Wiener filter, even when estimating the parameters only from the observed data.  Simulated details as in Figure \ref{fig:woopsi_inf}.} \label{fig:woopsi_learn}
+\end{figure}
+
+Given the above two results, the \foopsi filter was applied to real data.  More specifically, by simultaneously recording electrophysiologically and imaging, the true spike times are known, and the accuracy of the two filters can be compared.  Figure \ref{fig:woopsi_data} shows similar result for this typical in vitro data-set.  These results are typical of the 12 joint electrophysiological and imaging experiments conducted (not shown). Note that the first few ``events'' are actually pairs of spikes, which is reflected in the inferred spike trains.
+
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/woopsi_data4}
+\caption{The \foopsi filter significantly outperforms the Wiener filter on typical in vitro data-sets.  Note that all the parameters for both filters were estimated from the data.} \label{fig:woopsi_data}
+\end{figure}
+
+\subsection{Online analysis of spike trains using the \foopsi filter}
+
+A central aim for this work was the development of a algorithm that infers spikes sufficiently efficiently to use online while imaging a large population (eg, $\approx 100$) of neurons.  Figure \ref{fig:pop} shows the result of running \foopsi on 136 neurons, recorded simultaneously, as described in the Methods section.  Note that the filtered fluorescence signals much more clearly show fluctuations in spiking. These spike trains were inferred in approximately real time, meaning that one could infer spike trains for the past experiment while conducting the subsequent experiment.
+
+
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/pop}
+\caption{Applying the \foopsi filter in real time to a large population of neurons imaged simultaneously.  The inferred spike trains convey much more clearly the neural activity.  Left panel: Mean segmented image field.  Middle panel: example fluorescence traces.  Right panel: \foopsi filter output corresponding to each associated trace.} \label{fig:pop}
+\end{figure}
+
+
+\subsection{Extensions}
+
+Section \ref{sec:model} describes a simple principled first-order model relating the spike trains to the fluorescence trace. A number of the simplifying assumptions can be straightforwardly relaxed, including: the linearity between calcium and fluorescence, the Gaussianity of the noise on the fluorescence measurements, and the static nature of the prior, $\lam$.  Combining all three of these modifications yields a more powerful model:
+
+
+\begin{align}
+	F_t &\sim \text{Poisson}(\alpha S(C_t) + \beta) \label{eq:nonlin} \\
+	% C_t &= (1-\Del/\tau)C_{t-1} + n_t
+	n_t &\sim \text{Poisson}(\lam_t \Del),
+\end{align}
+
+\noindent where the dynamics for calcium are as before, and $S(C_t)=\frac{C_t}{C_t + k_d}$ is the standard Hill equation \cite{PologrutoSvoboda04}.  To modify the \foopsi filter to be optimal for this new model, the gradient and Hessian of this new model can be analytically computed.  Note that both the Poisson observation assumption and the time-varying assumption maintain the log-concavity of the posterior, meaning that by using Newton-Raphson, obtaining the globally optimal solution is still guaranteed (which is not true upon including the nonlinearity).   
+
+Unfortunately, using this more powerful model did not result in substantial inference improvements for simulated or in vitro data (not shown).  This is possibly due to approximating the Poisson distribution governing spiking with an exponential distribution.  This approximation is required to ensure concavity of the posterior.  A previously proposed sequential Monte Carlo (SMC) method to infer spike trains \cite{VogelsteinPaninski09} does not require such an assumption. Like the fast filter, the SMC filter estimates the model parameters in a completely unsupervised fashion, ie, from the fluorescence observations, using an expectation-maximization algorithm.  In \cite{VogelsteinPaninski09}, parameters for the SMC filter were initialized based on other data-sets.  While effective, this initialization was often far from the final estimates, and therefore, required a relatively large number of iterations (eg, 20-25) before converging.  Thus, it seemed that the \foopsi filter could be used to obtain an improvement to the initial parameter estimates, reducing the required number of iterations.  Indeed, Figure \ref{fig:smc_init} shows how the SMC filter outperforms the \foopsi filter on in vitro data, and only required $3$--$5$ iterations to converge.  Note that the first few events are individual spikes, resulting in relatively small fluorescence fluctuations, whereas the next events are actually spike doublets, causing a much larger fluorescence fluctuation.  Only the SMC filter picks up the individual spikes in this trace, a result typical when the effective signal-to-noise ratio (SNR) is so poor.  Thus, these two inference algorithms are complementary: the \foopsi filter can be used for rapid, online inference, and for initializing the SMC filter, which can then be used to further refine the spike train estimate.
+
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/smc_init12}
+\caption{The \foopsi filter effectively initializes the parameters for the SMC filter (which outperforms the \foopsi filter), significantly reducing the number of expectation-maximization iterations to convergence.  Note that the ordinate on the bottom panel corresponds to the probability of a spike having occurred in each frame.} \label{fig:smc_init}
+\end{figure}
+
+\subsection{Spatial filter}
+
+In the above, the data was assumed to be one-dimensional fluorescence traces.  In actuality, the data is a time series of images, which are first segmented into regions-of-interest (ROI), and typically, then averaged, to obtain $F_t$.  In theory, one could improve the effective SNR of the fluorescence trace by scaling each pixel relative to one another.  In particular, pixels not containing any information about calcium fluctuations can be ignored, and pixels that are approximately anti-correlated with one another could have weights with opposing signs.  
+
+Figure \ref{fig:spatial} demonstrates the potential utility of this approach.  The top row shows different depictions of an ROI containing a single neuron.  On the far left panel is the true spatial filter for this neuron.  This particular spatial filter was chosen based on experience analyzing both in vitro and in vivo movies; often, it seems that the pixels immediately around the soma are anti-correlated with those in the soma.  This effect is possibly due to the influx of calcium from extracellular space immediately around the soma.  This simulated movie is relatively noisy, as indicated by the second panel, which depicts an exemplary image frame.  The standard approach, given such a noisy movie, would be to first segment the movie to find an ROI corresponding to the soma of this cell, and then spatially average all the pixels found to be within this ROI.  The third panel shows this ``typical spatial filter''.  The forth panel shows the mean frame, ie, $\langle \vbF \rangle_t$.  Clearly, this mean frame is very similar to the true spatial filter.
+
+The bottom panels of Figure \ref{fig:spatial} depict the effect of using the true spatial filter, versus the typical one. The left side shows the fluorescence trace and its associated spike inference obtained from using the typical spatial filter.  The right side shows the same when using the true spatial filter.  Clearly, the true spatial filter results in a much cleaner fluorescence trace and spike inference.  
+
+
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/spatial2}
+\caption{A simulation demonstrating that using a better spatial filter can significantly enhance the effective SNR (see Supplementary Movie 1 for the full movie associated with this simulation). The true spatial filter was a sum of Gaussians: a positively weighted small variance Gaussian, and a negatively weighted large variance Gaussian (both with the same mean).  Top row far left: true spatial filter.  Top row second from left: example frame (frame number 100). Top row second from right: typical spatial filter.   Top row far right: mean frame.  Middle row left: fluorescence trace using typical spatial filter. Bottom row left: \foopsi filter output using typical spatial filter.  Middle row right: fluorescence trace using true spatial filter.  Bottom right: \foopsi filter output using true spatial filter. Simulation details: $\valpha=\mN(\ve{0},2 \bI)-1.1 \mN(\ve{0},2.5 \bI)$ where $\mN(\ve{mu},\ve{\Sig})$ indicates a Gaussian with mean $\ve{\mu}$ and covariance matrix $\ve{\Sig}$, $\bbeta=1$, $\tau=0.85$ sec, $\lam=5$ Hz.} \label{fig:spatial} 
+\end{figure}
+
+
+
+\subsection{Overlapping spatial filters}
+
+
+The above shows that if a ROI contains only a single neuron, the effective SNR can be enhanced by spatially filtering.  However, this analysis assumes that only a single neuron is in the ROI.  Often, neural spatial filters are overlapping, or nearly overlapping, making the segmentation problem even more difficult.  Therefore, it is desirable to have an ability to crudely segment, yielding only a few neurons in each ROI, and then spatially filtering within each ROI to pick out the spike trains from each neuron.  This may be achieved in a principled manner by generalizing the model as described in Section \ref{sec:methods:overlapping}.  Figure \ref{fig:spatial_multi_inf} shows an example of this approach on simulated data. Note that the spatial filters are sufficiently overlapping that some ``bleed-though'' can be seen across the traces.  
+
+
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/spatial_multi_inf}
+\caption{Simulation showing that even when two neurons' spatial filters are overlapping, one can separate the two signals by spatial filtering. Simulation details: $\valpha^1=\mN([-1.8 1.8],2 \bI)\, \valpha^2=\mN([1.8 -1.8],5 \bI)$, $\bbeta=[1 1]\T$, $\tau=[0.5 0.5]\T$ sec, $\lam=[1.5 1.5]$ Hz.} \label{fig:spatial_multi_inf}
+\end{figure}
+
+While Figure \ref{fig:spatial_multi_inf} shows that one could separate the signals if the spatial filters of the neurons were known, Figure \ref{fig:spatial_multi_learn} shows that the spatial filters can be estimated using only the fluorescence movie, by using the approach described in Section \ref{sec:methods:overlapping}.
+
+
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{../figs/spatial_multi_learn}
+\caption{Simulation showing that even when two neuron's spatial filters are largely overlapping, the spatial filter of each can be inferred, to separate the two signals. Simulation details as above.} \label{fig:spatial_multi_learn}
+\end{figure}
+
+
+
+
+
+\section{Discussion} \label{sec:dis}
+
+% \paragraph{Summary}
+
+Above, an algorithm to approximate the \emph{maximum a posteriori} (MAP) spike train, given a fluorescence trace was developed.  The approximation is required because finding the actual MAP estimate is not currently computationally tractable.  Replacing the assumed Poisson distribution on spikes with an exponential distribution yields a log-concave optimization problem, which can be solved using standard gradient ascent techniques (such as Newton-Raphson).  This exponential distribution has an advantage over a Gaussian distribution by restricting spikes to be positive, which improves inference quality (c.f. Figure \ref{fig:woopsi_inf}).  This result is common within machine learning \cite{Hoyer04,OGradyPearlmutter06}: imposing a non-negative constraint often helps prevent oscillations and other overfitting artifacts. This non-negative constraint is enforced by interior-point methods.  Furthermore, by utilizing the special structure of the Hessian matrix (ie, it is tridiagonal), this approximate MAP spike train can be found.  Importantly, this algorithm runs fast enough on standard computers that it can be run online.  Finally, all the parameters can be estimated from only the fluorescence observations, obviating the need for joint electrophysiology and imaging (c.f. Figure \ref{fig:woopsi_learn}).  This approach is robust, in that it works ``out-of-the-box'' on all the in vivo and in vitro data analyzed (c.f. Figure \ref{fig:woopsi_data}).
+
+Because this filter is model based, it can generalized in several ways to improve accuracy.  Unfortunately, some of these generalizations do not improve inference accuracy, probably because of the exponential approximation.  Instead, the \foopsi filter output can be used to initialize the SMC filter \cite{VogelsteinPaninski09}, to further improve inference quality (c.f. Figure \ref{fig:smc_init}).  Another model generalization allows incorporation of spatial filtering of the raw movie into this approach (c.f. Figure \ref{fig:spatial}).  The parameters of the spatial filter can be estimated from the data, even when spatial filters are overlapping (c.f. Figure \ref{fig:spatial_multi_learn}).
+
+A number of extensions follow from this work.  First, further development on some of the model generalizations may improve inference results. Second, putting this filter with a crude but automatic segmentation tool to obtain ROIs would create a completely automatic algorithm that converts raw movies of populations of neurons into populations of spike trains.  Third, combining this algorithm with recently developed connectivity inference algorithms on this kind of data \cite{MishchenkoPaninski09}, could yield very efficient connectivity inference.

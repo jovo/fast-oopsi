@@ -1,7 +1,7 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  8 NOV 2009 11:52
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  8 NOV 2009 19:30
 entering extended mode
-**main
-(./main.tex
+**fast_oopsi
+(./fast_oopsi.tex
 LaTeX2e <2003/12/01>
 Babel <v3.8d> and hyphenation patterns for american, french, german, ngerman, b
 ahasa, basque, bulgarian, catalan, croatian, czech, danish, dutch, esperanto, e
@@ -249,12 +249,12 @@ File: upsy.fd 2001/06/04 font definitions for U/psy.
 ))
 \Fld@listcount=\count115
 \@outlinefile=\write3
-) (./main.aux
+) (./fast_oopsi.aux
 
 LaTeX Warning: Label `eq:par2' multiply defined.
 
 )
-\openout1 = `main.aux'.
+\openout1 = `fast_oopsi.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
 LaTeX Font Info:    ... okay on input line 18.
@@ -315,23 +315,23 @@ Package: nameref 2003/12/03 v2.21 Cross-referencing by name of section
 )
 LaTeX Info: Redefining \ref on input line 18.
 LaTeX Info: Redefining \pageref on input line 18.
- (./main.out)
-(./main.out)
-\openout3 = `main.out'.
+
+(./fast_oopsi.out) (./fast_oopsi.out)
+\openout3 = `fast_oopsi.out'.
 
 LaTeX Font Info:    Try loading font information for U+msa on input line 22.
- (/opt/local/share/texmf-dist/tex/latex/amsfonts/umsa.fd
+
+(/opt/local/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2002/01/19 v2.2g AMS font definitions
 )
 LaTeX Font Info:    Try loading font information for U+msb on input line 22.
 
 (/opt/local/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2002/01/19 v2.2g AMS font definitions
-) (./abstract.tex
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
 )
-(./intro.tex
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 22.
+ (./body.tex
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
 
@@ -340,13 +340,13 @@ Overfull \hbox (2.66028pt too wide) in paragraph at lines 5--19
  cal-cium sen-sors is be-com-ing in-creas-ingly pop-u-lar. Whereas
  []
 
-) [1
+[1
 
 {/opt/local/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-(./methods.tex
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 6.
- <../figs/in_vitro_ex.pdf, id=106, 505.89pt x 361.35pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 37.
+
+<../figs/in_vitro_ex.pdf, id=106, 505.89pt x 361.35pt>
 File: ../figs/in_vitro_ex.pdf Graphic file (type pdf)
 
 <use ../figs/in_vitro_ex.pdf>
@@ -355,8 +355,8 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [2] [3 <../figs/in_vitro_ex.pdf>] [4] [5]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 169.
- [6] [7]) (./results.tex
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 200.
+ [6] [7]
 <../figs/woopsi_inf.pdf, id=279, 505.89pt x 361.35pt>
 File: ../figs/woopsi_inf.pdf Graphic file (type pdf)
 
@@ -414,21 +414,21 @@ File: ../figs/spatial_multi_learn.pdf Graphic file (type pdf)
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-) (./discussion.tex [12 <../figs/smc_init12.pdf>]) [13 <../figs/spatial2.pdf>]
-(./main.bbl [14 <../figs/spatial_multi_inf.pdf> <../figs/spatial_multi_learn.pd
-f>]) (./wiener.tex [15]) [16] (./main.aux)
+[12 <../figs/smc_init12.pdf>]) [13 <../figs/spatial2.pdf>] (./fast_oopsi.bbl
+[14 <../figs/spatial_multi_inf.pdf> <../figs/spatial_multi_learn.pdf>])
+(./wiener.tex [15]) [16] (./fast_oopsi.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 4425 strings out of 94500
- 52377 string characters out of 1155413
+ 4414 strings out of 94500
+ 52336 string characters out of 1155413
  119007 words of memory out of 1000000
  7376 multiletter control sequences out of 10000+50000
  36796 words of font info for 88 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 29i,15n,43p,1887b,309s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 29i,15n,43p,1890b,309s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
  422 PDF objects out of 300000
  107 named destinations out of 131072
@@ -452,4 +452,4 @@ ts/type1/urw/times/utmri8a.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky
 t/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy9.pfb></opt/local/share/tex
 mf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/local/share/texmf-dist/fonts/typ
 e1/urw/times/utmr8a.pfb>
-Output written on main.pdf (16 pages, 564042 bytes).
+Output written on fast_oopsi.pdf (16 pages, 564035 bytes).

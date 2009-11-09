@@ -16,8 +16,8 @@ Using the same tridiagonal trick as above, Eq. \eqref{eq:obj3} can be solved usi
 \noindent which is quadratic in $\bC$.  The gradient and Hessian are given by:
 
 \begin{align}
-\bg_w &= -\frac{1}{\sig^2} (\bC - \bF) - \frac{1}{\lam\Del} ( (\bM \hbC)\T \bM + \lam\Del \bM\T \ve{1}), \\
-\bH_w &= \frac{1}{\sig^2} \ve{I} + \frac{1}{\lam\Del} \bM\T \bM.
+\bg &= -\frac{1}{\sig^2} (\bC - \bF) - \frac{1}{\lam\Del} ( (\bM \hbC)\T \bM + \lam\Del \bM\T \ve{1}), \\
+\bH &= \frac{1}{\sig^2} \ve{I} + \frac{1}{\lam\Del} \bM\T \bM.
 \end{align}
 
 Note that this solution is the optimal linear solution, under the assumption that spikes follow a Gaussian distribution, and if often referred to as the Wiener filter, regression with a smoothing prior, or ridge regression.  Estimating the parameters for this model follows similarly as above. 

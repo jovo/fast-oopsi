@@ -3,196 +3,86 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>tex/goal.tex</string>
+	<string>fast_oopsi.tex</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
-			<string>tex/main.tex</string>
+			<string>fast_oopsi.tex</string>
 			<key>lastUsed</key>
-			<date>2009-10-26T22:38:29Z</date>
+			<date>2009-11-09T00:30:55Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
-			<string>tex/abstract.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/intro.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/methods.tex</string>
+			<string>body.tex</string>
 			<key>lastUsed</key>
-			<date>2009-10-27T10:42:19Z</date>
+			<date>2009-11-09T00:28:53Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
-			<string>tex/goal.tex</string>
+			<string>wiener.tex</string>
 			<key>lastUsed</key>
-			<date>2009-10-27T10:46:27Z</date>
+			<date>2009-11-08T01:04:20Z</date>
 			<key>selected</key>
 			<true/>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/model.tex</string>
-			<key>lastUsed</key>
-			<date>2009-10-27T10:46:27Z</date>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/assess.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/dynamic_prior.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/exp.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/in_vitro.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/in_vivo.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/inference.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/learning.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/main_result.tex</string>
-			<key>lastUsed</key>
-			<date>2009-10-07T18:22:09Z</date>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/nonlin_obs.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/overlapping.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/poisson.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/slow_rise_time.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/spatial.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/pop.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/discussion.tex</string>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>tex/appendix.tex</string>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>200</integer>
 	<key>metaData</key>
 	<dict>
-		<key>tex/goal.tex</key>
+		<key>body.tex</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>438</integer>
+				<integer>420</integer>
 				<key>line</key>
-				<integer>6</integer>
+				<integer>408</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>395</integer>
 		</dict>
-		<key>tex/main.tex</key>
+		<key>fast_oopsi.tex</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>11</integer>
-				<key>line</key>
-				<integer>100</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>93</integer>
-		</dict>
-		<key>tex/main_result.tex</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>496</integer>
-				<key>line</key>
-				<integer>2</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>tex/methods.tex</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>841</integer>
-				<key>line</key>
 				<integer>0</integer>
+				<key>line</key>
+				<integer>38</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
-			<integer>0</integer>
+			<integer>88</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>13</integer>
 		</dict>
-		<key>tex/model.tex</key>
+		<key>wiener.tex</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>79</integer>
+				<integer>9</integer>
 				<key>line</key>
-				<integer>34</integer>
+				<integer>19</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>33</integer>
+			<integer>0</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>tex/main.tex</string>
-		<string>tex/methods.tex</string>
-		<string>tex/model.tex</string>
-		<string>tex/goal.tex</string>
-		<string>tex/main_result.tex</string>
+		<string>fast_oopsi.tex</string>
+		<string>body.tex</string>
+		<string>wiener.tex</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{4, 13}, {726, 865}}</string>
+	<string>{{7, 13}, {736, 865}}</string>
 </dict>
 </plist>

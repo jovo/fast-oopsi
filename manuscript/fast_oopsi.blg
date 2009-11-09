@@ -1,5 +1,5 @@
 This is BibTeX, Version 0.99c (Web2C 7.5.4)
-The top-level auxiliary file: main.aux
+The top-level auxiliary file: fast_oopsi.aux
 The style file: unsrt.bst
 Database file #1: /Users/joshyv/Research/misc/biblist.bib
 Repeated entry---line 9998 of file /Users/joshyv/Research/misc/biblist.bib
@@ -16,7 +16,7 @@ Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the e
 while executing---line 944 of file unsrt.bst
 You've used 14 entries,
             1791 wiz_defined-function locations,
-            553 strings with 6766 characters,
+            553 strings with 6778 characters,
 and the built_in function-call counts, 3265 in all, are:
 = -- 289
 > -- 161
