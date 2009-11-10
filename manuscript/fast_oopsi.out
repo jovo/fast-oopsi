@@ -4,9 +4,15 @@
 \BOOKMARK [2][-]{subsection.2.2}{Goal}{section.2}
 \BOOKMARK [2][-]{subsection.2.3}{Inference}{section.2}
 \BOOKMARK [2][-]{subsection.2.4}{Learning}{section.2}
+\BOOKMARK [3][-]{subsubsection.2.4.1}{Initializing the parameters}{subsection.2.4}
+\BOOKMARK [3][-]{subsubsection.2.4.2}{Estimating the parameters given n"0362n}{subsection.2.4}
+\BOOKMARK [3][-]{subsubsection.2.4.3}{Convergence criteria}{subsection.2.4}
 \BOOKMARK [2][-]{subsection.2.5}{Spatial filtering}{section.2}
 \BOOKMARK [2][-]{subsection.2.6}{Overlapping spatial filters}{section.2}
 \BOOKMARK [2][-]{subsection.2.7}{Experimental Methods}{section.2}
+\BOOKMARK [3][-]{subsubsection.2.7.1}{Slice Preparation and Imaging}{subsection.2.7}
+\BOOKMARK [3][-]{subsubsection.2.7.2}{Electrophysiology}{subsection.2.7}
+\BOOKMARK [3][-]{subsubsection.2.7.3}{Fluorescence preprocessing}{subsection.2.7}
 \BOOKMARK [1][-]{section.3}{Results}{}
 \BOOKMARK [2][-]{subsection.3.1}{Main Result}{section.3}
 \BOOKMARK [2][-]{subsection.3.2}{Online analysis of spike trains using the fast filter}{section.3}
@@ -14,5 +20,5 @@
 \BOOKMARK [2][-]{subsection.3.4}{Spatial filter}{section.3}
 \BOOKMARK [2][-]{subsection.3.5}{Overlapping spatial filters}{section.3}
 \BOOKMARK [1][-]{section.4}{Discussion}{}
-\BOOKMARK [1][-]{section*.7}{References}{}
 \BOOKMARK [1][-]{section.A}{Wiener Filter}{}
+\BOOKMARK [1][-]{section*.2}{References}{}

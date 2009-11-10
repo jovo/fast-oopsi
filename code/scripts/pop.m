@@ -1,4 +1,5 @@
-load('../../data/s1m4_20x.mat')
+% load('../../data/s1m4_20x.mat')
+load('../../data/new_foopsi.mat')
 
 fig=figure(21); clf
 
@@ -19,7 +20,7 @@ axis('tight')
 [foo idx] = sort(sum(data.fast_oopsi,2));
 % idx=flipud(idx);
 
-load('../../data/s1m4_20x.mat')
+% load('../../data/s1m4_20x.mat')
 
 %%
 siz=size(data.traces);

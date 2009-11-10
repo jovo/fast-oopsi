@@ -75,6 +75,21 @@ P.O. Hoyer.
 \newblock {\em Machine Learning for Signal Processing, 2006. Proceedings of the
   2006 16th IEEE Signal Processing Society Workshop on}, pages 427--432, 2006.
 
+\bibitem{AndrieuDoucet01}
+C.~Andrieu, {\'E}.~Barat, and A.~Doucet.
+\newblock {Bayesian deconvolution of noisy filtered point processes}.
+\newblock {\em IEEE Transactions on Signal Processing}, 49(1):134--146, 2001.
+
+\bibitem{FS81}
+JH~Friedman and W.~Stuetzle.
+\newblock {Projection Pursuit Regression.}
+\newblock {\em J. AM. STAT. ASSOC.}, 76(376):817--823, 1981.
+
+\bibitem{MallatZhang93}
+S.~Mallat and Z.~Zhang.
+\newblock {Matching pursuit with time-frequency dictionaries: IEEE Trans}.
+\newblock {\em Signal Processing}, 41:3397--3415, 1993.
+
 \bibitem{MishchenkoPaninski09}
 Mishchenko Y, Vogelstein JT, and Paninski L.
 \newblock {A Bayesian approach for inferring neuronal connectivity from calcium

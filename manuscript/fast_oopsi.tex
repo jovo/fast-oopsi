@@ -11,7 +11,7 @@
 \rhead{Fast spike train inference from calcium imaging}
 %\headheight=14.5pt
 
-\title{Online nonlinear deconvolution for spike train inference from population calcium imaging}
+\title{Online constrained deconvolution for spike train inference from population calcium imaging}
 
 \author{Joshua T.~Vogelstein, Adam Packer, Tim M.~Machado, \\ Tanya Sippy, Baktash Babadi, Rafael Yuste, Liam Paninski}
 
@@ -29,6 +29,9 @@ Calcium imaging technologies for observing spiking activity simultaneously from 
 
 The authors would like to express appreciation for helpful discussions with Vincent Bonin.  Support for JTV was provided by NIDCD DC00109. LP is supported by an NSF CAREER award, by an Alfred P.\ Sloan Research Fellowship, and the McKnight Scholar Award. RY's laboratory is supported by .  LP and RY share .
 
+\appendix
+\section{Wiener Filter} \label{sec:wiener}
+\input{wiener}
 %\subparagraph*{References}
 \bibliography{/Users/joshyv/Research/misc/biblist}
 \addcontentsline{toc}{section}{References}
@@ -37,7 +40,7 @@ The authors would like to express appreciation for helpful discussions with Vinc
 \bibliographystyle{unsrt}
 %\bibliographystyle{nature}
 
-\appendix
-\input{wiener}
+% \appendix
+% \input{wiener}
 
 \end{document}

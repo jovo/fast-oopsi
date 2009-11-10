@@ -18,6 +18,7 @@ V.name          = name;
 P.lam           = 10;
 P.k_d           = 180;
 
+
 for i=datasets
     disp(i)
     if i==13
@@ -41,9 +42,15 @@ for i=datasets
     else
         cc      = dataset.(char(names(i)));
         F{i}    = z1(cc.Fluorescence);
-        f=detrend(F{i}); y = fft(f); y(1:20)=0; iy=ifft(y); F{i}=z1(real(iy)); 
-        V.dt    = median(diff(cc.FluorescenceTime));
         V.T     = length(F{i});
+        f       = detrend(F{i}); 
+        nfft    = 2^nextpow2(V.T);
+        y       = fft(f,nfft); 
+        bw      = 10;
+        y(1:bw) = 0; y(end-bw+1:end)=20;
+        iy      = ifft(y,nfft); 
+        F{i}    = z1(real(iy(1:V.T))); 
+        V.dt    = median(diff(cc.FluorescenceTime));
         P.gam   = 1-V.dt/1;
         volt1{i}= cc.chanDev1_ai0_VoltageCh1;
         volt{i} = interp1(cc.time,volt1{i},cc.FluorescenceTime);
@@ -61,7 +68,7 @@ for i=datasets
         switch j
             case 0 % fast init smc
                 V.fast_iter_max = 2;
-                V.smc_iter_max  = 5;
+                V.smc_iter_max  = 8;
                 [fast smc] = run_oopsi(F{i},V,P);
                 V.fast_iter_max = 1;
                 inf{i}.fast = fast.n;
