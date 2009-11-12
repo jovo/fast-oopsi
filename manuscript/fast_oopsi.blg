@@ -2,57 +2,74 @@ This is BibTeX, Version 0.99c (Web2C 7.5.4)
 The top-level auxiliary file: fast_oopsi.aux
 The style file: unsrt.bst
 Database file #1: /Users/joshyv/Research/misc/biblist.bib
-Repeated entry---line 10011 of file /Users/joshyv/Research/misc/biblist.bib
+Repeated entry---line 9671 of file /Users/joshyv/Research/misc/biblist.bib
+ : @article{GobelHelmchen07
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 10056 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{GreenbergKerr08
  :                         ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 11970 of file /Users/joshyv/Research/misc/biblist.bib
+Repeated entry---line 12053 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{HolekampHoly08
  :                        ,
 I'm skipping whatever remains of this entry
+Repeated entry---line 16315 of file /Users/joshyv/Research/misc/biblist.bib
+ : @article{LuoSvoboda08
+ :                      ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 17148 of file /Users/joshyv/Research/misc/biblist.bib
+ : @article{MankGriesbeck08
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 30359 of file /Users/joshyv/Research/misc/biblist.bib
+ : @article{WallaceHasan08
+ :                        ,
+I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "PaninskiWu08"
 Name 1 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
 while executing---line 944 of file unsrt.bst
 Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
 while executing---line 944 of file unsrt.bst
-You've used 17 entries,
+You've used 29 entries,
             1791 wiz_defined-function locations,
-            579 strings with 7221 characters,
-and the built_in function-call counts, 4011 in all, are:
-= -- 363
-> -- 188
-< -- 1
-+ -- 69
-- -- 52
-* -- 311
-:= -- 650
-add.period$ -- 50
-call.type$ -- 17
-change.case$ -- 15
+            674 strings with 10076 characters,
+and the built_in function-call counts, 7259 in all, are:
+= -- 651
+> -- 365
+< -- 2
++ -- 132
+- -- 103
+* -- 593
+:= -- 1173
+add.period$ -- 86
+call.type$ -- 29
+change.case$ -- 27
 chr.to.int$ -- 0
-cite$ -- 17
-duplicate$ -- 158
-empty$ -- 373
-format.name$ -- 52
-if$ -- 860
+cite$ -- 29
+duplicate$ -- 274
+empty$ -- 657
+format.name$ -- 103
+if$ -- 1551
 int.to.chr$ -- 0
-int.to.str$ -- 17
-missing$ -- 17
-newline$ -- 87
-num.names$ -- 17
-pop$ -- 32
+int.to.str$ -- 29
+missing$ -- 29
+newline$ -- 147
+num.names$ -- 29
+pop$ -- 48
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 67
+skip$ -- 118
 stack$ -- 0
-substring$ -- 325
-swap$ -- 27
-text.length$ -- 1
+substring$ -- 612
+swap$ -- 48
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 42
-width$ -- 19
-write$ -- 183
-(There were 4 error messages)
+while$ -- 76
+width$ -- 31
+write$ -- 314
+(There were 8 error messages)

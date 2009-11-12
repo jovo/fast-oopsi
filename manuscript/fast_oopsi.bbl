@@ -1,5 +1,58 @@
 \begin{thebibliography}{10}
 
+\bibitem{ImagingManual}
+R.~Yuste, A.~Konnerth, B.R. Masters, et~al.
+\newblock {\em {Imaging in Neuroscience and Development, A Laboratory Manual}},
+  2006.
+
+\bibitem{SmettersYuste99}
+D~Smetters, A~Majewska, and R~Yuste.
+\newblock Detecting action potentials in neuronal populations with calcium
+  imaging.
+\newblock {\em Methods}, 18(2):215--221, Jun 1999.
+
+\bibitem{IkegayaYuste04}
+Yuji Ikegaya, Gloster Aaron, Rosa Cossart, Dmitriy Aronov, Ilan Lampl, David
+  Ferster, and Rafael Yuste.
+\newblock Synfire chains and cortical songs: temporal modules of cortical
+  activity.
+\newblock {\em Science}, 304(5670):559--564, Apr 2004.
+
+\bibitem{NagayamaChen07}
+Shin Nagayama, Shaoqun Zeng, Wenhui Xiong, Max~L Fletcher, Arjun~V Masurkar,
+  Douglas~J Davis, Vincent~A Pieribone, and Wei~R Chen.
+\newblock {In vivo simultaneous tracing and {Ca}$^{2+}$ imaging of local
+  neuronal circuits.}
+\newblock {\em Neuron}, 53(6):789--803, Mar 2007.
+
+\bibitem{GobelHelmchen07}
+Werner G\"{o}bel and Fritjof Helmchen.
+\newblock In vivo calcium imaging of neural network function.
+\newblock {\em Physiology (Bethesda)}, 22:358--365, Dec 2007.
+
+\bibitem{LuoSvoboda08}
+L.~Luo, E.~M. Callaway, and K.~Svoboda.
+\newblock Genetic dissection of neural circuits.
+\newblock {\em Neuron}, 57:634--60, |2008|.
+
+\bibitem{GaraschukKonnerth07}
+Olga Garaschuk, Oliver Griesbeck, and Arthur Konnerth.
+\newblock Troponin c-based biosensors: a new family of genetically encoded
+  indicators for in vivo calcium imaging in the nervous system.
+\newblock {\em Cell Calcium}, 42(4-5):351--361, 2007.
+
+\bibitem{MankGriesbeck08}
+Marco Mank and Oliver Griesbeck.
+\newblock Genetically encoded calcium indicators.
+\newblock {\em Chem Rev}, 108(5):1550--1564, May 2008.
+
+\bibitem{WallaceHasan08}
+D.J. Wallace, S.M. zum Alten~Borgloh, S.~Astori, Y.~Yang, M.~Bausen, S.~Kugler,
+  A.E. Palmer, R.Y. Tsien, R.~Sprengel, J.N.D. Kerr, W.~Denk, and M.T. Hasan.
+\newblock {Single-spike detection in vitro and in vivo with a genetic Ca2+
+  sensor}.
+\newblock {\em Nature methods}, 5(9):797--804, 2008.
+
 \bibitem{GreenbergKerr08}
 David~S Greenberg, Arthur~R Houweling, and Jason N~D Kerr.
 \newblock Population imaging of ongoing neuronal activity in the visual cortex
@@ -19,31 +72,58 @@ Joshua~T Vogelstein, Brendon~O Watson, Adam~M Packer, Rafael Yuste, Bruno
   methods.
 \newblock {\em Biophys J}, 97(2):636--655, Jul 2009.
 
+\bibitem{PortugalVicente94}
+L.F. Portugal, J.J. Judice, and L.N. Vicente.
+\newblock {A comparison of block pivoting and interior-point algorithms for
+  linear least squares problems with nonnegative variables}.
+\newblock {\em Mathematics of Computation}, 63(208):625--643, 1994.
+
+\bibitem{MarkhamConchello99}
+J.~Markham and J.~A. Conchello.
+\newblock Parametric blind deconvolution: a robust method for the simultaneous
+  estimation of image and blur.
+\newblock {\em Journal of The Optical Society Of America A. Optics, Image
+  Science, and Vision}, 16(10):2377--2391, Oct 1999.
+
 \bibitem{LeeSeung99}
 D.~D. Lee and H.~S. Seung.
 \newblock Learning the parts of objects by non-negative matrix factorization.
 \newblock {\em Nature}, 401(6755):788--791, Oct 1999.
+
+\bibitem{LLS04}
+Y.~Lin, D.~Lee, and L.~Saul.
+\newblock Nonnegative deconvolution for time of arrival estimation.
+\newblock {\em International Conference on Acoustics, Speech, and Signal
+  Processing}, 2004.
+
+\bibitem{OGradyPearlmutter06}
+{O'Grady, P.D. and Pearlmutter, B.A.}
+\newblock {Convolutive non-negative matrix factorisation with a sparseness
+  constraint}.
+\newblock {\em Machine Learning for Signal Processing, 2006. Proceedings of the
+  2006 16th IEEE Signal Processing Society Workshop on}, pages 427--432, 2006.
 
 \bibitem{HuysPaninski06}
 Quentin J~M Huys, Misha~B Ahrens, and Liam Paninski.
 \newblock Efficient estimation of detailed single-neuron models.
 \newblock {\em J Neurophysiol}, 96(2):872--890, Aug 2006.
 
-\bibitem{ImagingManual}
-R.~Yuste, A.~Konnerth, B.R. Masters, et~al.
-\newblock {\em {Imaging in Neuroscience and Development, A Laboratory Manual}},
-  2006.
+\bibitem{Cunningham08}
+John~P. Cunningham, Krishna~V. Shenoy, and Maneesh Sahani.
+\newblock Fast {G}aussian process methods for point process intensity
+  estimation.
+\newblock {\em ICML}, pages 192--199, 2008.
+
+\bibitem{CONV04}
+S.~Boyd and L.~Vandenberghe.
+\newblock {\em Convex Optimization}.
+\newblock Oxford University Press, 2004.
 
 \bibitem{PaninskiWu09}
 Liam Paninski, Yashar Ahmadian, Daniel Ferreira, Shinsuke Koyama,
   Kamiar~Rahnama Rad, Michael Vidne, Joshua Vogelstein, and Wei Wu.
 \newblock A new look at state-space models for neural data.
 \newblock {\em J Comput Neurosci}, Aug 2009.
-
-\bibitem{CONV04}
-S.~Boyd and L.~Vandenberghe.
-\newblock {\em Convex Optimization}.
-\newblock Oxford University Press, 2004.
 
 \bibitem{YaksiFriedrich06}
 Emre Yaksi and Rainer~W Friedrich.
@@ -67,13 +147,6 @@ Thomas~A Pologruto, Ryohei Yasuda, and Karel Svoboda.
 P.O. Hoyer.
 \newblock {Non-negative matrix factorization with sparseness constraints}.
 \newblock {\em The Journal of Machine Learning Research}, 5:1457--1469, 2004.
-
-\bibitem{OGradyPearlmutter06}
-{O'Grady, P.D. and Pearlmutter, B.A.}
-\newblock {Convolutive non-negative matrix factorisation with a sparseness
-  constraint}.
-\newblock {\em Machine Learning for Signal Processing, 2006. Proceedings of the
-  2006 16th IEEE Signal Processing Society Workshop on}, pages 427--432, 2006.
 
 \bibitem{AndrieuDoucet01}
 C.~Andrieu, {\'E}.~Barat, and A.~Doucet.
