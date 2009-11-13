@@ -3,20 +3,26 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>body.tex</string>
+	<string>wiener.tex</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>fast_oopsi.tex</string>
 			<key>lastUsed</key>
-			<date>2009-11-10T03:34:46Z</date>
+			<date>2009-11-13T05:16:15Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>body.tex</string>
 			<key>lastUsed</key>
-			<date>2009-11-10T03:35:03Z</date>
+			<date>2009-11-13T05:14:19Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>wiener.tex</string>
+			<key>lastUsed</key>
+			<date>2009-11-13T05:16:15Z</date>
 			<key>selected</key>
 			<true/>
 		</dict>
@@ -30,14 +36,30 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>896</integer>
+				<integer>1371</integer>
 				<key>line</key>
-				<integer>33</integer>
+				<integer>403</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
-			<integer>390</integer>
+			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>33</integer>
+			<integer>403</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>1272</integer>
+				<key>line</key>
+				<integer>403</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>1371</integer>
+				<key>line</key>
+				<integer>403</integer>
+			</dict>
 		</dict>
 		<key>fast_oopsi.tex</key>
 		<dict>
@@ -46,27 +68,41 @@
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>41</integer>
+				<integer>30</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>1073</integer>
+			<key>firstVisibleLine</key>
+			<integer>22</integer>
+		</dict>
+		<key>wiener.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>5</integer>
 			</dict>
 			<key>columnSelection</key>
 			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>9</integer>
+			<integer>0</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>252</integer>
 				<key>line</key>
-				<integer>39</integer>
+				<integer>5</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>41</integer>
+				<integer>5</integer>
 			</dict>
 		</dict>
 	</dict>
@@ -74,10 +110,11 @@
 	<array>
 		<string>fast_oopsi.tex</string>
 		<string>body.tex</string>
+		<string>wiener.tex</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
-	<true/>
+	<false/>
 	<key>windowFrame</key>
-	<string>{{3, 13}, {736, 865}}</string>
+	<string>{{4, 439}, {718, 439}}</string>
 </dict>
 </plist>

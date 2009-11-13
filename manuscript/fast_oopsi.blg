@@ -26,50 +26,49 @@ Repeated entry---line 30359 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{WallaceHasan08
  :                        ,
 I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for "PaninskiWu08"
 Name 1 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
 while executing---line 944 of file unsrt.bst
 Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
 while executing---line 944 of file unsrt.bst
-You've used 29 entries,
+You've used 30 entries,
             1791 wiz_defined-function locations,
-            674 strings with 10076 characters,
-and the built_in function-call counts, 7259 in all, are:
-= -- 651
-> -- 365
+            678 strings with 10259 characters,
+and the built_in function-call counts, 7478 in all, are:
+= -- 673
+> -- 373
 < -- 2
-+ -- 132
-- -- 103
-* -- 593
-:= -- 1173
-add.period$ -- 86
-call.type$ -- 29
-change.case$ -- 27
++ -- 135
+- -- 105
+* -- 609
+:= -- 1208
+add.period$ -- 89
+call.type$ -- 30
+change.case$ -- 28
 chr.to.int$ -- 0
-cite$ -- 29
-duplicate$ -- 274
-empty$ -- 657
-format.name$ -- 103
-if$ -- 1551
+cite$ -- 30
+duplicate$ -- 283
+empty$ -- 678
+format.name$ -- 105
+if$ -- 1598
 int.to.chr$ -- 0
-int.to.str$ -- 29
-missing$ -- 29
-newline$ -- 147
-num.names$ -- 29
-pop$ -- 48
+int.to.str$ -- 30
+missing$ -- 30
+newline$ -- 152
+num.names$ -- 30
+pop$ -- 49
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 118
+skip$ -- 122
 stack$ -- 0
-substring$ -- 612
-swap$ -- 48
+substring$ -- 631
+swap$ -- 49
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 76
-width$ -- 31
-write$ -- 314
+while$ -- 79
+width$ -- 32
+write$ -- 325
 (There were 8 error messages)

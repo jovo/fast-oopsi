@@ -114,16 +114,16 @@ John~P. Cunningham, Krishna~V. Shenoy, and Maneesh Sahani.
   estimation.
 \newblock {\em ICML}, pages 192--199, 2008.
 
-\bibitem{CONV04}
-S.~Boyd and L.~Vandenberghe.
-\newblock {\em Convex Optimization}.
-\newblock Oxford University Press, 2004.
-
 \bibitem{PaninskiWu09}
 Liam Paninski, Yashar Ahmadian, Daniel Ferreira, Shinsuke Koyama,
   Kamiar~Rahnama Rad, Michael Vidne, Joshua Vogelstein, and Wei Wu.
 \newblock A new look at state-space models for neural data.
 \newblock {\em J Comput Neurosci}, Aug 2009.
+
+\bibitem{CONV04}
+S.~Boyd and L.~Vandenberghe.
+\newblock {\em Convex Optimization}.
+\newblock Oxford University Press, 2004.
 
 \bibitem{YaksiFriedrich06}
 Emre Yaksi and Rainer~W Friedrich.
@@ -136,6 +136,12 @@ Jason~N MacLean, Brendon~O Watson, Gloster~B Aaron, and Rafael Yuste.
 \newblock Internal dynamics determine the cortical response to thalamic
   stimulation.
 \newblock {\em Neuron}, 48(5):811--823, Dec 2005.
+
+\bibitem{SjulsonMiesenbock07}
+Lucas Sjulson and Gero Miesenb\"{o}ck.
+\newblock Optical recording of action potentials and other discrete
+  physiological events: a perspective from signal detection theory.
+\newblock {\em Physiology (Bethesda)}, 22:47--55, Feb 2007.
 
 \bibitem{PologrutoSvoboda04}
 Thomas~A Pologruto, Ryohei Yasuda, and Karel Svoboda.
@@ -153,6 +159,12 @@ C.~Andrieu, {\'E}.~Barat, and A.~Doucet.
 \newblock {Bayesian deconvolution of noisy filtered point processes}.
 \newblock {\em IEEE Transactions on Signal Processing}, 49(1):134--146, 2001.
 
+\bibitem{MishchenkoPaninski09}
+Mishchenko Y, Vogelstein JT, and Paninski L.
+\newblock {A Bayesian approach for inferring neuronal connectivity from calcium
+  fluorescent imaging data}.
+\newblock {\em Annals of Applied Statistics}, in press, 2009.
+
 \bibitem{FS81}
 JH~Friedman and W.~Stuetzle.
 \newblock {Projection Pursuit Regression.}
@@ -162,11 +174,5 @@ JH~Friedman and W.~Stuetzle.
 S.~Mallat and Z.~Zhang.
 \newblock {Matching pursuit with time-frequency dictionaries: IEEE Trans}.
 \newblock {\em Signal Processing}, 41:3397--3415, 1993.
-
-\bibitem{MishchenkoPaninski09}
-Mishchenko Y, Vogelstein JT, and Paninski L.
-\newblock {A Bayesian approach for inferring neuronal connectivity from calcium
-  fluorescent imaging data}.
-\newblock {\em Annals of Applied Statistics}, in press, 2009.
 
 \end{thebibliography}

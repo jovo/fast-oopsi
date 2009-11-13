@@ -34,7 +34,7 @@ end
 
 %%
 T=600;
-cells=[5 10 14 16 24 25 33];
+cells=[3 5 9 24];
 xticks=[0:150:T];
 xticklabels=round(xticks/30);
 yticks=[0.5:1:length(cells)];

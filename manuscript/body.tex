@@ -20,7 +20,7 @@ A number of groups have therefore proposed algorithms to infer spike trains from
 Holekamp et al. \cite{HolekampHoly08} took a very different strategy, by performing the optimal linear deconvolution (i.e., the Wiener filter) on the fluorescence data.  This approach is natural from a signal processing standpoint, but does not utilize the knowledge that spikes are always positive.  Previously, a sequential Monte Carlo method to efficiently compute the approximate probability of a spike in each image frame, given the entire fluorescence time series, was proposed \cite{VogelsteinPaninski09}.  While effective, that approach is not suitable for online analyses of populations of neurons, as the computations run in approximately real-time per neuron (i.e., analyzing one minute of data requires about one minute of computational time on a standard laptop computer), and real-time for a whole population of neurons would be desirable.
 
 
-The present work starts by building a generative model relating spiking activity to fluorescence traces. Unfortunately, inferring the most likely spike train given this model is computationally intractable.  Making some reasonable approximations leads to an algorithm that infers the approximately most likely spike train, given the fluorescence data.  This algorithm has a few particularly noteworthy features, relative to other approaches.  First, spikes are assumed to be positive.  This assumption often improves filtering results when the underlying signal has this property \cite{PortugalVicente94, MarkhamConchello99, LeeSeung99, LLS04, OGradyPearlmutter06, HuysPaninski06, Cunningham08, PaninskiWu08}.  Second, the algorithm is extremely fast: it can process a calcium trace from 50,000 images in about one second on a standard laptop computer. In fact, filtering the signals for an entire population of about $100$ neurons runs \emph{faster} than real time. This speed facilitates using this filter online, as observations are being collected. In addition to these two features, the model may be generalized in a number of ways, including incorporating spatial filtering of the raw movie. The efficacy of the proposed filter is demonstrated on several real data-sets, suggesting this algorithm is a powerful and robust tool for online spike train inference.  The code (which is a simple Matlab script) is available from the authors upon request.
+The present work starts by building a generative model relating spiking activity to fluorescence traces. Unfortunately, inferring the most likely spike train given this model is computationally intractable.  Making some reasonable approximations leads to an algorithm that infers the approximately most likely spike train, given the fluorescence data.  This algorithm has a few particularly noteworthy features, relative to other approaches.  First, spikes are assumed to be positive.  This assumption often improves filtering results when the underlying signal has this property \cite{PortugalVicente94, MarkhamConchello99, LeeSeung99, LLS04, OGradyPearlmutter06, HuysPaninski06, Cunningham08, PaninskiWu09}.  Second, the algorithm is extremely fast: it can process a calcium trace from 50,000 images in about one second on a standard laptop computer. In fact, filtering the signals for an entire population of about $100$ neurons runs \emph{faster} than real time. This speed facilitates using this filter online, as observations are being collected. In addition to these two features, the model may be generalized in a number of ways, including incorporating spatial filtering of the raw movie. The efficacy of the proposed filter is demonstrated on several real data-sets, suggesting this algorithm is a powerful and robust tool for online spike train inference.  The code (which is a simple Matlab script) is available from the authors upon request.
 
 
 
@@ -119,9 +119,7 @@ The goal here is to develop an algorithm to efficiently approximate $\hbn$, the 
 \\ \hbn &\approx \argmax_{n_t>0 \, \forall t}  \sum_{t=1}^T -\frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  - n_t \lam \Del 
 \end{align}
 \end{subequations}
-where the constraint on $n_t$ has been relaxed from  $n_t \in \mathbb{N}_0$ to $n_t \geq 0$ (since the exponential distribution can yield any non-negative number).  Note that replacing a Poisson with an exponential is a common approximation technique in the machine learning literature \cite{CONV04, PaninskiWu09}, as the exponential distribution is the closest convex relaxation to its non-convex counterpart, the Poisson distribution. More specifically, the probability mass function
-
-While this convex relaxation makes the problem tractable, the ``sharp'' threshold imposed by the non-negativity constraint prohibits the use of standard gradient ascent techniques \cite{CONV04}. This problem may be rectified by dropping the sharp threshold, and adding a barrier term, which must approach $-\infty$ as $n_t$ approaches zero (this approach is often called an ``interior-point'' method) \cite{CONV04}. Iteratively reducing the weight of the barrier term guarantees convergence to the correct solution \cite{CONV04}.  Thus, the goal is to efficiently solve:
+where the constraint on $n_t$ has been relaxed from  $n_t \in \mathbb{N}_0$ to $n_t \geq 0$ (since the exponential distribution can yield any non-negative number).  Note that replacing a Poisson with an exponential is a common approximation technique in the machine learning literature \cite{CONV04, PaninskiWu09}, as the exponential distribution is the closest convex relaxation to its non-convex counterpart, the Poisson distribution. More specifically, the probability mass function of a Poisson distributed random variable with low rate is very similar to the probability density function of a random variable with an exponential distribution. While this convex relaxation makes the problem tractable, the ``sharp'' threshold imposed by the non-negativity constraint prohibits the use of standard gradient ascent techniques. This problem may be rectified by dropping the sharp threshold, and adding a barrier term, which must approach $-\infty$ as $n_t$ approaches zero (this approach is often called an ``interior-point'' method). Iteratively reducing the weight of the barrier term guarantees convergence to the correct solution.  Thus, the goal is to efficiently solve:
 \begin{align} \label{eq:eta}
 \hbn_{\zzz} &= \argmax_{n_t \forall t}  \sum_{t=1}^T \left( -\frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  -  n_t  \lam \Del + \zzz \log(n_t) \right).
 \end{align}
@@ -129,7 +127,7 @@ While this convex relaxation makes the problem tractable, the ``sharp'' threshol
 \begin{align} 
 \hbC_{\zzz} &= \argmax_{C_t - \gamma C_{t-1} \geq 0 \forall t} \sum_{t=1}^{T} \left( -\frac{1}{2 \sig^2} (F_t -\alpha (C_t + \beta))^2  - (C_t - \gamma C_{t-1}) \lam \Del + \zzz \log(C_t - \gamma C_{-1}) \right). \label{eq:eta2}
 \end{align}
-\noindent The concavity of Eq. \eqref{eq:eta2} facilitates utilizing any number of techniques guaranteed to find the global optimum.  The fact that the argument of Eq. \eqref{eq:eta2} is twice differentiable, allows for the use of the Newton-Raphson technique, which is typically more efficient than only incorporating the gradient \cite{CONV04}. First, rewrite Eq. \eqref{eq:eta2} in matrix notation.  Note that $\bM \bC = \bn$:
+\noindent The concavity of Eq. \eqref{eq:eta2} facilitates utilizing any number of techniques guaranteed to find the global optimum.  The fact that the argument of Eq. \eqref{eq:eta2} is twice differentiable, allows for the use of the Newton-Raphson technique, which typically requires fewer steps than the gradient by itself \cite{CONV04}; and the special tridiagonal structure of the Hessian (as described below) enables each Newton-Raphson step to be very efficient.  To proceed, Eq. \eqref{eq:eta2} can be rewritten in matrix notation.  Note that $\bM \bC = \bn$:
 \begin{align} \label{eq:M}
 \ve{M} \bC = %- \bb=
 \begin{bmatrix}
@@ -162,7 +160,7 @@ n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
 \end{subequations}
 \noindent where the exponents indicate element-wise operations. The step size, $s$, is found using ``backtracking linesearches'', which finds the maximal $s$ that decreases the likelihood and is between $0$ and $1$.
 
-Typically, implementing Newton-Raphson requires inverting the Hessian, i.e., $\bd = \bH^{-1} \bg$, a computation that scales \emph{cubically} with $T$, i.e., requires approximately $T^3$ operations. Already, this would be a drastic improvement over the most efficient algorithm assuming Poisson spikes, which require $k^T$ operations (where $k$ is the maximum number of spikes per frame).  Here, because $\ve{M}$ is bidiagonal, the Hessian is tridiagonal, the solution may be found in approximately $T$ operations, via standard banded Gaussian elimination techniques (which can be implemented efficiently in Matlab using $\bH \backslash \bg$). In other words, the above approximation and inference algorithm reduces computations from \emph{exponential} time to \emph{linear} time. 
+Typically, implementing Newton-Raphson requires inverting the Hessian, i.e., $\bd = \bH^{-1} \bg$, a computation that scales \emph{cubically} with $T$, i.e., requires approximately $T^3$ operations. Already, this would be a drastic improvement over the most efficient algorithm assuming Poisson spikes, which require $k^T$ operations (where $k$ is the maximum number of spikes per frame).  Here, because $\ve{M}$ is bidiagonal, the Hessian is tridiagonal, the solution may be found in approximately $T$ operations, via standard banded Gaussian elimination techniques (which can be implemented efficiently in Matlab using $\bH \backslash \bg$, assuming $\bH$ is represented as a sparse matrix). In other words, the above approximation and inference algorithm reduces computations from \emph{exponential} time to \emph{linear} time. 
 
 
 
@@ -174,27 +172,33 @@ In the above, the parameters governing the model, $\vth=\{\alpha, \beta, \sig, \
 
 \subsubsection{Initializing the parameters}
 
-Because the above model is linear, the scale of $\bF$ is arbitrary, so $\alpha$ can be fixed at $1$ without loss of generality.  The offset, however, is relative but is not arbitrary.  Because spiking is assumed to be sparse, $\bF$ tends to be around baseline, $\beta$ is initialized to be the median of $\bF$, and $\sig$ is initialized as median absolute deviation of $\bF$, ie, $\sig=$median$_s$($|F_s-$median$(\bF)|$).  Because previous work has shown that results are somewhat robust to minor variations in $\tau$ \cite{YaksiFriedrich06}, $\tau$ is initialized at 1 sec.  Finally, $\lam$ is initialized at $1$ Hz, which is between typical baseline firing rates and evoked spike rate activity, for these data-sets.
+Because the above model is linear, the scale of $\bF$ is arbitrary, so $\alpha$ can be fixed at $1$ without loss of generality.  The offset, however, is relative but is not arbitrary.  Because spiking is assumed to be sparse, $\bF$ tends to be around baseline, $\beta$ is initialized to be the median of $\bF$, and $\sig$ is initialized as median absolute deviation of $\bF$, ie, $\sig=$median$_t$($|F_t-$median$(\bF)|$).  Because previous work has shown that results are somewhat robust to minor variations in $\tau$ \cite{YaksiFriedrich06}, $\tau$ is initialized at 1 sec.  Finally, $\lam$ is initialized at $1$ Hz, which is between typical baseline firing rates and evoked spike rate activity, for these data-sets.
 
 \subsubsection{Estimating the parameters given $\widehat{\mathbf{n}}$}
 
-In the typical expectation-maximization setting, one finds the parameters that maximize the expected value of the joint observed and hidden signals:
+Ideally, one could integrate out the hidden variables, to find the most likely parameters:
 \begin{align} \label{eq:par1}
-\hbth &= \argmax_{\bth} E_{P[\bF | \bC]} \log P[\bF, \bC | \bth].
+\hbth &= \argmax_{\bth} \int P[\bF, \bC | \bth] d\bC = \argmax_{\bth} \int P[\bF | \bC; \bth] d\bC \int P[\bn | \bth] d\bn.
 \end{align}
-In the above, however, those expected values are not computed, rather, only the MAP estimate of the spike train and calcium trace.  Therefore, Eq. \eqref{eq:par1} is approximated by simply maximizing the parameters given the MAP estimate:
+However, evaluating those integrals in not currently tractable (to our knowledge).
+% In the typical expectation-maximization setting, one finds the parameters that maximize the expected value of the joint observed and hidden signals:
+% \begin{align} \label{eq:par1}
+% \hbth &= \argmax_{\bth} E_{P[\bF | \bC]} \log P[\bF, \bC | \bth].
+% \end{align}
+% In the above, however, those expected values are not computed, rather, only the MAP estimate of the spike train and calcium trace.  
+Therefore, Eq. \eqref{eq:par1} is approximated by simply maximizing the parameters given the MAP estimate of the hidden variables:
 \begin{align} \label{eq:par2}
-\hbth &\approx \argmax_{\bth} P[\bF| \hbC; \bth] P[\hbn | \bth]
+\hbth &\approx \argmax_{\bth} P[\bF, \hbC; \bth] = \argmax_{\bth} P[\bF| \hbC; \bth] P[\hbn | \bth]
 \end{align}
-\noindent where $\hbC$ is determined using the above described inference algorithm. The approximation in \eqref{eq:par1} is good whenever the likelihood is very peaky, meaning that most of the mass is around the MAP sequence.\footnote{The approximation in \eqref{eq:par1} may be considered a first-order Laplace approximation}   The argument from the right-hand-side of Eq \eqref{eq:par1} may be expanded: 
+\noindent where $\hbC$ and $\hbn$ are determined using the above described inference algorithm. The approximation in \eqref{eq:par2} is good whenever the likelihood is very peaky, meaning that most of the mass is around the MAP sequence.\footnote{The approximation in \eqref{eq:par2} may be considered a first-order Laplace approximation}   The argument from the right-hand-side of Eq \eqref{eq:par1} may be expanded: 
 \begin{align} \label{eq:par2}
 P[\bF| \hbC; \bth] P[\hbn | \bth] &= \prod_{t=1}^T P[F_t | \hC_t; \beta,\sig]  P[\hn_t | \lam].
 \end{align}
-\noindent where $\alpha$ is not present because of the arbitrary scale term, and $\tau$ is not present because it is not separable from $\hbn$. $\beta$ is estimated using:
+\noindent where $\alpha$ is not present because the fluorescence is arbitrarily scaled, and $\gam$ is not present because its posterior is relatively flat, ie, large changes in $\gam$ result in relatively small changes in the posterior. $\beta$ is estimated using:
 \begin{align}
 	\hbeta &= \argmax_{\beta >0} \prod_{t=1}^T P[F_t | \hC_t; \beta,\sig] = \argmax_{\beta>0} \sum_{t=1}^T (F_t - (C_t + \beta))^2,
 \end{align}
-\noindent which is solved by letting $\hbeta=\langle \bF-\bC \rangle_t$, where $\langle \cdot \rangle_t$ indicates a mean over $t$.  $\sig$ is then the mean of the residuals, and $\hlam$ is the mean of $\hbn$. 
+\noindent which is solved by letting $\hbeta=\langle \bF-\bC \rangle_t$, where $\langle \cdot \rangle_t$ indicates a mean over $t$.  $\sig$ is then the root-mean-square of the residuals, and $\hlam$ is the mean of $\hbn$. 
 
 \subsubsection{Convergence criteria}
 
@@ -207,7 +211,7 @@ In the above, it was assumed that the raw movie of fluorescence measurements col
 \begin{align} \label{eq:bF}
 F_{x,t} &= \alpha_x (C_{x,t} + \beta) +  \sig \vec{\varepsilon}_{x,t}, \qquad &\varepsilon_{x,t} \overset{iid}{\sim} \mathcal{N}(0,1)   
 \end{align}
-\noindent where $\alpha_x$ scales each pixel, from which some number of photons are contributed due to calcium fluctuations, $C_t$, and others due to baseline fluorescence, $\beta$.  Further, the noise is assumed to be both spatially and temporally white, with variance, $\sig^2$, in each pixel (an assumption that can be relaxed quite easily).  Performing inference in this more general model proceeds nearly identical as before. Rewriting n vector notation:
+\noindent where $\alpha_x$ scales each pixel, from which some number of photons are contributed due to calcium fluctuations, $C_t$, and others due to baseline fluorescence, $\beta$.  Further, the noise is assumed to be both spatially and temporally white, with variance, $\sig^2$, in each pixel (this assumption can easily be relaxed, by making the covariance matrix diagonal, for example).  Performing inference in this more general model proceeds nearly identical as before. Rewriting n vector notation:
 \begin{align} 
 \hbC_{\zzz} 
 &= \az  -\frac{1}{2 \sig^2} \norm{\vec{\bF} - \valpha (\bC\T +\beta\ve{1}\T)}^2 - (\bM \bC )\T \blam  + \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta4}\\
@@ -224,7 +228,7 @@ F_{x,t} &= \alpha_x (C_{x,t} + \beta) +  \sig \vec{\varepsilon}_{x,t}, \qquad &\
 In the above, the image was assumed to be segmented, such that only a single neuron was within each ROI.  However, segmentation is itself a difficult problem \cite{}.  Therefore, using a crude segmentation technique, that might not actually produce ROIs with only a single cell, and then building spatial filters for each neuron in the ROI, might be more efficient and improve SNR.  As before, this requires a minor modification to Eq.~\eqref{eq:bF}.  Specifically, letting the superscript $i$ index the $N_c$ neurons in this ROI, yields:  
 \begin{align}
 \vF_t &= \sum_{i=1}^{N_c}\valpha^i (C^i_t + \beta^i) +  \sig\vec{\varepsilon}_t, \qquad &\vec{\varepsilon}_t \overset{iid}{\sim} \mathcal{N}(\ve{0},\bI)   \\
-C^i_t &= \gam^i C^i_{t-1} + n^i_t, & n^i_t \sim \text{Poisson}(n^i_t; \lam_i \Del)
+C^i_t &= \gam^i C^i_{t-1} + n^i_t, & n^i_t \overset{iid}{\sim} \text{Poisson}(n^i_t; \lam_i \Del)
 \end{align}
 \noindent where each neuron is implicitly assumed to be independent, and that each pixel is independent and identically distributed with variance $\sig^2$.  To perform inference in this more general model, let:
 \begin{align} \label{eq:M2}
@@ -238,7 +242,11 @@ C^i_t &= \gam^i C^i_{t-1} + n^i_t, & n^i_t \sim \text{Poisson}(n^i_t; \lam_i \De
 0 & 0 & 0 \ldots & 1 & -\gam^{N_c-1} & 1 & -\gam^{N_c}
 \end{bmatrix}
 \end{align} 
-\noindent and proceed as above, making minor algorithmic adjustments to deal with dimensionality issues.  Since the parameters will be unknown, they must be estimated. Define $\balpha_x=[\alpha_x^1, \ldots, \alpha_x^{N_c}]\T$ and $\bbeta=[\beta^1, \ldots, \beta^{N_c}]\T$.  To initialize, let $\bbeta=\ve{0}$, and $\valpha^i$ be the $i^{th}$ principal component of $\vbF$.  Then, iterate the following two steps.  Given $\bbeta$, use a quadratic solver to update each $\balpha_x$ (eg, in Matlab, $\balpha_x = (\bC + \widetilde{\bbeta})\backslash \bF_x$, where $\widetilde{\bbeta}$ is $\bbeta$ reparameterized to be the same size as $\bC$).  Given this estimate of $\balpha_x$ for all $x$, update $\beta^i= \frac{1}{T}\sum_t (\vF_t / \valpha^i - C_t^i)$ for each $i$, where $/$ indicates an element-wise division.  In practice, iterating these two steps converged after several iterations, assuming enough spikes were present in the two neurons, and they were sufficiently uncorrelated.
+\noindent and proceed as above, making minor algorithmic adjustments to deal with dimensionality issues.  Since the parameters will be unknown, they must be estimated. Define $\balpha_x=[\alpha_x^1, \ldots, \alpha_x^{N_c}]\T$ and $\bbeta=[\beta^1, \ldots, \beta^{N_c}]\T$.  To initialize, let $\bbeta=\ve{0}$; then, perform principal component analysis on the movie, $\vbF$.  Because PCA finds a low-dimensional, orthogonal representation of the data, if a neuron in the ROI is relatively uncorrelated from the others, then a principal component is expected to correspond to its spatial filter.  If PCA is insufficient to determine the spatial filters, then the first $N_c$ principal components are used to initialize the $N_c$ spatial filters.  Then, iterate the following two steps.  Given $\bbeta$, each $\halpha_x$ can be updated using:
+\begin{align}
+	\hbalpha_x &= \argmax_{\balpha_x} \sum_{t=1}^T - \left(F_{x,t} - \sum_{i=1}^{N_c} \alpha_x^i (C_t^i + \beta^i)\right)^2
+\end{align}
+which is solved efficiently in Matlab using $\balpha_x = (\bC + \widetilde{\bbeta})\backslash \bF_x$, where $\widetilde{\bbeta}$ is $\bbeta$ reparameterized to be the same size as $\bC$).  Given this estimate of $\balpha_x$ for all $x$, update $\beta^i= \frac{1}{T}\sum_t (\vF_t / \valpha^i - C_t^i)$ for each $i$, where $/$ indicates an element-wise division.  In practice, iterating these two steps converged after several iterations, assuming enough spikes were present in the two neurons, and they were sufficiently uncorrelated.  Note that this approach --- iteratively updating each $\alpha_x$ --- is more efficient then simultaneously solving for the entire vector, due to the quadratic structure of the problem.
 
 
 
@@ -259,7 +267,7 @@ All recordings were made using the Multiclamp 700B amplifier (Molecular Devices,
 
 \subsubsection{Fluorescence preprocessing}
 
-Traces were extracted using custom Matlab scripts to first segment the mean image into ROIs, and then all pixels within the ROI were averaged.  Because Fura $2$ was used, the fluorescence traces were then inverted.  As some slow drift was sometimes present in the traces, the lowest $10$ frequency components were extracted ($10$ was chosen by eye), and the resulting fluorescence trace was then normalized to be between zero and one.
+Traces were extracted using custom Matlab scripts to first segment the mean image into ROIs, and then all pixels within the ROI were averaged.  Because Fura $2$ was used, the fluorescence traces were then inverted.  As some slow drift was sometimes present in the traces, the lowest ten frequency components were set to zero (ten was chosen by eye), and the resulting fluorescence trace was then normalized to be between zero and one.
 
 
 
@@ -293,7 +301,7 @@ Given the above two results, the \foopsi filter was applied to real data.  More 
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data4}
-\caption[\foopsi filter outperforms Wiener filter on real data]{The \foopsi filter significantly outperforms the Wiener filter on typical in vitro data-sets.  Note that all the parameters for both filters were estimated from the data.} \label{fig:woopsi_data}
+\caption[\foopsi filter outperforms Wiener filter on real data]{The \foopsi filter significantly outperforms the Wiener filter on typical in vitro data-sets.  Note that all the parameters for both filters were estimated from the fluorescence data alone (ie, not considering the voltage data at all).} \label{fig:woopsi_data}
 \end{figure}
 
 \subsection{Online analysis of spike trains using the \foopsi filter}
@@ -302,40 +310,57 @@ A central aim for this work was the development of a algorithm that infers spike
 
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/pop}
+\begin{centering} 
+\includegraphics[width=1\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/pop}
+\end{centering}
 \caption[\foopsi filter is robust and works online for populations of neurons]{Applying the \foopsi filter in real time to a large population of neurons imaged simultaneously.  The inferred spike trains convey much more clearly the neural activity.  Left panel: Mean segmented image field.  Middle panel: example fluorescence traces.  Right panel: \foopsi filter output corresponding to each associated trace.} \label{fig:pop}
 \end{figure}
 
 
 \subsection{Extensions}
 
-Section \ref{sec:model} describes a simple principled first-order model relating the spike trains to the fluorescence trace. A number of the simplifying assumptions can be straightforwardly relaxed, including: (i) the Gaussianity of the noise on the fluorescence measurements, and (ii) the static nature of the prior, $\lam$.  Combining these two modifications into the model yields:
-\begin{align}
-	F_t &\sim \text{Poisson}(\alpha C_t + \beta) \label{eq:nonlin} \\
-	% C_t &= (1-\Del/\tau)C_{t-1} + n_t
-	n_t &\sim \text{Poisson}(\lam_t \Del),
-\end{align}
-\noindent where the dynamics for calcium are as before.  To modify the \foopsi filter to be optimal for this new model, the gradient and Hessian of this new model can be analytically computed.  Note that both the above assumptions maintain the log-concavity of the posterior, meaning that by using Newton-Raphson, obtaining the globally optimal solution is still guaranteed. Unfortunately, inference did not improve when using this new model, for either in silico or in vitro experiments (not shown).
+Section \ref{sec:model} describes a simple principled first-order model relating the spike trains to the fluorescence trace. A number of the simplifying assumptions can be straightforwardly relaxed, as described below.
 
-Often, the as intracellular calcium accumulates, the fluorescence signal begins to saturate \cite{PologrutoSvoboda04}.  This observation may be incorporated into the model quite easily:
+
+\subsubsection{Replacing Gaussian observations with Poisson}
+
+In the above, the observation distribution was always assumed to be Gaussian.  The statistics of photon emission and counting, however, suggest that a Poisson distribution would be more natural \cite{SjulsonMiesenbock07}, yielding:
+\begin{align} \label{eq:poiss}
+	F_t \overset{iid}{\sim}\text{Poisson}(F_t; \alpha C_t + \beta).
+\end{align}
+One advantage to this model, over the Gaussian one, besides accuracy, is that the variance parameter no longer exists, which might make learning the parameters simpler.  Importantly, the posterior is still concave in $\bC$, so the same techniques can be used for this model (which requires analytically calculating the gradient and Hessian for the likelihood term implied by Eq. \eqref{eq:poiss}).  In practice, modifying the filter for this model extension did not seem to improve inference results in any data (not shown).
+
+\subsubsection{Allowing for a time-varying prior}
+
+In Eq. \eqref{eq:n}, the rate of spiking was assumed to be a constant.  Often, additional knowledge about the experiment, including external stimuli, or other neurons spiking, can provide strong time-varying prior information.  A simple model modification can incorporate that feature:
+\begin{align}
+	n_t &\overset{iid}{\sim} \text{Poisson}(\lam_t \Del),
+\end{align}
+where $\lam_t$ is now a function of time.  Approximating this time-varying Poisson with a time-varying exponential (as in Eq. \eqref{eq:obj}) yields a log-concave problem again, so the same techniques can be used to find the most likely spike train, give this prior.  However, as above, this model extension did not yield any improved filtering results (not shown).
+
+\subsubsection{Saturating fluorescence}
+
+Although all the above models assumed a \emph{linear} relationship between $F_t$ and $C_t$, the relationship between fluorescence and calcium is typically better approximated by certain nonlinear functions, like the Hill equation \cite{PologrutoSvoboda04}; 
 \begin{align}
 	F_t &= \alpha \frac{C_t}{C_t+k_d} + \beta +  \sig \varepsilon_t, \qquad \varepsilon_t \overset{iid}{\sim} \mN(0,1).
 \end{align}
-\noindent where $C_t/(C_t+k_d)$ is the standard Hill equation \cite{PologrutoSvoboda04}.  Incorporating this nonlinearity breaks the log-concavity of the posterior, meaning that converging to the global maximum is no longer guaranteed.  Assuming a good initialization can be found, however, if this model is more accurate, than ascending the gradient for this model might yield improved inference results.  In practice, initializing with the linear solution often resulted in approximately equally good inference, but this nonlinear inference was far less robust than the inference assuming the linear model (not shown).  
+Incorporating this nonlinearity breaks the log-concavity of the posterior, meaning that converging to the global maximum is no longer guaranteed.  Assuming a good initialization can be found, however, if this model is more accurate, than ascending the gradient for this model might yield improved inference results.  In practice, initializing with the linear solution often resulted in approximately equally good inference, but this nonlinear inference was far less robust than the inference assuming the linear model (not shown).  
 %Unfortunately, using this more powerful model did not result in substantial inference improvements for simulated or in vitro data (not shown).  This is possibly due to approximating the Poisson distribution governing spiking with an exponential distribution.  This approximation is required to ensure concavity of the posterior.  
 
-A previously proposed sequential Monte Carlo (SMC) method to infer spike trains \cite{VogelsteinPaninski09} can incorporate this nonlinearity, as well as the other model extensions, more elegantly. However, this SMC filter is not nearly as efficient as the fast filter proposed here.  Like the fast filter, the SMC filter estimates the model parameters in a completely unsupervised fashion, ie, from the fluorescence observations, using an expectation-maximization algorithm.  In \cite{VogelsteinPaninski09}, parameters for the SMC filter were initialized based on other data-sets.  While effective, this initialization was often far from the final estimates, and therefore, required a relatively large number of iterations (eg, 20-25) before converging.  Thus, it seemed that the \foopsi filter could be used to obtain an improvement to the initial parameter estimates, reducing the required number of iterations.  Indeed, Figure \ref{fig:smc_init} shows how the SMC filter outperforms the \foopsi filter on in vitro data, and only required $3$--$5$ iterations to converge.  Note that the first few events are individual spikes, resulting in relatively small fluorescence fluctuations, whereas the next events are actually spike doublets, causing a much larger fluorescence fluctuation.  Only the SMC filter picks up the individual spikes in this trace, a result typical when the effective signal-to-noise ratio (SNR) is so poor.  Thus, these two inference algorithms are complementary: the \foopsi filter can be used for rapid, online inference, and for initializing the SMC filter, which can then be used to further refine the spike train estimate.
+\subsubsection{Using the \foopsi filter to initialize the SMC filter}
+
+A previously proposed sequential Monte Carlo (SMC) method to infer spike trains \cite{VogelsteinPaninski09} can incorporate this nonlinearity, as well as the other model extensions discussed above, more elegantly. However, this SMC filter is not nearly as efficient as the fast filter proposed here.  Like the fast filter, the SMC filter estimates the model parameters in a completely unsupervised fashion, ie, from the fluorescence observations, using an expectation-maximization algorithm.  In \cite{VogelsteinPaninski09}, parameters for the SMC filter were initialized based on other data-sets.  While effective, this initialization was often far from the final estimates, and therefore, required a relatively large number of iterations (eg, 20-25) before converging.  Thus, it seemed that the \foopsi filter could be used to obtain an improvement to the initial parameter estimates, reducing the required number of iterations.  Indeed, Figure \ref{fig:smc_init} shows how the SMC filter outperforms the \foopsi filter on in vitro data, and only required $3$--$5$ iterations to converge.  Note that the first few events are individual spikes, resulting in relatively small fluorescence fluctuations, whereas the next events are actually spike doublets, causing a much larger fluorescence fluctuation.  Only the SMC filter picks up the individual spikes in this trace, a result typical when the effective signal-to-noise ratio (SNR) is so poor.  Thus, these two inference algorithms are complementary: the \foopsi filter can be used for rapid, online inference, and for initializing the SMC filter, which can then be used to further refine the spike train estimate.  Importantly, although the SMC filter often outperforms the \foopsi filter, the \foopsi filter is more robust, meaning that it more often works ``out-of-the-box''.
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init12}
-\caption[\foopsi filter can initialize Wiener filter]{The \foopsi filter effectively initializes the parameters for the SMC filter (which outperforms the \foopsi filter), significantly reducing the number of expectation-maximization iterations to convergence.  Note that the ordinate on the bottom panel corresponds to the probability of a spike having occurred in each frame.} \label{fig:smc_init}
+\caption[\foopsi filter can initialize Wiener filter]{The \foopsi filter effectively initializes the parameters for the SMC filter (which outperforms the \foopsi filter), significantly reducing the number of expectation-maximization iterations to convergence.  Note that the ordinate on the bottom panel corresponds to the inferred probability of a spike having occurred in each frame.} \label{fig:smc_init}
 \end{figure}
 
 \subsection{Spatial filter} \label{sec:results:spatial}
 
-In the above, the data was assumed to be one-dimensional fluorescence traces.  In actuality, the data is a time series of images, which are first segmented into regions-of-interest (ROI), and typically, then averaged, to obtain $F_t$.  In theory, one could improve the effective SNR of the fluorescence trace by scaling each pixel relative to one another.  In particular, pixels not containing any information about calcium fluctuations can be ignored, and pixels that are approximately anti-correlated with one another could have weights with opposing signs.  
+In the above, the data was assumed to be one-dimensional fluorescence traces. Typically, the data are a time series of images, which are first segmented into regions-of-interest (ROI), and then (usually) averaged, to obtain $F_t$.  In theory, one could improve the effective SNR of the fluorescence trace by scaling each pixel relative to one another.  In particular, pixels not containing any information about calcium fluctuations can be ignored, and pixels that are approximately anti-correlated with one another could have weights with opposing signs.  
 
-Figure \ref{fig:spatial} demonstrates the potential utility of this approach.  The top row shows different depictions of an ROI containing a single neuron.  On the far left panel is the true spatial filter for this neuron.  This particular spatial filter was chosen based on experience analyzing both in vitro and in vivo movies; often, it seems that the pixels immediately around the soma are anti-correlated with those in the soma.  This effect is possibly due to the influx of calcium from extracellular space immediately around the soma.  This simulated movie is relatively noisy, as indicated by the second panel, which depicts an exemplary image frame.  The standard approach, given such a noisy movie, would be to first segment the movie to find an ROI corresponding to the soma of this cell, and then spatially average all the pixels found to be within this ROI.  The third panel shows this ``typical spatial filter''.  The forth panel shows the mean frame, ie, $\langle \vbF \rangle_t$.  Clearly, this mean frame is very similar to the true spatial filter.
+Figure \ref{fig:spatial} demonstrates the potential utility of this approach.  The top row shows different depictions of an ROI containing a single neuron.  On the far left panel is the true spatial filter for this neuron.  This particular spatial filter was chosen based on experience analyzing both in vitro and in vivo movies; often, it seems that the pixels immediately around the soma are anti-correlated with those in the soma.  This effect is possibly due to the influx of calcium from extracellular space immediately around the soma.  This simulated movie is relatively noisy, as indicated by the second panel, which depicts an exemplary image frame.  The standard approach, given such a noisy movie, would be to first segment the movie to find an ROI corresponding to the soma of this cell, and then spatially average all the pixels found to be within this ROI.  The third panel shows this ``typical spatial filter''.  The fourth panel shows the mean frame, ie, $\langle \vbF \rangle_t$.  Clearly, this mean frame is very similar to the true spatial filter.  When the true spatial filter is a single Gaussian, using the true spatial filter did not seem to improve results much (not shown).
 
 The bottom panels of Figure \ref{fig:spatial} depict the effect of using the true spatial filter, versus the typical one. The left side shows the fluorescence trace and its associated spike inference obtained from using the typical spatial filter.  The right side shows the same when using the true spatial filter.  Clearly, the true spatial filter results in a much cleaner fluorescence trace and spike inference.  
 
@@ -363,7 +388,7 @@ While Figure \ref{fig:spatial_multi_inf} shows that one could separate the signa
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn}
-\caption[overlapping spatial filters can be estimated]{Simulation showing that even when two neuron's spatial filters are largely overlapping, the spatial filter of each can be inferred, to separate the two signals. Simulation details as above.} \label{fig:spatial_multi_learn}
+\caption[overlapping spatial filters can be estimated]{Simulation showing that even when two neuron's spatial filters are largely overlapping, linearly scaled estimates of the spatial filter of each neuron can be inferred, to separate the two signals. Simulation details as above.} \label{fig:spatial_multi_learn}
 \end{figure}
 
 
@@ -376,7 +401,7 @@ While Figure \ref{fig:spatial_multi_inf} shows that one could separate the signa
 
 Above, an algorithm to approximate the \emph{maximum a posteriori} (MAP) spike train, given a fluorescence trace was developed.  The approximation is required because finding the actual MAP estimate is not currently computationally tractable.  Replacing the assumed Poisson distribution on spikes with an exponential distribution yields a log-concave optimization problem, which can be solved using standard gradient ascent techniques (such as Newton-Raphson).  This exponential distribution has an advantage over a Gaussian distribution by restricting spikes to be positive, which improves inference quality (c.f. Figure \ref{fig:woopsi_inf}).  This result is common within machine learning \cite{Hoyer04,OGradyPearlmutter06}: imposing a non-negative constraint often helps prevent oscillations and other overfitting artifacts. This non-negative constraint is enforced by interior-point methods.  Furthermore, by utilizing the special structure of the Hessian matrix (ie, it is tridiagonal), this approximate MAP spike train can be found.  Importantly, this algorithm runs fast enough on standard computers that it can be run online.  Finally, all the parameters can be estimated from only the fluorescence observations, obviating the need for joint electrophysiology and imaging (c.f. Figure \ref{fig:woopsi_learn}).  This approach is robust, in that it works ``out-of-the-box'' on all the in vivo and in vitro data analyzed (c.f. Figure \ref{fig:woopsi_data}).
 
-This work is closely related to several previously proposed algorithms.  Ideally, one could compute the full joint posterior of entire spike trains, conditioned on the fluorescence data.  This distribution is analytically intractable, due to the Poisson assumption on spike trains.  A Bayesian approach could use Markov Chain Monte Carlo to recursively sample spikes until a whole sample spike train is obtained \cite{AndrieuDoucet01}.  Because a central aim here was computational expediency, a ``greedy'' approach is natural: ie, recursively sample the most likely spike, update the posterior, and repeat until the posterior stops increasing.  Template matching, projection pursuit regression \cite{FS81}, and matching pursuit \cite{MallatZhang93} are examples of such a greedy approach (Greenberg et al's algorithm could also be considered a special case of such a greedy approach).  Both the greedy methods, and the one developed here, aim to optimize a similar objective function.  While greedy methods reduce the computational burden by restricting the search space of spike trains, here analytic approximations are made.  The advantage of the greedy approaches relative to this one is that they result in a spike train (ie, a binary sequence), whereas the approach developed herein is faster, and guaranteed to be optimal, given the approximations.  
+This work is closely related to several previously proposed algorithms.  Ideally, one could compute the full joint posterior of entire spike trains, conditioned on the fluorescence data.  This distribution is analytically intractable, due to the Poisson assumption on spike trains.  A Bayesian approach could use Markov Chain Monte Carlo to recursively sample spikes until a whole sample spike train is obtained \cite{AndrieuDoucet01,MishchenkoPaninski09}.  Because a central aim here was computational expediency, a ``greedy'' approach is natural: ie, recursively sample the most likely spike, update the posterior, and repeat until the posterior stops increasing.  Template matching, projection pursuit regression \cite{FS81}, and matching pursuit \cite{MallatZhang93} are examples of such a greedy approach (Greenberg et al's algorithm could also be considered a special case of such a greedy approach).  Both the greedy methods, and the one developed here, aim to optimize a similar objective function.  While greedy methods reduce the computational burden by restricting the search space of spike trains, here analytic approximations are made.  The advantage of the greedy approaches relative to this one is that they result in a spike train (ie, a binary sequence), whereas the approach developed herein is guaranteed to be approximately optimal, given the model.  
 
 
 Because this filter is model based, it can generalized in several ways to improve accuracy.  Unfortunately, some of these generalizations do not improve inference accuracy, probably because of the exponential approximation.  Instead, the \foopsi filter output can be used to initialize the SMC filter \cite{VogelsteinPaninski09}, to further improve inference quality (c.f. Figure \ref{fig:smc_init}).  Another model generalization allows incorporation of spatial filtering of the raw movie into this approach (c.f. Figure \ref{fig:spatial}).  The parameters of the spatial filter can be estimated from the data, even when spatial filters are overlapping (c.f. Figure \ref{fig:spatial_multi_learn}).
