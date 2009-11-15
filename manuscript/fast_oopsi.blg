@@ -22,7 +22,7 @@ Repeated entry---line 17148 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{MankGriesbeck08
  :                         ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 30359 of file /Users/joshyv/Research/misc/biblist.bib
+Repeated entry---line 30373 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{WallaceHasan08
  :                        ,
 I'm skipping whatever remains of this entry
@@ -32,24 +32,24 @@ Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the e
 while executing---line 944 of file unsrt.bst
 You've used 30 entries,
             1791 wiz_defined-function locations,
-            678 strings with 10259 characters,
-and the built_in function-call counts, 7478 in all, are:
-= -- 673
-> -- 373
+            680 strings with 10350 characters,
+and the built_in function-call counts, 7483 in all, are:
+= -- 672
+> -- 377
 < -- 2
-+ -- 135
-- -- 105
-* -- 609
-:= -- 1208
++ -- 136
+- -- 106
+* -- 612
+:= -- 1209
 add.period$ -- 89
 call.type$ -- 30
 change.case$ -- 28
 chr.to.int$ -- 0
 cite$ -- 30
 duplicate$ -- 283
-empty$ -- 678
-format.name$ -- 105
-if$ -- 1598
+empty$ -- 677
+format.name$ -- 106
+if$ -- 1599
 int.to.chr$ -- 0
 int.to.str$ -- 30
 missing$ -- 30
@@ -59,9 +59,9 @@ pop$ -- 49
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 122
+skip$ -- 123
 stack$ -- 0
-substring$ -- 631
+substring$ -- 625
 swap$ -- 49
 text.length$ -- 2
 text.prefix$ -- 0

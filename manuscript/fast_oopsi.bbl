@@ -131,6 +131,18 @@ Emre Yaksi and Rainer~W Friedrich.
   temporally deconvolved {Ca$^{2+}$} imaging.
 \newblock {\em Nature Methods}, 3(5):377--383, May 2006.
 
+\bibitem{PologrutoSvoboda04}
+Thomas~A Pologruto, Ryohei Yasuda, and Karel Svoboda.
+\newblock Monitoring neural activity and [{Ca}$^{2+}$] with genetically encoded
+  {Ca}$^{2+}$ indicators.
+\newblock {\em J Neurosci}, 24(43):9572--9579, Oct 2004.
+
+\bibitem{ShiMalik00}
+J.~Shi and J.~Malik.
+\newblock {Normalized cuts and image segmentation}.
+\newblock {\em IEEE Transactions on pattern analysis and machine intelligence},
+  22(8):888--905, 2000.
+
 \bibitem{MacLeanYuste05}
 Jason~N MacLean, Brendon~O Watson, Gloster~B Aaron, and Rafael Yuste.
 \newblock Internal dynamics determine the cortical response to thalamic
@@ -142,17 +154,6 @@ Lucas Sjulson and Gero Miesenb\"{o}ck.
 \newblock Optical recording of action potentials and other discrete
   physiological events: a perspective from signal detection theory.
 \newblock {\em Physiology (Bethesda)}, 22:47--55, Feb 2007.
-
-\bibitem{PologrutoSvoboda04}
-Thomas~A Pologruto, Ryohei Yasuda, and Karel Svoboda.
-\newblock Monitoring neural activity and [{Ca}$^{2+}$] with genetically encoded
-  {Ca}$^{2+}$ indicators.
-\newblock {\em J Neurosci}, 24(43):9572--9579, Oct 2004.
-
-\bibitem{Hoyer04}
-P.O. Hoyer.
-\newblock {Non-negative matrix factorization with sparseness constraints}.
-\newblock {\em The Journal of Machine Learning Research}, 5:1457--1469, 2004.
 
 \bibitem{AndrieuDoucet01}
 C.~Andrieu, {\'E}.~Barat, and A.~Doucet.

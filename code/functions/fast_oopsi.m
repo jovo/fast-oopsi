@@ -115,7 +115,7 @@ end
 
 if nargin < 3,          P       = struct;   end
 if ~isfield(P,'b'),     P.b     = median(F);end
-if ~isfield(P,'sig'),   P.sig   = mad(F,1); end
+if ~isfield(P,'sig'),   P.sig   = mad(F,1)*1.4826; end
 if ~isfield(P,'gam'),   P.gam   = 1-V.dt/1; end
 if ~isfield(P,'lam'),   P.lam   = 10;       end
 if ~isfield(P,'a'),     P.a     = 1;        end
