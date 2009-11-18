@@ -262,15 +262,15 @@ which is solved efficiently in Matlab using $\balpha_x = (\bC + \widetilde{\bbet
 
 \subsubsection{Slice Preparation and Imaging} 
 
-All animal handling and experimentation was done according to the National Institutes of Health and local Institutional Animal Care and Use Committee guidelines. Somatosensory thalamocortical slices $400$ $\mu$m thick were prepared from C57BL/6 mice at age P14 as described \cite{MacLeanYuste05}. Neurons were filled with $50$ $\mu$M Fura $2$ pentapotassium salt (Invitrogen, Carlsbad, CA) through the recording pipette. Pipette solution contained $130$ K-methylsulfate, $2$ MgCl$_2$, $0.6$ EGTA, $10$ HEPES, $4$ ATP-Mg, and $0.3$ GTP-Tris, pH $7.2$ ($295$ mOsm).  After cells were fully loaded with dye, imaging was done by using a modified BX50-WI upright confocal microscope (Olympus, Melville, NY).  Image acquisition was performed with the C9100-12 CCD camera from Hamamatsu Photonics (Shizuoka, Japan) with arclamp illumination at $385$ nm and $510/60$ nm collection filters (Chroma, Rockingham, VT).  Images were saved and analyzed using custom software written in Matlab (Mathworks, Natick, MA).
+All animal handling and experimentation was done according to the National Institutes of Health and local Institutional Animal Care and Use Committee guidelines. Somatosensory thalamocortical or coronal slices $350-400$ $\mu$m thick were prepared from C57BL/6 mice at age P14 as described \cite{MacLeanYuste05}. Neurons were filled with $50$ $\mu$M Oregon Green Bapta $1$ hexapotassium salt (OGB-1; Invitrogen, Carlsbad, CA) through the recording pipette or bulk loaded with Fura-2 AM (Invitrogen, Carlsbad, CA). Pipette solution contained $130$ K-methylsulfate, $2$ MgCl$_2$, $0.6$ EGTA, $10$ HEPES, $4$ ATP-Mg, and $0.3$ GTP-Tris, pH $7.2$ ($295$ mOsm).  After cells were fully loaded with dye, imaging was done by using a modified BX50-WI upright microscope (Olympus, Melville, NY).  Image acquisition was performed with the C9100-12 CCD camera from Hamamatsu Photonics (Shizuoka, Japan) with arclamp illumination at $480-500$ nm and $510-550$ nm collection filters (Chroma, Rockingham, VT) for Oregon Green.  Imaging of Fura-2 loaded slices was performed with a confocal spinning disk (Solamere Technology Group, Salt Lake City, UT) and an Orca CCD camera from Hamamatsu Photonics (Shizuoka, Japan). Images were saved and analyzed using custom software written in Matlab (Mathworks, Natick, MA).
 
 \subsubsection{Electrophysiology}
 
-All recordings were made using the Multiclamp 700B amplifier (Molecular Devices, Sunnyvale, CA), digitized with National Instruments 6259 multichannel cards and recorded using custom software written using the LabView platform (National Instruments, Austin, TX) .  Waveforms were generated using Matlab and were given as current commands to the amplifier using the LabView and National Instruments system. The shape of the waveforms mimicked excitatory (inhibitory) synaptic inputs, with a maximal amplitude of $+70$ pA ($-70$ pA).
+All recordings were made using the Multiclamp 700B amplifier (Molecular Devices, Sunnyvale, CA), digitized with National Instruments 6259 multichannel cards and recorded using custom software written using the LabView platform (National Instruments, Austin, TX) .  Square pulses of sufficient amplitude to yield the desired number of action potentials were given as current commands to the amplifier using the LabView and National Instruments system.
 
 \subsubsection{Fluorescence preprocessing}
 
-Traces were extracted using custom Matlab scripts to first segment the mean image into ROIs, and then all pixels within the ROI were averaged.  Because Fura $2$ was used, the fluorescence traces were then inverted.  As some slow drift was sometimes present in the traces, the lowest ten frequency components were set to zero (ten was chosen by eye), and the resulting fluorescence trace was then normalized to be between zero and one.
+Traces were extracted using custom Matlab scripts to first segment the mean image into ROIs, and then all pixels within the ROI were averaged.  The Fura $2$ fluorescence traces were inverted.  As some slow drift was sometimes present in the traces, the lowest ten frequency components were set to zero (ten was chosen by eye), and the resulting fluorescence trace was then normalized to be between zero and one.
 
 
 
@@ -304,7 +304,7 @@ Given the above two results, the \foopsi filter was applied to real data.  More 
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data4}
-\caption[\foopsi filter outperforms Wiener filter on real data]{The \foopsi filter significantly outperforms the Wiener filter on typical in vitro data.  Note that all the parameters for both filters were estimated from the fluorescence data alone (ie, not considering the voltage data at all).} \label{fig:woopsi_data}
+\caption[\foopsi filter outperforms Wiener filter on real data]{The \foopsi filter significantly outperforms the Wiener filter on typical in vitro data, using Fura $2$.  Note that all the parameters for both filters were estimated from the fluorescence data alone (ie, not considering the voltage data at all).} \label{fig:woopsi_data}
 \end{figure}
 
 
@@ -319,7 +319,7 @@ A central aim for this work was the development of a algorithm that infers spike
 \begin{centering} 
 \includegraphics[width=1\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/pop}
 \end{centering}
-\caption[\foopsi filter is robust and works online for populations of neurons]{Applying the \foopsi filter in real time to a large population of neurons imaged simultaneously in vitro.  The inferred spike trains convey much more clearly the neural activity.  Left panel: Mean segmented image field.  Middle panel: example fluorescence traces.  Right panel: \foopsi filter output corresponding to each associated trace.} \label{fig:pop}
+\caption[\foopsi filter is robust and works online for populations of neurons]{Applying the \foopsi filter in real time to a large population of neurons imaged simultaneously in vitro, using OBG-1.  The inferred spike trains convey much more clearly the neural activity.  Left panel: Mean segmented image field.  Middle panel: example fluorescence traces.  Right panel: \foopsi filter output corresponding to each associated trace.} \label{fig:pop}
 \end{figure}
 
 
@@ -359,7 +359,7 @@ A previously proposed sequential Monte Carlo (SMC) method to infer spike trains 
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init12}
-\caption[\foopsi filter can initialize Wiener filter]{The \foopsi filter effectively initializes the parameters for the SMC filter (which outperforms the \foopsi filter), significantly reducing the number of expectation-maximization iterations to convergence, on typical in vitro data.  Note that the ordinate on the bottom panel corresponds to the inferred probability of a spike having occurred in each frame.} \label{fig:smc_init}
+\caption[\foopsi filter can initialize Wiener filter]{The \foopsi filter effectively initializes the parameters for the SMC filter (which outperforms the \foopsi filter), significantly reducing the number of expectation-maximization iterations to convergence, on typical in vitro data, using Fura $2$.  Note that the ordinate on the bottom panel corresponds to the inferred probability of a spike having occurred in each frame.} \label{fig:smc_init}
 \end{figure}
 
 \subsection{Spatial filter} \label{sec:results:spatial}

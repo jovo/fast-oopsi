@@ -98,6 +98,7 @@ F=V.F-repmat(mean(V.F,2),1,V.T);
 n=V.n;
 V.est_b=1;
 V.fast_ignore_post=1;
+V.fast_iter_max=5;
 
 % infer spike trains using a variety of techniques
 q=1;
@@ -182,7 +183,7 @@ for q=1:length(exps)
 
     % plot mean image frame
     subplot(nrows,ncols, (q-1)*2*ncols+1)
-    imagesc(reshape(sum(F,2),V.h,V.w))
+    imagesc(reshape(sum(V.F,2),V.h,V.w))
     set(gca,'XTick',[],'YTick',[])
     colormap gray
     if q==1,

@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  17 NOV 2009 20:28
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  18 NOV 2009 08:20
 entering extended mode
 **fast_oopsi
 (./fast_oopsi.tex
@@ -448,12 +448,12 @@ Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
 (hyperref)                removing `math shift' on input line 179.
 
 [6] [7] [8]
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_inf.pdf, id=362, 505.89pt 
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_inf.pdf, id=361, 505.89pt 
 x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_inf.pdf Graphic file 
 (type pdf)
  <use /Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_inf.pdf>
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_learn.pdf, id=363, 505.89p
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_learn.pdf, id=362, 505.89p
 t x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_learn.pdf Graphic fil
 e (type pdf)
@@ -463,7 +463,7 @@ e (type pdf)
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data4.pdf, id=364, 505.89p
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data4.pdf, id=363, 505.89p
 t x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data4.pdf Graphic fil
 e (type pdf)
@@ -499,16 +499,16 @@ pdf>] [11
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.346 
-      
+l.344 \end{align}
+                 
 ! pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.346 
-       </Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data4.pdf> </Users/
-joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf>]
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init12.pdf, id=412, 505.89pt 
+l.344 \end{align}
+                  </Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data4.pd
+f> </Users/joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf>]
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init12.pdf, id=411, 505.89pt 
 x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init12.pdf Graphic file 
 (type pdf)
@@ -517,7 +517,7 @@ File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init12.pdf Graphic file
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [12]
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf, id=427, 505.89pt x 
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf, id=426, 505.89pt x 
 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf Graphic file (t
 ype pdf)
@@ -526,7 +526,7 @@ ype pdf)
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf, id=428, 54
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf, id=427, 54
 2.025pt x 252.945pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf Graphi
 c file (type pdf)
@@ -536,7 +536,7 @@ c file (type pdf)
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf, id=429, 
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf, id=428, 
 542.025pt x 252.945pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf Grap
 hic file (type pdf)
@@ -556,21 +556,21 @@ l.410
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.416 
-       </Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf>]) [15
+l.413 
+       </Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf>] [15
 ! pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.34 
-     
+l.416 
+      
 ! pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.34 
-      </Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf> </Us
-ers/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf>]
+l.416 
+       </Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf> </U
+sers/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf>])
 (./appendix.tex
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 4.
@@ -580,25 +580,25 @@ File: omsptm.fd
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 10.
-)
-[16] (./fast_oopsi.bbl [17
 
-]) [18] (./fast_oopsi.aux)
+[16]) [17] (./fast_oopsi.bbl [18
+
+]) [19] (./fast_oopsi.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 4794 strings out of 94500
- 58934 string characters out of 1155413
- 125133 words of memory out of 1000000
- 7704 multiletter control sequences out of 10000+50000
+ 4796 strings out of 94500
+ 58947 string characters out of 1155413
+ 125147 words of memory out of 1000000
+ 7705 multiletter control sequences out of 10000+50000
  37417 words of font info for 90 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
  29i,15n,43p,1981b,593s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 520 PDF objects out of 300000
- 138 named destinations out of 131072
+ 525 PDF objects out of 300000
+ 139 named destinations out of 131072
  294 words of extra memory for PDF output out of 65536
 </opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx7.pfb></opt/local/sha
 re/texmf-dist/fonts/type1/bluesky/cmextra/cmmib7.pfb></opt/local/share/texmf-di
@@ -619,4 +619,4 @@ ts/type1/urw/times/utmri8a.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky
 t/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy9.pfb></opt/local/share/tex
 mf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/local/share/texmf-dist/fonts/typ
 e1/urw/times/utmr8a.pfb>
-Output written on fast_oopsi.pdf (18 pages, 594342 bytes).
+Output written on fast_oopsi.pdf (19 pages, 595586 bytes).
