@@ -97,9 +97,10 @@ V.h       = height;                       % height of frame (pixels)
 V.w       = width;                        % width of frame (pixels)
 
 
+
 % infer spike trains using a variety of techniques
 q=0;
-exps=[1 2.5]; %[1 2.5];% 3 3.5];
+exps=[2.6]; %[1 2.5];% 3 3.5];
 for qq=exps
     disp(qq)
     if qq==1;                                % use true params
@@ -121,6 +122,14 @@ for qq=exps
         FF=F;
         [U,S,VV]=pca_approx(F',V.Ncells);
         for j=1:V.Ncells, PP.a(:,j)=VV(:,j); end
+    elseif qq==2.6
+        V.fast_iter_max = 3;
+        PP=P;
+        PP.lam=mean(PP.lam);
+        FF=F-repmat(mean(F,2),1,V.T);
+        [U,S,VV]=pca_approx(F',V.Ncells);
+        for j=1:V.Ncells, PP.a(:,j)=VV(:,j); end
+        PP.b=0*P.b;
     elseif qq==3                           % estimate params
         V.fast_iter_max = 10;
         PP=P;

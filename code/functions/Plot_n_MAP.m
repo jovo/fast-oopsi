@@ -13,8 +13,8 @@ stem(pos,n(pos),'Marker','none','LineWidth',Pl.sw,'Color',Pl.col(2,:))
 neg = find(n<=0);                               % plot negative spikes in red
 stem(neg,n(neg),'Marker','none','LineWidth',Pl.sw,'Color',Pl.col(1,:))
 
-stem(Pl.n*1.1,'Marker','v','MarkerSize',Pl.vs,...   % plot real spike train
-    'LineStyle','none','MarkerFaceColor',Pl.gray,'MarkerEdgeColor',Pl.gray);
+stem(Pl.n*1.1,'Marker','+','MarkerSize',Pl.vs,...   % plot real spike train
+    'LineStyle','none','MarkerFaceColor','k','MarkerEdgeColor','k');
 
 
 axis([Pl.xlims min(min(n),0) 1.15])

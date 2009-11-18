@@ -2,6 +2,9 @@
 \input{/Users/joshyv/Research/misc/latex_paper.tex} 
 \usepackage{multicol}
 \usepackage{hyperref}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+% \usepackage{algpseudocode}
 \newcommand{\zzz}{z}
 \newcommand{\az}{\argmax_{\bM \bC \geq \ve{0}}}
 \newcommand{\anx}{\argmax_{n_t \in \mathbb{N}_0 \forall t}}
@@ -13,7 +16,7 @@
 
 \title{Online nonnegative deconvolution for spike train inference from population calcium imaging}
 
-\author{Joshua T.~Vogelstein, Adam Packer, Tim M.~Machado, \\ Tanya Sippy, Baktash Babadi, Rafael Yuste, Liam Paninski}
+\author{Joshua T.~Vogelstein, Adam Packer, Tim A.~Machado, \\ Tanya Sippy, Baktash Babadi, Rafael Yuste, Liam Paninski}
 
 \begin{document}
 
@@ -30,8 +33,8 @@ Calcium imaging technologies for observing spiking activity simultaneously from 
 The authors would like to express appreciation for helpful discussions with Vincent Bonin.  Support for JTV was provided by NIDCD DC00109. LP is supported by an NSF CAREER award, by an Alfred P.\ Sloan Research Fellowship, and the McKnight Scholar Award. RY's laboratory is supported by .  LP and RY share NSF IIS-0904353.
 
 \appendix
-\section{Wiener Filter} \label{sec:wiener}
-\input{wiener}
+\input{appendix}
+\clearpage
 %\subparagraph*{References}
 \bibliography{/Users/joshyv/Research/misc/biblist}
 \addcontentsline{toc}{section}{References}

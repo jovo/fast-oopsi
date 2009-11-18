@@ -123,7 +123,7 @@ for q=qs
 end
 if V.save==1, save('../../data/spatial2'); end
 %% end) plot results
-% load('../../data/spatial2')
+load('../../data/spatial2')
 clear Pl
 nrows   = 3+Nc;                                 % set number of rows
 ncols   = 2;
@@ -133,7 +133,7 @@ Pl.nticks=5;                                    % number of ticks along x-axis
 Pl.n    = double(n); Pl.n(Pl.n==0)=NaN;         % store spike train for plotting
 Pl      = PlotParams(Pl);                       % generate a number of other parameters for plotting
 Pl.fs   = 13;
-Pl.vs   = 2;
+Pl.vs   = 5;
 Pl.colors(1,:) = [0 0 0];
 Pl.colors(2,:) = Pl.gray;
 Pl.colors(3,:) = [.5 0 0];

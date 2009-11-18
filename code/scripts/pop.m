@@ -1,6 +1,5 @@
-% load('../../data/s1m4_20x.mat')
 load('../../data/new_foopsi.mat')
-
+%%
 fig=figure(21); clf
 
 subplot(131)
@@ -16,11 +15,9 @@ ylim([0 size(data.image,1)]);
 % ylabel('pixel')
 title('segmented image')
 axis('tight')
+%%
 
 [foo idx] = sort(sum(data.fast_oopsi,2));
-% idx=flipud(idx);
-
-% load('../../data/s1m4_20x.mat')
 
 %%
 siz=size(data.traces);
@@ -34,7 +31,7 @@ end
 
 %%
 T=600;
-cells=[3 5 9 24];
+cells=[3 5 9 24 13 17];
 xticks=[0:150:T];
 xticklabels=round(xticks/30);
 yticks=[0.5:1:length(cells)];

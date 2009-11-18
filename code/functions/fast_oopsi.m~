@@ -62,7 +62,7 @@ siz         = size(F);      if siz(2)==1, F=F'; siz=size(F); end
 
 % variables determined by the data
 if nargin < 2,              V   = struct;       end
-if ~isfield(V,'Nc'),        V.Ncells = 1;       end     % # of cells in image
+if ~isfield(V,'Ncells'),    V.Ncells = 1;       end     % # of cells in image
 if ~isfield(V,'T'),         V.T = siz(2);       end     % # of time steps
 if ~isfield(V,'Npixels'),   V.Npixels = siz(1); end     % # of pixels in ROI
 if ~isfield(V,'dt'),                                    % frame duration
@@ -81,7 +81,7 @@ if V.fast_poiss && V.fast_nonlin,
     end
 end
 if ~isfield(V,'fast_iter_max'), V.fast_iter_max=1; end % max # of iterations before convergence
-
+if 
 % things that matter if we are iterating to estimate parameters
 if V.fast_iter_max>1;
     if V.fast_poiss || V.fast_nonlin,
@@ -94,7 +94,7 @@ if V.fast_iter_max>1;
         FigNum = 400;
         if V.Npixels>1, figure(FigNum), clf, end        % figure showing estimated spatial filter
         figure(FigNum+1), clf                           % figure showing estimated spike trains
-        if isfield(V,'n'), V.n(isnan(V.n))=0; siz=size(V.n); if siz(1)<siz(2), V.n=V.n'; end; end
+        if isfield(V,'n'), siz=size(V.n); if siz(1)<siz(2), V.n=V.n'; end; end %V.n(isnan(V.n))=0; 
     end
 
     if ~isfield(V,'est_sig'),   V.est_sig   = 0; end    % whether to estimate sig
@@ -108,14 +108,14 @@ end
 
 % normalize F if it is only a trace
 if V.Npixels==1
-%     F=F-min(F); F=F/max(F); F=F+eps;
+    %     F=F-min(F); F=F/max(F); F=F+eps;
 end
 
 %% set default model Parameters
 
 if nargin < 3,          P       = struct;   end
-if ~isfield(P,'b'),     P.b     = mean(F);  end
-if ~isfield(P,'sig'),   P.sig   = std(F);  end
+if ~isfield(P,'b'),     P.b     = median(F);end
+if ~isfield(P,'sig'),   P.sig   = mad(F,1)*1.4826; end
 if ~isfield(P,'gam'),   P.gam   = 1-V.dt/1; end
 if ~isfield(P,'lam'),   P.lam   = 10;       end
 if ~isfield(P,'a'),     P.a     = 1;        end
@@ -123,15 +123,15 @@ if ~isfield(P,'a'),     P.a     = 1;        end
 %% define some stuff needed for est_MAP function
 
 % make sure we have 1 spatial filter per neuron in ROI
-if V.fast_iter_max>1 && V.est_a==1
-    siz=size(P.a);
-    if siz(2)~=V.Ncells
-        [U,S,V]=pca_approx(F',V.Ncells);
-        for j=1:V.Ncells, P.a(:,j)=V(:,j); end
-    else
-        P.a=ones(V.Ncells,1);
-    end
-end
+% if V.fast_iter_max>1 && V.est_a==1
+%     siz=size(P.a);
+%     if siz(2)~=V.Ncells
+%         [U,S,VV]=pca_approx(F',V.Ncells);
+%         for j=1:V.Ncells, P.a(:,j)=VV(:,j); end
+%     else
+%         P.a=ones(V.Ncells,1);
+%     end
+% end
 
 % for brevity and expediency
 Z   = zeros(V.Ncells*V.T,1);                    % zero vector
@@ -209,13 +209,13 @@ P_best      = orderfields(P_best);
         z = 1;                                  % weight on barrier function
         llam = reshape(1./lam',1,V.Ncells*V.T)';
         if V.fast_nonlin==1
-            n = 0.0001+0*V.gauss_n; 
+            n = V.gauss_n;
         else
             n = 0.01+0*llam;                    % initialize spike train
         end
         C = 0*n;                                % initialize calcium
         for j=1:V.Ncells
-            C(j:V.Ncells:end) = filter(1,[1, -P.gam(j)],n(j:V.Ncells:end)) + P.b(j); %(1-P.gam(j))*P.b(j);
+            C(j:V.Ncells:end) = filter(1,[1, -P.gam(j)],n(j:V.Ncells:end)); %(1-P.gam(j))*P.b(j);
         end
 
         % precompute parameters required for evaluating and maximizing likelihood
@@ -230,7 +230,7 @@ P_best      = orderfields(P_best);
             aa      = repmat(diag(P.a'*P.a),V.T,1);% for grad
             H1(d0)  = 2*e*aa;                   % for Hess
         end
-        lnprior     = llam.*sum(M)';            % for grad
+        lnprior     = llam.*sum(M,2);            % for grad
 
         % find C = argmin_{C_z} lik + prior + barrier_z
         while z>1e-13                           % this is an arbitrary threshold
@@ -255,7 +255,7 @@ P_best      = orderfields(P_best);
                     glik    = suma - sumF./(C+b');
                     H1(d0)  = sumF.*(C+b').^(-2); % lik contribution to Hessian
                 elseif V.fast_nonlin==1
-                    glik    = -2*D'*P.a*P.k_d.*(C+P.k_d).^-2;
+                    glik    = -2*P.a*P.k_d*D'.*(C+P.k_d).^-2;
                     H1diag  = (-P.a*P.k_d-2*(C+P.k_d).*D').*((C+P.k_d).^-4);
                     H1(d0)  = H1diag;
                 else
@@ -332,22 +332,19 @@ P_best      = orderfields(P_best);
                 end
             end
             if V.est_b==1
-                if V.Npixels>1
-                    P.b     = quadprog(P.a'*P.a,-P.a'*sum(F - P.a*CC',2)/V.T',[],[],[],[],Z(1:V.Ncells),inf+Z(1:V.Ncells),P.b,options);
-                    P.b     = P.b';
-                else
-                    P.b = mean(F-P.a*C');
-                    P.b(P.b<0)=0;
+                for jj=1:V.Ncells
+                    P.b(jj) = mean(mean(F./repmat(P.a(:,jj),1,V.T)-repmat(C(:,jj)',V.Npixels,1)));
                 end
+                P.b(P.b<0)=0;
             end
             b       = repmat(P.b,V.T,1)';
             D       = F-P.a*(reshape(C,V.Ncells,V.T)+b);
             mse     = D(:)'*D(:);
         end
 
-        if V.est_a==0 && V.est_b==0 && (V.est_sig==1 || V.est_lam==1), 
-            D   = F-P.a*(reshape(C,V.Ncells,V.T)+b); 
-            mse = D(:)'*D(:); 
+        if V.est_a==0 && V.est_b==0 && (V.est_sig==1 || V.est_lam==1),
+            D   = F-P.a*(reshape(C,V.Ncells,V.T)+b);
+            mse = D(:)'*D(:);
         end
 
         % estimate other parameters
@@ -380,22 +377,24 @@ P_best      = orderfields(P_best);
 
             figure(FigNum+1),  ncols=V.Ncells; nrows=3; END=V.T; h=zeros(V.Ncells,2);
             for j=1:V.Ncells                                  % plot inferred spike train
-                h(j,1)=subplot(nrows,ncols,j); cla
+                h(j,1)=subplot(nrows,ncols,(j-1)*ncols+1); cla
                 if V.Npixels>1, Ftemp=mean(F); else Ftemp=F; end
                 plot(z1(Ftemp(2:END))+1), hold on,
                 bar(z1(n_best(2:END,j)))
                 title(['best iteration ' num2str(i_best)]),
                 axis('tight')
+                set(gca,'XTickLabel',[],'YTickLabel',[])
 
-                h(j,2)=subplot(nrows,ncols,j+1); cla
+                h(j,2)=subplot(nrows,ncols,(j-1)*ncols+2); cla
                 bar(z1(n(2:END,j)))
                 if isfield(V,'n'), hold on,
-                    stem(V.n(2:END,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
+                    for k=1:V.Ncells
+                        stem(V.n(2:END,k)+k/10,'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
+                    end
                 end
-                set(gca,'XTickLabel',[])
+                set(gca,'XTickLabel',[],'YTickLabel',[])
                 title(['current iteration ' num2str(i)]),
                 axis('tight')
-
             end
 
             subplot(nrows,ncols,j*nrows),

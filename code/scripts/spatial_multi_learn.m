@@ -52,12 +52,12 @@ V.est_a       = 1;
 V.fast_thresh  = 1;                     % whether to threshold spike train before estimating 'a' and 'b' (we always keep this on)
 V.fast_plot    = 1;                     % whether to plot filter with each iteration
 V.fast_poisson = 0;                     % whether observations are poisson or gaussian
-V.fast_iter_max= 10;                     % # iterations of EM to estimate params
-
+V.fast_iter_max= 3;                     % # iterations of EM to estimate params
+V.fast_ignore_post=1;
 
 
 % initialize other parameters
-P.sig   = max(P.a(:))*1.0;               % stan dev of noise (indep for each pixel)
+P.sig   = max(P.a(:))*0.1;               % stan dev of noise (indep for each pixel)
 C_0     = 0;                             % initial calcium
 tau     = rand(V.Ncells,1)/2+.05;        % decay time constant for each cell
 P.gam   = 1-V.dt./tau(1:Nc);             % set gam
@@ -79,14 +79,14 @@ for i=1:V.Ncells
     V.C(:,i)      = filter(1,[1 -P.gam(i)],V.n(:,i));   % calcium concentration
 end
 V.F = P.a*(V.C+repmat(P.b,V.T,1))'+P.sig*rand(Npixs,V.T);
-F=V.F; n=V.n;
+V.n(V.n==0)=NaN;
 save(['../../data/' fname '.mat'],'P','V')
 
 %% generate tif
 
 MakMov  = 1;
 if MakMov==1
-    FF=uint8(floor(255*z1(F)));
+    FF=uint8(floor(255*z1(V.F)));
     for t=1:500
         if t==1, mod='overwrite'; else mod='append'; end
         imwrite(reshape(FF(:,t),height,width),['../../data/' fname '.tif'],'tif','Compression','none','WriteMode',mod)
@@ -94,16 +94,19 @@ if MakMov==1
 end
 
 %% infer spike trains and parameters
-
+F=V.F-repmat(mean(V.F,2),1,V.T); 
+n=V.n;
+V.est_b=1;
+V.fast_ignore_post=1;
 
 % infer spike trains using a variety of techniques
 q=1;
-exps=[1];
+exps=1;
 PP=P;
 PP.lam=mean(PP.lam);
 [U,S,VV]=pca_approx(F',V.Ncells);
 for j=1:V.Ncells, PP.a(:,j)=VV(:,j); end
-PP.b=1e-3*ones(1,Nc);
+PP.b=0*P.b;%1e-3*ones(1,V.Ncells);
 [I{q}.n I{q}.P] = fast_oopsi(F,V,PP);
 
 save(['../../data/' fname '.mat'],'-append','I','PP')

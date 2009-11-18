@@ -77,10 +77,12 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Learning the parameters}{6}{subsection.2.4}}
 \newlabel{sec:learn}{{2.4}{6}{Learning the parameters\relax }{subsection.2.4}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.1}Initializing the parameters}{6}{subsubsection.2.4.1}}
+\newlabel{sec:init}{{2.4.1}{6}{Initializing the parameters\relax }{subsubsection.2.4.1}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.2}Estimating the parameters given $\setbox \z@ \hbox {\frozen@everymath \@emptytoks \mathsurround \z@ $\textstyle \@mathbf {n}$}\mathaccent "0362{\@mathbf {n}}$}{6}{subsubsection.2.4.2}}
 \newlabel{eq:par1}{{17}{6}{Estimating the parameters given $\widehat {\mathbf {n}}$\relax }{equation.17}{}}
 \newlabel{eq:par2}{{18}{6}{Estimating the parameters given $\widehat {\mathbf {n}}$\relax }{equation.18}{}}
 \newlabel{eq:par2}{{19}{6}{Estimating the parameters given $\widehat {\mathbf {n}}$\relax }{equation.19}{}}
+\newlabel{eq:beta}{{20}{6}{Estimating the parameters given $\widehat {\mathbf {n}}$\relax }{equation.20}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.3}Convergence criteria}{6}{subsubsection.2.4.3}}
 \citation{ShiMalik00}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Spatial filtering}{7}{subsection.2.5}}
@@ -93,6 +95,8 @@
 \newlabel{sec:methods:overlapping}{{2.6}{7}{Overlapping spatial filters\relax }{subsection.2.6}{}}
 \newlabel{eq:M2}{{27}{7}{Overlapping spatial filters\relax }{equation.27}{}}
 \citation{MacLeanYuste05}
+\newlabel{eq:valpha}{{30}{8}{Overlapping spatial filters\relax }{equation.30}{}}
+\newlabel{eq:vbeta}{{31}{8}{Overlapping spatial filters\relax }{equation.31}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.7}Experimental Methods}{8}{subsection.2.7}}
 \newlabel{sec:exp}{{2.7}{8}{Experimental Methods\relax }{subsection.2.7}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.7.1}Slice Preparation and Imaging}{8}{subsubsection.2.7.1}}
@@ -104,19 +108,19 @@
 \newlabel{sec:main}{{3.1}{8}{Main Result\relax }{subsection.3.1}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces fast filter outperforms Wiener filter}}{9}{figure.2}}
 \newlabel{fig:woopsi_inf}{{2}{9}{Main Result\relax }{figure.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Online analysis of spike trains using the fast filter}{9}{subsection.3.2}}
 \citation{SjulsonMiesenbock07}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces parameters may be estimated using the fast filter}}{10}{figure.3}}
 \newlabel{fig:woopsi_learn}{{3}{10}{Main Result\relax }{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Online analysis of spike trains using the fast filter}{10}{subsection.3.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Extensions}{10}{subsection.3.3}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Replacing Gaussian observations with Poisson}{10}{subsubsection.3.3.1}}
-\newlabel{eq:poiss}{{31}{10}{Replacing Gaussian observations with Poisson\relax }{equation.31}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Allowing for a time-varying prior}{10}{subsubsection.3.3.2}}
-\citation{PologrutoSvoboda04}
+\newlabel{eq:poiss}{{32}{10}{Replacing Gaussian observations with Poisson\relax }{equation.32}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces fast filter outperforms Wiener filter on real data}}{11}{figure.4}}
 \newlabel{fig:woopsi_data}{{4}{11}{Main Result\relax }{figure.4}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces fast filter is robust and works online for populations of neurons}}{11}{figure.5}}
 \newlabel{fig:pop}{{5}{11}{Online analysis of spike trains using the \foopsi filter\relax }{figure.5}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Allowing for a time-varying prior}{11}{subsubsection.3.3.2}}
+\citation{PologrutoSvoboda04}
 \citation{VogelsteinPaninski09}
 \citation{VogelsteinPaninski09}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3}Saturating fluorescence}{12}{subsubsection.3.3.3}}
@@ -141,8 +145,16 @@
 \newlabel{fig:spatial_multi_inf}{{8}{15}{Overlapping spatial filters\relax }{figure.8}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces overlapping spatial filters can be estimated}}{15}{figure.9}}
 \newlabel{fig:spatial_multi_learn}{{9}{15}{Overlapping spatial filters\relax }{figure.9}{}}
-\@writefile{toc}{\contentsline {paragraph}{Acknowledgments}{15}{section*.1}}
 \citation{SjulsonMiesenbock07}
+\@writefile{toc}{\contentsline {paragraph}{Acknowledgments}{16}{section*.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Pseudocode}{16}{section.A}}
+\newlabel{sec:pseudo}{{A}{16}{Pseudocode\relax }{section.A}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces pseudocode for inferring the approximately most likely spike train, given fluorescence data.}}{16}{algorithm.1}}
+\newlabel{eqn:pseudocode}{{1}{16}{Pseudocode\relax }{algorithm.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Wiener Filter}{16}{section.B}}
+\newlabel{sec:wiener}{{B}{16}{Wiener Filter\relax }{section.B}{}}
+\newlabel{eq:obj3}{{35}{16}{Wiener Filter\relax }{equation.35}{}}
+\newlabel{eq:w2}{{36}{16}{Wiener Filter\relax }{equation.36}{}}
 \bibdata{/Users/joshyv/Research/misc/biblist}
 \bibcite{ImagingManual}{1}
 \bibcite{SmettersYuste99}{2}
@@ -154,10 +166,6 @@
 \bibcite{MankGriesbeck08}{8}
 \bibcite{WallaceHasan08}{9}
 \bibcite{GreenbergKerr08}{10}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Wiener Filter}{16}{section.A}}
-\newlabel{sec:wiener}{{A}{16}{Wiener Filter\relax }{section.A}{}}
-\newlabel{eq:obj3}{{34}{16}{Wiener Filter\relax }{equation.34}{}}
-\newlabel{eq:w2}{{35}{16}{Wiener Filter\relax }{equation.35}{}}
 \bibcite{HolekampHoly08}{11}
 \bibcite{VogelsteinPaninski09}{12}
 \bibcite{PortugalVicente94}{13}

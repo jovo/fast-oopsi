@@ -33,7 +33,7 @@ w       = 1;                        % weights of each filter
 ix0 = [97:99 112:114 127:129];      % typical spatial filter
 for i=1:Nc                          % spatial filter
     g1(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma1);
-    g2(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma2);
+    g2(:,i)  = 0*w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma2);
 end
 
 % 2) set simulation metadata
@@ -45,7 +45,7 @@ V.w       = width;                  % width of frame (pixels)
 V.h       = height;                 % height of frame (pixels)
 V.Nc      = Nc;                     % # cells
 V.plot    = 0;                      % whether to plot filter with each iteration
-V.save    = 1;                                
+V.save    = 0;                                
 
 % 3) initialize params
 for i=1:V.Nc
@@ -56,7 +56,7 @@ end
 % P.a(56,1)=P.a(56,1)-P.a(56,1)/5;
 P.b     = 0;%*P.a(:,1);             % baseline is zero
 
-P.sig   = 0.005;                    % stan dev of noise (indep for each pixel)
+P.sig   = 0.05;                    % stan dev of noise (indep for each pixel)
 C_0     = 0;                        % initial calcium
 tau     = round(100*rand(V.Nc,1))/100+0.05;   % decay time constant for each cell
 P.gam   = 1-V.dt./tau(1:V.Nc);
@@ -107,7 +107,7 @@ end
 qs=1:2;%:6;%[1 2 3];
 MaxIter=10;
 for q=qs
-    GG=F; Tim=Sim;
+    GG=F; Tim=V;
     if q==1,
         Phat{q}=P;
         I{q}.label='True filter';
@@ -123,7 +123,7 @@ for q=qs
 end
 if V.save==1, save('../../data/spatial2'); end
 %% end) plot results
-% load('../../data/spatial2')
+load('../../data/spatial2')
 clear Pl
 nrows   = 3+Nc;                                 % set number of rows
 ncols   = 2;
@@ -133,7 +133,7 @@ Pl.nticks=5;                                    % number of ticks along x-axis
 Pl.n    = double(n); Pl.n(Pl.n==0)=NaN;         % store spike train for plotting
 Pl      = PlotParams(Pl);                       % generate a number of other parameters for plotting
 Pl.fs   = 13;
-Pl.vs   = 2;
+Pl.vs   = 5;
 Pl.colors(1,:) = [0 0 0];
 Pl.colors(2,:) = Pl.gray;
 Pl.colors(3,:) = [.5 0 0];

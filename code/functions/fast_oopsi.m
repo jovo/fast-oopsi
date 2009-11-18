@@ -81,7 +81,6 @@ if V.fast_poiss && V.fast_nonlin,
     end
 end
 if ~isfield(V,'fast_iter_max'), V.fast_iter_max=1; end % max # of iterations before convergence
-
 % things that matter if we are iterating to estimate parameters
 if V.fast_iter_max>1;
     if V.fast_poiss || V.fast_nonlin,
@@ -94,7 +93,7 @@ if V.fast_iter_max>1;
         FigNum = 400;
         if V.Npixels>1, figure(FigNum), clf, end        % figure showing estimated spatial filter
         figure(FigNum+1), clf                           % figure showing estimated spike trains
-        if isfield(V,'n'), V.n(isnan(V.n))=0; siz=size(V.n); if siz(1)<siz(2), V.n=V.n'; end; end
+        if isfield(V,'n'), siz=size(V.n); if siz(1)<siz(2), V.n=V.n'; end; end %V.n(isnan(V.n))=0; 
     end
 
     if ~isfield(V,'est_sig'),   V.est_sig   = 0; end    % whether to estimate sig
@@ -104,6 +103,7 @@ if V.fast_iter_max>1;
     if ~isfield(V,'est_b'),     V.est_b     = 1; end    % whether to estimate sig
     if ~isfield(V,'fast_plot'), V.fast_plot = 1; end    % whether to plot results from each iteration
     if ~isfield(V,'fast_thr'),  V.fast_thr  = 0; end    % whether to threshold spike train before estimating 'a' and 'b'
+    if ~isfield(V,'fast_ignore_post'), V.fast_ignore_post=0; end % whether to ignore the posterior, and just keep the last iteration
 end
 
 % normalize F if it is only a trace
@@ -181,7 +181,7 @@ while conv == 0
     P               = est_params(n,C,F,P,b);    % update parameters based on previous iteration
     [n C posts(i)]  = est_MAP(F,P);             % update inferred spike train based on new parameters
 
-    if posts(i)>post_max                        % if this is the best one, keep n and P
+    if posts(i)>post_max || V.fast_ignore_post==1                       % if this is the best one, keep n and P
         n_best  = n;                            % keep n
         P_best  = P;                            % keep P
         i_best  = i;                            % keep track of which was best
@@ -377,22 +377,24 @@ P_best      = orderfields(P_best);
 
             figure(FigNum+1),  ncols=V.Ncells; nrows=3; END=V.T; h=zeros(V.Ncells,2);
             for j=1:V.Ncells                                  % plot inferred spike train
-                h(j,1)=subplot(nrows,ncols,j); cla
+                h(j,1)=subplot(nrows,ncols,(j-1)*ncols+1); cla
                 if V.Npixels>1, Ftemp=mean(F); else Ftemp=F; end
                 plot(z1(Ftemp(2:END))+1), hold on,
                 bar(z1(n_best(2:END,j)))
                 title(['best iteration ' num2str(i_best)]),
                 axis('tight')
+                set(gca,'XTickLabel',[],'YTickLabel',[])
 
-                h(j,2)=subplot(nrows,ncols,j+1); cla
+                h(j,2)=subplot(nrows,ncols,(j-1)*ncols+2); cla
                 bar(z1(n(2:END,j)))
                 if isfield(V,'n'), hold on,
-                    stem(V.n(2:END,j),'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
+                    for k=1:V.Ncells
+                        stem(V.n(2:END,k)+k/10,'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2)
+                    end
                 end
-                set(gca,'XTickLabel',[])
+                set(gca,'XTickLabel',[],'YTickLabel',[])
                 title(['current iteration ' num2str(i)]),
                 axis('tight')
-
             end
 
             subplot(nrows,ncols,j*nrows),

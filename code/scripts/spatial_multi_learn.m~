@@ -52,12 +52,12 @@ V.est_a       = 1;
 V.fast_thresh  = 1;                     % whether to threshold spike train before estimating 'a' and 'b' (we always keep this on)
 V.fast_plot    = 1;                     % whether to plot filter with each iteration
 V.fast_poisson = 0;                     % whether observations are poisson or gaussian
-V.fast_iter_max= 10;                     % # iterations of EM to estimate params
-
+V.fast_iter_max= 3;                     % # iterations of EM to estimate params
+V.fast_ignore_post=1;
 
 
 % initialize other parameters
-P.sig   = max(P.a(:))*1.0;               % stan dev of noise (indep for each pixel)
+P.sig   = max(P.a(:))*0.1;               % stan dev of noise (indep for each pixel)
 C_0     = 0;                             % initial calcium
 tau     = rand(V.Ncells,1)/2+.05;        % decay time constant for each cell
 P.gam   = 1-V.dt./tau(1:Nc);             % set gam
@@ -79,14 +79,14 @@ for i=1:V.Ncells
     V.C(:,i)      = filter(1,[1 -P.gam(i)],V.n(:,i));   % calcium concentration
 end
 V.F = P.a*(V.C+repmat(P.b,V.T,1))'+P.sig*rand(Npixs,V.T);
-F=V.F; n=V.n;
+V.n(V.n==0)=NaN;
 save(['../../data/' fname '.mat'],'P','V')
 
 %% generate tif
 
 MakMov  = 1;
 if MakMov==1
-    FF=uint8(floor(255*z1(F)));
+    FF=uint8(floor(255*z1(V.F)));
     for t=1:500
         if t==1, mod='overwrite'; else mod='append'; end
         imwrite(reshape(FF(:,t),height,width),['../../data/' fname '.tif'],'tif','Compression','none','WriteMode',mod)
@@ -94,23 +94,28 @@ if MakMov==1
 end
 
 %% infer spike trains and parameters
-
+F=V.F-repmat(mean(V.F,2),1,V.T); 
+n=V.n;
+V.est_b=1;
+V.fast_ignore_post=1;
+V.fast_iter_max=5;
 
 % infer spike trains using a variety of techniques
 q=1;
-exps=[1];
+exps=1;
 PP=P;
 PP.lam=mean(PP.lam);
 [U,S,VV]=pca_approx(F',V.Ncells);
 for j=1:V.Ncells, PP.a(:,j)=VV(:,j); end
-PP.b=1e-3*ones(Nc,1);
+PP.b=0*P.b;%1e-3*ones(1,V.Ncells);
 [I{q}.n I{q}.P] = fast_oopsi(F,V,PP);
 
 save(['../../data/' fname '.mat'],'-append','I','PP')
 sound(10*sin(linspace(0,180*pi,2000)))
 
 %% plot results
-% load(['../../data/' fname])
+fname = 'spatial_multi_learn';
+load(['../../data/' fname])
 
 Pl.g    = 0.65*ones(1,3);       % gray color
 Pl.fs   = 12;                   % font size
@@ -126,7 +131,7 @@ Pl.lw   = 2;                    % line width
 Pl.n    = V.n; Pl.n(Pl.n==0)=NaN; % true spike train (0's are NaN's so they don't plot)
 Pl.T    = V.T;
 Pl.c    = [0 0 0; Pl.g; 1 1 1]; % colors: black, grey, white
-Pl.m    = ['v','v'];
+Pl.m    = ['+','+'];
 Pl.xlim = [200 700]+3000;        % limits of x-axis
 Pl.shift= [0 .07];
 Pl.x_range = Pl.xlim(1):Pl.xlim(2);
@@ -178,12 +183,12 @@ for q=1:length(exps)
 
     % plot mean image frame
     subplot(nrows,ncols, (q-1)*2*ncols+1)
-    imagesc(reshape(sum(F,2),V.h,V.w))
+    imagesc(reshape(sum(V.F,2),V.h,V.w))
     set(gca,'XTick',[],'YTick',[])
     colormap gray
     if q==1,
         title(['mean frame'],'FontSize',Pl.fs);
-        ylab=ylabel([{'truth'}]);
+%         ylab=ylabel([{'truth'}]);
     elseif q==2
         ylab=ylabel([{'PCA'}]);
     elseif q==3
@@ -197,7 +202,7 @@ for q=1:length(exps)
         image(reshape(E{q}.a(:,j_inf(j)),V.h,V.w)),
         set(gca,'XTickLabel',[],'YTickLabel',[])
         if q==1, title(['neuron ' num2str(j)],'FontSize',Pl.fs); end
-        ylabel('spatial filter','FontSize',Pl.fs)
+        ylabel([{'estimated'}; {'spatial filter'}],'FontSize',Pl.fs)
     end
 
     % plot F and n for neurons
@@ -221,7 +226,7 @@ for q=1:length(exps)
     for j=1:V.Ncells
         subplot(nrows,ncols,(q-1)*2*ncols+ncols+1+j)
         hold on
-        stem(Pl.x_range,Pl.n(Pl.x_range,j)+.03,'LineStyle','none','Marker','v','MarkerEdgeColor',Pl.c(j,:),'MarkerFaceColor',Pl.c(j,:),'MarkerSize',Pl.ms)
+        stem(Pl.x_range,Pl.n(Pl.x_range,j)+.03,'LineStyle','none','Marker','+','MarkerEdgeColor',Pl.c(j,:),'MarkerFaceColor',Pl.c(j,:),'MarkerSize',Pl.ms)
         if j==1, k=2; else k=1; end
         bar(Pl.x_range,I{q}.n(Pl.x_range,j_inf(j))/max(I{q}.n(Pl.x_range,j_inf(j))),'EdgeColor',Pl.c(j,:),'FaceColor',Pl.c(j,:))
         axis('tight')
