@@ -57,7 +57,7 @@ V.fast_ignore_post=1;
 
 
 % initialize other parameters
-P.sig   = max(P.a(:))*0.1;               % stan dev of noise (indep for each pixel)
+P.sig   = max(P.a(:))*1;               % stan dev of noise (indep for each pixel)
 C_0     = 0;                             % initial calcium
 tau     = rand(V.Ncells,1)/2+.05;        % decay time constant for each cell
 P.gam   = 1-V.dt./tau(1:Nc);             % set gam
@@ -132,7 +132,7 @@ Pl.n    = V.n; Pl.n(Pl.n==0)=NaN; % true spike train (0's are NaN's so they don'
 Pl.T    = V.T;
 Pl.c    = [0 0 0; Pl.g; 1 1 1]; % colors: black, grey, white
 Pl.m    = ['+','+'];
-Pl.xlim = [200 700]+3000;        % limits of x-axis
+Pl.xlim = [200 700]+2000;        % limits of x-axis
 Pl.shift= [0 .07];
 Pl.x_range = Pl.xlim(1):Pl.xlim(2);
 Pl.XTick= [Pl.xlim(1) round(mean(Pl.xlim)) Pl.xlim(2)];
