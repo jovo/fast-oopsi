@@ -109,13 +109,15 @@ for i=datasets
         end
     end
     V.name = [name num2str(i)];
-    save(['../../data/' V.name],'F','inf','spt','volt')
+    save(['../../data/' V.name],'F','inf','spt','volt','n_t')
 end
 
 
 %%
 % load(['../../data/' V.name])
-% datasets=4;
+datasets=5;
+load(['../../data/woopsi_data' num2str(datasets)])
+
 for j=datasets
     V.name_fig = ['../../figs/' V.name];                                 % filename for figure
     fig     = figure(j); clf,
@@ -128,7 +130,7 @@ for j=datasets
     ms      = 5;                        % marker size for real spike
     sw      = 2;                        % spike width
     lw      = 2;                        % line width
-    xlims   = [5 V.T-50];
+    xlims   = [100 1600];
     xticks  = xlims(1):1/V.dt:xlims(2);             % XTick positions
     skip    = round(length(xticks)/5);
     xticks  = xticks(1:skip:end);

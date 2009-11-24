@@ -18,6 +18,7 @@ V.name          = name;
 P.lam           = 10;
 P.k_d           = 180;
 
+
 for i=datasets
     disp(i)
     if i==13
@@ -45,12 +46,10 @@ for i=datasets
         f       = detrend(F{i}); 
         nfft    = 2^nextpow2(V.T);
         y       = fft(f,nfft); 
-        %%
-        bw      = 7;
+        bw      = 10;
         y(1:bw) = 0; y(end-bw+1:end)=20;
         iy      = ifft(y,nfft); 
         F{i}    = z1(real(iy(1:V.T))); 
-        plot(F{i})
         V.dt    = median(diff(cc.FluorescenceTime));
         P.gam   = 1-V.dt/1;
         volt1{i}= cc.chanDev1_ai0_VoltageCh1;
@@ -69,7 +68,7 @@ for i=datasets
         switch j
             case 0 % fast init smc
                 V.fast_iter_max = 2;
-                V.smc_iter_max  = 5;
+                V.smc_iter_max  = 8;
                 [fast smc] = run_oopsi(F{i},V,P);
                 V.fast_iter_max = 1;
                 inf{i}.fast = fast.n;
@@ -110,13 +109,17 @@ for i=datasets
         end
     end
     V.name = [name num2str(i)];
-    save(['../../data/' V.name],'F','inf','spt','volt')
+    save(['../../data/' V.name],'F','inf','spt','volt','n_t','V')
 end
 
 
 %%
 % load(['../../data/' V.name])
-% datasets=4;
+datasets=5;
+V.name=['woopsi_data' num2str(datasets)];
+load(['../../data/' V.name])
+
+
 for j=datasets
     V.name_fig = ['../../figs/' V.name];                                 % filename for figure
     fig     = figure(j); clf,
@@ -129,7 +132,7 @@ for j=datasets
     ms      = 5;                        % marker size for real spike
     sw      = 2;                        % spike width
     lw      = 2;                        % line width
-    xlims   = [5 V.T-50];
+    xlims   = [100 1600];
     xticks  = xlims(1):1/V.dt:xlims(2);             % XTick positions
     skip    = round(length(xticks)/5);
     xticks  = xticks(1:skip:end);

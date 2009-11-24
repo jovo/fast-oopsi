@@ -93,7 +93,8 @@ if V.fast_iter_max>1;
         FigNum = 400;
         if V.Npixels>1, figure(FigNum), clf, end        % figure showing estimated spatial filter
         figure(FigNum+1), clf                           % figure showing estimated spike trains
-        if isfield(V,'n'), siz=size(V.n); if siz(1)<siz(2), V.n=V.n'; end; end %V.n(isnan(V.n))=0; 
+        if isfield(V,'n'), siz=size(V.n); V.n(V.n==0)=NaN; if siz(1)<siz(2), V.n=V.n'; end; end
+        %         V.n(isnan(V.n))=0;
     end
 
     if ~isfield(V,'est_sig'),   V.est_sig   = 0; end    % whether to estimate sig
