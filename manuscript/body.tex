@@ -298,7 +298,7 @@ Given the above two results, the \foopsi filter was applied to real data.  More 
 Figure \ref{fig:woopsi_data_doublets} further evaluates this claim.  The cell was forced to spike in ``doublets'' for each spiking event, meaning that the algorithm never saw a single spike event.  Na\"{i}vely, this would suggest that a purely linear approach would struggle to resolve spike fidelity in this high frequency spiking regime.  However, the \foopsi filter correctly identifies nearly all spiking events as ``doublets''.  On the contrary, there is no obvious way to count the number of spikes within each event upon using the Wiener filter.
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data5}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/doublets}
 \caption[\foopsi filter outperforms Wiener filter on doublets]{The \foopsi filter can resolve a sequence of doublets, even in the absence of ever seeing an individual spike.  It is difficult, if not impossible, to count the number of spikes given the Wiener filter output.  Recording and fitting parameters as in Figure \ref{fig:woopsi_data}.} \label{fig:woopsi_data_doublets}
 \end{figure}
 

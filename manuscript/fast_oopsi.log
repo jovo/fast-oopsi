@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  26 NOV 2009 15:08
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  26 NOV 2009 15:13
 entering extended mode
 **fast_oopsi.tex
 (./fast_oopsi.tex
@@ -473,12 +473,11 @@ e (type pdf)
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data5.pdf, id=368, 505.89p
-t x 361.35pt>
-File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data5.pdf Graphic fil
-e (type pdf)
-
-<use /Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data5.pdf>
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/doublets.pdf, id=368, 505.89pt x 
+361.35pt>
+File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/doublets.pdf Graphic file (t
+ype pdf)
+ <use /Users/joshyv/Research/oopsi/fast-oopsi/figs/doublets.pdf>
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -523,8 +522,8 @@ has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
 l.356 
-       </Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data5.pdf> </Users/
-joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf>]
+       </Users/joshyv/Research/oopsi/fast-oopsi/figs/doublets.pdf> </Users/josh
+yv/Research/oopsi/fast-oopsi/figs/pop.pdf>]
 </Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init12.pdf, id=435, 461.725pt
  x 331.2375pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init12.pdf Graphic file 
@@ -599,7 +598,7 @@ Missing character: There is no ¼ in font ptmr7t!
 ]) [19] (./fast_oopsi.aux) ) 
 Here is how much of TeX's memory you used:
  4804 strings out of 94500
- 59270 string characters out of 1155413
+ 59250 string characters out of 1155413
  125217 words of memory out of 1000000
  7711 multiletter control sequences out of 10000+50000
  37417 words of font info for 90 fonts, out of 500000 for 2000
@@ -628,4 +627,4 @@ f-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/local/share/texmf-dist/fonts/type
 1/bluesky/cm/cmr9.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy9
 .pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/local/
 share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on fast_oopsi.pdf (19 pages, 696113 bytes).
+Output written on fast_oopsi.pdf (19 pages, 673019 bytes).
