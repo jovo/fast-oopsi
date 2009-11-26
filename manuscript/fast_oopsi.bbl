@@ -1,12 +1,12 @@
 \begin{thebibliography}{10}
 
 \bibitem{ImagingManual}
-R.~Yuste, A.~Konnerth, B.R. Masters, et~al.
+Rafael Yuste and Arthur Konnerth.
 \newblock {\em {Imaging in Neuroscience and Development, A Laboratory Manual}},
   2006.
 
 \bibitem{SmettersYuste99}
-D~Smetters, A~Majewska, and R~Yuste.
+Diana Smetters, Ania Majewska, and Rafael Yuste.
 \newblock Detecting action potentials in neuronal populations with calcium
   imaging.
 \newblock {\em Methods}, 18(2):215--221, Jun 1999.
@@ -31,9 +31,9 @@ Werner G\"{o}bel and Fritjof Helmchen.
 \newblock {\em Physiology (Bethesda)}, 22:358--365, Dec 2007.
 
 \bibitem{LuoSvoboda08}
-L.~Luo, E.~M. Callaway, and K.~Svoboda.
+Liqun Luo, Edward~M. Callaway, and Karel Svoboda.
 \newblock Genetic dissection of neural circuits.
-\newblock {\em Neuron}, 57:634--60, |2008|.
+\newblock {\em Neuron}, 57(5):634--660, Mar 2008.
 
 \bibitem{GaraschukKonnerth07}
 Olga Garaschuk, Oliver Griesbeck, and Arthur Konnerth.
@@ -47,23 +47,24 @@ Marco Mank and Oliver Griesbeck.
 \newblock {\em Chem Rev}, 108(5):1550--1564, May 2008.
 
 \bibitem{WallaceHasan08}
-D.J. Wallace, S.M. zum Alten~Borgloh, S.~Astori, Y.~Yang, M.~Bausen, S.~Kugler,
-  A.E. Palmer, R.Y. Tsien, R.~Sprengel, J.N.D. Kerr, W.~Denk, and M.T. Hasan.
-\newblock {Single-spike detection in vitro and in vivo with a genetic Ca2+
-  sensor}.
-\newblock {\em Nature methods}, 5(9):797--804, 2008.
+Damian~J Wallace, Stephan~Meyer zum Alten~Borgloh, Simone Astori, Ying Yang,
+  Melanie Bausen, Sebastian Kügler, Amy~E Palmer, Roger~Y Tsien, Rolf
+  Sprengel, Jason N~D Kerr, Winfried Denk, and Mazahir~T Hasan.
+\newblock Single-spike detection in vitro and in vivo with a genetic ca2+
+  sensor.
+\newblock {\em Nat Methods}, 5(9):797--804, Sep 2008.
 
 \bibitem{GreenbergKerr08}
 David~S Greenberg, Arthur~R Houweling, and Jason N~D Kerr.
 \newblock Population imaging of ongoing neuronal activity in the visual cortex
   of awake rats.
-\newblock {\em Nat Neurosci}, Jun 2008.
+\newblock {\em Nat Neurosci}, 11(7):749 -- 751, Jun 2008.
 
 \bibitem{HolekampHoly08}
-T.~Holekamp, D.~Turaga, and T.~Holy.
+Terrence~F Holekamp, Diwakar Turaga, and Timothy~E Holy.
 \newblock Fast three-dimensional fluorescence imaging of activity in neural
   populations by objective-coupled planar illumination microscopy.
-\newblock {\em Neuron}, 57:661--672, 2008.
+\newblock {\em Neuron}, 57(5):661--672, Mar 2008.
 
 \bibitem{VogelsteinPaninski09}
 Joshua~T Vogelstein, Brendon~O Watson, Adam~M Packer, Rafael Yuste, Bruno

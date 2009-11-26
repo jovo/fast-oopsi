@@ -14,7 +14,7 @@
 \rhead{Fast spike train inference from calcium imaging}
 %\headheight=14.5pt
 
-\title{Online nonnegative deconvolution for spike train inference from population calcium imaging}
+\title{Online non-negative deconvolution for spike train inference from population calcium imaging}
 
 \author{Joshua T.~Vogelstein, Adam M.~Packer, Tim A.~Machado, \\ Tanya Sippy, Baktash Babadi, Rafael Yuste, Liam Paninski}
 
@@ -23,7 +23,7 @@
 \maketitle
 % \tableofcontents
 \begin{abstract}
-Calcium imaging technologies for observing spiking activity simultaneously from large populations of neurons are quickly gaining popularity.  While the raw data are fluorescence movies often the underlying spike trains are of interest.  This work presents an online non-negative deconvolution filter to infer the approximately most likely spike trains for each neuron, given the fluorescence observations. This algorithm outperforms optimal linear deconvolution (aka, Wiener filter) on both simulated and in vitro data. The performance gains come from restricting the inferred spike trains to be positive (using an interior-point method), unlike the Wiener filter.  The algorithm is fast enough that even when  imaging $\approx 100$ neurons, inference can be performed on the set of all observed traces super-real-time (ie, faster than real-time).  Performing optimal spatial filtering on the images further refines the estimates.  Importantly, all the parameters required to perform the inference can be estimated using only the fluorescence data, obviating the need to perform joint electrophysiological and imaging calibration experiments.
+Calcium imaging technologies for observing spiking activity from large populations of neurons are quickly gaining popularity.  While the raw data are fluorescence movies often the underlying spike trains are of interest.  This work presents an online non-negative deconvolution filter to infer the approximately most likely spike train for each neuron, given the fluorescence observations. This algorithm outperforms optimal linear deconvolution (aka, Wiener filter) on both simulated and in vitro data. The performance gains come from restricting the inferred spike trains to be positive (using an interior-point method), unlike the Wiener filter.  The algorithm is fast enough that even when  imaging $\approx 100$ neurons, inference can be performed on the set of all observed traces in super-real-time (ie, faster than real-time).  Performing optimal spatial filtering on the images further refines the estimates.  Importantly, all the parameters required to perform the inference can be estimated using only the fluorescence data, obviating the need to perform joint electrophysiological and imaging calibration experiments.
 \end{abstract}
 
 \input{body}

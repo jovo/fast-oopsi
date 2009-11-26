@@ -2,29 +2,17 @@ This is BibTeX, Version 0.99c (Web2C 7.5.4)
 The top-level auxiliary file: fast_oopsi.aux
 The style file: unsrt.bst
 Database file #1: /Users/joshyv/Research/misc/biblist.bib
-Repeated entry---line 9690 of file /Users/joshyv/Research/misc/biblist.bib
+Repeated entry---line 9655 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{GobelHelmchen07
  :                         ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 10075 of file /Users/joshyv/Research/misc/biblist.bib
+Repeated entry---line 10043 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{GreenbergKerr08
  :                         ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 12072 of file /Users/joshyv/Research/misc/biblist.bib
- : @article{HolekampHoly08
- :                        ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 16353 of file /Users/joshyv/Research/misc/biblist.bib
- : @article{LuoSvoboda08
- :                      ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 17186 of file /Users/joshyv/Research/misc/biblist.bib
+Repeated entry---line 17119 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{MankGriesbeck08
  :                         ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 30453 of file /Users/joshyv/Research/misc/biblist.bib
- : @article{WallaceHasan08
- :                        ,
 I'm skipping whatever remains of this entry
 Name 1 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
 while executing---line 944 of file unsrt.bst
@@ -32,43 +20,43 @@ Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the e
 while executing---line 944 of file unsrt.bst
 You've used 30 entries,
             1791 wiz_defined-function locations,
-            680 strings with 10350 characters,
-and the built_in function-call counts, 7483 in all, are:
-= -- 672
-> -- 377
+            684 strings with 10721 characters,
+and the built_in function-call counts, 7604 in all, are:
+= -- 690
+> -- 371
 < -- 2
-+ -- 136
-- -- 106
-* -- 612
-:= -- 1209
++ -- 134
+- -- 104
+* -- 638
+:= -- 1217
 add.period$ -- 89
 call.type$ -- 30
 change.case$ -- 28
 chr.to.int$ -- 0
 cite$ -- 30
-duplicate$ -- 283
-empty$ -- 677
-format.name$ -- 106
-if$ -- 1599
+duplicate$ -- 284
+empty$ -- 692
+format.name$ -- 104
+if$ -- 1623
 int.to.chr$ -- 0
 int.to.str$ -- 30
 missing$ -- 30
 newline$ -- 152
 num.names$ -- 30
-pop$ -- 49
+pop$ -- 47
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 123
+skip$ -- 124
 stack$ -- 0
-substring$ -- 625
+substring$ -- 663
 swap$ -- 49
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 79
+while$ -- 82
 width$ -- 32
-write$ -- 325
-(There were 8 error messages)
+write$ -- 326
+(There were 5 error messages)
