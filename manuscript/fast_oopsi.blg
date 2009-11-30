@@ -2,15 +2,15 @@ This is BibTeX, Version 0.99c (Web2C 7.5.4)
 The top-level auxiliary file: fast_oopsi.aux
 The style file: unsrt.bst
 Database file #1: /Users/joshyv/Research/misc/biblist.bib
-Repeated entry---line 9646 of file /Users/joshyv/Research/misc/biblist.bib
+Repeated entry---line 9659 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{GobelHelmchen07
  :                         ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 10034 of file /Users/joshyv/Research/misc/biblist.bib
+Repeated entry---line 10044 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{GreenbergKerr08
  :                         ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 17118 of file /Users/joshyv/Research/misc/biblist.bib
+Repeated entry---line 17131 of file /Users/joshyv/Research/misc/biblist.bib
  : @article{MankGriesbeck08
  :                         ,
 I'm skipping whatever remains of this entry
@@ -22,45 +22,45 @@ Name 1 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the e
 while executing---line 944 of file unsrt.bst
 Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
 while executing---line 944 of file unsrt.bst
-You've used 30 entries,
+You've used 33 entries,
             1791 wiz_defined-function locations,
-            684 strings with 10782 characters,
-and the built_in function-call counts, 7550 in all, are:
-= -- 682
-> -- 371
+            701 strings with 11154 characters,
+and the built_in function-call counts, 8059 in all, are:
+= -- 720
+> -- 404
 < -- 2
-+ -- 134
-- -- 104
-* -- 630
-:= -- 1212
-add.period$ -- 89
-call.type$ -- 30
-change.case$ -- 28
++ -- 146
+- -- 113
+* -- 650
+:= -- 1300
+add.period$ -- 98
+call.type$ -- 33
+change.case$ -- 29
 chr.to.int$ -- 0
-cite$ -- 30
-duplicate$ -- 284
-empty$ -- 687
-format.name$ -- 104
-if$ -- 1612
+cite$ -- 33
+duplicate$ -- 312
+empty$ -- 738
+format.name$ -- 113
+if$ -- 1727
 int.to.chr$ -- 0
-int.to.str$ -- 30
-missing$ -- 30
-newline$ -- 152
-num.names$ -- 30
-pop$ -- 47
+int.to.str$ -- 33
+missing$ -- 35
+newline$ -- 167
+num.names$ -- 33
+pop$ -- 64
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 124
+skip$ -- 132
 stack$ -- 0
 substring$ -- 647
-swap$ -- 49
+swap$ -- 52
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 81
-width$ -- 32
-write$ -- 326
+while$ -- 84
+width$ -- 35
+write$ -- 356
 (There were 7 error messages)

@@ -58,7 +58,7 @@ Damian~J Wallace, Stephan~Meyer zum Alten~Borgloh, Simone Astori, Ying Yang,
 David~S Greenberg, Arthur~R Houweling, and Jason N~D Kerr.
 \newblock Population imaging of ongoing neuronal activity in the visual cortex
   of awake rats.
-\newblock {\em Nat Neurosci}, 11(7):749 -- 751, Jun 2008.
+\newblock {\em Nat Neurosci}, Jun 2008.
 
 \bibitem{HolekampHoly08}
 Terrence~F Holekamp, Diwakar Turaga, and Timothy~E Holy.
@@ -143,6 +143,21 @@ Jianbo Shi and Jitendra Malik.
 \newblock Normalized cuts and image segmentation.
 \newblock {\em Computer Vision and Pattern Recognition, IEEE Computer Society
   Conference on}, 0:731, 1997.
+
+\bibitem{PRE92}
+W.~Press, S.~Teukolsky, W.~Vetterling, and B.~Flannery.
+\newblock {\em Numerical recipes in {C}}.
+\newblock Cambridge University Press, 1992.
+
+\bibitem{HornJohnson90}
+R.A. Horn and C.R. Johnson.
+\newblock {\em {Matrix analysis}}.
+\newblock Cambridge Univ Pr, 1990.
+
+\bibitem{RokhlinTygert09}
+V.~Rokhlin, A.~Szlam, and M.~Tygert.
+\newblock {A randomized algorithm for principal component analysis}.
+\newblock {\em SIAM J. Matrix Anal. Appl}, 31:1100--1124, 2009.
 
 \bibitem{MacLeanYuste05}
 Jason~N MacLean, Brendon~O Watson, Gloster~B Aaron, and Rafael Yuste.
