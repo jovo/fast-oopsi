@@ -61,7 +61,7 @@ To complete the ``generative model'' (ie, a model from which simulations can be 
 
 \subsection{Goal} \label{sec:goal}
 
-Given the above model, the goal is to find the maximum \emph{a posteriori} (MAP) spike train, ie, the most likely spike train, $\hbn$,  given the fluorescence measurements, $\bF$:
+Given the above model, the goal is to find the maximum \emph{a posteriori} (MAP) spike train, i.e.\,  the most likely spike train, $\hbn$,  given the fluorescence measurements, $\bF$:
 \begin{align} \label{eq:nhat1} 
 \hbn &=  \anx P[\bn | \bF], 
 \end{align}
@@ -95,7 +95,7 @@ where both equations follow from the above model.  Now, plugging Eq.~\eqref{eq:p
 \label{eq:obj1}\\ &= \anx  \sum_{t=1}^T \bigg( -\frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  +  n_t \log \lam \Del - \log n_t! \bigg), \label{eq:logobj1}
 \end{align} 
 \end{subequations}
-\noindent where the second equality follows from taking the logarithm of the right-hand-side.  Unfortunately, solving Eq.~\eqref{eq:logobj1} exactly is computationally intractable, as it requires a nonlinear search over an infinite number of  possible spike trains.  The search space could be restricted by imposing an upper bound, $k$, on the number of spikes within a frame.  However, in that case, the computational complexity scales \emph{exponentially} with the number of image frames --- ie, the number of computations required would scale with $k^T$ --- which for pragmatic reasons is intractable.
+\noindent where the second equality follows from taking the logarithm of the right-hand-side.  Unfortunately, solving Eq.~\eqref{eq:logobj1} exactly is computationally intractable, as it requires a nonlinear search over an infinite number of  possible spike trains.  The search space could be restricted by imposing an upper bound, $k$, on the number of spikes within a frame.  However, in that case, the computational complexity scales \emph{exponentially} with the number of image frames --- i.e.\,  the number of computations required would scale with $k^T$ --- which for pragmatic reasons is intractable.
 
 
 
@@ -109,11 +109,11 @@ The goal here is to develop an algorithm to efficiently approximate $\hbn$, the 
 \\ &= \argmax_{n_t>0 \, \forall t}  \sum_{t=1}^T -\frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  - n_t \lam \Del  \label{eq:obj3}
 \end{align}
 \end{subequations}
-where the constraint on $n_t$ has been relaxed from  $n_t \in \mathbb{N}_0$ to $n_t \geq 0$ (since the exponential distribution can yield any non-negative number).  The advantage of this approximation is that the optimization problem becomes log-concave in $\bC$, meaning that any gradient ascent method guarantees achieving the global maximum (because there are no local maxima, other than the single global maximum).  To see that Eq.~\eqref{eq:obj3} is log-concave in $\bC$, rearrange Eq.~\eqref{eq:obj3} to obtain, $n_t=C_t-\gam C_{t-1}$, so Eq.~\eqref{eq:obj3} can be rewritten:
+where the constraint on $n_t$ has been relaxed from  $n_t \in \mathbb{N}_0$ to $n_t \geq 0$ (since the exponential distribution can yield any non-negative number).  The advantage of this approximation is that the optimization problem becomes concave in $\bC$, meaning that any gradient ascent method guarantees achieving the global maximum (because there are no local maxima, other than the single global maximum).  To see that Eq.~\eqref{eq:obj3} is concave in $\bC$, rearrange Eq.~\eqref{eq:obj3} to obtain, $n_t=C_t-\gam C_{t-1}$, so Eq.~\eqref{eq:obj3} can be rewritten:
 \begin{align}
 \bC &= \argmax_{C_t-\gam C_{t-1}>0 \, \forall t}  \sum_{t=1}^T -\frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  - (C_t -\gam C_{t-1}) \lam \Del  \label{eq:obj3}
 \end{align}
-\noindent which is a sum of terms that are log-concave in $C_t$, so the whole right-hand-side is log-concave. Unfortunately, the integer constraint has been lost, ie, the answer could include ``partial'' spikes.  This disadvantage can be remedied by thresholding (ie, setting $n_t=1$ for all $n_t$ greater than some threshold, and the rest setting to zero), or by considering the magnitude of a partial spike at time $t$ as the probability of a spike occurring during frame $t$. Note that replacing a Poisson with an exponential is a common approximation technique in the machine learning literature \cite{CONV04, PaninskiWu09}, as the exponential distribution is the closest convex relaxation to its non-convex counterpart, the Poisson distribution. More specifically, the probability mass function of a Poisson distributed random variable with low rate is very similar to the probability density function of a random variable with an exponential distribution. While this convex relaxation makes the problem tractable, the ``sharp'' threshold imposed by the non-negativity constraint prohibits the use of standard gradient ascent techniques. This may be rectified by dropping the sharp threshold, and adding a barrier term, which must approach $-\infty$ as $n_t$ approaches zero (this approach is often called an ``interior-point'' method). Iteratively reducing the weight of the barrier term guarantees convergence to the correct solution.  Thus, the goal is to efficiently solve:
+\noindent which is a sum of terms that are log-concave in $C_t$, so the whole right-hand-side is log-concave. Unfortunately, the integer constraint has been lost, i.e.\,  the answer could include ``partial'' spikes.  This disadvantage can be remedied by thresholding (ie, setting $n_t=1$ for all $n_t$ greater than some threshold, and the rest setting to zero), or by considering the magnitude of a partial spike at time $t$ as the probability of a spike occurring during frame $t$. Note that replacing a Poisson with an exponential is a common approximation technique in the machine learning literature \cite{CONV04, PaninskiWu09}, as the exponential distribution is the closest convex relaxation to its non-convex counterpart, the Poisson distribution. More specifically, the probability mass function of a Poisson distributed random variable with low rate is very similar to the probability density function of a random variable with an exponential distribution. While this convex relaxation makes the problem tractable, the ``sharp'' threshold imposed by the non-negativity constraint prohibits the use of standard gradient ascent techniques. This may be rectified by dropping the sharp threshold, and adding a barrier term, which must approach $-\infty$ as $n_t$ approaches zero (this approach is often called an ``interior-point'' method). Iteratively reducing the weight of the barrier term guarantees convergence to the correct solution.  Thus, the goal is to efficiently solve:
 \begin{align} \label{eq:eta}
 \hbC_{\zzz} &= \argmax_{C_t-\gam C_{t-1} \forall t}  \sum_{t=1}^T \left( -\frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  -  (C_t-\gam C_{t-1})  \lam \Del + \zzz \log (C_t-\gam C_{t-1}) \right).
 \end{align}
@@ -128,25 +128,25 @@ The concavity of Eq.~\eqref{eq:eta} facilitates utilizing any number of techniqu
 \begin{bmatrix}
 1 & 0  & 0 & \cdots & \cdots \\
 -\gam & 1 & 0 & \cdots & \cdots \\
-0 & -\gam & 1 & 0 & \cdots  \\
+% 0 & -\gam & 1 & 0 & \cdots  \\
 \vdots & \vdots & \vdots & \vdots & \vdots  \\
 0 & 0 & 0 & -\gam & 1
 \end{bmatrix}
 \begin{bmatrix}
-C_1 \\ C_2 \\ \vdots \\ \vdots \\ C_T  
+C_1 \\ C_2 \\ \vdots \\ C_T  
 \end{bmatrix}
 = 
 \begin{bmatrix}
-n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
+n_1 \\ n_2 \\ \vdots  \\ n_T
 \end{bmatrix}
 = \bn
 \end{align}
 \noindent where $\ve{M} \in \mathbb{R}^{T \times T}$ is a bidiagonal matrix.  Then, letting $\ve{1}$ be a $T$ dimensional column vector and $\blam=\lam \Del \ve{1}\T$, yields: 
 \begin{align} 
 \hbC_{\zzz} 
-&= \az  -\frac{1}{2 \sig^2} \norm{\bF - \alpha (\bC +\beta)}^2 - (\bM \bC )\T \blam  + \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta3}
+&= \az  -\frac{1}{2 \sig^2} \norm{\bF - \alpha (\bC +\beta)}_2^2 - (\bM \bC )\T \blam  + \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta3}
 \end{align}
-\noindent where $\bM \bC \geq \ve{0}$ indicates that every element of $\bM \bC$ is greater than or equal to zero, $\T$ indicates the transpose operation, and $\log(\cdot)$ indicates an element-wise logarithm. When using Newton-Raphson to ascend a surface, one iteratively computes both the gradient (first derivative) and Hessian (second derivative) of the argument to be maximized, with respect to the variables of interest ($\bC_z$ here).  Then, the estimate is updated using $\bC_z \leftarrow \bC_z + s \bd$, where $s$ is the step size and $\bd$ is the step direction (typically obtained by solving $\bH \bd = \bg$).  The gradient, $\bg$, and Hessian, $\bH$, for this model, with respect to $\bC_z$, are given by:
+\noindent where $\bM \bC \geq \ve{0}$ indicates that every element of $\bM \bC$ is greater than or equal to zero, $\T$ indicates the transpose operation, $\log(\cdot)$ indicates an element-wise logarithm, and $\norm{x}_2$ is the standard $L_2$ norm, i.e.\, $\norm{x}_2=(\sum_i x_i^2)^{-1/2}$. When using Newton-Raphson to ascend a surface, one iteratively computes both the gradient (first derivative) and Hessian (second derivative) of the argument to be maximized, with respect to the variables of interest ($\bC_z$ here).  Then, the estimate is updated using $\bC_z \leftarrow \bC_z + s \bd$, where $s$ is the step size and $\bd$ is the step direction (typically obtained by solving $\bH \bd = \bg$).  The gradient, $\bg$, and Hessian, $\bH$, for this model, with respect to $\bC_z$, are given by:
 \begin{subequations} \label{eq:NR}
 \begin{align}
 \ve{g} &= -\frac{\alpha}{\sig^2}(\bF -\alpha({\hbC\T}_{\zzz} + \beta)) + \ve{M}\T\blam - \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-1} \label{eq:g} \\
@@ -155,7 +155,7 @@ n_1 \\ n_2 \\ \vdots \\ \vdots \\ n_T
 \end{subequations}
 \noindent where the exponents indicate element-wise operations. The step size, $s$, is found using ``backtracking linesearches'', which finds the maximal $s$ that increases the posterior and is between zero and one.
 
-Typically, implementing Newton-Raphson requires inverting the Hessian, ie, solving $\bd = \bH^{-1} \bg$, a computation that scales \emph{cubically} with $T$ (requires on the order of $T^3$ operations). Already, this would be a drastic improvement over the most efficient algorithm assuming Poisson spikes, which would require $k^T$ operations (where $k$ is the maximum number of spikes per frame).  Here, because $\ve{M}$ is bidiagonal, the Hessian is tridiagonal, so the solution may be found in about $T$ operations, via standard banded Gaussian elimination techniques (which can be implemented efficiently in Matlab using $\bH \backslash \bg$, assuming $\bH$ is represented as a sparse matrix). In other words, the above approximation and inference algorithm reduces computations from \emph{exponential} time to \emph{linear} time.  Appendix \ref{sec:pseudo} contains pseudocode for this algorithm, including learning the parameters, as described below.
+Typically, implementing Newton-Raphson requires inverting the Hessian, i.e.\,  solving $\bd = \bH^{-1} \bg$, a computation that scales \emph{cubically} with $T$ (requires on the order of $T^3$ operations). Already, this would be a drastic improvement over the most efficient algorithm assuming Poisson spikes, which would require $k^T$ operations (where $k$ is the maximum number of spikes per frame).  Here, because $\ve{M}$ is bidiagonal, the Hessian is tridiagonal, so the solution may be found in about $T$ operations, via standard banded Gaussian elimination techniques (which can be implemented efficiently in Matlab using $\bH \backslash \bg$, assuming $\bH$ is represented as a sparse matrix). In other words, the above approximation and inference algorithm reduces computations from \emph{exponential} time to \emph{linear} time.  Appendix \ref{sec:pseudo} contains pseudocode for this algorithm, including learning the parameters, as described below.
 
 
 
@@ -167,7 +167,7 @@ While in the above, it was assumed that the parameters governing the model, $\vt
 
 \subsubsection{Initializing the parameters} \label{sec:init}
 
-Because the above model is linear, the scale of $\bF$ relative to $\bn$ is arbitrary.  Therefore, any change in the magnitude of $\alpha$ can be offset by a relative scaling of $n_t$.  To ensure that the iterations do not get stuck in an infinite recursion of increasing $\alpha$ and scaling $n_t$ down, we simply fix $\alpha=1$. The offset, however, is not arbitrary.  Because spiking is assumed to be sparse, $\bF$ tends to be around baseline, so $\beta$ is initialized to be the median of $\bF$, and $\sig$ is initialized as median absolute deviation of $\bF$, ie, $\sig=$median$_t$($|F_t-$median$(\bF)|$)$/K$, where $K$ is the correction factor when using median absolute deviation as a robust estimator of the standard deviation.  Because the posterior is relatively flat along the $\gam$ dimension, ie, large changes in $\gam$ result in relatively small changes in the posterior, estimating $\gam$ is difficult.  Further, previous work has shown that results are somewhat robust to minor variations in time constant \cite{YaksiFriedrich06}; therefore $\gam$ is initialized at $1-\Del/(1 \text{sec})$, which is fairly typical \cite{PologrutoSvoboda04}. Finally, $\lam$ is initialized at $1$ Hz, which is between typical baseline and evoked spike rate, for these data.
+Because the above model is linear, the scale of $\bF$ relative to $\bn$ is arbitrary.  Therefore, before filtering, $\bF$ is linearly ``squashed'' between zero and one, ie $\bF \leftarrow (\bF - F_{min})/(F_{max}-F_{min})$, where $F_{min}$ and $F_{max}$ are the minimum and maximum of $\bF$, respectively.  Given this normalization, $\alpha$ is set to one.  Because spiking is assumed to be sparse, $\bF$ tends to be around baseline, so $\beta$ is initialized to be the median of $\bF$, and $\sig$ is initialized as median absolute deviation of $\bF$, i.e.\,  $\sig=$median$_t$($|F_t-$median$(\bF)|$)$/K$, where $K$ is the correction factor when using median absolute deviation as a robust estimator of the standard deviation.  Because the posterior is relatively flat along the $\gam$ dimension, i.e.\,  large changes in $\gam$ result in relatively small changes in the posterior, estimating $\gam$ is difficult.  Further, previous work has shown that results are somewhat robust to minor variations in time constant \cite{YaksiFriedrich06}; therefore $\gam$ is initialized at $1-\Del/(1 \text{sec})$, which is fairly typical \cite{PologrutoSvoboda04}. Finally, $\lam$ is initialized at $1$ Hz, which is between typical baseline and evoked spike rate, for these data.
 
 \subsubsection{Estimating the parameters given $\widehat{\mathbf{n}}$}
 
@@ -187,26 +187,28 @@ Therefore, Eq.~\eqref{eq:par1} is approximated by simply maximizing the paramete
 \end{align}
 \noindent where $\hbC$ and $\hbn$ are determined using the above described inference algorithm. The approximation in Eq.~\eqref{eq:par2} is good whenever the likelihood is very peaky, meaning that most of the mass is around the MAP sequence.\footnote{Eq.~\eqref{eq:par2} may be considered a first-order Laplace approximation}   The argument from the right-hand-side of Eq.~\eqref{eq:par2} may be expanded: 
 \begin{align} \label{eq:par3}
-\log P[\bF| \hbC; \bth] + \log P[\hbn | \bth] &= \sum_{t=1}^T \log P[F_t | \hC_t; \beta,\sig] + \log P[\hn_t | \lam].
+\log P[\bF| \hbC; \bth] + \log P[\hbn | \bth] &= \sum_{t=1}^T \log P[F_t | \hC_t; \alpha, \beta,\sig] + \log P[\hn_t | \lam].
 \end{align}
-\noindent The maximum likelihood estimate (MLE) for $\hbeta$ and $\hsig$, is therefore given by:
+\noindent The maximum likelihood estimate (MLE) for the observation parameters, $\{\alpha,\beta,\hsig\}$, is therefore given by:
 \begin{align} \label{eq:beta,sig}
-	\{\hbeta,\hsig\} &=  \argmax_{\beta,\sig >0} \sum_{t=1}^T \log P[F_t | \hC_t; \beta,\sig]
-	=  \argmax_{\beta,\sig >0} 	-\frac{1}{2} (2\pi \sig^2) - \frac{1}{2} \left(\frac{F_t-(C_t+\beta)}{\sig}\right)^2. %
+	\{\halpha, \hbeta,\hsig\} &=  \argmax_{\alpha, \beta,\sig >0} \sum_{t=1}^T \log P[F_t | \hC_t; \beta,\sig]
+	=  \argmax_{\beta,\sig >0} 	-\frac{1}{2} (2\pi \sig^2) - \frac{1}{2} \left(\frac{F_t-\alpha(C_t+\beta)}{\sig}\right)^2. %
 \end{align}
-Maximizing Eq.~\eqref{eq:beta,sig} with respect to $\beta$ yields
+Note that, a rescaling of $\alpha$ may be offset by a complementary rescaling of $\bC$ and $\beta$.  Therefore, because the scale of $\bC$ is arbitrary, $\alpha$ can be set to one without loss of generality.  
+%any change in the magnitude of $\alpha$ can be offset by a relative scaling of $n_t$.  To ensure that the iterations do not get stuck in an infinite recursion of increasing $\alpha$ and scaling $n_t$ down, we simply fix $\alpha=1$. The offset, however, is not arbitrary. 
+Plugging $\alpha=1$ into Eq.~\eqref{eq:beta,sig}, and maximizing with respect to $\beta$ yields:
 \begin{align}
 \hbeta = \argmax_{\beta>0} \sum_{t=1}^T -(F_t - (C_t + \beta))^2.
 \end{align}
-\noindent Computing the gradient with respect to $\beta$, setting the answer to zero, and solving for $\hbeta$, yields $\hbeta = \frac{1}{T} \sum_t (F_t-C_t)$.  Similarly, computing the gradient of Eq.~\eqref{eq:beta,sig} with respect to $\sig$, setting it to zero, and solving for $\hsig$ yields
+\noindent Computing the gradient with respect to $\beta$, setting the answer to zero, and solving for $\hbeta$, yields $\hbeta = \frac{1}{T} \sum_t (F_t-C_t)$.  Similarly, computing the gradient of Eq.~\eqref{eq:beta,sig} with respect to $\sig$, setting it to zero, and solving for $\hsig$ yields:
 \begin{align}
-\hsig &= \sqrt{\frac{1}{T} \sum_t (F_t - C_t - \hbeta)^2}.
+\hsig &= \sqrt{\frac{1}{T} \sum_t (F_t - C_t - \hbeta)^2},
 \end{align}
-Finally, the MLE of $\hlam$ is given by solving 
+which is simply the root-mean-square of the residual error.  Finally, the MLE of $\hlam$ is given by solving:
 \begin{align}
 \hlam &= \argmax_{\lam>0} \sum_t \log (\lam \Del) - n_t \lam \Del,
 \end{align}
-which, again, computing the gradient with respect to $\lam$, setting it to zero, and solving for $\hlam$, yields $\hlam=\frac{1}{T\Del}\sum_t n_t$.
+which, again, computing the gradient with respect to $\lam$, setting it to zero, and solving for $\hlam$, yields $\hlam=T/ (\Del \sum_t n_t)$, which is the $1/$(expected firing rate).
 
 \subsubsection{Convergence criteria}
 
@@ -222,11 +224,11 @@ F_{x,t} &= \alpha_x (C_t + \beta) +  \sig \varepsilon_{x,t}, \qquad &\varepsilon
 \noindent where $\alpha_x$ scales each pixel, from which some number of photons are contributed due to calcium fluctuations, $C_t$, and others due to baseline fluorescence, $\beta$.  Further, the noise is assumed to be both spatially and temporally white, with standard deviation, $\sig$, in each pixel (this assumption can easily be relaxed, by making the covariance matrix diagonal, for example).  Performing inference in this more general model proceeds in a  nearly identical manner as before. In particular, the maximization, gradient, and Hessian become:
 \begin{align} 
 \hbC_{\zzz} 
-&= \az  -\frac{1}{2 \sig^2} \norm{\vec{\bF} - \valpha (\bC\T +\beta\ve{1}\T)}^2 - (\bM \bC )\T \blam  + \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta4}\\
+&= \az  -\frac{1}{2 \sig^2} \norm{\vec{\bF} - \valpha (\bC\T +\beta\ve{1}\T)}_F^2 - (\bM \bC )\T \blam  + \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta4}\\
 \ve{g} &= \frac{\valpha}{\sig^2}(\vbF -\valpha({\hbC\T}_{\zzz} + \beta)) - \ve{M}\T\blam + \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-1} \label{eq:g2} \\
 \ve{H} &= -\frac{\valpha\T \valpha}{\sig^2} \ve{I} - \zzz \ve{M}\T (\ve{M} \hbC_{\zzz})^{-2} \ve{M} \label{eq:H2}
 \end{align}
-\noindent where $\vbF$ is an $N_p \times T$ element matrix, $\valpha$ is column vectors of length $N_p$, $\ve{1}$ is  a column vector of appropriate length, and $\bI$ is an $N_p \times N_p$ identity matrix.  Typically, the parameters  $\valpha$ and $\beta$ are unknown, and therefore must be estimated from the data.  The maximum likelihood estimator for each $\alpha_x$ is given by:
+\noindent where $\vbF$ is an $N_p \times T$ element matrix, $\valpha$ is column vectors of length $N_p$, $\ve{1}$ is  a column vector of appropriate length, $\bI$ is an $N_p \times N_p$ identity matrix, and $\norm{x}_F$ indicates the Frobenius norm, i.e.\ $\norm{x}_F= (\sum_{i,j} x_{i,j}^2)^{-1/2}$.  Typically, the parameters  $\valpha$ and $\beta$ are unknown, and therefore must be estimated from the data.  The maximum likelihood estimator for each $\alpha_x$ is given by:
 \begin{subequations}
 \begin{align}
 \halpha_x &= \argmax_{\alpha_x} P[\bF_x | C_t] = \argmax_{\alpha_x} \sum_t \log P[F_{x,t} | C_t] \\
@@ -234,7 +236,7 @@ F_{x,t} &= \alpha_x (C_t + \beta) +  \sig \varepsilon_{x,t}, \qquad &\varepsilon
 = \argmax_{\alpha_x} \sum_t - (F_t - \alpha_x(C_t - \hbeta))^2, \label{eq:alpha_x}
 \end{align}
 \end{subequations}
-Upon computing the gradient with respect to $\alpha_x$ and setting to zero, one obtains $\halpha_x=\frac{1}{T} \sum_t F_{x,t}/(C_t-\hbeta)$.  Because the denominator is \emph{not} a function of $x$, and the scale of $C_t$ relative to $F_t$ is arbitrary, this is equivalent to $\halpha_x=\frac{1}{T} \sum_t F_{x,t}$, ie, the optimal spatial filter is obtained from the mean intensity of each pixel.  Computing the gradient of Eq.~\eqref{eq:alpha_x} with respect to $\hbeta$, setting the result to zero, and solving for $\hbeta$, yields
+Upon computing the gradient with respect to $\alpha_x$ and setting to zero, one obtains $\halpha_x=\frac{1}{T} \sum_t F_{x,t}/(C_t-\hbeta)$.  Because the denominator is \emph{not} a function of $x$, and the scale of $C_t$ relative to $F_t$ is arbitrary, this is equivalent to $\halpha_x=\frac{1}{T} \sum_t F_{x,t}$, i.e.\,  the optimal spatial filter is obtained from the mean intensity of each pixel.  Computing the gradient of Eq.~\eqref{eq:alpha_x} with respect to $\hbeta$, setting the result to zero, and solving for $\hbeta$, yields
 \begin{align} \label{eq:beta}
 	\hbeta = \frac{1}{T} \sum_t \sum_x \frac{F_{x,t}}{\alpha_{x,t}} - C_t.
 \end{align} 
@@ -249,19 +251,38 @@ In the above, the image was segmented before filtering, such that only a single 
 \vF_t &= \sum_{i=1}^{N_c}\valpha^i (C^i_t + \beta^i) +  \sig\vec{\varepsilon}_t, \qquad &\vec{\varepsilon}_t \overset{iid}{\sim} \mathcal{N}(\ve{0},\bI)   \\
 C^i_t &= \gam^i C^i_{t-1} + n^i_t, & n^i_t \overset{iid}{\sim} \text{Poisson}(n^i_t; \lam_i \Del)
 \end{align}
-\noindent where each neuron is implicitly assumed to be independent, and each pixel is independent and identically distributed with standard deviation $\sig$.  To perform inference in this more general model, let:
+\noindent where each neuron is implicitly assumed to be independent, and each pixel is independent and identically distributed with standard deviation $\sig$.  To perform inference in this more general model, let $\ve{1}$ and $\ve{0}$ correspond to an $N_c \times 1$ row vector of ones, and zeros, respectively, and $\bn_t=[n^1_t, \ldots, n^{N_c}_t]$, $\bC_t=[C^1_t, \ldots, C^{N_c}_t]$, and $\bGam=[-\gam^1, 1, \ldots, -\gam^{N_c}, 1]\T$, yielding:
 \begin{align} \label{eq:M2}
-\bn &=  [n^1_1, n^2_1, \ldots, n^{N_c}_1, n^1_2, \ldots, n^{N_c}_T]\T \\
-\bC &=  [C^1_1, C^2_1, \ldots, C^{N_c}_1, n^1_2, \ldots, C^{N_c}_T]\T \\
-\ve{M} &= %- \bb=
+\ve{M} \bC = %- \bb=
 \begin{bmatrix}
-1 & 1 & 0 & 0 & \cdots & \cdots \\
--\gam^1 &  1 & -\gam_2 & 1 & \ldots &  -\gam_{N_c} & 1 & 0 & \cdots \\
-\vdots & \vdots & \vdots & \vdots & \vdots  \\
-0 & 0 & 0 \ldots &  -\gam^{N_c-1} & 1 & -\gam^{N_c} & 1 
+\ve{1} & \ve{0}  & \cdots & \ve{0} \\
+\bGam & \ve{0} &  \cdots & \ve{0} \\
+% 0 & -\gam & 1 & 0 & \cdots  \\
+\vdots & \vdots & \vdots & \vdots \\ %& \vdots  \\
+\ve{0} & \ve{0} & \ve{0} & \Gam %& 1
 \end{bmatrix}
-\end{align} 
-\noindent and proceed as above, making minor algorithmic adjustments to deal with dimensionality issues.  Note that $\bM$ is no longer tridiagonal, but rather, block tridiagonal.  Importantly, the Thomas algorithm, which is a simplified form of Gaussian elimination, finds the solution to linear equations with block tridiagonal matrices in linear time, so the efficiency gained from utilizing the tridiagonal structure above is maintained for this block tridiagonal structure \cite{PRE92}.   
+\begin{bmatrix}
+\bC_1 \\ \bC_2  \\ \vdots \\ \bC_T  
+\end{bmatrix}
+= 
+\begin{bmatrix}
+\bn_1 \\ \bn_2  \\ \vdots \\ \bn_T
+\end{bmatrix}
+= \bn
+\end{align}
+% \begin{align} \label{eq:M2}
+% \bn &=  [\bn_1, n^2_1, \ldots, n^{N_c}_1, n^1_2, \ldots, n^{N_c}_T]\T \\ %[n^1_1, n^2_1, \ldots, n^{N_c}_1, n^1_2, \ldots, n^{N_c}_T]\T \\
+% \bC &=  [C^1_1, C^2_1, \ldots, C^{N_c}_1, n^1_2, \ldots, C^{N_c}_T]\T \\
+% \ve{M} &= %- \bb=
+% \begin{bmatrix}
+% 1 & 1 & 0 & 0 & \cdots & \cdots \\
+% -\gam^1 &  1 & -\gam_2 & 1 & \ldots &  -\gam_{N_c} & 1 & 0 & \cdots \\
+% \vdots & \vdots & \vdots & \vdots & \vdots  \\
+% 0 & 0 & 0 \ldots &  -\gam^{N_c-1} & 1 & -\gam^{N_c} & 1 
+% \end{bmatrix}
+% \end{align} 
+\noindent and proceed as above%, making minor algorithmic adjustments to deal with dimensionality issues
+.  Note that $\bM$ is no longer tridiagonal, but rather, block tridiagonal.  Importantly, the Thomas algorithm, which is a simplified form of Gaussian elimination, finds the solution to linear equations with block tridiagonal matrices in linear time, so the efficiency gained from utilizing the tridiagonal structure above is maintained for this block tridiagonal structure \cite{PRE92}.   
 
 If the parameters are unknown, they must be estimated. Define $\balpha_x=[\alpha_x^1, \ldots, \alpha_x^{N_c}]\T$ and $\bbeta=[\beta^1, \ldots, \beta^{N_c}]\T$.  To initialize, let $\bbeta=\ve{0}$. To initialize $\vbalpha=(\valpha_1, \ldots, \valpha_{N_c})$, the goal is to be able to represent the matrix, $\vbF$, as the sum of only $N_c$ time-varying components, also known as a \emph{low-rank} approximation.  Singular value decomposition is a tool known to find the low-rank approximation to a matrix, with the smallest mean-square-error of all possible low-rank approximations \cite{HornJohnson90}.  Because the ``singular values'' are equivalent to the ``principal components'' of the covariance of the movie (obtained from doing principal component analysis, aka, PCA), a natural initial estimate for the $N_c$ $\valpha$ vectors is the $N_c$ first principal components.  While other methods to initialize the spatial filters (such as ``independent component analysis'') could also work, because fast algorithms for computing the first few principal components are readily available \cite{RokhlinTygert09}, PCA was found to be both effective and efficient.  Given these initializations, estimating $\valpha$ and $\bbeta$ follows very similarly as in Eqs.~\eqref{eq:alpha_x} and \eqref{eq:beta}:
 \begin{align} \label{eq:valpha}
@@ -383,7 +404,7 @@ Incorporating this nonlinearity breaks the log-concavity of the posterior, meani
 
 \subsubsection{Using the \foopsi filter to initialize the SMC filter}
 
-A previously proposed sequential Monte Carlo (SMC) method to infer spike trains can incorporate this nonlinearity, as well as the other model extensions discussed above \cite{VogelsteinPaninski09} . However, this SMC filter is not nearly as efficient as the fast filter proposed here.  Like the \foopsi filter, the SMC filter estimates the model parameters in a completely unsupervised fashion, ie, from the fluorescence observations, using an expectation-maximization algorithm (which requires iterating between computing the expected value of the hidden variables --- $\bC$ and $\bn$ --- and updating the paramters).  In \cite{VogelsteinPaninski09}, parameters for the SMC filter were initialized based on other data.  While effective, this initialization was often far from the final estimates, and therefore, required a relatively large number of iterations (eg, 20--25) before converging.  Thus, it seemed that the \foopsi filter could be used to obtain an improvement to the initial parameter estimates, reducing the required number of iterations.  Indeed, Figure \ref{fig:smc_init} shows how the SMC filter outperforms the \foopsi filter on in vitro data, and only required 3--5 iterations to converge on this data (which was typical).  Note that the first few events of the spike train are individual spikes, resulting in relatively small fluorescence fluctuations, whereas the next events are actually spike doublets or triplets, causing a much larger fluorescence fluctuation.  Only the SMC filter picks up the individual spikes in this trace, a result typical when the effective signal-to-noise ratio (SNR) is so poor.  Thus, these two inference algorithms are complementary: the \foopsi filter can be used for rapid, online inference, and for initializing the SMC filter, which can then be used to further refine the spike train estimate.  Importantly, although the SMC filter often outperforms the \foopsi filter, the \foopsi filter is more robust, meaning that it more often works ``out-of-the-box''.
+A previously proposed sequential Monte Carlo (SMC) method to infer spike trains can incorporate this nonlinearity, as well as the other model extensions discussed above \cite{VogelsteinPaninski09} . However, this SMC filter is not nearly as efficient as the fast filter proposed here.  Like the \foopsi filter, the SMC filter estimates the model parameters in a completely unsupervised fashion, i.e.\,  from the fluorescence observations, using an expectation-maximization algorithm (which requires iterating between computing the expected value of the hidden variables --- $\bC$ and $\bn$ --- and updating the paramters).  In \cite{VogelsteinPaninski09}, parameters for the SMC filter were initialized based on other data.  While effective, this initialization was often far from the final estimates, and therefore, required a relatively large number of iterations (eg, 20--25) before converging.  Thus, it seemed that the \foopsi filter could be used to obtain an improvement to the initial parameter estimates, reducing the required number of iterations.  Indeed, Figure \ref{fig:smc_init} shows how the SMC filter outperforms the \foopsi filter on in vitro data, and only required 3--5 iterations to converge on this data (which was typical).  Note that the first few events of the spike train are individual spikes, resulting in relatively small fluorescence fluctuations, whereas the next events are actually spike doublets or triplets, causing a much larger fluorescence fluctuation.  Only the SMC filter picks up the individual spikes in this trace, a result typical when the effective signal-to-noise ratio (SNR) is so poor.  Thus, these two inference algorithms are complementary: the \foopsi filter can be used for rapid, online inference, and for initializing the SMC filter, which can then be used to further refine the spike train estimate.  Importantly, although the SMC filter often outperforms the \foopsi filter, the \foopsi filter is more robust, meaning that it more often works ``out-of-the-box''.
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init12}
@@ -438,7 +459,7 @@ This work describes an algorithm that approximates the \emph{maximum a posterior
 Furthermore, by utilizing the special structure of the Hessian matrix (ie, it is tridiagonal), this approximate MAP spike train can be inferred fast enough on standard computers to use it for online analyses.  Finally, all the parameters can be estimated from only the fluorescence observations, obviating the need for joint electrophysiology and imaging (c.f. Figure \ref{fig:woopsi_learn}).  This approach is robust, in that it works ``out-of-the-box'' on all the in vivo and in vitro data analyzed (c.f. Figure \ref{fig:woopsi_data}).
 
 %This work is closely related to several previously proposed algorithms.  
-Ideally, one could compute the full joint posterior of entire spike trains, conditioned on the fluorescence data.  This distribution is analytically intractable, due to the Poisson assumption on spike trains.  A Bayesian approach could use Markov Chain Monte Carlo to recursively sample spikes until a whole sample spike train is obtained \cite{AndrieuDoucet01,MishchenkoPaninski09}.  Because a central aim here was computational expediency, a ``greedy'' approach is natural: ie, recursively sample the most likely spike, update the posterior, and repeat until the posterior stops increasing.  Template matching, projection pursuit regression \cite{FS81}, and matching pursuit \cite{MallatZhang93} are examples of such a greedy approach (Greenberg et al's algorithm could also be considered a special case of such a greedy approach).  Both the greedy methods, and the one developed here, aim to optimize a similar objective function.  While greedy methods reduce the computational burden by restricting the search space of spike trains, here analytic approximations are made.  The advantage of the greedy approaches relative to this one is that they result in a spike train (ie, a binary sequence), whereas the approach developed herein is guaranteed to be approximately optimal, given the model.  
+Ideally, one could compute the full joint posterior of entire spike trains, conditioned on the fluorescence data.  This distribution is analytically intractable, due to the Poisson assumption on spike trains.  A Bayesian approach could use Markov Chain Monte Carlo to recursively sample spikes until a whole sample spike train is obtained \cite{AndrieuDoucet01,MishchenkoPaninski09}.  Because a central aim here was computational expediency, a ``greedy'' approach is natural: i.e.\,  recursively sample the most likely spike, update the posterior, and repeat until the posterior stops increasing.  Template matching, projection pursuit regression \cite{FS81}, and matching pursuit \cite{MallatZhang93} are examples of such a greedy approach (Greenberg et al's algorithm could also be considered a special case of such a greedy approach).  Both the greedy methods, and the one developed here, aim to optimize a similar objective function.  While greedy methods reduce the computational burden by restricting the search space of spike trains, here analytic approximations are made.  The advantage of the greedy approaches relative to this one is that they result in a spike train (ie, a binary sequence), whereas the approach developed herein is guaranteed to be approximately optimal, given the model.  
 
 
 Because this filter is model based, it can be generalized in several ways to improve accuracy.  Unfortunately, some of these generalizations do not improve inference accuracy, probably because of the exponential approximation.  Instead, the \foopsi filter output can be used to initialize the SMC filter \cite{VogelsteinPaninski09}, to further improve inference quality (c.f. Figure \ref{fig:smc_init}).  Another model generalization allows incorporation of spatial filtering of the raw movie into this approach (c.f. Figure \ref{fig:spatial}).  The parameters of the spatial filter can be estimated from the data, even when spatial filters are overlapping (c.f. Figure \ref{fig:spatial_multi_learn}).

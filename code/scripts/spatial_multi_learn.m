@@ -108,14 +108,16 @@ PP.lam=mean(PP.lam);
 [U,S,VV]=pca_approx(F',V.Ncells);
 for j=1:V.Ncells, PP.a(:,j)=VV(:,j); end
 PP.b=0*P.b;%1e-3*ones(1,V.Ncells);
+for q=1:2
+if q==2, V.fast_thr=1; end
 [I{q}.n I{q}.P] = fast_oopsi(F,V,PP);
-
+end
 save(['../../data/' fname '.mat'],'-append','I','PP')
 sound(10*sin(linspace(0,180*pi,2000)))
 
 %% plot results
-fname = 'spatial_multi_learn';
-load(['../../data/' fname])
+% fname = 'spatial_multi_learn';
+% load(['../../data/' fname])
 
 Pl.g    = 0.65*ones(1,3);       % gray color
 Pl.fs   = 12;                   % font size
@@ -135,13 +137,13 @@ Pl.m    = ['+','+'];
 Pl.xlim = [200 700]+2000;        % limits of x-axis
 Pl.shift= [0 .07];
 Pl.x_range = Pl.xlim(1):Pl.xlim(2);
-Pl.XTick= [Pl.xlim(1) round(mean(Pl.xlim)) Pl.xlim(2)];
-Pl.XTickLabel = round((Pl.XTick-min(Pl.XTick))*V.dt*100)/100;
+Pl.XTick   = (linspace(Pl.xlim(1),Pl.xlim(2),5));
+Pl.XTickLabel = ceil((Pl.XTick-min(Pl.XTick))*V.dt*100)/100;
 
 % show how our estimation procedure given truth and when estimating spatial filter
 
 figure(1), clf, hold on
-nrows   = 2*length(I);
+nrows   = 2; %*length(I);
 ncols   = 1+V.Ncells;
 
 Fmean=mean(F);
@@ -159,7 +161,7 @@ for q=1:length(exps)
     end
 end
 
-for q=1:length(exps)
+for q=1%:length(exps)
 
     % align inferred cell with actual one
     j_inf=0*n(1:V.Ncells);
