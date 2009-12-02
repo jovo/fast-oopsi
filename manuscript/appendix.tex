@@ -1,7 +1,7 @@
 \section{Pseudocode} \label{sec:pseudo}
 
 \begin{algorithm}[h!]
-\caption{Pseudocode for inferring the approximately most likely spike train, given fluorescence data. Note that $\xi_i \ll 1$ for $i \in \{1,2,3\}$; the algorithm is robust to small variations in each; and therefore they were chosen somewhat arbitrarily. The equations listed below refer to the most general equations in the text that one could use (simpler equations could be used when appropriate).  Curly brackets, $\{ \cdot \}$, indicate comments.}
+\caption{Pseudocode for inferring the approximately most likely spike train, given fluorescence data. Note that $\xi_i \ll 1$ for $i \in \{1,2\}$; the algorithm is robust to small variations in each. The equations listed below refer to the most general equations in the text (simpler equations could be substituted when appropriate).  Curly brackets, $\{ \cdot \}$, indicate comments.}
 \label{eqn:pseudocode}
 \begin{algorithmic}[1]
 \STATE initialize parameters, $\bth$ (section \ref{sec:init})
@@ -10,10 +10,10 @@
   \FOR[interior point method to find $\hbC$]{$z=1,0.1,0.01,\ldots, \xi_1$}
     \STATE Initialize $n_t=\xi_2$ for all $t=1,\ldots, T$, $C_1=0$ and $C_t = \gam C_{t-1} + n_t$ for all $t=2,\ldots, T$.
 	\STATE let $\bC_{z}$ be the initialized calcium, and $\mP_{z}$, be the posterior given this initialization
-	\WHILE[Newton-Raphson with backtracking line searches]{$\mP_{z'}>\mP_{z}+\xi_3$}
+	\WHILE[Newton-Raphson with backtracking line searches]{$\mP_{z'}< \mP_{z}$}
 		\STATE compute $\bg$ using Eq.~\eqref{eq:g2}
 		\STATE compute $\bH$ using Eq.~\eqref{eq:H2}
-		\STATE compute $\bd$ using $\bH \backslash \bg$ \COMMENT{Gaussian elimination}
+		\STATE compute $\bd$ using $\bH \backslash \bg$ \COMMENT{(block-) tridiagonal Gaussian elimination}
 		\STATE let $\bC_{z'}=\bC_z + s \bd$, where $s$ is between $0$ and $1$, and $\mP_{z'}>\mP_z$ \COMMENT{backtracking line search}
 	\ENDWHILE
   \ENDFOR
@@ -40,13 +40,13 @@ The Poisson distribution can be replaced with a Gaussian instead of a Poisson di
 \hbn &= \argmax_{n_t}  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  + 
  \frac{1}{2 \lam \Del}(n_t - \lam \Del)^2\bigg).
 \end{align}
-Note that since fluorescence integrates over $\Delta$, it makes sense that the mean scales with $\Delta$.  Further, since the Gaussian here is approximating a Poisson with high rate \cite{SjulsonMiesenbock07}, the variance should scale with the mean.  Using the same tridiagonal trick as above, Eq.~\eqref{eq:obj3} can be solved using Newton-Raphson once (because its quadratic).  Writing the above in matrix notation, substituting $C_t - \gam C_{t-1}$ for $n_t$, yields:
+Note that since fluorescence integrates over $\Delta$, it makes sense that the mean scales with $\Delta$.  Further, since the Gaussian here is approximating a Poisson with high rate \cite{SjulsonMiesenbock07}, the variance should scale with the mean.  Using the same tridiagonal trick as above, Eq.~\eqref{eq:obj3} can be solved using Newton-Raphson once (because this expression is quadratic in $\bn$).  Writing the above in matrix notation and substituting $C_t - \gam C_{t-1}$ for $n_t$, yields:
 \begin{align}   \label{eq:w2}
-\hbC&= \argmax_{\bC} \frac{1}{2\sig^2} -\norm{\bF - \bC}^2 - \frac{1}{2\lam\Del} \norm{\bM \bC - \lam\Del\ve{1}}^2,
+\hbC&= \argmax_{\bC} -\frac{1}{2\sig^2} \norm{\bF - \bC}^2 - \frac{1}{2\lam\Del} \norm{\bM \bC - \lam\Del\ve{1}}^2,
 \end{align}
 \noindent which is quadratic in $\bC$.  The gradient and Hessian are given by:
 \begin{align}
 \bg &= -\frac{1}{\sig^2} (\bC - \bF) - \frac{1}{\lam\Del} ( (\bM \hbC)\T \bM + \lam\Del \bM\T \ve{1}), \\
 \bH &= \frac{1}{\sig^2} \ve{I} + \frac{1}{\lam\Del} \bM\T \bM.
 \end{align}
-Note that this solution is the optimal linear solution, under the assumption that spikes follow a Gaussian distribution, and if often referred to as the Wiener filter, regression with a smoothing prior, or ridge regression \cite{CONV04}.  Estimating the parameters for this model follows similarly as described in section \ref{sec:learn}.
+Note that this solution is the optimal linear solution, under the assumption that spikes follow a Gaussian distribution, and is often referred to as the Wiener filter, regression with a smoothing prior, or ridge regression \cite{CONV04}.  Estimating the parameters for this model follows similarly as described in section \ref{sec:learn}.

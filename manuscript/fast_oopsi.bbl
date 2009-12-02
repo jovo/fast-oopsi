@@ -41,11 +41,6 @@ Olga Garaschuk, Oliver Griesbeck, and Arthur Konnerth.
   indicators for in vivo calcium imaging in the nervous system.
 \newblock {\em Cell Calcium}, 42(4-5):351--361, 2007.
 
-\bibitem{MankGriesbeck08}
-Marco Mank and Oliver Griesbeck.
-\newblock Genetically encoded calcium indicators.
-\newblock {\em Chem Rev}, 108(5):1550--1564, May 2008.
-
 \bibitem{WallaceHasan08}
 Damian~J Wallace, Stephan~Meyer zum Alten~Borgloh, Simone Astori, Ying Yang,
   Melanie Bausen, Sebastian Kügler, Amy~E Palmer, Roger~Y Tsien, Rolf
@@ -58,7 +53,7 @@ Damian~J Wallace, Stephan~Meyer zum Alten~Borgloh, Simone Astori, Ying Yang,
 David~S Greenberg, Arthur~R Houweling, and Jason N~D Kerr.
 \newblock Population imaging of ongoing neuronal activity in the visual cortex
   of awake rats.
-\newblock {\em Nat Neurosci}, Jun 2008.
+\newblock {\em Nat Neurosci}, 11(7):749 -- 751, Jun 2008.
 
 \bibitem{HolekampHoly08}
 Terrence~F Holekamp, Diwakar Turaga, and Timothy~E Holy.
@@ -137,12 +132,6 @@ Thomas~A Pologruto, Ryohei Yasuda, and Karel Svoboda.
 \newblock Monitoring neural activity and [{Ca}$^{2+}$] with genetically encoded
   {Ca}$^{2+}$ indicators.
 \newblock {\em J Neurosci}, 24(43):9572--9579, Oct 2004.
-
-\bibitem{ShiMalik97}
-Jianbo Shi and Jitendra Malik.
-\newblock Normalized cuts and image segmentation.
-\newblock {\em Computer Vision and Pattern Recognition, IEEE Computer Society
-  Conference on}, 0:731, 1997.
 
 \bibitem{PRE92}
 W.~Press, S.~Teukolsky, W.~Vetterling, and B.~Flannery.

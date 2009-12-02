@@ -6,7 +6,6 @@
 \BOOKMARK [2][-]{subsection.2.4}{Learning the parameters}{section.2}
 \BOOKMARK [3][-]{subsubsection.2.4.1}{Initializing the parameters}{subsection.2.4}
 \BOOKMARK [3][-]{subsubsection.2.4.2}{Estimating the parameters given n"0362n}{subsection.2.4}
-\BOOKMARK [3][-]{subsubsection.2.4.3}{Convergence criteria}{subsection.2.4}
 \BOOKMARK [2][-]{subsection.2.5}{Spatial filtering}{section.2}
 \BOOKMARK [2][-]{subsection.2.6}{Overlapping spatial filters}{section.2}
 \BOOKMARK [2][-]{subsection.2.7}{Experimental Methods}{section.2}
@@ -20,7 +19,7 @@
 \BOOKMARK [3][-]{subsubsection.3.3.1}{Replacing Gaussian observations with Poisson}{subsection.3.3}
 \BOOKMARK [3][-]{subsubsection.3.3.2}{Allowing for a time-varying prior}{subsection.3.3}
 \BOOKMARK [3][-]{subsubsection.3.3.3}{Saturating fluorescence}{subsection.3.3}
-\BOOKMARK [3][-]{subsubsection.3.3.4}{Using the fast filter to initialize the SMC filter}{subsection.3.3}
+\BOOKMARK [3][-]{subsubsection.3.3.4}{Using the fast filter to initialize the sequential Monte Carlo filter}{subsection.3.3}
 \BOOKMARK [2][-]{subsection.3.4}{Spatial filter}{section.3}
 \BOOKMARK [2][-]{subsection.3.5}{Overlapping spatial filters}{section.3}
 \BOOKMARK [1][-]{section.4}{Discussion}{}

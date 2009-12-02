@@ -49,11 +49,11 @@ V.est_b       = 1;
 V.est_a       = 1;
 
 % initialize parameters for plotting results after each pseudo-EM step
-V.fast_thresh  = 1;                     % whether to threshold spike train before estimating 'a' and 'b' (we always keep this on)
-V.fast_plot    = 1;                     % whether to plot filter with each iteration
-V.fast_poisson = 0;                     % whether observations are poisson or gaussian
-V.fast_iter_max= 1;                     % # iterations of EM to estimate params
-
+V.fast_thresh   = 1;                     % whether to threshold spike train before estimating 'a' and 'b' (we always keep this on)
+V.fast_plot     = 1;                     % whether to plot filter with each iteration
+V.fast_poisson  = 0;                     % whether observations are poisson or gaussian
+V.fast_iter_max = 1;                     % # iterations of EM to estimate params
+V.save          = 0;
 
 
 % initialize other parameters
@@ -80,12 +80,12 @@ for i=1:V.Ncells
 end
 F = P.a*(C+repmat(P.b,V.T,1))'+P.sig*rand(Npixs,V.T);
 
-save(['../../data/' fname '.mat'],'F','n','P','V')
+if V.save==1, save(['../../data/' fname '.mat'],'F','n','P','V'), end
 
 %% generate tif
 
 MakMov  = 1;
-if MakMov==1
+if V.save==1 && MakMov==1
     FF=uint8(floor(255*z1(F)));
     for t=1:500
         if t==1, mod='overwrite'; else mod='append'; end
@@ -104,7 +104,7 @@ PP.lam=mean(PP.lam);
 % [I{q}.n I{q}.P] = FOOPSI_v3_05_01(F,PP,Meta,Est);
 [I{q}.n I{q}.P] = fast_oopsi(F,V,PP);
 
-save(['../../data/' fname '.mat'],'-append','I','PP')
+if V.save==1, save(['../../data/' fname '.mat'],'-append','I','PP'); end
 sound(10*sin(linspace(0,180*pi,2000)))
 
 %% plot results
@@ -238,4 +238,4 @@ end
 % print fig
 wh=[7.5 3.5*length(exps)];   %width and height
 DirName = '../../figs/';
-PrintFig(wh,DirName,fname);
+if V.save==1, PrintFig(wh,DirName,fname); end

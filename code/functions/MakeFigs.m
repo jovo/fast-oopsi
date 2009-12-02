@@ -68,8 +68,9 @@ for i=datasets
         switch j
             case 0 % fast init smc
                 V.fast_iter_max = 2;
-                V.smc_iter_max  = 8;
-                [fast smc] = run_oopsi(F{i},V,P);
+                V.smc_iter_max  = 3;
+%                 V.T=min(length(F{i}),1000);
+                [fast smc] = run_oopsi(F{i}(1:V.T),V,P);
                 V.fast_iter_max = 1;
                 inf{i}.fast = fast.n;
                 inf{i}.smc = smc.E.nbar;
@@ -109,14 +110,14 @@ for i=datasets
         end
     end
     V.name = [name num2str(i)];
-    save(['../../data/' V.name],'F','inf','spt','volt','n_t')
+    save(['../../data/' V.name],'F','inf','spt','volt','n_t','V')
 end
 
 
 %%
-% load(['../../data/' V.name])
-datasets=5;
-load(['../../data/woopsi_data' num2str(datasets)])
+datasets=12;
+V.name='smc_initb12';
+load(['../../data/' V.name])
 
 for j=datasets
     V.name_fig = ['../../figs/' V.name];                                 % filename for figure
@@ -130,7 +131,7 @@ for j=datasets
     ms      = 5;                        % marker size for real spike
     sw      = 2;                        % spike width
     lw      = 2;                        % line width
-    xlims   = [100 1600];
+    xlims   = [1 V.T];
     xticks  = xlims(1):1/V.dt:xlims(2);             % XTick positions
     skip    = round(length(xticks)/5);
     xticks  = xticks(1:skip:end);
@@ -176,7 +177,7 @@ for j=datasets
         hold off,
         ylab=ylabel([{char(names(k))}; {'filter'}],'Interpreter',inter,'FontSize',fs);
         set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
-        set(gca,'YTick',[],'YTickLabel',[])
+        set(gca,'YTick',[0 1],'YTickLabel',[])
         set(gca,'XTick',xticks,'XTickLabel',[])
         box off
     end
