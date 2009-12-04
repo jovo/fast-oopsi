@@ -2,7 +2,6 @@ This is BibTeX, Version 0.99c (Web2C 7.5.4)
 The top-level auxiliary file: fast_oopsi.aux
 The style file: unsrt.bst
 Database file #1: /Users/joshyv/Research/misc/biblist.bib
-Warning--I didn't find a database entry for "MankGriesbeck08"
 Name 1 in "Christophe Andrieu, and {\'E}ric Barat, and Arnaud Doucet" has a comma at the end for entry AndrieuDoucet01
 while executing---line 944 of file unsrt.bst
 Name 2 in "Christophe Andrieu, and {\'E}ric Barat, and Arnaud Doucet" has a comma at the end for entry AndrieuDoucet01
@@ -11,45 +10,45 @@ Name 1 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the e
 while executing---line 944 of file unsrt.bst
 Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
 while executing---line 944 of file unsrt.bst
-You've used 31 entries,
+You've used 32 entries,
             1791 wiz_defined-function locations,
-            688 strings with 10775 characters,
-and the built_in function-call counts, 7724 in all, are:
-= -- 692
-> -- 388
+            692 strings with 11216 characters,
+and the built_in function-call counts, 8109 in all, are:
+= -- 716
+> -- 429
 < -- 2
-+ -- 140
-- -- 109
-* -- 632
-:= -- 1241
-add.period$ -- 92
-call.type$ -- 31
-change.case$ -- 27
++ -- 154
+- -- 122
+* -- 676
+:= -- 1311
+add.period$ -- 95
+call.type$ -- 32
+change.case$ -- 28
 chr.to.int$ -- 0
-cite$ -- 31
-duplicate$ -- 295
-empty$ -- 705
-format.name$ -- 109
-if$ -- 1654
+cite$ -- 32
+duplicate$ -- 304
+empty$ -- 729
+format.name$ -- 122
+if$ -- 1728
 int.to.chr$ -- 0
-int.to.str$ -- 31
-missing$ -- 33
-newline$ -- 157
-num.names$ -- 31
-pop$ -- 60
+int.to.str$ -- 32
+missing$ -- 34
+newline$ -- 162
+num.names$ -- 32
+pop$ -- 61
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 124
+skip$ -- 127
 stack$ -- 0
-substring$ -- 638
-swap$ -- 50
+substring$ -- 663
+swap$ -- 51
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 81
-width$ -- 33
-write$ -- 335
+while$ -- 84
+width$ -- 34
+write$ -- 346
 (There were 4 error messages)
