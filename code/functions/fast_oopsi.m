@@ -231,6 +231,13 @@ P_best      = orderfields(P_best);
             aa      = repmat(diag(P.a'*P.a),V.T,1);% for grad
             H1(d0)  = 2*e*aa;                   % for Hess
         end
+        if V.Ncells==1                          % pre-collapse the N_p x T norm to be a 1 x T norm
+            if V.Npixels>1
+                FF = F./repmat(P.a,1,V.T);      % by normalizing F with respect to 'a'
+            else
+                FF = F;
+            end
+        end
         lnprior     = llam.*sum(M,2);            % for grad
 
         % find C = argmin_{C_z} lik + prior + barrier_z
@@ -245,7 +252,15 @@ P_best      = orderfields(P_best);
                 else
                     S = C;
                 end
-                D = F-P.a*(reshape(S,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
+                if V.test==1
+                    if V.Ncells==1
+                        D = FF - repmat(S'+P.b,V.Npixels,1);
+                    else
+                        D = F-P.a*(reshape(S,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
+                    end
+                else
+                    D = F-P.a*(reshape(S,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
+                end
                 lik = e*D(:)'*D(:);             % lik
             end
             post = lik + llam'*n - z*sum(log(n));
@@ -286,7 +301,15 @@ P_best      = orderfields(P_best);
                         else
                             S1 = C1;
                         end
-                        D       = F-P.a*(reshape(S1,V.Ncells,V.T)+b);
+                        if V.test==1
+                            if V.Ncells==1
+                                D = FF - repmat(S1'+P.b,V.Npixels,1);
+                            else
+                                D = F-P.a*(reshape(S1,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
+                            end
+                        else
+                            D = F-P.a*(reshape(S1,V.Ncells,V.T)+b);
+                        end
                         DD      = D(:)'*D(:);
                         lik1    = e*DD;
                     end

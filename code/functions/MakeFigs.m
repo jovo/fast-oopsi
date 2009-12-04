@@ -1,4 +1,4 @@
-function MakeFigs(datasets,filters,name)
+function [V inf spt volt n_t] =  MakeFigs(datasets,filters,name)
 
 if ~isempty(datasets)
     dataset = load('~/Research/oopsi/meta-oopsi/data/rafa/adam/2008/Imaging-SNR-Data.mat');
@@ -22,13 +22,13 @@ P.k_d           = 180;
 for i=datasets
     disp(i)
     if i==13
-        V.dt    = 1/60;
-        V.T     = 600;
-        tau     = 0.5;                % decay time constant for each cell
+        V.dt    = 1/10;
+        V.T     = 6000;
+        tau     = 1;                % decay time constant for each cell
 
         P.gam   = 1-V.dt/tau;       % set gam
-        P.lam   = 0.7;              % rate
-        P.sig   = 0.3;             % standard deviation
+        P.lam   = 2;              % rate
+        P.sig   = 0.4;             % standard deviation
         P.a     = 1;
         P.b     = 0;
 
@@ -81,7 +81,13 @@ for i=datasets
             case 1 % fast with params
                 V.fast_poiss=0;
                 V.fast_nonlin=0;
+                V.test=0;
                 [inf{i}.fast PP] = fast_oopsi(F{i},V,P);
+            case 1.1 
+                V.fast_poiss=0;
+                V.fast_nonlin=0;
+                V.test=1;
+                [inf{i}.fast1 PP] = fast_oopsi(F{i},V,P);                
             case 1.5 % fast est params
                 V.fast_poiss=0;
                 V.fast_nonlin=0;

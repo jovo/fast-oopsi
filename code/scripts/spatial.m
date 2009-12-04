@@ -46,6 +46,7 @@ V.h       = height;                 % height of frame (pixels)
 V.Nc      = Nc;                     % # cells
 V.plot    = 0;                      % whether to plot filter with each iteration
 V.save    = 0;                                
+V.test      = 0;
 
 % 3) initialize params
 for i=1:V.Nc
@@ -110,16 +111,23 @@ for q=qs
     GG=F; Tim=V;
     if q==1,
         Phat{q}=P;
+        Tim.test=0;
         I{q}.label='True filter';
-    elseif q==2,
+    elseif q==3,
         Phat{q}=P;
         Phat{q}.a=0*P.a;
         [asort ix]=sort(P.a);
         Phat{q}.a(ix0) = 1;
         I{q}.label='Segmented filter';
+    elseif q==2
+        Phat{q}=P;
+        I{q}.label='True filter';
+        Tim.test=1;
     end
     display(I{q}.label)
-    [I{q}.n I{q}.P] = fast_oopsi(GG',Tim,Phat{q});
+    starttime=cputime;
+    [I{q}.n I{q}.P I{q}.V] = fast_oopsi(GG',Tim,Phat{q});
+    I{q}.V.time = cputime-starttime;
 end
 if V.save==1, save('../../data/spatial2'); end
 %% end) plot results
@@ -143,13 +151,13 @@ Pl.XTicks=100:100:400;
 % % movie slices
 fnum = figure(1); clf,
 
-movieslices=[];
+% movieslices=[];
 Nframes=length(Pl.XTicks);
-for i=1:Nframes
-    temp=reshape(GG(Pl.XTicks(i),:),V.w,V.h);
-    movieslices=[movieslices; temp];
-end
-movieslices=60*z1(movieslices);
+% for i=1:Nframes
+%     temp=reshape(GG(Pl.XTicks(i),:),V.w,V.h);
+%     movieslices=[movieslices; temp];
+% end
+% movieslices=60*z1(movieslices);
 
 for i=1:Nframes
     subplot('Position',[0.132+(i-1)*0.21 0.6 .2 .28])
@@ -159,7 +167,7 @@ for i=1:Nframes
         title([{'true filter'}],'FontSize',Pl.fs)
     elseif i==3 
         imagesc(reshape(Phat{2}.a,V.w,V.h))
-        title([{'typical filter'}],'FontSize',Pl.fs)
+        title([{'boxcar filter'}],'FontSize',Pl.fs)
         set(gca,'YTick',[],'XTick',[])
     elseif i==4 
         imagesc(reshape(mean(F),V.w,V.h))
@@ -178,7 +186,7 @@ for q=qs
     % plot fluorescence data
     i=i+1; h(i) = subplot(nrows,ncols,i);
     if q==1,
-        title([{'typical filter'}],'FontSize',Pl.fs+2)
+        title([{'boxcar filter'}],'FontSize',Pl.fs+2)
         Pl.label = 'fluorescence';
     else
         Pl.label=[];
