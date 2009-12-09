@@ -1,7 +1,7 @@
 This is BibTeX, Version 0.99c (Web2C 7.5.4)
 The top-level auxiliary file: fast_oopsi.aux
 The style file: unsrt.bst
-Database file #1: /Users/joshyv/Research/misc/biblist.bib
+Database file #1: biblist.bib
 Name 1 in "Christophe Andrieu, and {\'E}ric Barat, and Arnaud Doucet" has a comma at the end for entry AndrieuDoucet01
 while executing---line 944 of file unsrt.bst
 Name 2 in "Christophe Andrieu, and {\'E}ric Barat, and Arnaud Doucet" has a comma at the end for entry AndrieuDoucet01
@@ -12,7 +12,7 @@ Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the e
 while executing---line 944 of file unsrt.bst
 You've used 38 entries,
             1791 wiz_defined-function locations,
-            736 strings with 12522 characters,
+            736 strings with 12494 characters,
 and the built_in function-call counts, 9600 in all, are:
 = -- 841
 > -- 510

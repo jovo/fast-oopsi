@@ -131,7 +131,7 @@ for q=qs
 end
 if V.save==1, save('../../data/spatial2'); end
 %% end) plot results
-load('../../data/spatial2')
+% load('../../data/spatial2')
 clear Pl
 nrows   = 3+Nc;                                 % set number of rows
 ncols   = 2;

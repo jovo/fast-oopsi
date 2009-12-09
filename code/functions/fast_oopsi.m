@@ -254,14 +254,17 @@ P_best      = orderfields(P_best);
                 end
                 if V.test==1
                     if V.Ncells==1
-                        D = FF - repmat(S'+P.b,V.Npixels,1);
+                        lik = e*sum(sum(FF-repmat(S,V.Ncells,1).^2.*AA));
+                        %                         D = FF - repmat(S'+P.b,V.Npixels,1);
+                        %                         lik = e*D(:)'*D(:);             % lik
                     else
                         D = F-P.a*(reshape(S,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
+                        lik = e*D(:)'*D(:);             % lik
                     end
                 else
                     D = F-P.a*(reshape(S,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
+                    lik = e*D(:)'*D(:);             % lik
                 end
-                lik = e*D(:)'*D(:);             % lik
             end
             post = lik + llam'*n - z*sum(log(n));
             s    = 1;                           % step size
@@ -303,15 +306,17 @@ P_best      = orderfields(P_best);
                         end
                         if V.test==1
                             if V.Ncells==1
-                                D = FF - repmat(S1'+P.b,V.Npixels,1);
+                                lik = e*sum(sum(FF-repmat(S,V.Ncells,1).^2.*AA));
+                               %                         D = FF - repmat(S'+P.b,V.Npixels,1);
+                                %                         lik = e*D(:)'*D(:);             % lik
                             else
                                 D = F-P.a*(reshape(S1,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
+                                lik1 = e*D(:)'*D(:);             % lik
                             end
                         else
-                            D = F-P.a*(reshape(S1,V.Ncells,V.T)+b);
+                            D = F-P.a*(reshape(S1,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
+                            lik1 = e*D(:)'*D(:);             % lik
                         end
-                        DD      = D(:)'*D(:);
-                        lik1    = e*DD;
                     end
                     post1 = lik1 + llam'*n - z*sum(log(n));
                     s   = s/5;                  % if step increases objective function, decrease step size

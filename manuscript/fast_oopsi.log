@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  4 DEC 2009 12:18
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  7 DEC 2009 23:17
 entering extended mode
 **fast_oopsi.tex
 (./fast_oopsi.tex
@@ -370,12 +370,13 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
  (./body.tex
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 24.
  [1
 
 {/opt/local/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/in_vitro_ex.pdf, id=182, 505.89pt
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 24.
+
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/in_vitro_ex.pdf, id=185, 505.89pt
  x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/in_vitro_ex.pdf Graphic file
  (type pdf)
@@ -385,66 +386,66 @@ File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/in_vitro_ex.pdf Graphic file
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.39 
-      </Users/joshyv/Research/oopsi/fast-oopsi/figs/in_vitro_ex.pdf>] [3]
-[4]
+l.35 \begin{align}
+                   \label{eq:F} </Users/joshyv/Research/oopsi/fast-oopsi/figs/i
+n_vitro_ex.pdf>] [3] [4] [5]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 168.
- [5]
-
-Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `math shift' on input line 172.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 169.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\setbox' on input line 172.
+(hyperref)                removing `math shift' on input line 173.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\z@' on input line 172.
+(hyperref)                removing `\setbox' on input line 173.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\hbox' on input line 172.
+(hyperref)                removing `\z@' on input line 173.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\frozen@everymath' on input line 172.
+(hyperref)                removing `\hbox' on input line 173.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\@emptytoks' on input line 172.
+(hyperref)                removing `\frozen@everymath' on input line 173.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\mathsurround' on input line 172.
+(hyperref)                removing `\@emptytoks' on input line 173.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\z@' on input line 172.
+(hyperref)                removing `\mathsurround' on input line 173.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `math shift' on input line 172.
+(hyperref)                removing `\z@' on input line 173.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\textstyle' on input line 172.
+(hyperref)                removing `math shift' on input line 173.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `math shift' on input line 172.
+(hyperref)                removing `\textstyle' on input line 173.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `\mathaccent' on input line 172.
+(hyperref)                removing `math shift' on input line 173.
 
 
 Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
-(hyperref)                removing `math shift' on input line 172.
+(hyperref)                removing `\mathaccent' on input line 173.
 
-[6] [7] [8]
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_inf_b13.pdf, id=375, 505.8
+
+Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
+(hyperref)                removing `math shift' on input line 173.
+
+[6] [7] [8] [9]
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_inf_b13.pdf, id=394, 505.8
 9pt x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_inf_b13.pdf Graphic f
 ile (type pdf)
@@ -454,18 +455,17 @@ ile (type pdf)
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_learn_b13.pdf, id=376, 505
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_learn_b13.pdf, id=395, 505
 .89pt x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_learn_b13.pdf Graphic
  file (type pdf)
 
 <use /Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_learn_b13.pdf>
-[9]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data_c4.pdf, id=389, 505.8
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data_c4.pdf, id=396, 505.8
 9pt x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data_c4.pdf Graphic f
 ile (type pdf)
@@ -475,7 +475,7 @@ ile (type pdf)
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/doublets_b12.pdf, id=390, 505.89p
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/doublets_b12.pdf, id=397, 505.89p
 t x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/doublets_b12.pdf Graphic fil
 e (type pdf)
@@ -484,14 +484,8 @@ e (type pdf)
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[10
-! pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) 
-has been already used, duplicate ignored
-<to be read again> 
-                   \endgroup \set@typeset@protect 
-l.371 
-       </Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_inf_b13.pdf>]
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf, id=403, 505.89pt x 144.5
+
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf, id=398, 505.89pt x 144.5
 4pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf Graphic file (type p
 df)
@@ -499,99 +493,98 @@ df)
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[11
+[10] [11
+! pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) 
+has been already used, duplicate ignored
+<to be read again> 
+                   \endgroup \set@typeset@protect 
+l.417 \begin{align}
+                    </Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_inf_b1
+3.pdf>] [12
 ! pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.393 
+l.430 
        </Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_learn_b13.pdf>]
-[12
+[13
 ! pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.410 
+l.434 
        </Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data_c4.pdf>]
-[13
+
+LaTeX Warning: Text page 14 contains only floats.
+
+
+Overfull \vbox (2.1058pt too high) has occurred while \output is active []
+
+
+[14
 ! pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.410 
+l.434 
       
 ! pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.410 
+l.434 
        </Users/joshyv/Research/oopsi/fast-oopsi/figs/doublets_b12.pdf> </Users/
 joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf>]
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init_c12.pdf, id=453, 505.89p
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init_c12.pdf, id=478, 505.89p
 t x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init_c12.pdf Graphic fil
 e (type pdf)
 
-<use /Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init_c12.pdf>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf, id=454, 505.89pt x 
-361.35pt>
-File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf Graphic file (t
-ype pdf)
- <use /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[14]
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf, id=467, 54
-2.025pt x 252.945pt>
-File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf Graphi
-c file (type pdf)
-
-<use /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf, id=468, 
-542.025pt x 252.945pt>
-File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf Grap
-hic file (type pdf)
-
-<use /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[15
+<use /Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init_c12.pdf> [15
 ! pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.469 
-       </Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init_c12.pdf>])
+l.447 
+       </Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init_c12.pdf>]
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf, id=491, 505.89pt x 
+361.35pt>
+File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf Graphic file (t
+ype pdf)
+ <use /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf>
 [16
 ! pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.30 
-      </Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf>] [17
+l.463 
+       </Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial2.pdf>]
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf, id=508, 54
+2.025pt x 252.945pt>
+File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf Graphi
+c file (type pdf)
+
+<use /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf>
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf, id=509, 
+542.025pt x 252.945pt>
+File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf Grap
+hic file (type pdf)
+
+<use /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf>
+[17
 ! pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) 
 has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.34 
-     
+l.489 
+      
 ! pdfTeX warning (ext4): destination with the same identifier (name{figure.10})
  has been already used, duplicate ignored
 <to be read again> 
                    \endgroup \set@typeset@protect 
-l.34 
-      </Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf> </Us
-ers/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf>]
+l.489 
+       </Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf> </U
+sers/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf>])
 (./appendix.tex
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 4.
@@ -601,8 +594,11 @@ File: omsptm.fd
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 10.
-)
-[18] [19] (./fast_oopsi.bbl
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[18]) [19] (./fast_oopsi.bbl
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no £ in font ptmr7t!
 Missing character: There is no Ã in font ptmr7t!
@@ -614,20 +610,20 @@ Missing character: There is no ¼ in font ptmr7t!
 ]) [21] (./fast_oopsi.aux) ) 
 Here is how much of TeX's memory you used:
  4836 strings out of 94500
- 59601 string characters out of 1155413
- 125673 words of memory out of 1000000
+ 59696 string characters out of 1155413
+ 126925 words of memory out of 1000000
  7734 multiletter control sequences out of 10000+50000
- 39101 words of font info for 92 fonts, out of 500000 for 2000
+ 35863 words of font info for 84 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 29i,18n,43p,2141b,593s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 29i,18n,43p,2213b,593s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 565 PDF objects out of 300000
- 148 named destinations out of 131072
+ 585 PDF objects out of 300000
+ 155 named destinations out of 131072
  291 words of extra memory for PDF output out of 65536
 </opt/local/share/texmf-dist/fonts/type1/bluesky/cm
-/cmbx7.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cmextra/cmmib7.pfb>
-</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmss8.pfb></opt/local/share
-/texmf-dist/fonts/type1/bluesky/cm/cmbx10.pfb></opt/local/share/texmf-dist/font
+/cmss8.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx7.pfb></opt/
+local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx10.pfb></opt/local/share/texm
+f-dist/fonts/type1/bluesky/cmextra/cmmib7.pfb></opt/local/share/texmf-dist/font
 s/type1/bluesky/cm/cmsy5.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/s
 ymbols/msbm10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr5.pfb>
 </opt/local/share/texmf-dist/fonts/type1/bluesky/symbols/msbm7.pfb></opt/local/
@@ -636,11 +632,10 @@ fonts/type1/bluesky/cm/cmmi5.pfb></opt/local/share/texmf-dist/fonts/type1/blues
 ky/cm/cmex10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy10.pfb
 ></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi7.pfb></opt/local/shar
 e/texmf-dist/fonts/type1/bluesky/cm/cmr7.pfb></opt/local/share/texmf-dist/fonts
-/type1/bluesky/cm/cmmi10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/c
-m/cmmib10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></o
-pt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr9.pfb></opt/local/share/tex
-mf-dist/fonts/type1/bluesky/cm/cmsy9.pfb>{/opt/local/share/texmf-dist/fonts/enc
-/dvips/psnfss/8r.enc}</opt/local/share/texmf-dist/fonts/type1/urw/times/utmri8a
-.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/local/
-share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on fast_oopsi.pdf (21 pages, 902131 bytes).
+/type1/bluesky/cm/cmmib10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/
+cm/cmr10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi10.pfb>{/o
+pt/local/share/texmf-dist/fonts/enc/dvips/psnfss/8r.enc}</opt/local/share/texmf
+-dist/fonts/type1/urw/times/utmri8a.pfb></opt/local/share/texmf-dist/fonts/type
+1/urw/times/utmb8a.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utmr8
+a.pfb>
+Output written on fast_oopsi.pdf (21 pages, 906498 bytes).
