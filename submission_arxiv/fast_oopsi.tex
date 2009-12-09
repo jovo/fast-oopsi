@@ -745,7 +745,7 @@ Figure \ref{fig:in_vitro_ex} shows data from a typical \emph{in vitro} epifluore
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{in_vitro_ex}
-\caption[data-based model]{Typical \emph{in vitro} data suggest that a reasonable first order model may be constructed by convolving the spike train with an exponential and adding Gaussian noise. Top panel: the average (over frames) of a typical field-of-view.  Bottom left: true spike train recorded via a patch electrode (black bars), convolved with an exponential (gray line), superimposed on the fluorescence trace (black line).  While the spike train and fluorescence trace are measured data, the calcium is not directly measured, but rather, inferred.  Bottom right: a histogram of the residual error between the gray and black lines from the bottom left panel (dashed line), and the best fit Gaussian (solid line). Note that the Gaussian model provides a good fit for the residuals here.} \label{fig:in_vitro_ex}
+\caption[data-based model]{Typical \emph{in vitro} data suggest that a reasonable first order model may be constructed by convolving the spike train with an exponential and adding Gaussian noise. Top panel: the average (over frames) of a typical field-of-view.  Bottom left: true spike train recorded via a patch electrode (black bars), convolved with an exponential (gray line), superimposed on the fluorescence trace (OGB-1; black line).  While the spike train and fluorescence trace are measured data, the calcium is not directly measured, but rather, inferred.  Bottom right: a histogram of the residual error between the gray and black lines from the bottom left panel (dashed line), and the best fit Gaussian (solid line). Note that the Gaussian model provides a good fit for the residuals here.} \label{fig:in_vitro_ex}
 \end{figure}
 
 The above observations may be formalized as follows. Assume there is a one-dimensional fluorescence trace, $\bF$ (throughout this text $\bX$ indicates the vector $[X_1, \ldots, X_T]$, where $T$ is the index of the final frame), from a neuron.  At time $t$, the fluorescence measurement $F_t$ is a linear-Gaussian function of the intracellular calcium concentration at that time, $\Ca_t$:
@@ -1082,14 +1082,14 @@ This suggests that although the scale of $\bn$ is arbitrary, the \foopsi filter 
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{woopsi_data_c4}
-\caption[\foopsi filter outperforms Wiener filter on biological data]{The \foopsi filter significantly outperforms the Wiener filter on typical \emph{in vitro} data, using Fura-2. Note that all the parameters for both filters were estimated only from the fluorescence data in the top panel (ie, not considering the voltage data at all).  Again, '$+$'s denote true spike times extracted from the patch data, not inferred spike times from $\bF$.} \label{fig:woopsi_data}
+\caption[\foopsi filter outperforms Wiener filter on biological data]{The \foopsi filter significantly outperforms the Wiener filter on typical \emph{in vitro} data, using OGB-1. Note that all the parameters for both filters were estimated only from the fluorescence data in the top panel (ie, not considering the voltage data at all).  Again, '$+$'s denote true spike times extracted from the patch data, not inferred spike times from $\bF$.} \label{fig:woopsi_data}
 \end{figure}
 
 Figure \ref{fig:woopsi_data_doublets} further evaluates this claim.  While recording and imaging, the cell was forced to spike once, twice, or thrice, for each spiking event.  Na\"{i}vely, this would suggest that an algorithm based on a purely linear model would struggle to resolve spike fidelity in this high frequency spiking regime.  However, the \foopsi filter infers the correct number of spikes in each event.  On the contrary, there is no obvious way to count the number of spikes within each event when using the Wiener filter.
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{doublets_b12}
-\caption[\foopsi filter outperforms Wiener filter on multi-spike events]{The \foopsi filter can often resolve the correct number of spikes within each spiking event, while imaging using Fura-2, given sufficiently high SNR.  It is difficult, if not impossible, to count the number of spikes given the Wiener filter output.  Recording and fitting parameters as in Figure \ref{fig:woopsi_data}. Note that the parameters were estimated using a 60 sec long recording, of which only a fraction is shown here, to more clearly depict the number of spikes per event.  } \label{fig:woopsi_data_doublets}
+\caption[\foopsi filter outperforms Wiener filter on multi-spike events]{The \foopsi filter can often resolve the correct number of spikes within each spiking event, while imaging using OGB-1, given sufficiently high SNR.  It is difficult, if not impossible, to count the number of spikes given the Wiener filter output.  Recording and fitting parameters as in Figure \ref{fig:woopsi_data}. Note that the parameters were estimated using a 60 sec long recording, of which only a fraction is shown here, to more clearly depict the number of spikes per event.  } \label{fig:woopsi_data_doublets}
 \end{figure}
 
 
@@ -1106,7 +1106,7 @@ A central aim for this work was the development of an algorithm that infers spik
 \begin{centering} 
 \includegraphics[width=1\linewidth]{pop}
 \end{centering}
-\caption[\foopsi filter is robust and works online for populations of neurons]{The \foopsi filter infers spike trains from a large population of neurons imaged simultaneously \emph{in vitro}, using OBG-1, faster than real-time.  Specifically, inferring the spike trains from this 400 sec long movie including 136 neurons requires only about 40 sec on a standard laptop computer. The inferred spike trains much more clearly convey neural activity than the raw fluorescence traces.  Although no intracellular ``ground truth'' is available on this population data, the noise seems to be reduced, consistent with the other examples with ground truth.  Left panel: Mean image field, segmented into ROIs each containing a single neuron.  Middle panel: example fluorescence traces.  Right panel: \foopsi filter output corresponding to each associated trace. Note that neuron identity is indicated by color across the three panels.} \label{fig:pop}
+\caption[\foopsi filter is robust and works online for populations of neurons]{The \foopsi filter infers spike trains from a large population of neurons imaged simultaneously \emph{in vitro}, using Fura-2, faster than real-time.  Specifically, inferring the spike trains from this 400 sec long movie including 136 neurons requires only about 40 sec on a standard laptop computer. The inferred spike trains much more clearly convey neural activity than the raw fluorescence traces.  Although no intracellular ``ground truth'' is available on this population data, the noise seems to be reduced, consistent with the other examples with ground truth.  Left panel: Mean image field, segmented into ROIs each containing a single neuron.  Middle panel: example fluorescence traces.  Right panel: \foopsi filter output corresponding to each associated trace. Note that neuron identity is indicated by color across the three panels.} \label{fig:pop}
 \end{figure}
 
 
@@ -1151,7 +1151,7 @@ A sequential Monte Carlo (SMC) method to infer spike trains can incorporate this
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{smc_init_c12}
-\caption[\foopsi filter can initialize Wiener filter]{The \foopsi filter effectively initializes the parameters for the SMC filter, significantly reducing the number of expectation-maximization iterations to convergence, on typical \emph{in vitro} data, using Fura-2.  Note that while the \foopsi filter clearly infers the spiking events in the end of the trace, those in the beginning of the trace are less clear.  On the other hand, the SMC filter more clearly separates non-spiking activity from true spikes.  Also note that the ordinate on the bottom panel corresponds to the inferred probability of a spike having occurred in each frame.} \label{fig:smc_init}
+\caption[\foopsi filter can initialize Wiener filter]{The \foopsi filter effectively initializes the parameters for the SMC filter, significantly reducing the number of expectation-maximization iterations to convergence, on typical \emph{in vitro} data, using OGB-1.  Note that while the \foopsi filter clearly infers the spiking events in the end of the trace, those in the beginning of the trace are less clear.  On the other hand, the SMC filter more clearly separates non-spiking activity from true spikes.  Also note that the ordinate on the bottom panel corresponds to the inferred probability of a spike having occurred in each frame.} \label{fig:smc_init}
 \end{figure}
 
 \subsection{Spatial filter} \label{sec:results:spatial}
@@ -1285,7 +1285,7 @@ Note that this solution is the optimal linear solution, under the assumption tha
 \addcontentsline{toc}{section}{References}
 %\bibliography{Science}
 %\bibliographystyle{apalike}
-\bibliographystyle{abbrv}
+\bibliographystyle{ieeetr}
 %\bibliographystyle{nature}
 
 % \appendix

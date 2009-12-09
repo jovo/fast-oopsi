@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  7 DEC 2009 23:17
+This is pdfeTeX, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  9 DEC 2009 11:15
 entering extended mode
 **fast_oopsi.tex
 (./fast_oopsi.tex
@@ -600,8 +600,6 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [18]) [19] (./fast_oopsi.bbl
 Missing character: There is no Ã in font ptmr7t!
-Missing character: There is no £ in font ptmr7t!
-Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no ¼ in font ptmr7t!
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no ¼ in font ptmr7t!
@@ -638,4 +636,4 @@ pt/local/share/texmf-dist/fonts/enc/dvips/psnfss/8r.enc}</opt/local/share/texmf
 -dist/fonts/type1/urw/times/utmri8a.pfb></opt/local/share/texmf-dist/fonts/type
 1/urw/times/utmb8a.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utmr8
 a.pfb>
-Output written on fast_oopsi.pdf (21 pages, 906498 bytes).
+Output written on fast_oopsi.pdf (21 pages, 906261 bytes).

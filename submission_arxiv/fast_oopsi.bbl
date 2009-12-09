@@ -1,228 +1,193 @@
 \begin{thebibliography}{10}
 
 \bibitem{ImagingManual}
-Rafael Yuste and Arthur Konnerth.
-\newblock {\em {Imaging in Neuroscience and Development, A Laboratory Manual}},
-  2006.
+R.~Yuste and A.~Konnerth, {\em {Imaging in Neuroscience and Development, A
+  Laboratory Manual}}, 2006.
 
 \bibitem{SmettersYuste99}
-Diana Smetters, Ania Majewska, and Rafael Yuste.
-\newblock Detecting action potentials in neuronal populations with calcium
-  imaging.
-\newblock {\em Methods}, 18(2):215--221, Jun 1999.
+D.~Smetters, A.~Majewska, and R.~Yuste, ``Detecting action potentials in
+  neuronal populations with calcium imaging,'' {\em Methods}, vol.~18,
+  pp.~215--221, Jun 1999.
 
 \bibitem{IkegayaYuste04}
-Yuji Ikegaya, Gloster Aaron, Rosa Cossart, Dmitriy Aronov, Ilan Lampl, David
-  Ferster, and Rafael Yuste.
-\newblock Synfire chains and cortical songs: temporal modules of cortical
-  activity.
-\newblock {\em Science}, 304(5670):559--564, Apr 2004.
+Y.~Ikegaya, G.~Aaron, R.~Cossart, D.~Aronov, I.~Lampl, D.~Ferster, and
+  R.~Yuste, ``Synfire chains and cortical songs: temporal modules of cortical
+  activity,'' {\em Science}, vol.~304, pp.~559--564, Apr 2004.
 
 \bibitem{NagayamaChen07}
-Shin Nagayama, Shaoqun Zeng, Wenhui Xiong, Max~L Fletcher, Arjun~V Masurkar,
-  Douglas~J Davis, Vincent~A Pieribone, and Wei~R Chen.
-\newblock {In vivo simultaneous tracing and {Ca}$^{2+}$ imaging of local
-  neuronal circuits.}
-\newblock {\em Neuron}, 53(6):789--803, Mar 2007.
+S.~Nagayama, S.~Zeng, W.~Xiong, M.~L. Fletcher, A.~V. Masurkar, D.~J. Davis,
+  V.~A. Pieribone, and W.~R. Chen, ``{In vivo simultaneous tracing and
+  {Ca}$^{2+}$ imaging of local neuronal circuits.},'' {\em Neuron}, vol.~53,
+  pp.~789--803, Mar 2007.
 
 \bibitem{GobelHelmchen07}
-Werner G\"{o}bel and Fritjof Helmchen.
-\newblock In vivo calcium imaging of neural network function.
-\newblock {\em Physiology (Bethesda)}, 22:358--365, Dec 2007.
+W.~G\"{o}bel and F.~Helmchen, ``In vivo calcium imaging of neural network
+  function.,'' {\em Physiology (Bethesda)}, vol.~22, pp.~358--365, Dec 2007.
 
 \bibitem{LuoSvoboda08}
-Liqun Luo, Edward~M. Callaway, and Karel Svoboda.
-\newblock Genetic dissection of neural circuits.
-\newblock {\em Neuron}, 57(5):634--660, Mar 2008.
+L.~Luo, E.~M. Callaway, and K.~Svoboda, ``Genetic dissection of neural
+  circuits.,'' {\em Neuron}, vol.~57, pp.~634--660, Mar 2008.
 
 \bibitem{GaraschukKonnerth07}
-Olga Garaschuk, Oliver Griesbeck, and Arthur Konnerth.
-\newblock Troponin c-based biosensors: a new family of genetically encoded
-  indicators for in vivo calcium imaging in the nervous system.
-\newblock {\em Cell Calcium}, 42(4-5):351--361, 2007.
+O.~Garaschuk, O.~Griesbeck, and A.~Konnerth, ``Troponin c-based biosensors: a
+  new family of genetically encoded indicators for in vivo calcium imaging in
+  the nervous system.,'' {\em Cell Calcium}, vol.~42, no.~4-5, pp.~351--361,
+  2007.
 
 \bibitem{MankGriesbeck08b}
-Marco Mank, Alexandre~Ferrão Santos, Stephan Direnberger, Thomas~D
-  Mrsic-Flogel, Sonja~B Hofer, Valentin Stein, Thomas Hendel, Dierk~F Reiff,
-  Christiaan Levelt, Alexander Borst, Tobias Bonhoeffer, Mark Hübener, and
-  Oliver Griesbeck.
-\newblock A genetically encoded calcium indicator for chronic in vivo
-  two-photon imaging.
-\newblock {\em Nat Methods}, 5(9):805--811, Sep 2008.
+M.~Mank, A.~F. Santos, S.~Direnberger, T.~D. Mrsic-Flogel, S.~B. Hofer,
+  V.~Stein, T.~Hendel, D.~F. Reiff, C.~Levelt, A.~Borst, T.~Bonhoeffer,
+  M.~Hübener, and O.~Griesbeck, ``A genetically encoded calcium indicator for
+  chronic in vivo two-photon imaging.,'' {\em Nat Methods}, vol.~5,
+  pp.~805--811, Sep 2008.
 
 \bibitem{WallaceHasan08}
-Damian~J Wallace, Stephan~Meyer zum Alten~Borgloh, Simone Astori, Ying Yang,
-  Melanie Bausen, Sebastian Kügler, Amy~E Palmer, Roger~Y Tsien, Rolf
-  Sprengel, Jason N~D Kerr, Winfried Denk, and Mazahir~T Hasan.
-\newblock {Single-spike detection in vitro and in vivo with a genetic Ca2+
-  sensor.}
-\newblock {\em Nat Methods}, 5(9):797--804, Sep 2008.
+D.~J. Wallace, S.~M. zum Alten~Borgloh, S.~Astori, Y.~Yang, M.~Bausen,
+  S.~Kügler, A.~E. Palmer, R.~Y. Tsien, R.~Sprengel, J.~N.~D. Kerr, W.~Denk,
+  and M.~T. Hasan, ``{Single-spike detection in vitro and in vivo with a
+  genetic Ca2+ sensor.},'' {\em Nat Methods}, vol.~5, pp.~797--804, Sep 2008.
 
 \bibitem{Schwartz98}
 T.~Schwartz, D.~Rabinowitz, V.~K. Unni, V.~S. Kumar, D.~K. Smetters, A.~Tsiola,
-  and R.~Yuste.
-\newblock Networks of coactive neurons in developing layer 1.
-\newblock {\em Neuron}, 20:1271--1283, 1998.
+  and R.~Yuste, ``Networks of coactive neurons in developing layer 1.,'' {\em
+  Neuron}, vol.~20, pp.~1271--1283, 1998.
 
 \bibitem{Mao01}
-B.~Mao, F.~Hamzei-Sichani, D.~Aronov, R.~Froemke, and R.~Yuste.
-\newblock Dynamics of spontaneous activity in neocortical slices.
-\newblock {\em Neuron}, 32(5):883--98, 2001.
+B.~Mao, F.~Hamzei-Sichani, D.~Aronov, R.~Froemke, and R.~Yuste, ``Dynamics of
+  spontaneous activity in neocortical slices,'' {\em Neuron}, vol.~32, no.~5,
+  pp.~883--98, 2001.
 
 \bibitem{GreenbergKerr08}
-David~S Greenberg, Arthur~R Houweling, and Jason N~D Kerr.
-\newblock Population imaging of ongoing neuronal activity in the visual cortex
-  of awake rats.
-\newblock {\em Nat Neurosci}, 11(7):749 -- 751, Jun 2008.
+D.~S. Greenberg, A.~R. Houweling, and J.~N.~D. Kerr, ``Population imaging of
+  ongoing neuronal activity in the visual cortex of awake rats.,'' {\em Nat
+  Neurosci}, vol.~11, pp.~749 -- 751, Jun 2008.
 
 \bibitem{HolekampHoly08}
-Terrence~F Holekamp, Diwakar Turaga, and Timothy~E Holy.
-\newblock Fast three-dimensional fluorescence imaging of activity in neural
-  populations by objective-coupled planar illumination microscopy.
-\newblock {\em Neuron}, 57(5):661--672, Mar 2008.
+T.~F. Holekamp, D.~Turaga, and T.~E. Holy, ``Fast three-dimensional
+  fluorescence imaging of activity in neural populations by objective-coupled
+  planar illumination microscopy.,'' {\em Neuron}, vol.~57, pp.~661--672, Mar
+  2008.
 
 \bibitem{SasakiIkegaya08}
-Takuya Sasaki, Naoya Takahashi, Norio Matsuki, and Yuji Ikegaya.
-\newblock Fast and accurate detection of action potentials from somatic calcium
-  fluctuations.
-\newblock {\em Journal of Neurophysiology}, 100(3):1668, Jul 2008.
+T.~Sasaki, N.~Takahashi, N.~Matsuki, and Y.~Ikegaya, ``Fast and accurate
+  detection of action potentials from somatic calcium fluctuations.,'' {\em
+  Journal of Neurophysiology}, vol.~100, p.~1668, Jul 2008.
 
 \bibitem{VogelsteinPaninski09}
-Joshua~T. Vogelstein, Brendon~O. Watson, Adam~M. Packer, Rafael Yuste, Bruno
-  Jedynak, and Liam Paninski.
-\newblock Spike inference from calcium imaging using sequential monte carlo
-  methods.
-\newblock {\em Biophys J}, 97(2):636--655, Jul 2009.
+J.~T. Vogelstein, B.~O. Watson, A.~M. Packer, R.~Yuste, B.~Jedynak, and
+  L.~Paninski, ``Spike inference from calcium imaging using sequential monte
+  carlo methods.,'' {\em Biophys J}, vol.~97, pp.~636--655, Jul 2009.
 
 \bibitem{PortugalVicente94}
-Luis~F. Portugal, Joaquim~.J. Judice, and Luis~N. Vicente.
-\newblock {A comparison of block pivoting and interior-point algorithms for
-  linear least squares problems with nonnegative variables}.
-\newblock {\em Mathematics of Computation}, 63(208):625--643, 1994.
+L.~F. Portugal, J.~J. Judice, and L.~N. Vicente, ``{A comparison of block
+  pivoting and interior-point algorithms for linear least squares problems with
+  nonnegative variables},'' {\em Mathematics of Computation}, vol.~63, no.~208,
+  pp.~625--643, 1994.
 
 \bibitem{MarkhamConchello99}
-Joanne Markham and Jose-Angel Conchello.
-\newblock Parametric blind deconvolution: a robust method for the simultaneous
-  estimation of image and blur.
-\newblock {\em Journal of The Optical Society Of America A. Optics, Image
-  Science, and Vision}, 16(10):2377--2391, Oct 1999.
+J.~Markham and J.-A. Conchello, ``Parametric blind deconvolution: a robust
+  method for the simultaneous estimation of image and blur.,'' {\em Journal of
+  The Optical Society Of America A. Optics, Image Science, and Vision},
+  vol.~16, pp.~2377--2391, Oct 1999.
 
 \bibitem{LeeSeung99}
-Daniel~D. Lee and H.~Sebastian Seung.
-\newblock Learning the parts of objects by non-negative matrix factorization.
-\newblock {\em Nature}, 401(6755):788--791, Oct 1999.
+D.~D. Lee and H.~S. Seung, ``Learning the parts of objects by non-negative
+  matrix factorization.,'' {\em Nature}, vol.~401, pp.~788--791, Oct 1999.
 
 \bibitem{LLS04}
-Yuanqing Lin, Daniel~D. Lee, and Lawrence~K. Saul.
-\newblock Nonnegative deconvolution for time of arrival estimation.
-\newblock {\em International Conference on Acoustics, Speech, and Signal
-  Processing}, 2004.
+Y.~Lin, D.~D. Lee, and L.~K. Saul, ``Nonnegative deconvolution for time of
+  arrival estimation,'' {\em International Conference on Acoustics, Speech, and
+  Signal Processing}, 2004.
 
 \bibitem{OGradyPearlmutter06}
-{O'Grady, Paul D. and Pearlmutter, Barak A.}
-\newblock {Convolutive non-negative matrix factorisation with a sparseness
-  constraint}.
-\newblock {\em Machine Learning for Signal Processing, 2006. Proceedings of the
-  2006 16th IEEE Signal Processing Society Workshop on}, pages 427--432, 2006.
+{O'Grady, Paul D. and Pearlmutter, Barak A.}, ``{Convolutive non-negative
+  matrix factorisation with a sparseness constraint},'' {\em Machine Learning
+  for Signal Processing, 2006. Proceedings of the 2006 16th IEEE Signal
+  Processing Society Workshop on}, pp.~427--432, 2006.
 
 \bibitem{HuysPaninski06}
-Quentin J.~M. Huys, Misha~B. Ahrens, and Liam Paninski.
-\newblock Efficient estimation of detailed single-neuron models.
-\newblock {\em J Neurophysiol}, 96(2):872--890, Aug 2006.
+Q.~J.~M. Huys, M.~B. Ahrens, and L.~Paninski, ``Efficient estimation of
+  detailed single-neuron models.,'' {\em J Neurophysiol}, vol.~96,
+  pp.~872--890, Aug 2006.
 
 \bibitem{Cunningham08}
-John~P. Cunningham, Krishna~V. Shenoy, and Maneesh Sahani.
-\newblock Fast {G}aussian process methods for point process intensity
-  estimation.
-\newblock {\em ICML}, pages 192--199, 2008.
+J.~P. Cunningham, K.~V. Shenoy, and M.~Sahani, ``Fast {G}aussian process
+  methods for point process intensity estimation,'' {\em ICML}, pp.~192--199,
+  2008.
 
 \bibitem{PaninskiWu09}
-Liam Paninski, Yashar Ahmadian, Daniel Ferreira, Shinsuke Koyama,
-  Kamiar~Rahnama Rad, Michael Vidne, Joshua Vogelstein, and Wei Wu.
-\newblock A new look at state-space models for neural data.
-\newblock {\em J Comput Neurosci}, Aug 2009.
+L.~Paninski, Y.~Ahmadian, D.~Ferreira, S.~Koyama, K.~R. Rad, M.~Vidne,
+  J.~Vogelstein, and W.~Wu, ``A new look at state-space models for neural
+  data.,'' {\em J Comput Neurosci}, Aug 2009.
 
 \bibitem{CONV04}
-Stephen Boyd and Lieven Vandenberghe.
-\newblock {\em Convex Optimization}.
+S.~Boyd and L.~Vandenberghe, {\em Convex Optimization}.
 \newblock Oxford University Press, 2004.
 
 \bibitem{Press92}
-W.~Press, S.~Teukolsky, W.~Vetterling, and B.~Flannery.
-\newblock {\em Numerical recipes in {C}}.
+W.~Press, S.~Teukolsky, W.~Vetterling, and B.~Flannery, {\em Numerical recipes
+  in {C}}.
 \newblock Cambridge University Press, 1992.
 
 \bibitem{YaksiFriedrich06}
-Emre Yaksi and Rainer~W Friedrich.
-\newblock Reconstruction of firing rate changes across neuronal populations by
-  temporally deconvolved {Ca$^{2+}$} imaging.
-\newblock {\em Nature Methods}, 3(5):377--383, May 2006.
+E.~Yaksi and R.~W. Friedrich, ``Reconstruction of firing rate changes across
+  neuronal populations by temporally deconvolved {Ca$^{2+}$} imaging,'' {\em
+  Nature Methods}, vol.~3, pp.~377--383, May 2006.
 
 \bibitem{PologrutoSvoboda04}
-Thomas~A Pologruto, Ryohei Yasuda, and Karel Svoboda.
-\newblock Monitoring neural activity and [{Ca}$^{2+}$] with genetically encoded
-  {Ca}$^{2+}$ indicators.
-\newblock {\em J Neurosci}, 24(43):9572--9579, Oct 2004.
+T.~A. Pologruto, R.~Yasuda, and K.~Svoboda, ``Monitoring neural activity and
+  [{Ca}$^{2+}$] with genetically encoded {Ca}$^{2+}$ indicators.,'' {\em J
+  Neurosci}, vol.~24, pp.~9572--9579, Oct 2004.
 
 \bibitem{KassRaftery95}
-R.E. Kass and A.E. Raftery.
-\newblock {Bayes Factors}.
-\newblock {\em Journal of the American Statistical Association},
-  90(430):773--795, 1995.
+R.~Kass and A.~Raftery, ``{Bayes Factors},'' {\em Journal of the American
+  Statistical Association}, vol.~90, no.~430, pp.~773--795, 1995.
 
 \bibitem{HornJohnson90}
-R.A. Horn and C.R. Johnson.
-\newblock {\em {Matrix analysis}}.
+R.~Horn and C.~Johnson, {\em {Matrix analysis}}.
 \newblock Cambridge Univ Pr, 1990.
 
 \bibitem{MukamelSchnitzer09}
-Eran~A Mukamel, Axel Nimmerjahn, and Mark~J Schnitzer.
-\newblock Automated analysis of cellular signals from large-scale calcium
-  imaging data.
-\newblock {\em Neuron}, 63(6):747--760, Sep 2009.
+E.~A. Mukamel, A.~Nimmerjahn, and M.~J. Schnitzer, ``Automated analysis of
+  cellular signals from large-scale calcium imaging data.,'' {\em Neuron},
+  vol.~63, pp.~747--760, Sep 2009.
 
 \bibitem{RokhlinTygert09}
-V.~Rokhlin, A.~Szlam, and M.~Tygert.
-\newblock {A randomized algorithm for principal component analysis}.
-\newblock {\em SIAM J. Matrix Anal. Appl}, 31:1100--1124, 2009.
+V.~Rokhlin, A.~Szlam, and M.~Tygert, ``{A randomized algorithm for principal
+  component analysis},'' {\em SIAM J. Matrix Anal. Appl}, vol.~31,
+  pp.~1100--1124, 2009.
 
 \bibitem{MacLeanYuste05}
-Jason~N MacLean, Brendon~O Watson, Gloster~B Aaron, and Rafael Yuste.
-\newblock Internal dynamics determine the cortical response to thalamic
-  stimulation.
-\newblock {\em Neuron}, 48(5):811--823, Dec 2005.
+J.~N. MacLean, B.~O. Watson, G.~B. Aaron, and R.~Yuste, ``Internal dynamics
+  determine the cortical response to thalamic stimulation.,'' {\em Neuron},
+  vol.~48, pp.~811--823, Dec 2005.
 
 \bibitem{SjulsonMiesenbock07}
-Lucas Sjulson and Gero Miesenb\"{o}ck.
-\newblock Optical recording of action potentials and other discrete
-  physiological events: a perspective from signal detection theory.
-\newblock {\em Physiology (Bethesda)}, 22:47--55, Feb 2007.
+L.~Sjulson and G.~Miesenb\"{o}ck, ``Optical recording of action potentials and
+  other discrete physiological events: a perspective from signal detection
+  theory.,'' {\em Physiology (Bethesda)}, vol.~22, pp.~47--55, Feb 2007.
 
 \bibitem{BellSejnowski95}
-A.~J. Bell and T.~J. Sejnowski.
-\newblock An information-maximisation approach to blind separation and blind
-  deconvolution.
-\newblock {\em Neural Computation}, 7(6):1004, 1995.
+A.~J. Bell and T.~J. Sejnowski, ``An information-maximisation approach to blind
+  separation and blind deconvolution,'' {\em Neural Computation}, vol.~7,
+  no.~6, p.~1004, 1995.
 
 \bibitem{AndrieuDoucet01}
-Christophe Andrieu, {\'E}ric Barat, and Arnaud Doucet.
-\newblock {Bayesian deconvolution of noisy filtered point processes}.
-\newblock {\em IEEE Transactions on Signal Processing}, 49(1):134--146, 2001.
+C.~Andrieu, {\'E}.~Barat, and A.~Doucet, ``{Bayesian deconvolution of noisy
+  filtered point processes},'' {\em IEEE Transactions on Signal Processing},
+  vol.~49, no.~1, pp.~134--146, 2001.
 
 \bibitem{MishchenkoPaninski09}
-Mishchenko Y, Vogelstein JT, and Paninski L.
-\newblock {A Bayesian approach for inferring neuronal connectivity from calcium
-  fluorescent imaging data}.
-\newblock {\em Annals of Applied Statistics}, in press, 2009.
+M.~Y, V.~JT, and P.~L, ``{A Bayesian approach for inferring neuronal
+  connectivity from calcium fluorescent imaging data},'' {\em Annals of Applied
+  Statistics}, vol.~in press, 2009.
 
 \bibitem{FS81}
-Jerome~H. Friedman and Werner Stuetzle.
-\newblock {Projection Pursuit Regression.}
-\newblock {\em J. AM. STAT. ASSOC.}, 76(376):817--823, 1981.
+J.~H. Friedman and W.~Stuetzle, ``{Projection Pursuit Regression.},'' {\em J.
+  AM. STAT. ASSOC.}, vol.~76, no.~376, pp.~817--823, 1981.
 
 \bibitem{MallatZhang93}
-Stephane Mallat and Zhifeng Zhang.
-\newblock {Matching pursuit with time-frequency dictionaries: IEEE Trans}.
-\newblock {\em Signal Processing}, 41:3397--3415, 1993.
+S.~Mallat and Z.~Zhang, ``{Matching pursuit with time-frequency dictionaries:
+  IEEE Trans},'' {\em Signal Processing}, vol.~41, pp.~3397--3415, 1993.
 
 \end{thebibliography}
