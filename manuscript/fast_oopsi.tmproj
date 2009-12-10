@@ -3,22 +3,22 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>body.tex</string>
+	<string>fast_oopsi.tex</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>fast_oopsi.tex</string>
 			<key>lastUsed</key>
-			<date>2009-12-08T08:08:38Z</date>
+			<date>2009-12-09T19:14:36Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>body.tex</string>
 			<key>lastUsed</key>
-			<date>2009-12-08T08:08:38Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2009-12-09T19:14:36Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -50,44 +50,28 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>22</integer>
+				<integer>427</integer>
 				<key>line</key>
-				<integer>29</integer>
+				<integer>30</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>15</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>11</integer>
-				<key>line</key>
-				<integer>29</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>22</integer>
-				<key>line</key>
-				<integer>29</integer>
-			</dict>
 		</dict>
 		<key>fast_oopsi.tex</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>104</integer>
+				<integer>27</integer>
 				<key>line</key>
-				<integer>18</integer>
+				<integer>30</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
