@@ -1,4 +1,9 @@
+\newpage
 \section{Pseudocode} \label{sec:pseudo}
+
+
+
+\emph{ass}
 
 \begin{algorithm}[h!]
 \caption{Pseudocode for inferring the approximately most likely spike train, given fluorescence data. Note that $\xi_i \ll 1$ for $i \in \{1,2\}$; the algorithm is robust to small variations in each. The equations listed below refer to the most general equations in the text (simpler equations could be substituted when appropriate).  Curly brackets, $\{ \cdot \}$, indicate comments.}
@@ -21,7 +26,7 @@
 % \IF{one neuron in ROI}
 \STATE check convergence criteria
 \STATE update $\valpha$ using Eq.~\eqref{eq:valpha}  \COMMENT{only if spatial filtering} 
-\STATE update $\vbeta$ using Eq.~\eqref{eq:vbeta}
+\STATE update $\vbeta$ using Eq.~\eqref{eq:beta}
 \STATE let $\sig$ be the root-mean square of the residual
 \STATE let $\lam=\frac{1}{T}\sum_t \hn_t$
 % \STATE $\valpha=\frac{1}{T}\sum_t (\vF_t - \ve{1}(C_t-\beta))$ and $\hbeta=\frac{1}{T}\sum_t(\vF_t / \hvalpha - C_t)$
@@ -33,20 +38,21 @@
 \end{algorithmic}
 \end{algorithm}
 
+\clearpage
 \section{Wiener Filter} \label{sec:wiener}
 
 The Poisson distribution in Eq.~\eqref{eq:n} can be replaced with a Gaussian instead of a Poisson distribution, ie,  $n_t \overset{iid}{\sim} \mN(\lam \Del, \lam \Del)$, which, when plugged into Eq.~\eqref{eq:nhat2} yields:
 \begin{align} \label{eq:obj5}
-\hbn &= \argmax_{n_t}  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha(C_t + \beta))^2  + 
+\hbn &= \argmax_{n_t}  \sum_{t=1}^T \bigg( \frac{1}{2 \sig^2}(F_t - \alpha C_t - \beta)^2  + 
  \frac{1}{2 \lam \Del}(n_t - \lam \Del)^2\bigg).
 \end{align}
-Note that since fluorescence integrates over $\Delta$, it makes sense that the mean scales with $\Delta$.  Further, since the Gaussian here is approximating a Poisson with high rate \cite{SjulsonMiesenbock07}, the variance should scale with the mean.  Using the same tridiagonal trick as above, Eq.~\eqref{eq:obj3} can be solved using Newton-Raphson once (because this expression is quadratic in $\bn$).  Writing the above in matrix notation and substituting $C_t - \gam C_{t-1}$ for $n_t$, yields:
+Note that since fluorescence integrates over $\Delta$, it makes sense that the mean scales with $\Delta$.  Further, since the Gaussian here is approximating a Poisson with high rate \cite{SjulsonMiesenbock07}, the variance should scale with the mean.  Using the same tridiagonal trick as above, Eq.~\eqref{eq:obj3} can be solved using Newton-Raphson once (because this expression is quadratic in $\bn$).  Writing the above in matrix notation, substituting $C_t - \gam C_{t-1}$ for $n_t$, and letting $\alpha=1$ yields:
 \begin{align}   \label{eq:w2}
-\hbC&= \argmax_{\bC} -\frac{1}{2\sig^2} \norm{\bF - \bC}^2 - \frac{1}{2\lam\Del} \norm{\bM \bC - \lam\Del\ve{1}}^2,
+\hbC&= \argmax_{\bC} -\frac{1}{2\sig^2} \norm{\bF - \bC - \beta\ve{1}_T}^2 - \frac{1}{2\lam\Del} \norm{\bM \bC - \lam\Del\ve{1}}^2,
 \end{align}
 \noindent which is quadratic in $\bC$.  The gradient and Hessian are given by:
 \begin{align}
-\bg &= -\frac{1}{\sig^2} (\bC - \bF) - \frac{1}{\lam\Del} ( (\bM \hbC)\T \bM + \lam\Del \bM\T \ve{1}), \\
+\bg &= -\frac{1}{\sig^2} (\bC - \bF - \beta\ve{1}_T) - \frac{1}{\lam\Del} ( (\bM \hbC)\T \bM + \lam\Del \bM\T \ve{1}), \\
 \bH &= \frac{1}{\sig^2} \ve{I} + \frac{1}{\lam\Del} \bM\T \bM.
 \end{align}
 Note that this solution is the optimal linear solution, under the assumption that spikes follow a Gaussian distribution, and is often referred to as the Wiener filter, regression with a smoothing prior, or ridge regression \cite{CONV04}.  Estimating the parameters for this model follows similarly as described in section \ref{sec:learn}.
