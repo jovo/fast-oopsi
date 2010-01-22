@@ -1,1 +1,6 @@
-data/real/*
+*.DS_Store
+*.m~
+*.aux
+*.aux
+*.blg
+*.out

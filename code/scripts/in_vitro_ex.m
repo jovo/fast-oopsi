@@ -28,7 +28,7 @@ if LoadTif == 1                                     % get whole movie
     Im.MeanFrame=mean(Im.DataMat,2);
     save(fname,'Im')
 else
-    load(fname)
+    load(['../../data/' fname])
 end
 
 %% select roi
@@ -54,7 +54,7 @@ if GetROI == 1
     Im.roi_edge = edge(uint8(Im.roi));
     save(fname,'Im')
 else
-    load(fname)
+    load(['../../data/' fname])
 end
 
 %% get spike data
@@ -100,33 +100,55 @@ else
 end
 
 %% plot ROI
+% load('../../data/in_vitro_ex'); Im.dt=0.0149;
 Pl = PlotParams;
 roi2=Im.roi';
 roi_edge2=Im.roi_edge';
 
-ROI_im      = Im.MeanFrame+max(Im.MeanFrame)*roi_edge2(:);
+ROI_im      = Im.MeanFrame+max(Im.MeanFrame)*roi_edge2(:)*0.2;
 weighted_ROI= Im.MeanFrame.*roi2(:);
 
 figure(2); clf,
 subplot(2,2,1:2);
 imagesc(reshape(ROI_im,Im.h,Im.w)')
+colormap('gray')
+title('mean frame')
+
 
 subplot(2,2,3); hold all
 F=weighted_ROI'*Im.DataMat(:,1:end)/sum(weighted_ROI(:)); F=z1(F(2:end))';
 plot(F+1,'k','LineWidth',Pl.lw);
-x=fmincon(@(x) sum((filter(1,[1 -x(1)],x(2)*Ep.n(2:end,1))+x(3) - F).^2),[.99 1 .2],[],[],[],[],[0 0 -1], [1 1 1])
+x=fmincon(@(x) sum((filter(1,[1 -x(1)],x(2)*Ep.n(2:end,1))+x(3) - F).^2),[.99 1 .2],[],[],[],[],[0 0 -1], [1 1 1]);
 C = filter(1,[1 -x(1)],x(2)*Ep.n(:,1))+x(3);               % calcium concentration
-plot(C+1,'r','LineWidth',Pl.lw);
+plot(C+1,'Color',Pl.gray,'LineWidth',Pl.lw);
 bar(Ep.n(:,1))
 axis('tight')
+set(gca,'YTickLabel',[])
+xtick=[0:200:1000];
+xticklabel=round(xtick*Im.dt);
+set(gca,'XTick',xtick,'XTickLabel',xticklabel)
+xlabel('time (sec)')
+Pl.label=[{'F'}; {''}; {''}; {'n'}];
+ylab=ylabel(Pl.label,'Interpreter',Pl.inter,'FontSize',Pl.fs,'Interpreter',Pl.interp,'FontWeight','bold');
+set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
 
-subplot(2,2,4); hold all
+
+subplot(2,2,4); cla, hold all
 resid=F-C(2:end);
 [n,xout] = hist(resid,20);
 normn=n/sum(n);
-plot(xout,normn,'k','LineWidth',Pl.lw)
-
+plot(xout,normn,'k','LineWidth',Pl.lw,'LineStyle','--')
+ylabel('Probability')
+xlabel('residual error')
 [muhat,sigmahat] = normfit(resid);
 gauss=1/sqrt(2*pi*sigmahat^2)*exp(- (linspace(min(xout),max(xout),length(xout)) - muhat).^2/(2*sigmahat^2));
-plot(xout,gauss/sum(gauss),'Color',Pl.gray,'LineWidth',Pl.lw)
+plot(xout,gauss/sum(gauss),'Color','k','LineWidth',Pl.lw)
 axis([-.4 .4 0 max(normn)])
+
+%% print fig
+wh=[7 5];   %width and height
+set(gcf,'PaperSize',wh,'PaperPosition',[0 0 wh],'Color','w');
+V.name_fig=['../../figs/' fname];
+print('-depsc',V.name_fig)
+print('-dpdf',V.name_fig)
+saveas(gcf,V.name_fig)

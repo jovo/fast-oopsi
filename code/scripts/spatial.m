@@ -14,76 +14,75 @@ clear, clc
 % 1) generate spatial filters
 
 % % stuff required for each spatial filter
-Nc      = 1;                                % # of cells in the ROI
-neur_w  = 15;                               % width per neuron
-width   = 15;                               % width of frame (pixels)
-height  = Nc*neur_w;                        % height of frame (pixels)
-Npixs   = width*height;                     % # pixels in ROI
+Nc      = 1;                        % # of cells in the ROI
+neur_w  = 15;                       % width per neuron
+width   = 15;                       % width of frame (pixels)
+height  = Nc*neur_w;                % height of frame (pixels)
+Npixs   = width*height;             % # pixels in ROI
 x       = linspace(-5,5,height);
 y       = linspace(-5,5,width);
-[X,Y]   = meshgrid(x,y);
+[X,Y]   = meshgrid(x,y);            
 g1      = zeros(Npixs,Nc);
 g2      = 0*g1;
-Sigma1  = diag([1,1])*2;                    % var of positive gaussian
-Sigma2  = diag([1,1])*2.5;                    % var of negative gaussian
-mu      = [0 0]; %[1 1]'*linspace(-2,2,Nc); % means of gaussians for each cell (distributed across pixel space)
-w       = 1;                          % weights of each filter
+Sigma1  = diag([1,1])*2;            % var of positive gaussian
+Sigma2  = diag([1,1])*2.5;          % var of negative gaussian
+mu      = [0 0];                    % means of gaussians for each cell (distributed across pixel space)
+w       = 1;                        % weights of each filter
 
-% ix0 = [      96    97    98    99   100   111   112   113   114   115   126   127   128   129   130];
-ix0 = [81:85 96:100 111:115 126:130 141:145];
-ix0 = [97:99 112:114 127:129];
-% ix0 = [97:99 112:114];
-% spatial filter
-for i=1:Nc
+
+ix0 = [97:99 112:114 127:129];      % typical spatial filter
+for i=1:Nc                          % spatial filter
     g1(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma1);
-    g2(:,i)  = w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma2);
+    g2(:,i)  = 0*w(i)*mvnpdf([X(:) Y(:)],mu(:,i)',Sigma2);
 end
 
 % 2) set simulation metadata
-Sim.T       = 400;                              % # of time steps
-Sim.dt      = 0.005;                            % time step size
-Sim.MaxIter = 0;                                % # iterations of EM to estimate params
-Sim.Np      = Npixs;                            % # of pixels in each image
-Sim.w       = width;                            % width of frame (pixels)
-Sim.h       = height;                           % height of frame (pixels)
-Sim.Nc      = Nc;                               % # cells
-Sim.plot    = 0;                                % whether to plot filter with each iteration
+V.T       = 400;                    % # of time steps
+V.dt      = 0.005;                  % time step size
+V.MaxIter = 0;                      % # iterations of EM to estimate params
+V.Np      = Npixs;                  % # of pixels in each image
+V.w       = width;                  % width of frame (pixels)
+V.h       = height;                 % height of frame (pixels)
+V.Nc      = Nc;                     % # cells
+V.plot    = 0;                      % whether to plot filter with each iteration
+V.save    = 0;                                
+V.test      = 0;
 
 % 3) initialize params
-for i=1:Sim.Nc
+for i=1:V.Nc
     P.a(:,i)=g1(:,i)-1.1*g2(:,i);
 end
-% figure(2), imagesc(reshape(P.a,Sim.w,Sim.h)), colormap(gray), colorbar
+% figure(2), imagesc(reshape(P.a,V.w,V.h)), colormap(gray), colorbar
 
 % P.a(56,1)=P.a(56,1)-P.a(56,1)/5;
-P.b     = 0;%*P.a(:,1);                           % baseline is zero
+P.b     = 0;%*P.a(:,1);             % baseline is zero
 
-P.sig   = 0.005;                                 % stan dev of noise (indep for each pixel)
-C_0     = 0;                                    % initial calcium
-tau     = round(100*rand(Sim.Nc,1))/100+0.05;   % decay time constant for each cell
-P.gam   = 1-Sim.dt./tau(1:Sim.Nc);
-P.lam   = 5;%round(10*rand(Sim.Nc,1))+5;           % rate-ish, ie, lam*dt=# spikes per second
+P.sig   = 0.05;                    % stan dev of noise (indep for each pixel)
+C_0     = 0;                        % initial calcium
+tau     = round(100*rand(V.Nc,1))/100+0.05;   % decay time constant for each cell
+P.gam   = 1-V.dt./tau(1:V.Nc);
+P.lam   = 5;                        % rate-ish, ie, lam*dt=# spikes per second
 
 % 3) simulate data
-n=zeros(Sim.T,Sim.Nc);
+n=zeros(V.T,V.Nc);
 C=n;
-for i=1:Sim.Nc
+for i=1:V.Nc
     n(1,i)      = C_0;
-    n(2:end,i)  = poissrnd(P.lam(i)*Sim.dt*ones(Sim.T-1,1));    % simulate spike train
+    n(2:end,i)  = poissrnd(P.lam(i)*V.dt*ones(V.T-1,1));    % simulate spike train
     n(n>1)      = 1;
-    C(:,i)      = filter(1,[1 -P.gam(i)],n(:,i));               % calcium concentration
+    C(:,i)      = filter(1,[1 -P.gam(i)],n(:,i));           % calcium concentration
 end
 Z = 0*n(:,1);
-F = C*P.a' + P.b + P.sig*randn(Sim.T,Npixs);               % fluorescence
+F = C*P.a' + P.b + P.sig*randn(V.T,Npixs);                  % fluorescence
 
 %% 4) other stuff
 
 MakMov  = 1;
 % make movie of raw data
 if MakMov==1
-    for i=1:Sim.T
+    for i=1:V.T
         if i==1, mod='overwrite'; else mod='append'; end
-        imwrite(reshape(F(i,:),width,height),'spatial_Mov.tif','tif','Compression','none','WriteMode',mod)
+        imwrite(reshape(F(i,:),width,height),'spatial_Mov2.tif','tif','Compression','none','WriteMode',mod)
     end
 end
 
@@ -109,110 +108,101 @@ end
 qs=1:2;%:6;%[1 2 3];
 MaxIter=10;
 for q=qs
-    GG=F; Tim=Sim;
-    %     if q==1,                        % estimate spatial filter from real spikes
-    %         SpikeFilters;
-    %     elseif q==3                     % denoising using SVD of an ROI around each cell, and using first SVD's as filters
-    %         ROI_SVD_Filters;
-    %     elseif q==4                     % denoising using mean of an ROI around each cell
-    %         ROI_mean_Filters;
-    %     elseif q==6                     % infer spikes from d-r'ed data
-    %         d_r_smoother_Filter;
+    GG=F; Tim=V;
     if q==1,
         Phat{q}=P;
-        I{q}.label='True Filter';
-    elseif q==2,
+        Tim.test=0;
+        I{q}.label='True filter';
+    elseif q==3,
         Phat{q}=P;
         Phat{q}.a=0*P.a;
         [asort ix]=sort(P.a);
         Phat{q}.a(ix0) = 1;
-%         Phat{q}.a([45 46 55 56]) = 1;
-        I{q}.label='Segmented Filter';
+        I{q}.label='Segmented filter';
+    elseif q==2
+        Phat{q}=P;
+        I{q}.label='True filter';
+        Tim.test=1;
     end
     display(I{q}.label)
-    [I{q}.n I{q}.P] = FOOPSI_v3_05_01(GG',Phat{q},Tim);
+    starttime=cputime;
+    [I{q}.n I{q}.P I{q}.V] = fast_oopsi(GG',Tim,Phat{q});
+    I{q}.V.time = cputime-starttime;
 end
-save('../../data/spatial')
+if V.save==1, save('../../data/spatial2'); end
 %% end) plot results
-load('../../data/spatial')
+% load('../../data/spatial2')
 clear Pl
-nrows   = 3+Nc;                                  % set number of rows
+nrows   = 3+Nc;                                 % set number of rows
 ncols   = 2;
 h       = zeros(nrows,1);
-Pl.xlims= [5 Sim.T-5];                            % time steps to plot
+Pl.xlims= [5 V.T-5];                            % time steps to plot
 Pl.nticks=5;                                    % number of ticks along x-axis
 Pl.n    = double(n); Pl.n(Pl.n==0)=NaN;         % store spike train for plotting
 Pl      = PlotParams(Pl);                       % generate a number of other parameters for plotting
 Pl.fs   = 13;
-Pl.vs   = 2;
+Pl.vs   = 5;
 Pl.colors(1,:) = [0 0 0];
 Pl.colors(2,:) = Pl.gray;
 Pl.colors(3,:) = [.5 0 0];
-Pl.Nc   = Sim.Nc;
+Pl.Nc   = V.Nc;
 Pl.XTicks=100:100:400;
 
 % % movie slices
 fnum = figure(1); clf,
 
-
-movieslices=[];
+% movieslices=[];
 Nframes=length(Pl.XTicks);
-% frames=round(linspace(1,Sim.T,Nframes));
-for i=1:Nframes
-    %     if i<Nframes
-    %         temp=[reshape(GG(Pl.XTicks(i),:),Sim.w,Sim.h); 0.05*ones(Sim.h,1)'];
-    %     else
-    temp=reshape(GG(Pl.XTicks(i),:),Sim.w,Sim.h);
-    %     end
-    movieslices=[movieslices; temp];
-end
-movieslices=60*z1(movieslices);
+% for i=1:Nframes
+%     temp=reshape(GG(Pl.XTicks(i),:),V.w,V.h);
+%     movieslices=[movieslices; temp];
+% end
+% movieslices=60*z1(movieslices);
 
 for i=1:Nframes
     subplot('Position',[0.132+(i-1)*0.21 0.6 .2 .28])
     if i==1
-        imagesc(reshape(P.a,Sim.w,Sim.h))
-        title([{'True'}; {'Spatial Filter'}],'FontSize',Pl.fs)
-%         ylab=ylabel([{'Image'}; {'Frames'}],'FontSize',Pl.fs);
-%         set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
-
+        imagesc(reshape(P.a,V.w,V.h))
+        colormap('gray')
+        title([{'true filter'}],'FontSize',Pl.fs)
     elseif i==3 
-        imagesc(reshape(Phat{2}.a,Sim.w,Sim.h))
-        title([{'Typical'}; {'Spatial Filter'}],'FontSize',Pl.fs)
+        imagesc(reshape(Phat{2}.a,V.w,V.h))
+        title([{'boxcar filter'}],'FontSize',Pl.fs)
         set(gca,'YTick',[],'XTick',[])
-    elseif i==2 
-        imagesc(reshape(mean(F),Sim.w,Sim.h))
-        title('Mean Frame','FontSize',Pl.fs)
+    elseif i==4 
+        imagesc(reshape(mean(F),V.w,V.h))
+        title('mean frame','FontSize',Pl.fs)
         set(gca,'YTick',[],'XTick',[])
-    else
-        imagesc(reshape(F(100,:),Sim.w,Sim.h))
-        %         image(movieslices([1:10]+(i-1)*10,:)'), colormap('gray')
-        title([{'Example Frame'}],'FontSize',Pl.fs)
-%         set(gca,'Xtick',[6:Sim.h+1:Nframes*Sim.h],'XTickLabel',[num2str(Pl.XTicks(i)*Sim.dt) ' sec'],'FontSize',Pl.fs)
+    elseif i==2
+        imagesc(reshape(F(100,:),V.w,V.h))
+        title([{'example frame'}],'FontSize',Pl.fs)
         set(gca,'YTick',[],'XTick',[])
     end
 end
-
 
 for q=qs
     i=q+3;
     if q==1, p=2; else p=1; end
     % plot fluorescence data
     i=i+1; h(i) = subplot(nrows,ncols,i);
-    if p==1,
-        title([{'True Projection'}],'FontSize',Pl.fs+2);
-        Pl.label=[];
+    if q==1,
+        title([{'boxcar filter'}],'FontSize',Pl.fs+2)
+        Pl.label = 'fluorescence';
     else
-        Pl.label = '$F_{1:T}^x$';
-        Pl.interp = 'latex';
-        title([{'Typical Projection'}],'FontSize',Pl.fs+2)
+        Pl.label=[];
+        Pl.interp = 'none';
+        title([{'true filter'}],'FontSize',Pl.fs+2);
     end
     Pl.color = 'k';
     Plot_nX(Pl,(Phat{p}.a\F')');
 
     % plot inferred spike trains
-    if q==1, Pl.label = [{'$\mathbf{n}_{FAND}$'}]; Pl.interp = 'latex';
-    else Pl.label=[]; end
+    if q==1, 
+        Pl.label = [{'fast'}; {'filter'}]; 
+        Pl.interp = 'none';
+    else
+        Pl.label=[]; 
+    end
     i=i+2; h(i) = subplot(nrows,ncols,i);
     Pl.col(2,:)=[0 0 0];
     Pl.gray=[.5 .5 .5];
@@ -221,13 +211,13 @@ for q=qs
 
     % set xlabel stuff
     subplot(nrows,ncols,i)
-    set(gca,'XTick',Pl.XTicks,'XTickLabel',Pl.XTicks*Sim.dt,'FontSize',Pl.fs)
-    xlabel('Time (sec)','FontSize',Pl.fs)
-    %     linkaxes(h,'x')
+    set(gca,'XTick',Pl.XTicks,'XTickLabel',Pl.XTicks*V.dt,'FontSize',Pl.fs)
+    xlabel('time (sec)','FontSize',Pl.fs)
 end
 
-% print fig
-wh=[7 5];   %width and height
-DirName = '../../figs/';
-FileName = 'spatial';
-PrintFig(wh,DirName,FileName);
+if V.save==1 % print fig
+    wh=[7 5];   %width and height
+    DirName = '../../figs/';
+    FileName = 'spatial2';
+    PrintFig(wh,DirName,FileName);
+end

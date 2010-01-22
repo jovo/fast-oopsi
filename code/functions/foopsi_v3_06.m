@@ -129,11 +129,11 @@ end
 % set which parameters to estimate
 if MaxIter>1;
     if ~isfield(Meta,'sig_est'),Meta.sig_est   = 0; end
-    if ~isfield(Meta,'lam_est'),Meta.lam_est   = 0; end
+    if ~isfield(Meta,'lam_est'),Meta.lam_est   = 1; end
     if ~isfield(Meta,'gam_est'),Meta.gam_est   = 0; end
-    if ~isfield(Meta,'a_est'),  Meta.a_est     = 1; end
-    if ~isfield(Meta,'b_est'),  Meta.b_est     = 1; end
-    if isfield(Meta,'Thresh'),  Thresh = Meta.Thresh; else Thresh = 1; end
+    if ~isfield(Meta,'a_est'),  Meta.a_est     = 0; end
+    if ~isfield(Meta,'b_est'),  Meta.b_est     = 0; end
+    if isfield(Meta,'Thresh'),  Thresh = Meta.Thresh; else Thresh = 0; end
     if isfield(Meta,'Plot'),    DoPlot = Meta.Plot;   else DoPlot = 1; end
 else
     Meta.a_est=1;
