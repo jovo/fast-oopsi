@@ -1,16 +1,6 @@
-<<<<<<< HEAD:.gitignore
-%*.DS_Store
-=======
->>>>>>> 13944b75789fb39c1f82b3a9b6bdc4d9857787a5:.gitignore
+*.DS_Store
 *.m~
-<<<<<<< HEAD:.gitignore
-%*.aux
-%*.aux
-%*.blg
-%*.out
-=======
 *.aux
 *.aux
 *.blg
 *.out
->>>>>>> 13944b75789fb39c1f82b3a9b6bdc4d9857787a5:.gitignore
