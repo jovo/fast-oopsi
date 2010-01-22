@@ -1,0 +1,51 @@
+%\documentclass[12pt]{article}
+\input{/Users/joshyv/Research/misc/latex_paper.tex} 
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+% \usepackage{algpseudocode}
+\newcommand{\zzz}{z}
+\newcommand{\az}{\argmax_{\bM \bC \geq \ve{0}}}
+\newcommand{\anx}{\argmax_{n_t \in \mathbb{N}_0 \forall t}}
+\newcommand{\foopsi}{fast }
+
+\lhead{Vogelstein JT, et al}
+\rhead{Fast spike train inference from calcium imaging}
+%\headheight=14.5pt
+
+\title{Fast non-negative deconvolution for spike train inference from population calcium imaging}
+
+\author{Joshua T.~Vogelstein, Adam M.~Packer, Tim A.~Machado, \\ Tanya Sippy, Baktash Babadi, Rafael Yuste, Liam Paninski}
+
+\begin{document}
+
+\maketitle
+% \tableofcontents
+\begin{abstract}
+Calcium imaging for observing spiking activity from large populations of neurons are quickly gaining popularity.  While the raw data are fluorescence movies, the underlying spike trains are of interest.  This work presents a fast non-negative deconvolution filter to infer the approximately most likely spike train for each neuron, given the fluorescence observations. This algorithm outperforms optimal linear deconvolution (Wiener filtering) on both simulated and biological data. The performance gains come from restricting the inferred spike trains to be positive (using an interior-point method), unlike the Wiener filter.  The algorithm is fast enough that even when imaging over 100 neurons, inference can be performed on the set of all observed traces faster than real-time.  Performing optimal spatial filtering on the images further refines the estimates.  Importantly, all the parameters required to perform the inference can be estimated using only the fluorescence data, obviating the need to perform joint electrophysiological and imaging calibration experiments.
+\end{abstract}
+
+\input{body}
+
+\paragraph{Acknowledgments}
+
+The authors would like to express appreciation for helpful discussions with Vincent Bonin.  Support for JTV was provided by NIDCD DC00109. LP is supported by an NSF CAREER award, by an Alfred P.\ Sloan Research Fellowship, and the McKnight Scholar Award. RY's laboratory is supported by NIH EY11787 and the Kavli Institute for Brain Studies. LP and RY share a CRCNS award, NSF IIS-0904353.
+
+
+
+\appendix
+\input{appendix}
+\clearpage
+%\subparagraph*{References}
+\bibliography{/Users/joshyv/Research/misc/biblist}
+\addcontentsline{toc}{section}{References}
+%\bibliography{Science}
+%\bibliographystyle{apalike}
+\bibliographystyle{ieeetr}
+%\bibliographystyle{nature}
+
+% \appendix
+% \input{wiener}
+
+\end{document}
