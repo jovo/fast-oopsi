@@ -1,6 +1,6 @@
 %*.DS_Store
 *.m~
-*.aux
-*.aux
-*.blg
-*.out
+%*.aux
+%*.aux
+%*.blg
+%*.out

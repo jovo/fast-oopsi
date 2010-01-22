@@ -1,0 +1,62 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.4)
+The top-level auxiliary file: fast_oopsi.aux
+The style file: abbrv.bst
+Database file #1: biblist.bib
+Name 1 in "Christophe Andrieu, and {\'E}ric Barat, and Arnaud Doucet" has a comma at the end for entry AndrieuDoucet01
+while executing---line 1049 of file abbrv.bst
+Name 2 in "Christophe Andrieu, and {\'E}ric Barat, and Arnaud Doucet" has a comma at the end for entry AndrieuDoucet01
+while executing---line 1049 of file abbrv.bst
+Name 1 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
+while executing---line 1049 of file abbrv.bst
+Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
+while executing---line 1049 of file abbrv.bst
+Name 1 in "Christophe Andrieu, and {\'E}ric Barat, and Arnaud Doucet" has a comma at the end for entry AndrieuDoucet01
+while executing---line 1090 of file abbrv.bst
+Name 2 in "Christophe Andrieu, and {\'E}ric Barat, and Arnaud Doucet" has a comma at the end for entry AndrieuDoucet01
+while executing---line 1090 of file abbrv.bst
+Name 1 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
+while executing---line 1090 of file abbrv.bst
+Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
+while executing---line 1090 of file abbrv.bst
+You've used 38 entries,
+            2118 wiz_defined-function locations,
+            788 strings with 12685 characters,
+and the built_in function-call counts, 14364 in all, are:
+= -- 1391
+> -- 838
+< -- 2
++ -- 331
+- -- 290
+* -- 1212
+:= -- 2448
+add.period$ -- 113
+call.type$ -- 38
+change.case$ -- 255
+chr.to.int$ -- 0
+cite$ -- 38
+duplicate$ -- 434
+empty$ -- 981
+format.name$ -- 290
+if$ -- 2856
+int.to.chr$ -- 0
+int.to.str$ -- 38
+missing$ -- 40
+newline$ -- 192
+num.names$ -- 76
+pop$ -- 212
+preamble$ -- 1
+purify$ -- 221
+quote$ -- 0
+skip$ -- 299
+stack$ -- 0
+substring$ -- 975
+swap$ -- 57
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 146
+warning$ -- 0
+while$ -- 136
+width$ -- 40
+write$ -- 412
+(There were 8 error messages)
