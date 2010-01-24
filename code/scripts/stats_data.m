@@ -4,11 +4,12 @@ clear, clc,
 fname = 'stats_data';
 
 % change to script directory
-%cd ~/Research/oopsi/fast-oopsi/code/scripts/
-cd C:\Users\Tim\oopsi\fast-oopsi\fast-oopsi\code\scripts\
+cd ~/Research/oopsi/fast-oopsi/code/scripts/
+% cd C:\Users\Tim\oopsi\fast-oopsi\fast-oopsi\code\scripts\
 
 % load datasets
-dataset = load('C:\Users\Tim\Desktop\local data\various\vogelstein\Imaging-SNR-Data.mat');
+% dataset = load('C:\Users\Tim\Desktop\local data\various\vogelstein\Imaging-SNR-Data.mat');
+dataset = load('~/Research/oopsi/meta-oopsi/data/rafa/adam/2008/Imaging-SNR-Data.mat');
 
 % get names of datasets
 names = fieldnames(dataset);
