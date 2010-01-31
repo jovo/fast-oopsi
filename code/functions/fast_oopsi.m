@@ -211,6 +211,7 @@ end
 V.fast_time = cputime-starttime;                % time to run code
 V           = orderfields(V);                   % order fields alphabetically to they are easier to read
 P_best      = orderfields(P_best);
+n_best      = n_best/max(n_best);
 
 %% fast filter function
     function [n C post] = est_MAP(F,P)
