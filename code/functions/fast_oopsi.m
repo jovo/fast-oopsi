@@ -118,7 +118,7 @@ end
 % normalize F if it is only a trace
 if V.Npixels==1
     F=detrend(F);
-    %     F=F-min(F); F=F/max(F); F=F+eps;
+    F=F-min(F); F=F/max(F); F=F+eps;
 end
 
 %% set default model Parameters
