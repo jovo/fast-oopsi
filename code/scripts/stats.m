@@ -39,7 +39,7 @@ for j=1:length(sigs)
         auc.w(i,j) = rocw.AUC;
     end
 end
-if V.save, save(['../../data/' fname '.mat'],'V','P','auc'); end
+if V.save, save(['../../data/' fname '.mat'],'V','P','auc','rocf','rocw','sigs'); end
 
 %% get smooth roc
 P.sig   = 0.35;
@@ -85,11 +85,14 @@ for j=1:length(lams)
     end
 %     figure(2), clf, plot(z1(V.F)+max(V.n)), hold on, bar(V.n);  pause
 end
-if V.save, save(['../../data/' fname '.mat'],'auc','roc','mse'); end
+if V.save, save(['../../data/' fname '.mat'],'roc','mse',--append); end
 
 
 
 %% plot results
+% fname = 'stats';
+% load(['../../data/' fname '.mat'])
+% sigs = 0.1:0.05:0.6; V.T = 10000; V.dt = 1/30; P.gam = 1-V.dt./0.5; P.a=1;P.b=0;
 fig=figure(1); clf, hold on
 nrows   = 2;
 ncols   = 2;
@@ -131,9 +134,9 @@ legend('fast','wiener','Location','SouthEast')
 
 % plot auc
 subplot(nrows,ncols,4), cla
-errorbar(mean(auc.f),var(auc.f),'-k')
+errorbar(mean(auc.f),std(auc.f),'-k')
 hold all
-errorbar(mean(auc.w),var(auc.w),'-.k')
+errorbar(mean(auc.w),std(auc.w),'-.k')
 axis('tight')
 set(gca,'XTick',1:2:length(sigs),'XTickLabel',sigs(1:2:end),'FontSize',fs)
 ylab=ylabel('AUC','FontSize',fs);
