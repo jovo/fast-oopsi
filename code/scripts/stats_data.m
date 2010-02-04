@@ -111,9 +111,6 @@ for j=1:length(names)
         auc.f(offset+length(jitters),j) = rocf.AUC;
         auc.w(offset+length(jitters),j) = rocw.AUC;
     end
-    
-    % save things if desired
-    if V.save, save(['../../data/' fname '.mat'],'V','P','auc'); end
 end
 
 % plot wiener auc values vs. foopsi auc values
@@ -141,6 +138,10 @@ boxplot(auc.f(length(jitters)+1:end,:)','plotstyle','compact','color','b','orien
 boxplot(auc.w(length(jitters)+1:end,:)','plotstyle','compact','color','r','orientation','vertical');
 xlabel('spike train jitter (bins)'); ylabel('AUC'); set(gca,'XTickLabel',offsets);
 
-% save this final plot if desired
-if V.save, print(gca,'-dpdf',['../../data/' fname '.pdf']); end
+% save things if desired
+if V.save
+    print(gcf,'-dpdf',['../../figs/' fname '.pdf']);
+    print(gcf,'-depsc2',['../../figs/' fname '.eps']);
+    save(['../../data/' fname '.mat'],'V','P','auc','jitters','offsets');
+end
 
