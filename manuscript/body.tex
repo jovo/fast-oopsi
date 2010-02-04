@@ -44,7 +44,7 @@ Then, assuming that the intracellular calcium concentration, $\Ca_t$, jumps by $
 \noindent where $\Del$ is the time step size --- which is the frame duration, or $1/$(frame rate) --- and $n_t$ indicates the number of times the neuron spiked in frame $t$. %, and $\gam=1-\Del/\tau$. \footnote{This follows from writing \eqref{eq:C} as $\tau \frac{C_t - C_{t-1}}{\Del} = -C_{t-1} + n_t$.} 
 Note that because $\Ca_t$ and $F_t$ are linearly related to one another, the fluorescence scale, $\alpha$, and calcium scale, $A$, are not identifiable.  In other words, either can be set to unity without loss of generality, as the other can absorb the scale entirely. Similarly, the fluorescence offset, $\beta$, and calcium baseline, $C_b$ are not identifiable, so either can be set to zero without loss of generality.  Finally, letting $\gam=(1-\Del/\tau)$, Eq.~\eqref{eq:C1} can be rewritten replacing $\Ca_t$ with its non-dimensionalized counterpart, $C_t$: 
 \begin{align} \label{eq:C2}
-	 C_{t+1}=\gam C_t + n_t.
+	 C_t =\gam C_{t-1} + n_t.
 \end{align} 
 \noindent Note that $C_t$ does not refer to absolute intracellular concentration of calcium, but rather, a relative measure (see \cite{VogelsteinPaninski09} for a more general model).  The gray line in the bottom left panel of Figure \ref{fig:in_vitro_ex} corresponds to the putative $\bC$ of the observed neuron.  
 
@@ -142,7 +142,7 @@ n_1 \\ n_2 \\ \vdots  \\ n_{T-1}
 \end{bmatrix}
 , % = \bn,
 \end{align}
-\noindent where $\ve{M} \in \mathbb{R}^{(T-1) \times T}$ is a bidiagonal matrix.  Then, letting $\ve{1}$ be a $T-1$ dimensional column vector, $\bbeta$ be a $T$ dimensional column vector of $\beta$'s, and $\blam=\lam \Del \ve{1}$ yields the objection function, Eq.~\eqref{eq:eta}, in more compact matrix notation:
+\noindent where $\ve{M} \in \mathbb{R}^{(T-1) \times T}$ is a bidiagonal matrix.  Then, letting $\ve{1}$ be a $T-1$ dimensional column vector, $\bbeta$ be a $T$ dimensional column vector of $\beta$'s, and $\blam=\lam \Del \ve{1}$ yields the objective function, Eq.~\eqref{eq:eta}, in more compact matrix notation:
 \begin{align} 
 \hbC_{\zzz} 
 &= \az  -\frac{1}{2 \sig^2} \norm{\bF - \alpha \bC -\bbeta}_2^2 - (\bM \bC )\T \blam  + \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta3}

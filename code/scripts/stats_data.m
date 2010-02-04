@@ -118,10 +118,13 @@ for j=1:length(names)
         auc.w(offset+length(jitters),j) = rocw.AUC;
         auc.r(offset+length(jitters),j) = rocr.AUC;        
     end
+<<<<<<< HEAD:code/scripts/stats_data.m
     mse.f(j)=sum((fast-V.n).^2);
     temp=wiener; temp(temp<0)=0;
     mse.w(j)=sum((temp-V.n).^2);
     mse.r(j)=sum((randn(size(V.n))-V.n).^2);
+=======
+>>>>>>> 0de04bb364e622ccb54cd0449b3ba7d94e43b8af:code/scripts/stats_data.m
 end
 
 % plot wiener auc values vs. foopsi auc values
@@ -233,6 +236,7 @@ for j=1:length(names)
     WienerTotal=[WienerTotal; WIENER{j}];
 end
 
+<<<<<<< HEAD:code/scripts/stats_data.m
 FastTotal(FastTotal<1e-5)=[];
 WienerTotal(WienerTotal<1e-5)=[];
 figure(1), clf,
@@ -284,12 +288,20 @@ ylabel('mean-squared error')
 % set(gca,'YScale','log')
 % set(gca,'YLim',[0 100])
 
+=======
+>>>>>>> 0de04bb364e622ccb54cd0449b3ba7d94e43b8af:code/scripts/stats_data.m
 % save things if desired
 if V.save
+<<<<<<< HEAD:code/scripts/stats_data.m
     figname=['boxplots_data'];
     wh=[7 5];   %width and height
     set(gcf,'PaperSize',wh,'PaperPosition',[0 0 wh],'Color','w');
     print(gcf,'-dpdf',['../../figs/' figname '.pdf']);
     print(gcf,'-depsc2',['../../figs/' figname '.eps']);
+=======
+    print(gcf,'-dpdf',['../../figs/' fname '.pdf']);
+    print(gcf,'-depsc2',['../../figs/' fname '.eps']);
+    save(['../../data/' fname '.mat'],'V','P','auc','jitters','offsets');
+>>>>>>> 0de04bb364e622ccb54cd0449b3ba7d94e43b8af:code/scripts/stats_data.m
 end
 
