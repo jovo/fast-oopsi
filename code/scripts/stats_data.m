@@ -113,7 +113,7 @@ for j=1:length(names)
         end
         set(ax(column,1),'XLim',sc);
         save = input('save this plot (1 to save, ^c to exit)? ');
-        if isempty(save) && save == 1
+        if ~isempty(save) && save == 1
             print(gcf,'-dpdf',['../../figs/' fname '-bursts.pdf']);
             print(gcf,'-depsc2',['../../figs/' fname '-bursts.eps']);
         end
