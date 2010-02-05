@@ -23,14 +23,16 @@ V.fast_plot     = 0;        % whether to generate foopsi plots
 V.save          = 0;        % whether to save results
 P.a       = 1;              % scale
 P.b       = 0;              % bias
-dPlot     = 1;              % generate debug plot
+dPlot     = 1;              % generate foopsi/wiener output plot
+roc       = 0;              % compute roc curves
 ephysRate = 10000;          % electrophysiology sampling rate
 alpha     = 0.6;            % spike detection threshold
 jitters   = [1:10];
 offsets   = -max(jitters):1:max(jitters);
 auc.f     = zeros(length(jitters)+length(offsets),length(names));
 auc.w     = auc.f;
-
+column    = 0;
+ind = [1 2 3; 4 5 6; 7 8 9; 10 11 12];
 %% iterate over real datasets
 for j=1:length(names)
     % get a dataset struct
@@ -49,20 +51,27 @@ for j=1:length(names)
     V.n = get_spike_times(vr,alpha);
     % plot spike times from ephys data
     if dPlot
-        figure(666); subplot(4,1,1);
+        column = input('which column to plot in? (1-3): ');
+        if column == 0, break, end;
+        figure(666); xx(column) = subplot(4,3,ind(1+4*(column-1)));
         cla; plot(vr./max(vr),'k');
-        hold on; plot(V.n,1,'r.');
+        hold on; plot(V.n,1,'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2);
+        set(gca,'XTickLabel',[],'YTickLabel',[]);
     end
     % convert spike times from ephys samples to movie frames
     for ii = 1:length(V.n)
         [value V.n(ii)] = min(abs(cc.FluorescenceTime*ephysRate - V.n(ii)));
     end
+    
     times = zeros(length(V.F),1);
     times(V.n) = 1; V.n = times;
     % plot spike times
     if dPlot
-        figure(666); ax(1) = subplot(4,1,2);
-        cla; plot(V.F./max(V.F),'k'); hold on; plot(find(V.n > 0),1,'r.');
+        if column == 0, break, end;
+        figure(666); ax(column,1) = subplot(4,3,ind(2+4*(column-1)));
+        cla; plot(V.F./max(V.F),'k'); hold on;
+        plot(find(V.n > 0),1,'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2);
+        set(gca,'XTickLabel',[],'YTickLabel',[]);
     end
     % run all oopsies
     [fast Pb]    = fast_oopsi(V.F,V);
@@ -87,56 +96,75 @@ for j=1:length(names)
     wiener  = wiener/max(abs(wiener));
     % plot inference output
     if dPlot
-        figure(666); ax(2) = subplot(4,1,3);
+        figure(666); ax(column,2) = subplot(4,3,ind(3+4*(column-1)));
         cla; bar(wiener/max(wiener),'k'); hold on;
-        plot(find(V.n > 0),1,'r.');
-        ax(3) = subplot(4,1,4);
+        plot(find(V.n > 0),1,'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2); 
+        set(gca,'XTickLabel',[],'YTickLabel',[]);
+        ax(column,3) = subplot(4,3,ind(4+4*(column-1)));
         cla; bar(fast/max(fast),'k'); hold on; 
-        plot(find(V.n > 0),1,'r.');
-        linkaxes(ax,'x');
+        plot(find(V.n > 0),1,'LineStyle','none','Marker','v','MarkerEdgeColor','k','MarkerFaceColor','k','MarkerSize',2);
+        linkaxes(ax(column,:),'x'); set(gca,'XTickLabel',[],'YTickLabel',[]);
+        % scale limits from plot 1 and propagate to other plots ftw
+        disp('zoom in on the ephys data and press continue when ready ')
+        keyboard;
+        sc  = get(xx(column),'XLim');
+        for ii = 1:length(sc)
+            [value sc(ii)] = min(abs(cc.FluorescenceTime*ephysRate - sc(ii)));
+        end
+        set(ax(column,1),'XLim',sc);
+        save = input('save this plot (1 to save, ^c to exit)? ');
+        if isempty(save) && save == 1
+            print(gcf,'-dpdf',['../../figs/' fname '-bursts.pdf']);
+            print(gcf,'-depsc2',['../../figs/' fname '-bursts.eps']);
+        end
     end
     % save roc curves
     aa = .05;
-    % increase acceptable window size from 1:jitter
-    for jitter = 1:length(jitters)
-        rocf   = roc3_gamma([fast V.n],aa,jitters(jitter));
-        rocw   = roc3_gamma([wiener V.n],aa,jitters(jitter));
-        auc.f(jitter,j) = rocf.AUC;
-        auc.w(jitter,j) = rocw.AUC;
-    end
-    % offset spike times by all possile offsets
-    for offset = 1:length(offsets)
-        rocf   = roc3_gamma([fast V.n],aa,offsets(offset),false);
-        rocw   = roc3_gamma([wiener V.n],aa,offsets(offset),false);
-        auc.f(offset+length(jitters),j) = rocf.AUC;
-        auc.w(offset+length(jitters),j) = rocw.AUC;
+    if roc
+        % increase acceptable window size from 1:jitter
+        for jitter = 1:length(jitters)
+            rocf   = roc3_gamma([fast V.n],aa,jitters(jitter));
+            rocw   = roc3_gamma([wiener V.n],aa,jitters(jitter));
+            auc.f(jitter,j) = rocf.AUC;
+            auc.w(jitter,j) = rocw.AUC;
+        end
+        % offset spike times by all possile offsets
+        for offset = 1:length(offsets)
+            rocf   = roc3_gamma([fast V.n],aa,offsets(offset),false);
+            rocw   = roc3_gamma([wiener V.n],aa,offsets(offset),false);
+            auc.f(offset+length(jitters),j) = rocf.AUC;
+            auc.w(offset+length(jitters),j) = rocw.AUC;
+        end
     end
 end
 
-% plot wiener auc values vs. foopsi auc values
-figure; plot(rocf.xr,rocf.yr,'k.'); hold on; plot(rocw.xr,rocw.yr,'r.');
-colors = jet(length(jitters));
-figure; subplot(1,2,1); hold on;
-for j=1:length(jitters)
-     plot(auc.f(1:length(jitters),j),auc.w(1:length(jitters),j),'-.','Color',colors(j,:)); xlabel('fast'); ylabel('wiener');
-end
-plot([0 1],[0 1],'k'); axis square;
-colors = jet(length(offsets));
-subplot(1,2,2); hold on;
-for j=1:length(names)
-     plot(auc.f(length(jitters)+1:end,j),auc.w(length(jitters)+1:end,j),'-.','Color',colors(j,:)); xlabel('fast'); ylabel('wiener');
+if roc
+    % plot wiener auc values vs. foopsi auc values
+    figure; plot(rocf.xr,rocf.yr,'k.'); hold on; plot(rocw.xr,rocw.yr,'r.');
+    colors = jet(length(jitters));
+    figure; subplot(1,2,1); hold on;
+    for j=1:length(jitters)
+        plot(auc.f(1:length(jitters),j),auc.w(1:length(jitters),j),'-.','Color',colors(j,:)); xlabel('fast'); ylabel('wiener');
+    end
+    plot([0 1],[0 1],'k'); axis square;
+    colors = jet(length(offsets));
+    subplot(1,2,2); hold on;
+    for j=1:length(names)
+        plot(auc.f(length(jitters)+1:end,j),auc.w(length(jitters)+1:end,j),'-.','Color',colors(j,:)); xlabel('fast'); ylabel('wiener');
+    end
+
+    % plot auc box plots
+    plot([0 1],[0 1],'k'); axis square;
+    figure(777); clf; subplot(2,1,1); hold on;
+    boxplot(auc.f(1:length(jitters),:)','plotstyle','compact','color','b','orientation','vertical');
+    boxplot(auc.w(1:length(jitters),:)','plotstyle','compact','color','r','orientation','vertical');
+    xlabel('spike window size (bins)'); ylabel('AUC');
+    subplot(2,1,2); hold on;
+    boxplot(auc.f(length(jitters)+1:end,:)','plotstyle','compact','color','b','orientation','vertical');
+    boxplot(auc.w(length(jitters)+1:end,:)','plotstyle','compact','color','r','orientation','vertical');
+    xlabel('spike train jitter (bins)'); ylabel('AUC'); set(gca,'XTickLabel',offsets);
 end
 
-% plot auc box plots
-plot([0 1],[0 1],'k'); axis square;
-figure(777); clf; subplot(2,1,1); hold on;
-boxplot(auc.f(1:length(jitters),:)','plotstyle','compact','color','b','orientation','vertical');
-boxplot(auc.w(1:length(jitters),:)','plotstyle','compact','color','r','orientation','vertical');
-xlabel('spike window size (bins)'); ylabel('AUC');
-subplot(2,1,2); hold on;
-boxplot(auc.f(length(jitters)+1:end,:)','plotstyle','compact','color','b','orientation','vertical');
-boxplot(auc.w(length(jitters)+1:end,:)','plotstyle','compact','color','r','orientation','vertical');
-xlabel('spike train jitter (bins)'); ylabel('AUC'); set(gca,'XTickLabel',offsets);
 
 % save things if desired
 if V.save
