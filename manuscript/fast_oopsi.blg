@@ -2,17 +2,9 @@ This is BibTeX, Version 0.99c (Web2C 7.5.4)
 The top-level auxiliary file: fast_oopsi.aux
 The style file: ieeetr.bst
 Database file #1: /Users/joshyv/Research/misc/biblist.bib
-Name 1 in "Christophe Andrieu, and {\'E}ric Barat, and Arnaud Doucet" has a comma at the end for entry AndrieuDoucet01
-while executing---line 963 of file ieeetr.bst
-Name 2 in "Christophe Andrieu, and {\'E}ric Barat, and Arnaud Doucet" has a comma at the end for entry AndrieuDoucet01
-while executing---line 963 of file ieeetr.bst
-Name 1 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
-while executing---line 963 of file ieeetr.bst
-Name 2 in "Mishchenko Y, and Vogelstein JT, and Paninski L" has a comma at the end for entry MishchenkoPaninski09
-while executing---line 963 of file ieeetr.bst
 You've used 38 entries,
             1876 wiz_defined-function locations,
-            767 strings with 12473 characters,
+            767 strings with 12471 characters,
 and the built_in function-call counts, 12094 in all, are:
 = -- 1239
 > -- 510
@@ -51,4 +43,3 @@ warning$ -- 0
 while$ -- 125
 width$ -- 40
 write$ -- 376
-(There were 4 error messages)
