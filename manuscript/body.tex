@@ -229,22 +229,27 @@ F_{x,t} &= \alpha_x C_t + \beta_x +  \sig \varepsilon_{x,t}, \qquad &\varepsilon
 \ve{g} &= (\vbF - \bC \valpha - \ve{1}_T \vbeta)\T\frac{\valpha\T}{\sig^2} - \ve{M}\T\blam + \zzz \ve{M}\T (\ve{M} \bC)^{-1} \label{eq:g2} \\
 \ve{H} &= -\frac{\valpha \valpha\T}{\sig^2} \ve{I} - \zzz \ve{M}\T (\ve{M} \bC)^{-2} \ve{M} \label{eq:H2}
 \end{align}
-\noindent where $\vbF$ is an $N_p \times T$ element matrix, where $\ve{1}_T$ is a column vector of ones with length $T$, $\bI$ is an $N_p \times N_p$ identity matrix, and $\norm{x}_F$ indicates the Frobenius norm, i.e.\ $\norm{x}_F^2= \sum_{i,j} x_{i,j}^2$.  Note that to speed up computation, one can first project the $N_c \times T$ dimensional movie onto the spatial filter, $\valpha$, yielding a one-dimensional time series, $\bF$, reducing the problem to evaluating a $T \times 1$ vector norm, as in Eq.~\eqref{eq:eta3}.
+\noindent where $\vbF$ is an $N_p \times T$ element matrix, where $\ve{1}_T$ is a column vector of ones with length $T$, $\bI$ is an $N_p \times N_p$ identity matrix, and $\norm{x}_F$ indicates the Frobenius norm, i.e.\ $\norm{x}_F^2= \sum_{i,j} x_{i,j}^2$, and the exponents on the vector $\bM\bC$ again indicate element-wise operations.  Note that to speed up computation, one can first project the $N_c \times T$ dimensional movie onto the spatial filter, $\valpha$, yielding a one-dimensional time series, $\bF$, reducing the problem to evaluating a $T \times 1$ vector norm, as in Eq.~\eqref{eq:eta3}.
 
 Typically, the parameters  $\valpha$ and $\vbeta$ are unknown, and therefore must be estimated from the data.  Following the strategy developed in the last section, we first initialize the parameters.  Let the initial spatial filter be the median image frame, i.e., $\halpha_x=$ median$_t(F_{x,t})$, and the initial offset be uniform, with magnitude equal to the total movie median, $\hbeta_x=$ median$_{x,t}(F_{x,t})$ for all $x$.  Given these robust initializations, the maximum likelihood estimator for each $\alpha_x$ is given by:
 \begin{subequations} \label{eq:valpha_x}
 \begin{align}
 \halpha_x &= \argmax_{\alpha_x} P[\bF_x | \hbC] = \argmax_{\alpha_x} \sum_t \log P[F_{x,t} | \hC_t] \\
 &=\argmax_{\alpha_x} \sum_t  \left\{-\frac{1}{2} (2\pi \sig^2) - \frac{1}{2\sig^2}\left(F_{x,t} - \alpha_x \hC_t - \hbeta_x)\right)^2 \right\} %\\&
-= \argmax_{\alpha_x} \sum_t - (F_{x,t} - \alpha_x \hC_t - \hbeta_x)^2, \label{eq:alpha_x}
+= \argmax_{\alpha_x} -\frac{1}{2} \sum_t  (F_{x,t} - \alpha_x \hC_t - \hbeta_x)^2, \label{eq:alpha_x}
 \end{align}
 \end{subequations}
-which is solved by regressing $\hbC$ onto $(\bF_x - \hbeta_x \ve{1}_T)$.  In other words, by computing the derivative of Eq.~\eqref{eq:alpha_x} with respect to $\alpha_x$ and setting to zero, one obtains (using Matlab notation): $\halpha_x = \hbC \backslash (\bF_x - \hbeta_x \ve{1}_T)$. % Because the denominator is \emph{not} a function of $x$, and the scale of $C_t$ relative to $F_t$ is arbitrary, this is equivalent to $\halpha_x=\frac{1}{T} \sum_t F_{x,t}$, i.e.,  the optimal spatial filter is obtained from the mean intensity of each pixel.  
-Computing the derivative of Eq.~\eqref{eq:valpha_x} with respect to each $\hbeta_x$, setting the result to zero, and solving for $\hbeta_x$, yields:
-\begin{align} \label{eq:beta}
-	\hbeta_x = \frac{1}{T} \sum_{t=1}^T \frac{F_{x,t} - \halpha_x  \hC_t}{\halpha_x^2}.
-\end{align} 
-Iterating these two steps results in a coordinate ascent approach to estimate $\valpha$ and $\vbeta$ \cite{CONV04}. As in the scalar $F_t$ case, we iterate estimating the parameters of this model, $\bth = \{\valpha, \vbeta, \sig, \gam, \lam\}$, and the spike train, $\bn$.  Because of the free scale term discussed in section \ref{sec:learn}, the absolute magnitude of $\valpha$ is not identifiable.  Thus, convergence is defined here by the ``shape'' of the spike train converging, i.e., the norm of the difference between the inferred spike trains from subsequent iterations, both normalized such that $\max(\hn_t)=1$.  In practice, this procedure converged after several iterations.
+which is a standard linear regression problem.  Let $\bA=[\bC, -\ve{1}_T]\T$ be a $2\times T$ element matrix, and $\bX=[\alpha_x, \beta_x]\T$ be a 2 element column vector.  Subsituting $\bA$ and $\bX$ into Eq.~\eqref{eq:alpha_x} yields:
+\begin{align}
+\hbX &= \argmax_{\bX} -\frac{1}{2} \norm{\bF_{x} - \bA\T \bX}_2^2, \label{eq:alpha_x2}
+\end{align}
+which can be solved by computing the derivative of Eq.~\eqref{eq:alpha_x2} with respect to $\bX$ and setting to zero, or using Matlab notation: $\hbX = \hA \backslash \bF_x$. % Because the denominator is \emph{not} a function of $x$, and the scale of $C_t$ relative to $F_t$ is arbitrary, this is equivalent to $\halpha_x=\frac{1}{T} \sum_t F_{x,t}$, i.e.,  the optimal spatial filter is obtained from the mean intensity of each pixel.  
+% Computing the derivative of Eq.~\eqref{eq:valpha_x} with respect to each $\hbeta_x$, setting the result to zero, and solving for $\hbeta_x$, yields:
+% \begin{align} \label{eq:beta}
+% 	\hbeta_x = \frac{1}{T} \sum_{t=1}^T \frac{F_{x,t} - \halpha_x  \hC_t}{\halpha_x^2}.
+% \end{align} 
+% Iterating these two steps results in a coordinate ascent approach to estimate $\valpha$ and $\vbeta$ \cite{CONV04}. 
+As in the scalar $F_t$ case, we iterate estimating the parameters of this model, $\bth = \{\valpha, \vbeta, \sig, \gam, \lam\}$, and the spike train, $\bn$.  Because of the free scale term discussed in section \ref{sec:learn}, the absolute magnitude of $\valpha$ is not identifiable.  Thus, convergence is defined here by the ``shape'' of the spike train converging, i.e., the norm of the difference between the inferred spike trains from subsequent iterations, both normalized such that $\max(\hn_t)=1$.  In practice, this procedure converged after several iterations.
 
 
 
@@ -292,8 +297,13 @@ C^i_t &= \gam^i C^i_{t-1} + n^i_t, & n^i_t \overset{iid}{\sim} \text{Poisson}(n^
 % \end{bmatrix}
 % \end{align} 
 \noindent and proceed as above%, making minor algorithmic adjustments to deal with dimensionality issues
-.  Note that Eq.~\eqref{eq:M2} is very similar to Eq.~\eqref{eq:M}, except that $\bM$ is no longer tridiagonal, but rather, block tridiagonal (and $\bC_t$ and $\bn_t$ are vectors instead of scalars).  Importantly, the Thomas algorithm, which is a simplified form of Gaussian elimination, finds the solution to linear equations with block tridiagonal matrices in linear time, so the efficiency gained from utilizing the tridiagonal structure above is maintained for this block tridiagonal structure \cite{Press92}.   
-
+.  Note that Eq.~\eqref{eq:M2} is very similar to Eq.~\eqref{eq:M}, except that $\bM$ is no longer biidiagonal, but rather, block bidiagonal (and $\bC_t$ and $\bn_t$ are vectors instead of scalars), making the Hessian block-tridiagonal.  Importantly, the Thomas algorithm, which is a simplified form of Gaussian elimination, finds the solution to linear equations with block tridiagonal matrices in linear time, so the efficiency gained from utilizing the tridiagonal structure above is maintained for this block tridiagonal structure \cite{Press92}.   Performing inference in this more general model proceeds similarly as above, letting $\vbalpha=[\valpha^1, \ldots, \valpha^{N_c}]$:
+\begin{align} 
+\hbC_{\zzz} 
+&= \az  -\frac{1}{2 \sig^2} \norm{\vec{\bF} - \bC \vbalpha - \ve{1}_T \vbeta}_F^2 - (\bM \bC )\T \blam  + \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta5}\\
+\ve{g} &= (\vbF - \bC \vbalpha - \ve{1}_T \vbeta)\T\frac{{\vbalpha}\T}{\sig^2} - \ve{M}\T\blam + \zzz \ve{M}\T (\ve{M} \bC)^{-1} \label{eq:g3} \\
+\ve{H} &= -\frac{\vbalpha {\vbalpha}\T}{\sig^2} \ve{I} - \zzz \ve{M}\T (\ve{M} \bC)^{-2} \ve{M} \label{eq:H3}
+\end{align}
 If the parameters are unknown, they must be estimated. Define $\balpha_x=[\alpha_x^1, \ldots, \alpha_x^{N_c}]\T$.  Initialize $\vbeta$ as above. To initialize $\vbalpha=[\valpha_1, \ldots, \valpha_{N_c}]$, the goal is to be able to represent the baseline subtracted matrix, $\vbF - \ve{1}_T \vbeta$, as the sum of only $N_c$ time-varying components, also known as a \emph{low-rank} approximation.  Singular value decomposition is a tool known to find the low-rank approximation to a matrix, with the smallest mean-square-error of all possible low-rank approximations \cite{HornJohnson90}.  Because the ``singular values'' are equivalent to the ``principal components'' of the covariance of the movie, a natural initial estimate for the $N_c$ $\valpha$ vectors are the $N_c$ first principal components.  While other methods to initialize the spatial filters (such as ``independent component analysis'' \cite{MukamelSchnitzer09}) could also work, because fast algorithms for computing the first few principal components are readily available \cite{RokhlinTygert09}, PCA was both sufficiently effective and efficient.  Given these initializations, estimating $\vbalpha$ follows very similarly as in Eqs.~\eqref{eq:valpha_x}:
 \begin{align} \label{eq:valpha}
 	\hbalpha_x &= \argmin_{\balpha_x} \sum_{t=1}^T  \left(F_{x,t} -\hbeta_x - \sum_{i=1}^{N_c} \alpha_x^i  \hC_t^i )\right)^2 %\\
@@ -352,8 +362,9 @@ The inferred ``spikes'', however, are still not binary events when using the \fo
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/stats}
-\caption{stats} \label{fig:stats}
+\caption[quantifying the relative accuracy for the fast and Wiener filters]{In simulations, the fast filter quantitatively and significantly achieves higher accuracy than the Wiener filter.  Top left panel: a spike train (bottom), and two simulated fluorescence traces, using the same spike train, one with low signal-to-noise-ratio (SNR) (middle), and one with high SNR (top).  Simulation parameters:  $\alpha=1$, $\beta=0$, $\tau=0.5$ sec, $\lam=3$, $\Del=1/30$, $\sig=0.6$ (low SNR) and $0.1$ (high SNR). Simulation parameters in other panels are the same, except where explicitly noted.  Top right panel: mean-squared-error (MSE) for the fast (solid line) and Wiener (dash-dotted line) filter, for varying the expected firing rate $\lambda$.  Note that both axes are on a log-scale.  Further note that the fast filter has a better (lower) MSE for all expected firing rates. Errorbars show standard deviation over 10 repeats. Simulation parameters: $\sig=0.2$, $T=1000$ time steps. Bottom left: Receiver-operator-characteristic (ROC) curve comparing the fast (solid line) and Wiener (dashed-dotted line) filter. Note that for any given threshold, the Wiener filter has a better (higher) ration of true positive rate to false positive rate. Simulation parameters as in top right panel, except $sig=0.35$ and $T=10,000$ time steps.  Bottom right panel: Area-under-curve (AUC) for fast (solid line) and Wiener (dashed-dotted line) filter as a function of standard deviation $\sig$.  Note that the fast filter has a better (higher) AUC for all $\sig$ until noise gets very high.  The two simulated fluorescence traces in the top left panel show the bounds for standard deviation here.  Errorbars show standard deviation over 10 repeats.} \label{fig:stats}
 \end{figure}
+
 
 
 Although in Figure \ref{fig:woopsi_inf} the model parameters were provided, in the general case, the parameters are unknown, and must therefore be estimated from the observations (as described in section \ref{sec:learn}). Importantly, this algorithm does not require ``training'' data, i.e., there is no need for joint imaging and electrophyiological experiments to estimate the parameters governing the relationship between the two.  Figure \ref{fig:woopsi_learn} shows another simulated example; in this example, however, the parameters are estimated from the observed fluorescence trace alone.  Again, it is clear that the \foopsi filter far outperforms the Wiener filter.
@@ -386,9 +397,10 @@ Figure \ref{fig:woopsi_data_doublets} further evaluates this claim.  While recor
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/stats_data}
-\caption{stats} \label{fig:stats-data}
+\caption{Quantitative comparison---using in vitro data---of fast (black line) and Wiener (gray line) filter performance.  For each data set with both electrophysiology and imaging data, we can compute the generalized area-under-curve (gAUC), which counts positives as true within a given window size.  gAUC was computed for each cell, mean (line) and standard deviation (errorbars) are show in the two panels.  In the top panel, windows are symmetric, meaning allow inferred spike to be off by $\pm k$ bins, where $k=0,\ldots, 10$.  In the bottom panel, windows are asymmetric.  Note the lack of systematic bias, and that with small window sizes, both algorithms perform similarly, but with larger bin windows, the fast filter is significantly more accurate than the Wiener filter. } \label{fig:stats-data}
 \end{figure}
 
+XXX mention MSE performance XXX
 
 
 
@@ -496,6 +508,11 @@ Typically, the true spatial filters of the neurons in the ROI will be unknown, a
 \section{Discussion} \label{sec:dis}
 
 % \paragraph{Summary}
+
+XXX closest log-linear relaxation bit XXX
+XXX \texttt{http://jn.physiology.org/cgi/content/abstract/103/2/1130?rss=1} XXX
+
+
 
 This work describes an algorithm that approximates the \emph{maximum a posteriori} (MAP) spike train, given a calcium fluorescence movie.  The approximation is required because finding the actual MAP estimate is not currently computationally tractable.  Replacing the assumed Poisson distribution on spikes with an exponential distribution yields a log-concave optimization problem, which can be solved using standard gradient ascent techniques (such as Newton-Raphson).  This exponential distribution has an advantage over a Gaussian distribution by restricting spikes to be positive, which improves inference quality (cf. Figure \ref{fig:woopsi_inf}), and is a better approximation to a Poisson distribution with low rate.  %This result is common within machine learning \cite{Hoyer04,OGradyPearlmutter06}: imposing a non-negative constraint often helps prevent oscillations and other overfitting artifacts. This non-negative constraint is enforced by interior-point methods.  
 Furthermore, by utilizing the special banded structure of the Hessian matrix of the log-posterior, this approximate MAP spike train can be inferred fast enough on standard computers to use it for online analyses.  Finally, all the parameters can be estimated from only the fluorescence observations, obviating the need for joint electrophysiology and imaging (cf. Figure \ref{fig:woopsi_learn}).  This approach is robust, in that it works ``out-of-the-box'' on all the \emph{in vivo} and \emph{in vitro} data analyzed (cf. Figure \ref{fig:woopsi_data}).

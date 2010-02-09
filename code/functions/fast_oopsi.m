@@ -230,23 +230,16 @@ n_best      = n_best/max(n_best);
         end
 
         % precompute parameters required for evaluating and maximizing likelihood
-        b           = repmat(P.b,V.T,1)';       % for lik
+        b           = repmat(P.b,1,V.T);       % for lik
         if V.fast_poiss==1
             suma    = sum(P.a);                 % for grad
         else
             e       = 1/(2*P.sig^2);            % scale of variance
-            aF      = P.a'*F;                   % for grad
-            bb      = b(:);                     % for grad
+            aF      = F'*P.a;                   % for grad
             M(d1)   = -repmat(P.gam,V.T-1,1);   % matrix transforming calcium into spikes, ie n=M*C
             aa      = repmat(diag(P.a'*P.a),V.T,1);% for grad
+            ba      = b'*P.a;                   % for grad
             H1(d0)  = 2*e*aa;                   % for Hess
-        end
-        if V.Ncells==1                          % pre-collapse the N_p x T norm to be a 1 x T norm
-            if V.Npixels>1
-                FF = F./repmat(P.a,1,V.T);      % by normalizing F with respect to 'a'
-            else
-                FF = F;
-            end
         end
         lnprior     = llam.*sum(M,2);            % for grad
 
@@ -262,19 +255,8 @@ n_best      = n_best/max(n_best);
                 else
                     S = C;
                 end
-%                 if V.test==1
-%                     if V.Ncells==1
-%                         lik = e*sum(sum(FF-repmat(S,V.Ncells,1).^2.*AA));
-%                         %                         D = FF - repmat(S'+P.b,V.Npixels,1);
-%                         %                         lik = e*D(:)'*D(:);             % lik
-%                     else
-%                         D = F-P.a*(reshape(S,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
-%                         lik = e*D(:)'*D(:);             % lik
-%                     end
-%                 else
-                    D = F-P.a*(reshape(S,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
-                    lik = e*D(:)'*D(:);             % lik
-%                 end
+                D = F-P.a*(reshape(S,V.Ncells,V.T))-b; % difference vector to be used in likelihood computation
+                lik = e*D(:)'*D(:);             % lik
             end
             post = lik + llam'*n - z*sum(log(n));
             s    = 1;                           % step size
@@ -288,7 +270,7 @@ n_best      = n_best/max(n_best);
                     H1diag  = (-P.a*P.k_d-2*(C+P.k_d).*D').*((C+P.k_d).^-4);
                     H1(d0)  = H1diag;
                 else
-                    glik    = 2*e*(aa.*(C+bb)-aF(:));  % gradient
+                    glik    = -2*e*(aF-aa.*C-ba);  % gradient
                 end
                 g       = glik + lnprior - z*M'*(n.^-1);
                 H2(d0)  = n.^-2;                % log barrier part of the Hessian
@@ -314,19 +296,8 @@ n_best      = n_best/max(n_best);
                         else
                             S1 = C1;
                         end
-%                         if V.test==1
-%                             if V.Ncells==1
-%                                 lik = e*sum(sum(FF-repmat(S,V.Ncells,1).^2.*AA));
-%                                %                         D = FF - repmat(S'+P.b,V.Npixels,1);
-%                                 %                         lik = e*D(:)'*D(:);             % lik
-%                             else
-%                                 D = F-P.a*(reshape(S1,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
-%                                 lik1 = e*D(:)'*D(:);             % lik
-%                             end
-%                         else
-                            D = F-P.a*(reshape(S1,V.Ncells,V.T)+b); % difference vector to be used in likelihood computation
+                            D = F-P.a*(reshape(S1,V.Ncells,V.T))-b; % difference vector to be used in likelihood computation
                             lik1 = e*D(:)'*D(:);             % lik
-%                         end
                     end
                     post1 = lik1 + llam'*n - z*sum(log(n));
                     s   = s/5;                  % if step increases objective function, decrease step size
