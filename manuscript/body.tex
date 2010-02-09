@@ -222,7 +222,7 @@ In the above, we assumed that the raw movie of fluorescence measurements collect
 \begin{align} \label{eq:bF}
 F_{x,t} &= \alpha_x C_t + \beta_x +  \sig \varepsilon_{x,t}, \qquad &\varepsilon_{x,t} \overset{iid}{\sim} \mathcal{N}(0,1)   
 \end{align}
-\noindent where $\alpha_x$ scales each pixel, from which some number of photons are contributed due to calcium fluctuations, $C_t$, and others due to baseline fluorescence, $\beta$.  Further, the noise is assumed to be both spatially and temporally white, with standard deviation, $\sig$, in each pixel (this assumption can easily be relaxed, by modifying the covariance matrix of $\varepsilon_{x,t}$).  Performing inference in this more general model proceeds in a  nearly identical manner as before. In particular, the maximization, gradient, and Hessian become:
+\noindent where $\alpha_x$ scales each pixel, from which some number of photons are contributed due to calcium fluctuations, $C_t$, and others due to baseline fluorescence, $\beta_x$.  Further, the noise is assumed to be both spatially and temporally white, with standard deviation, $\sig$, in each pixel (this assumption can easily be relaxed, by letting representing joint noise over all pixels with a covariance matrix, $\Sigma_{t}$, which arbitrary structure).  Performing inference in this more general model proceeds in a  nearly identical manner as before. In particular, the maximization, gradient, and Hessian become:
 \begin{align} 
 \hbC_{\zzz} 
 &= \az  -\frac{1}{2 \sig^2} \norm{\vec{\bF} - \bC \valpha - \ve{1}_T \vbeta}_F^2 - (\bM \bC )\T \blam  + \zzz \log(\bM \bC)\T\ve{1},  \label{eq:eta4}\\
@@ -239,8 +239,8 @@ Typically, the parameters  $\valpha$ and $\vbeta$ are unknown, and therefore mus
 = \argmax_{\alpha_x} \sum_t - (F_{x,t} - \alpha_x \hC_t - \hbeta_x)^2, \label{eq:alpha_x}
 \end{align}
 \end{subequations}
-which is solved by regressing $\hbC$ onto $(\bF_x - \hbeta_x \ve{1}_T)$.  In other words, by computing the gradient of Eq.~\eqref{eq:alpha_x} with respect to $\alpha_x$ and setting to zero, one obtains (using Matlab notation): $\halpha_x = \hbC \backslash (\bF_x - \hbeta_x \ve{1}_T)$. % Because the denominator is \emph{not} a function of $x$, and the scale of $C_t$ relative to $F_t$ is arbitrary, this is equivalent to $\halpha_x=\frac{1}{T} \sum_t F_{x,t}$, i.e.,  the optimal spatial filter is obtained from the mean intensity of each pixel.  
-Computing the gradient of Eq.~\eqref{eq:valpha_x} with respect to each $\hbeta_x$, setting the result to zero, and solving for $\hbeta_x$, yields:
+which is solved by regressing $\hbC$ onto $(\bF_x - \hbeta_x \ve{1}_T)$.  In other words, by computing the derivative of Eq.~\eqref{eq:alpha_x} with respect to $\alpha_x$ and setting to zero, one obtains (using Matlab notation): $\halpha_x = \hbC \backslash (\bF_x - \hbeta_x \ve{1}_T)$. % Because the denominator is \emph{not} a function of $x$, and the scale of $C_t$ relative to $F_t$ is arbitrary, this is equivalent to $\halpha_x=\frac{1}{T} \sum_t F_{x,t}$, i.e.,  the optimal spatial filter is obtained from the mean intensity of each pixel.  
+Computing the derivative of Eq.~\eqref{eq:valpha_x} with respect to each $\hbeta_x$, setting the result to zero, and solving for $\hbeta_x$, yields:
 \begin{align} \label{eq:beta}
 	\hbeta_x = \frac{1}{T} \sum_{t=1}^T \frac{F_{x,t} - \halpha_x  \hC_t}{\halpha_x^2}.
 \end{align} 
@@ -350,6 +350,11 @@ The inferred ``spikes'', however, are still not binary events when using the \fo
 \caption[\foopsi filter outperforms Wiener filter]{The \foopsi filter's inferred spike train is significantly more accurate than the output of the optimal linear deconvolution (Wiener filter) on typical simulated data. Note that neither filter constrains the inference to be a sequence of integers; rather, the \foopsi filter relaxes the constraint to allow all non-negative numbers, and the Wiener filter allows for all real numbers.  The restriction of the \foopsi filter to exclude negative numbers eliminates the ringing effect seen in the Wiener filter output, resulting in a much cleaner inference.  Note that the magnitude of the inferred spikes in the \foopsi filter output is proportional to the inferred calcium jump size.  Top panel: fluorescence trace.  Second panel: spike train.  Third panel: \foopsi filter inference.  Bottom panel: Wiener filter inference.  Note that the gray bars in the bottom panel indicate \emph{negative} spikes. Black '$+$'s in bottom two panels indicate true spike times.  Simulation details: $T\approx 3000$ time steps, $\Del=5$ msec, $\alpha=1$, $\beta=0$, $\sig=0.3$, $\tau=1$ sec, $\lam=1$ Hz. Conventions for other figures as above, unless otherwise indicated.} \label{fig:woopsi_inf}
 \end{figure}
 
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/stats}
+\caption{stats} \label{fig:stats}
+\end{figure}
+
 
 Although in Figure \ref{fig:woopsi_inf} the model parameters were provided, in the general case, the parameters are unknown, and must therefore be estimated from the observations (as described in section \ref{sec:learn}). Importantly, this algorithm does not require ``training'' data, i.e., there is no need for joint imaging and electrophyiological experiments to estimate the parameters governing the relationship between the two.  Figure \ref{fig:woopsi_learn} shows another simulated example; in this example, however, the parameters are estimated from the observed fluorescence trace alone.  Again, it is clear that the \foopsi filter far outperforms the Wiener filter.
 
@@ -366,6 +371,7 @@ This suggests that although the scale of $\bn$ is arbitrary, the \foopsi filter 
 \caption[\foopsi filter outperforms Wiener filter on biological data]{The \foopsi filter significantly outperforms the Wiener filter on typical \emph{in vitro} data, using OGB-1. Note that all the parameters for both filters were estimated only from the fluorescence data in the top panel (ie, not considering the voltage data at all).  Again, '$+$'s denote true spike times extracted from the patch data, not inferred spike times from $\bF$.} \label{fig:woopsi_data}
 \end{figure}
 
+
 Figure \ref{fig:woopsi_data_doublets} further evaluates this claim.  While recording and imaging, the cell was forced to spike once, twice, or thrice, for each spiking event.  Na\"{i}vely, this would suggest that an algorithm based on a purely linear model would struggle to resolve spike fidelity in this high frequency spiking regime.  However, the \foopsi filter infers the correct number of spikes in each event.  On the contrary, there is no obvious way to count the number of spikes within each event when using the Wiener filter.
 
 \begin{figure}[h!]
@@ -373,6 +379,15 @@ Figure \ref{fig:woopsi_data_doublets} further evaluates this claim.  While recor
 \caption[\foopsi filter outperforms Wiener filter on multi-spike events]{The \foopsi filter can often resolve the correct number of spikes within each spiking event, while imaging using OGB-1, given sufficiently high SNR.  It is difficult, if not impossible, to count the number of spikes given the Wiener filter output.  Recording and fitting parameters as in Figure \ref{fig:woopsi_data}. Note that the parameters were estimated using a 60 sec long recording, of which only a fraction is shown here, to more clearly depict the number of spikes per event.  } \label{fig:woopsi_data_doublets}
 \end{figure}
 
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/stats_data_bursts}
+\caption{stats} \label{fig:stats-data-bursts}
+\end{figure}
+
+\begin{figure}[h!]
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/stats_data}
+\caption{stats} \label{fig:stats-data}
+\end{figure}
 
 
 
