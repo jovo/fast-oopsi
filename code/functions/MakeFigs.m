@@ -1,4 +1,8 @@
-function [V inf spt volt n_t] =  MakeFigs(datasets,filters,name)
+function [V inf spt volt n_t] =  MakeFigs(V,P)
+
+datasets=V.datasets;
+filters=V.filters;
+name=V.name;
 
 if ~isempty(datasets)
     dataset = load('~/Research/oopsi/meta-oopsi/data/rafa/adam/2008/Imaging-SNR-Data.mat');
@@ -14,28 +18,25 @@ V.smc_plot      = 1;
 V.N             = 99;
 V.est_sig       = 1;
 V.est_t         = 0;
-V.name          = name;
-P.lam           = 10;
 P.k_d           = 180;
 
 
 for i=datasets
     disp(i)
     if i==13
-        V.dt    = 1/10;
-        V.T     = 6000;
-        tau     = 1;                % decay time constant for each cell
+        
+        if ~isfield(V,'T'),     V.T = 400;     end     % # of time steps
+        if ~isfield(V,'dt'),    V.dt = 1/30;    end     % # of pixels in ROI
 
-        P.gam   = 1-V.dt/tau;       % set gam
-        P.lam   = 2;              % rate
-        P.sig   = 0.4;             % standard deviation
-        P.a     = 1;
-        P.b     = 0;
+        tau     = 0.5;                % decay time constant for each cell
+        if ~isfield(P,'b'),     P.b     = 0;    end
+        if ~isfield(P,'sig'),   P.sig   = 0.4;  end 
+        if ~isfield(P,'gam'),   P.gam   = 1-V.dt/tau; end
+        if ~isfield(P,'lam'),   P.lam   = 2;    end
+        if ~isfield(P,'a'),     P.a     = 1;    end
 
         V.n     = poissrnd(P.lam*V.dt*ones(V.T,1));
-%         spts    = find(V.n);
-%         midspike=spts(round(length(spts)/2));
-%         V.n(midspike)=2;
+        V.n(V.n>1)=1;
         V.C     = filter(1,[1 -P.gam],V.n);         % calcium concentration
         F{i}    = P.a*V.C'+P.b+P.sig*randn(1,V.T);
         spt{i}  = find(V.n);
@@ -111,9 +112,10 @@ for i=datasets
                 V.fast_poiss=1;
                 V.fast_nonlin=0;
                 inf{i}.poisson = fast_oopsi(F{i},V,P);
-            case 4 % Wiener
-                PP.lam = sum(inf{i}.fast/max(inf{i}.fast))/(V.T*V.dt);
-                PP.sig = PP.lam;
+            case 4 % Wiener known params
+                PP.lam = P.sig;
+%                 PP.lam = sum(inf{i}.fast/max(inf{i}.fast))/(V.T*V.dt);
+                PP.sig = PP.sig;
                 inf{i}.Wiener = wiener_oopsi(F{i},V.dt,PP);
             case 5 % smc
                 [M P V] = smc_oopsi(F{i},V,P);
@@ -151,12 +153,19 @@ for j=datasets
     
     % plot fluorescence data
     i=1; h(i)=subplot(nrows,1,i); hold on
-    plot(tvec_o,z1(F{j}(tvec_o))*maxn,'-k','LineWidth',lw);
-    ylab=ylabel([{'fluorescence'}],'Interpreter',inter,'FontSize',fs);
+    Ftemp=z1(F{j}(tvec_o))*maxn;
+    Ftemp=Ftemp-mean(Ftemp);
+    hold on
+    stem(spt{j},n_t{j}(spt{j}),'Marker','+','MarkerSize',ms,'LineStyle','none','MarkerFaceColor',gray,'MarkerEdgeColor',gray)
+    plot(zeros(V.T,1),'w')
+    plot(tvec_o,Ftemp,'-k','LineWidth',lw);
+    ylab=ylabel([{'fluorescence'}; {'(dF/F)      '}],'Interpreter',inter,'FontSize',fs);
     set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
-    set(gca,'YTick',[0:maxn],'YTickLabel',[0:maxn])
+    maxF=max(Ftemp);
+    minF=min(Ftemp);
+    set(gca,'YTick',[floor(minF):ceil(maxF)],'YTickLabel',[floor(minF):ceil(maxF)])
     set(gca,'XTick',xticks,'XTickLabel',[])
-    axis([xlims 0 maxn])
+    axis([xlims floor(minF) ceil(maxF)])
 
     % plot voltage data
     i=i+1; h(i)=subplot(nrows,1,i); hold on
@@ -179,12 +188,6 @@ for j=datasets
         n = inf{j}.(char(names(k)));
         n = n/max(abs(n(tvec_o)))*maxn;
         
-%         if k==1
-%             espts=find(n>0.1);
-%             espts(find(espts==midspike))=[];%             espts(midspike)=[];
-%             n=n/median(n(espts));
-%         end
-
         nneg=find(n<0);
         stem(nneg,n(nneg),'Marker','none','LineWidth',sw,'Color',gray)
 
@@ -192,11 +195,11 @@ for j=datasets
         stem(npos,n(npos),'Marker','none','LineWidth',sw,'Color','k')
 
         stem(spt{j},n_t{j}(spt{j}),'Marker','+','MarkerSize',ms,'LineStyle','none','MarkerFaceColor',gray,'MarkerEdgeColor',gray)
-        axis([xlims min(n(tvec_o))-.001 max(n(tvec_o))])
+        axis([xlims floor(min(n(tvec_o))) max(n(tvec_o))])
         hold off,
         ylab=ylabel([{char(names(k))}; {'filter'}],'Interpreter',inter,'FontSize',fs);
         set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
-        set(gca,'YTick',[0:maxn],'YTickLabel',[0:maxn])
+        set(gca,'YTick',[floor(min(n)):maxn],'YTickLabel',[floor(min(n)):maxn])
         set(gca,'XTick',xticks,'XTickLabel',[])
         box off
     end

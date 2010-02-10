@@ -167,7 +167,7 @@ end
 if V.save==1 % print fig
     wh=[7 5];   %width and height
     set(gcf,'PaperSize',wh,'PaperPosition',[0 0 wh],'Color','w');
-    figname=;'../../figs/' V.name];
+    figname=['../../figs/' V.name];
     print('-depsc',figname)
     print('-dpdf',figname)
     saveas(fig,figname)
