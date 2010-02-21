@@ -148,42 +148,40 @@
 \newlabel{sec:results:spatial}{{3.4}{15}{Spatial filter\relax }{subsection.3.4}{}}
 \citation{BellSejnowski95}
 \citation{MukamelSchnitzer09}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces stats}}{16}{figure.7}}
-\newlabel{fig:stats-data-bursts}{{7}{16}{Main Result\relax }{figure.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Quantitative comparison---using in vitro data---of fast (black line) and Wiener (gray line) filter performance. For each data set with both electrophysiology and imaging data, we can compute the generalized area-under-curve (gAUC), which counts positives as true within a given window size. gAUC was computed for each cell, mean (line) and standard deviation (errorbars) are show in the two panels. In the top panel, windows are symmetric, meaning allow inferred spike to be off by $\pm k$ bins, where $k=0,\ldots  , 10$. In the bottom panel, windows are asymmetric. Note the lack of systematic bias, and that with small window sizes, both algorithms perform similarly, but with larger bin windows, the fast filter is significantly more accurate than the Wiener filter. }}{16}{figure.7}}
+\newlabel{fig:stats-data}{{7}{16}{Main Result\relax }{figure.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Overlapping spatial filters}{16}{subsection.3.5}}
 \newlabel{sec:results:overlapping}{{3.5}{16}{Overlapping spatial filters\relax }{subsection.3.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{16}{section.4}}
-\newlabel{sec:dis}{{4}{16}{Discussion\relax }{section.4}{}}
 \citation{AndrieuDoucet01}
 \citation{MishchenkoPaninski09}
 \citation{FS81}
 \citation{MallatZhang93}
 \citation{GreenbergKerr08}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Quantitative comparison---using in vitro data---of fast (black line) and Wiener (gray line) filter performance. For each data set with both electrophysiology and imaging data, we can compute the generalized area-under-curve (gAUC), which counts positives as true within a given window size. gAUC was computed for each cell, mean (line) and standard deviation (errorbars) are show in the two panels. In the top panel, windows are symmetric, meaning allow inferred spike to be off by $\pm k$ bins, where $k=0,\ldots  , 10$. In the bottom panel, windows are asymmetric. Note the lack of systematic bias, and that with small window sizes, both algorithms perform similarly, but with larger bin windows, the fast filter is significantly more accurate than the Wiener filter. }}{17}{figure.8}}
-\newlabel{fig:stats-data}{{8}{17}{Main Result\relax }{figure.8}{}}
 \citation{VogelsteinPaninski09}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces fast filter is robust and works online for populations of neurons}}{17}{figure.8}}
+\newlabel{fig:pop}{{8}{17}{Online analysis of spike trains using the \foopsi filter\relax }{figure.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Discussion}{17}{section.4}}
+\newlabel{sec:dis}{{4}{17}{Discussion\relax }{section.4}{}}
 \citation{MishchenkoPaninski09}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces fast filter is robust and works online for populations of neurons}}{18}{figure.9}}
-\newlabel{fig:pop}{{9}{18}{Online analysis of spike trains using the \foopsi filter\relax }{figure.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces fast filter can initialize Wiener filter}}{18}{figure.9}}
+\newlabel{fig:smc_init}{{9}{18}{Using the \foopsi filter to initialize the sequential Monte Carlo filter\relax }{figure.9}{}}
 \@writefile{toc}{\contentsline {paragraph}{Acknowledgments}{18}{section*.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces fast filter can initialize Wiener filter}}{19}{figure.10}}
-\newlabel{fig:smc_init}{{10}{19}{Using the \foopsi filter to initialize the sequential Monte Carlo filter\relax }{figure.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces spatial filtering can improve effective SNR}}{19}{figure.10}}
+\newlabel{fig:spatial}{{10}{19}{Spatial filter\relax }{figure.10}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {A}Pseudocode}{19}{section.A}}
 \newlabel{sec:pseudo}{{A}{19}{Pseudocode\relax }{section.A}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces spatial filtering can improve effective SNR}}{20}{figure.11}}
-\newlabel{fig:spatial}{{11}{20}{Spatial filter\relax }{figure.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces overlapping spatial filters are not problematic}}{21}{figure.12}}
-\newlabel{fig:spatial_multi_inf}{{12}{21}{Overlapping spatial filters\relax }{figure.12}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces overlapping spatial filters can be estimated}}{21}{figure.13}}
-\newlabel{fig:spatial_multi_learn}{{13}{21}{Overlapping spatial filters\relax }{figure.13}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Pseudocode for inferring the approximately most likely spike train, given fluorescence data. Note that $\xi _i \ll 1$ for $i \in \{1,2\}$; the algorithm is robust to small variations in each. The equations listed below refer to the most general equations in the text (simpler equations could be substituted when appropriate). Curly brackets, $\{ \cdot \}$, indicate comments.}}{22}{algorithm.\theHalgorithm }}
-\newlabel{eqn:pseudocode}{{1}{22}{Pseudocode\relax }{algorithm.\theHalgorithm }{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces overlapping spatial filters are not problematic}}{20}{figure.11}}
+\newlabel{fig:spatial_multi_inf}{{11}{20}{Overlapping spatial filters\relax }{figure.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces overlapping spatial filters can be estimated}}{20}{figure.12}}
+\newlabel{fig:spatial_multi_learn}{{12}{20}{Overlapping spatial filters\relax }{figure.12}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Pseudocode for inferring the approximately most likely spike train, given fluorescence data. Note that $\xi _i \ll 1$ for $i \in \{1,2\}$; the algorithm is robust to small variations in each. The equations listed below refer to the most general equations in the text (simpler equations could be substituted when appropriate). Curly brackets, $\{ \cdot \}$, indicate comments.}}{21}{algorithm.\theHalgorithm }}
+\newlabel{eqn:pseudocode}{{1}{21}{Pseudocode\relax }{algorithm.\theHalgorithm }{}}
 \citation{SjulsonMiesenbock07}
 \citation{CONV04}
-\@writefile{toc}{\contentsline {section}{\numberline {B}Wiener Filter}{23}{section.B}}
-\newlabel{sec:wiener}{{B}{23}{Wiener Filter\relax }{section.B}{}}
-\newlabel{eq:obj5}{{41}{23}{Wiener Filter\relax }{equation.41}{}}
-\newlabel{eq:w2}{{42}{23}{Wiener Filter\relax }{equation.42}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Wiener Filter}{22}{section.B}}
+\newlabel{sec:wiener}{{B}{22}{Wiener Filter\relax }{section.B}{}}
+\newlabel{eq:obj5}{{41}{22}{Wiener Filter\relax }{equation.41}{}}
+\newlabel{eq:w2}{{42}{22}{Wiener Filter\relax }{equation.42}{}}
 \bibdata{/Users/joshyv/Research/misc/biblist}
 \bibcite{ImagingManual}{1}
 \bibcite{SmettersYuste99}{2}
@@ -224,4 +222,4 @@
 \bibcite{FS81}{37}
 \bibcite{MallatZhang93}{38}
 \bibstyle{ieeetr}
-\@writefile{toc}{\contentsline {section}{References}{25}{section*.2}}
+\@writefile{toc}{\contentsline {section}{References}{24}{section*.2}}

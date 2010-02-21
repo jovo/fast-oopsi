@@ -333,30 +333,31 @@ n_best      = n_best/max(n_best);
                 CC      = C;
             end
 
-%             % update spatial filter and baseline
-%             CC = CC + b';
-%             if V.est_a==1
-%                 for ii=1:V.Npixels
-%                     Y   = F(ii,:)';
-%                     P.a(ii,:) = CC\Y;
-%                 end
-%             end
-%             if V.est_b==1
-%                 for jj=1:V.Ncells
-%                     P.b(jj) = mean(mean(F./repmat(P.a(:,jj),1,V.T)-repmat(C(:,jj)',V.Npixels,1)));
-%                 end
-%                 P.b(P.b<0)=0;
-%             end
-%             b       = repmat(P.b,V.T,1)';
-%             D       = F-P.a*(reshape(C,V.Ncells,V.T)+b);
+            % update spatial filter and baseline
+            CC = CC + b';
+            if V.est_a==1
+                for ii=1:V.Npixels
+                    Y   = F(ii,:)';
+                    P.a(ii,:) = CC\Y;
+                end
+            end
+            if V.est_b==1
+                for jj=1:V.Ncells
+                    P.b(jj) = mean(mean(F./repmat(P.a(:,jj),1,V.T)-repmat(C(:,jj)',V.Npixels,1)));
+                end
+                P.b(P.b<0)=0;
+            end
+            b       = repmat(P.b,V.T,1)';
+            D       = F-P.a*(reshape(C,V.Ncells,V.T)+b);
 
-            A = [C -1+Z(1:V.T)];
-            X = A\F;
-            
-            P.a = X(1,:);
-            P.b = X(2,:);
-            
-            D       = F-P.a*(reshape(C,V.Ncells,V.T)) - P.b;
+%             A = [C -1+Z(1:V.T)];
+%             X = A\F;
+%             
+%             P.a = X(1,:);
+%             P.b = X(2,:);
+%             
+%             D       = F-P.a*(reshape(C,V.Ncells,V.T)) - P.b;
+
             mse     = D(:)'*D(:);
         end
 

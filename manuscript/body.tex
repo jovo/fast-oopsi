@@ -356,7 +356,7 @@ The inferred ``spikes'', however, are still not binary events when using the \fo
 
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_sim13}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_inf13}
 \caption[\foopsi filter outperforms Wiener filter]{A simulation showing that the \foopsi filter's inferred spike train is significantly more accurate than the output of the optimal linear deconvolution (Wiener filter). Note that neither filter constrains the inference to be a sequence of integers; rather, the \foopsi filter relaxes the constraint to allow all non-negative numbers, and the Wiener filter allows for all real numbers.  The restriction of the \foopsi filter to exclude negative numbers eliminates the ringing effect seen in the Wiener filter output, resulting in a much cleaner inference.  Note that the magnitude of the inferred spikes in the \foopsi filter output is proportional to the inferred calcium jump size.  Top panel: fluorescence trace.  Second panel: spike train.  Third panel: \foopsi filter inference.  Bottom panel: Wiener filter inference.  Note that the gray bars in the bottom panel indicate \emph{negative} spikes. Black '$+$'s in bottom two panels indicate true spike times.  Simulation details: $T\approx 3000$ time steps, $\Del=5$ msec, $\alpha=1$, $\beta=0$, $\sig=0.3$, $\tau=1$ sec, $\lam=1$ Hz. Conventions for other figures as above, unless otherwise indicated.} \label{fig:woopsi_inf}
 \end{figure}
 
@@ -370,7 +370,7 @@ The inferred ``spikes'', however, are still not binary events when using the \fo
 Although in Figure \ref{fig:woopsi_inf} the model parameters were provided, in the general case, the parameters are unknown, and must therefore be estimated from the observations (as described in section \ref{sec:learn}). Importantly, this algorithm does not require ``training'' data, i.e., there is no need for joint imaging and electrophyiological experiments to estimate the parameters governing the relationship between the two.  Figure \ref{fig:woopsi_learn} shows another simulated example; in this example, however, the parameters are estimated from the observed fluorescence trace alone.  Again, it is clear that the \foopsi filter far outperforms the Wiener filter.
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_learn_b13}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_learn13}
 \caption[parameters may be estimated using the \foopsi filter]{The \foopsi filter significantly outperforms the Wiener filter, even when the parameters unknown.  For both filters, the appropriate parameters were estimated using only the data shown above, unlike Figure \ref{fig:woopsi_inf}, in which the true parameters were provided to the filters. Simulation details as in Figure \ref{fig:woopsi_inf}.} \label{fig:woopsi_learn}
 \end{figure}
 
@@ -378,7 +378,7 @@ Given the above two results, the \foopsi filter was applied to real data.  More 
 This suggests that although the scale of $\bn$ is arbitrary, the \foopsi filter can correctly ascertain the number of spikes within spike events.  
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/woopsi_data_c4}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_vitro4}
 \caption[\foopsi filter outperforms Wiener filter on biological data]{The \foopsi filter significantly outperforms the Wiener filter on typical \emph{in vitro} data, using OGB-1. Note that all the parameters for both filters were estimated only from the fluorescence data in the top panel (ie, not considering the voltage data at all).  Again, '$+$'s denote true spike times extracted from the patch data, not inferred spike times from $\bF$.} \label{fig:woopsi_data}
 \end{figure}
 
@@ -386,14 +386,14 @@ This suggests that although the scale of $\bn$ is arbitrary, the \foopsi filter 
 Figure \ref{fig:woopsi_data_doublets} further evaluates this claim.  While recording and imaging, the cell was forced to spike once, twice, or thrice, for each spiking event.  Na\"{i}vely, this would suggest that an algorithm based on a purely linear model would struggle to resolve spike fidelity in this high frequency spiking regime.  However, the \foopsi filter infers the correct number of spikes in each event.  On the contrary, there is no obvious way to count the number of spikes within each event when using the Wiener filter.
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/doublets_b12}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_burst12}
 \caption[\foopsi filter outperforms Wiener filter on multi-spike events]{The \foopsi filter can often resolve the correct number of spikes within each spiking event, while imaging using OGB-1, given sufficiently high SNR.  It is difficult, if not impossible, to count the number of spikes given the Wiener filter output.  Recording and fitting parameters as in Figure \ref{fig:woopsi_data}. Note that the parameters were estimated using a 60 sec long recording, of which only a fraction is shown here, to more clearly depict the number of spikes per event.  } \label{fig:woopsi_data_doublets}
 \end{figure}
 
-\begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/stats_data_bursts}
-\caption{stats} \label{fig:stats-data-bursts}
-\end{figure}
+% \begin{figure}[h!]
+% \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/stats_data_bursts}
+% \caption{stats} \label{fig:stats-data-bursts}
+% \end{figure}
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/stats_data}
@@ -458,7 +458,7 @@ Importantly, log-concavity of the posterior is no longer guaranteed in this nonl
 A sequential Monte Carlo (SMC) method to infer spike trains can incorporate this saturating nonlinearity, as well as the other model extensions discussed above \cite{VogelsteinPaninski09} . However, this SMC filter is not nearly as computationally efficient as the fast filter proposed here.  Like the \foopsi filter, the SMC filter estimates the model parameters in a completely unsupervised fashion, i.e.,  from the fluorescence observations, using an expectation-maximization algorithm (which requires iterating between computing the expected value of the hidden variables --- $\bC$ and $\bn$ --- and updating the paramters).  In \cite{VogelsteinPaninski09}, parameters for the SMC filter were initialized based on other data.  While effective, this initialization was often far from the final estimates, and therefore, required a relatively large number of iterations (eg, 20--25) before converging.  Thus, it seemed that the \foopsi filter could be used to obtain an improvement to the initial parameter estimates, given an appropriate rescaling to account for the nonlinearity, thereby reducing the required number of iterations to convergence.  Indeed, Figure \ref{fig:smc_init} shows how the SMC filter outperforms the \foopsi filter on biological data, and only required 3--5 iterations to converge on this data, given the initialization from the \foopsi filter (which was typical).  Note that the first few events of the spike train are individual spikes, resulting in relatively small fluorescence fluctuations, whereas the next events are actually spike doublets or triplets, causing a much larger fluorescence fluctuation.  Only the SMC filter picks up the individual spikes in this trace, a result typical when the effective signal-to-noise ratio (SNR) is poor.  Thus, these two inference algorithms are complementary: the \foopsi filter can be used for rapid, online inference, and for initializing the SMC filter, which can then be used to further refine the spike train estimate.  Importantly, although the SMC filter often outperforms the \foopsi filter, the \foopsi filter is more robust, meaning that it more often works ``out-of-the-box.''
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/smc_init_c12}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_smc_vitro12}
 \caption[\foopsi filter can initialize Wiener filter]{The \foopsi filter effectively initializes the parameters for the SMC filter, significantly reducing the number of expectation-maximization iterations to convergence, on typical \emph{in vitro} data, using OGB-1.  Note that while the \foopsi filter clearly infers the spiking events in the end of the trace, those in the beginning of the trace are less clear.  On the other hand, the SMC filter more clearly separates non-spiking activity from true spikes.  Also note that the ordinate on the bottom panel corresponds to the inferred probability of a spike having occurred in each frame.} \label{fig:smc_init}
 \end{figure}
 

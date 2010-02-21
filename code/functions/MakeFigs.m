@@ -117,6 +117,10 @@ for i=datasets
 %                 PP.lam = sum(inf{i}.fast/max(inf{i}.fast))/(V.T*V.dt);
                 PP.sig = PP.sig;
                 inf{i}.Wiener = wiener_oopsi(F{i},V.dt,PP);
+            case 4.5 % Wiener unknown params
+                PP.sig = mad(F{i},1)*1.4826;
+                PP.lam = PP.sig;
+                inf{i}.Wiener = wiener_oopsi(F{i},V.dt,PP);
             case 5 % smc
                 [M P V] = smc_oopsi(F{i},V,P);
                 inf{i}.smc = M.nbar;
@@ -144,7 +148,7 @@ for j=datasets
     ms      = 5;                        % marker size for real spike
     sw      = 2;                        % spike width
     lw      = 2;                        % line width
-    xlims   = [200 V.T];
+    if ~isfield(V,'xlims') xlims   = [200 V.T]; else xlims = V.xlims; end
     xticks  = xlims(1):1/V.dt:xlims(2);             % XTick positions
     skip    = round(length(xticks)/5);
     xticks  = xticks(1:skip:end);
