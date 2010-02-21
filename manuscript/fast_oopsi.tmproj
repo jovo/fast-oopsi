@@ -3,42 +3,70 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>fast_oopsi.tex</string>
+	<string>body.tex</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>fast_oopsi.tex</string>
 			<key>lastUsed</key>
-			<date>2010-01-15T21:12:32Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2010-02-07T17:03:13Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>body.tex</string>
 			<key>lastUsed</key>
-			<date>2010-01-10T06:45:52Z</date>
+			<date>2010-02-09T18:11:39Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>appendix.tex</string>
 			<key>lastUsed</key>
-			<date>2010-01-10T06:45:50Z</date>
+			<date>2010-02-09T18:11:39Z</date>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>200</integer>
 	<key>metaData</key>
 	<dict>
-		<key>fast_oopsi.tex</key>
+		<key>appendix.tex</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>25</integer>
+				<integer>2</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>body.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>167</integer>
+				<key>line</key>
+				<integer>524</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>487</integer>
+			<key>firstVisibleLine</key>
+			<integer>493</integer>
+		</dict>
+		<key>fast_oopsi.tex</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>41</integer>
+				<key>line</key>
+				<integer>42</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -49,10 +77,12 @@
 	<key>openDocuments</key>
 	<array>
 		<string>fast_oopsi.tex</string>
+		<string>body.tex</string>
+		<string>appendix.tex</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
-	<true/>
+	<false/>
 	<key>windowFrame</key>
-	<string>{{4, 0}, {718, 878}}</string>
+	<string>{{-268, 900}, {960, 1080}}</string>
 </dict>
 </plist>
