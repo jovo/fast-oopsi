@@ -357,7 +357,7 @@ The inferred ``spikes'', however, are still not binary events when using the \fo
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_inf13}
-\caption[\foopsi filter outperforms Wiener filter]{A simulation showing that the \foopsi filter's inferred spike train is significantly more accurate than the output of the optimal linear deconvolution (Wiener filter). Note that neither filter constrains the inference to be a sequence of integers; rather, the \foopsi filter relaxes the constraint to allow all non-negative numbers, and the Wiener filter allows for all real numbers.  The restriction of the \foopsi filter to exclude negative numbers eliminates the ringing effect seen in the Wiener filter output, resulting in a much cleaner inference.  Note that the magnitude of the inferred spikes in the \foopsi filter output is proportional to the inferred calcium jump size.  Top panel: fluorescence trace.  Second panel: spike train.  Third panel: \foopsi filter inference.  Bottom panel: Wiener filter inference.  Note that the gray bars in the bottom panel indicate \emph{negative} spikes. Black '$+$'s in bottom two panels indicate true spike times.  Simulation details: $T\approx 3000$ time steps, $\Del=5$ msec, $\alpha=1$, $\beta=0$, $\sig=0.3$, $\tau=1$ sec, $\lam=1$ Hz. Conventions for other figures as above, unless otherwise indicated.} \label{fig:woopsi_inf}
+\caption[\foopsi filter outperforms Wiener filter]{A simulation showing that the \foopsi filter's inferred spike train is significantly more accurate than the output of the optimal linear deconvolution (Wiener filter). Note that neither filter constrains the inference to be a sequence of integers; rather, the \foopsi filter relaxes the constraint to allow all non-negative numbers, and the Wiener filter allows for all real numbers.  The restriction of the \foopsi filter to exclude negative numbers eliminates the ringing effect seen in the Wiener filter output, resulting in a much cleaner inference.  Note that the magnitude of the inferred spikes in the \foopsi filter output is proportional to the inferred calcium jump size.  Top panel: fluorescence trace.  Second panel: spike train.  Third panel: \foopsi filter inference.  Bottom panel: Wiener filter inference.  Note that the gray bars in the bottom panel indicate \emph{negative} spikes. Black '$+$'s in bottom two panels indicate true spike times.  Simulation details: $T= 400$ time steps, $\Del=33.3$ msec, $\alpha=1$, $\beta=0$, $\sig=0.2$, $\tau=1$ sec, $\lam=1$ Hz. Conventions for other figures as above, unless otherwise indicated.} \label{fig:woopsi_inf}
 \end{figure}
 
 \begin{figure}[h!]
@@ -371,7 +371,7 @@ Although in Figure \ref{fig:woopsi_inf} the model parameters were provided, in t
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_learn13}
-\caption[parameters may be estimated using the \foopsi filter]{The \foopsi filter significantly outperforms the Wiener filter, even when the parameters unknown.  For both filters, the appropriate parameters were estimated using only the data shown above, unlike Figure \ref{fig:woopsi_inf}, in which the true parameters were provided to the filters. Simulation details as in Figure \ref{fig:woopsi_inf}.} \label{fig:woopsi_learn}
+\caption[parameters may be estimated using the \foopsi filter]{A simulation showing that the \foopsi filter achieves significantly more accurate inference than the Wiener filter, even when the parameters unknown.  For both filters, the appropriate parameters were estimated using only the data shown above, unlike Figure \ref{fig:woopsi_inf}, in which the true parameters were provided to the filters. Simulation details different from those in Figure \ref{fig:woopsi_inf}: $T=1000$ time steps, $\Del=16.7$ ms, $\sig=0,4$.} \label{fig:woopsi_learn}
 \end{figure}
 
 Given the above two results, the \foopsi filter was applied to real data.  More specifically, by jointly recording electrophysiologically and imaging, the true spike times are known, and the accuracy of the two filters can be compared.  Figure \ref{fig:woopsi_data} shows a result typical of the 12 joint electrophysiological and imaging experiments conducted. Although it is difficult to see in this figure, the first four ``events'' are actually pairs of spikes, which is reflected by the width and height of the corresponding inferred spikes when using the \foopsi filter. %(see Figure \ref{fig:woopsi_data_doublets} for a temporally zoomed in version from similar data). 
@@ -379,7 +379,7 @@ This suggests that although the scale of $\bn$ is arbitrary, the \foopsi filter 
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_vitro4}
-\caption[\foopsi filter outperforms Wiener filter on biological data]{The \foopsi filter significantly outperforms the Wiener filter on typical \emph{in vitro} data, using OGB-1. Note that all the parameters for both filters were estimated only from the fluorescence data in the top panel (ie, not considering the voltage data at all).  Again, '$+$'s denote true spike times extracted from the patch data, not inferred spike times from $\bF$.} \label{fig:woopsi_data}
+\caption[\foopsi filter outperforms Wiener filter on biological data]{Typical in vitro data showing that the \foopsi filter significantly outperforms the Wiener filter, using OGB-1. Note that all the parameters for both filters were estimated only from the fluorescence data in the top panel (ie, not considering the voltage data at all).  Again, '$+$'s denote true spike times extracted from the patch data, not inferred spike times from $\bF$.} \label{fig:woopsi_data}
 \end{figure}
 
 
@@ -387,7 +387,7 @@ Figure \ref{fig:woopsi_data_doublets} further evaluates this claim.  While recor
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_burst12}
-\caption[\foopsi filter outperforms Wiener filter on multi-spike events]{The \foopsi filter can often resolve the correct number of spikes within each spiking event, while imaging using OGB-1, given sufficiently high SNR.  It is difficult, if not impossible, to count the number of spikes given the Wiener filter output.  Recording and fitting parameters as in Figure \ref{fig:woopsi_data}. Note that the parameters were estimated using a 60 sec long recording, of which only a fraction is shown here, to more clearly depict the number of spikes per event.  } \label{fig:woopsi_data_doublets}
+\caption[\foopsi filter outperforms Wiener filter on multi-spike events]{Typical in vitro data with multi-spike events, showing that the \foopsi filter can often resolve the correct number of spikes within each spiking event, while imaging using OGB-1, given sufficiently high SNR.  It is difficult, if not impossible, to count the number of spikes given the Wiener filter output.  Recording and fitting parameters as in Figure \ref{fig:woopsi_data}. Note that the parameters were estimated using a 60 sec long recording, of which only a fraction is shown here, to more clearly depict the number of spikes per event.  } \label{fig:woopsi_data_doublets}
 \end{figure}
 
 % \begin{figure}[h!]
@@ -459,7 +459,7 @@ A sequential Monte Carlo (SMC) method to infer spike trains can incorporate this
 
 \begin{figure}[h!]
 \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_smc_vitro12}
-\caption[\foopsi filter can initialize Wiener filter]{The \foopsi filter effectively initializes the parameters for the SMC filter, significantly reducing the number of expectation-maximization iterations to convergence, on typical \emph{in vitro} data, using OGB-1.  Note that while the \foopsi filter clearly infers the spiking events in the end of the trace, those in the beginning of the trace are less clear.  On the other hand, the SMC filter more clearly separates non-spiking activity from true spikes.  Also note that the ordinate on the bottom panel corresponds to the inferred probability of a spike having occurred in each frame.} \label{fig:smc_init}
+\caption[\foopsi filter can initialize Wiener filter]{in vitro data with poor SNR depicting the \foopsi filter effectively initializing the parameters for the SMC filter, significantly reducing the number of expectation-maximization iterations to convergence, using OGB-1.  Note that while the \foopsi filter clearly infers the spiking events in the end of the trace, those in the beginning of the trace are less clear.  On the other hand, the SMC filter more clearly separates non-spiking activity from true spikes.  Also note that the ordinate on the bottom panel corresponds to the inferred probability of a spike having occurred in each frame.} \label{fig:smc_init}
 \end{figure}
 
 \subsection{Spatial filter} \label{sec:results:spatial}
@@ -472,8 +472,8 @@ The bottom panels of Figure \ref{fig:spatial} depict the effect of using the tru
 
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_background}
-\caption[spatial filtering can improve effective SNR]{A simulation demonstrating that using a better spatial filter can significantly enhance the effective SNR. The true spatial filter was a difference of Gaussians: a positively weighted Gaussian of small width, and a negatively weighted Gaussian with larger width (both with the same center).  Top left: true spatial filter.  Top right: boxcar filter.  Middle left: fluorescence projection using true spatial filter. Middle right: fluorescence projection using boxcar filter.  Bottom left: fast filter inference when using true spatial filter.  Bottom right: fast filter inference when using boxcar spatial filter.  Simulation parameters: $\valpha=\mN(\ve{0},2 \bI)-0.5 \mN(\ve{0},2.5 \bI)$ where $\mN(\ve{\mu},\ve{\Sig})$ indicates a two-dimensional Gaussian with mean $\ve{\mu}$ and covariance matrix $\ve{\Sig}$, $\vbeta=\ve{0}$, $\tau=0.85$ sec, $\lam=5$ Hz.} \label{fig:spatial} 
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_inf}
+\caption[spatial filtering can improve effective SNR]{A simulation demonstrating that using a better spatial filter can significantly enhance the effective SNR. The true spatial filter was a difference of Gaussians: a positively weighted Gaussian of small width, and a negatively weighted Gaussian with larger width (both with the same center).  Each column shows the spatial filter (top), one-dimensional fluorescence projection using that spatial filter (middle), and inferred spike train (bottom).  From left to right, columns use the true, boxcar, mean, and an estimated spatial filter, obtained using Eqs.~\eqref{eq:}. Simulation parameters: $\valpha=\mN(\ve{0},2 \bI)-0.5 \mN(\ve{0},2.5 \bI)$ where $\mN(\ve{\mu},\ve{\Sig})$ indicates a two-dimensional Gaussian with mean $\ve{\mu}$ and covariance matrix $\ve{\Sig}$, $\vbeta=\ve{0}$, $\tau=0.85$ sec, $\lam=5$ Hz.} \label{fig:spatial} 
 \end{figure}
 
 
@@ -489,16 +489,22 @@ Typically, the true spatial filters of the neurons in the ROI will be unknown, a
 
 
 
+% \begin{figure}[h!]
+% \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_inf_multi}
+% \caption[overlapping spatial filters are not problematic]{Simulation showing that even when two neurons' spatial filters are overlapping, one can separate the two spike trains by spatial filtering. Top left panel: mean frame from the movie.  Bottom left: optimal one-dimensional fluorescence projections for the neuron 1 (black line) and neuron 2 (gray line), and their respective spike trains (black and gray '$+$' symbols, respectively).  Top middle panel: the true spatial filter for neuron 1.  Bottom middle panel: inferred (black line) and true (black '$+$' symbols) spike trains.  Top right panel: the true spatial filter for neuron 2.   Bottom right panel: inferred (gray line) and true (gray '$+$' symbols) spike trains. Simulation details: $\valpha^1=\mN([-1.8, 1.8]\T,2 \bI)\, \valpha^2=\mN([1.8, -1.8]\T,5 \bI)$, $\vbeta=\ve{0}$, $\tau=[0.5, 0.5]\T$ sec, $\lam=[1.5, 1.5]\T$ Hz.} \label{fig:spatial_multi_inf}
+% \end{figure}
+
+
+
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf}
-\caption[overlapping spatial filters are not problematic]{Simulation showing that even when two neurons' spatial filters are overlapping, one can separate the two spike trains by spatial filtering. Top left panel: mean frame from the movie.  Bottom left: optimal one-dimensional fluorescence projections for the neuron 1 (black line) and neuron 2 (gray line), and their respective spike trains (black and gray '$+$' symbols, respectively).  Top middle panel: the true spatial filter for neuron 1.  Bottom middle panel: inferred (black line) and true (black '$+$' symbols) spike trains.  Top right panel: the true spatial filter for neuron 2.   Bottom right panel: inferred (gray line) and true (gray '$+$' symbols) spike trains. Simulation details: $\valpha^1=\mN([-1.8, 1.8]\T,2 \bI)\, \valpha^2=\mN([1.8, -1.8]\T,5 \bI)$, $\vbeta=\ve{0}$, $\tau=[0.5, 0.5]\T$ sec, $\lam=[1.5, 1.5]\T$ Hz.} \label{fig:spatial_multi_inf}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_learn_multi}
+\caption[overlapping spatial filters can be estimated]{Simulation showing that even when two neurons' spatial filters are largely overlapping, spatial filters that together are linearly related to the true spatial filters can be inferred, to separate the two signals. Simulation details as above. Note that the spatial fields are sufficiently overlapping to cause significant ``bleed-through'' between the two signals.  In particular, this is clear from the rise in the black line in the first few seconds of the bottom left panel, which should be fluorescence due to neuron 1, but is in fact due to spiking from neuron 2. Regardless, the spike trains are accurately inferred here.  Simulation parameters as in Figure \ref{fig:spatial_multi_inf}.} \label{fig:spatial_multi_learn}
 \end{figure}
 
 
-
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn}
-\caption[overlapping spatial filters can be estimated]{Simulation showing that even when two neurons' spatial filters are largely overlapping, spatial filters that together are linearly related to the true spatial filters can be inferred, to separate the two signals. Simulation details as above. Note that the spatial fields are sufficiently overlapping to cause significant ``bleed-through'' between the two signals.  In particular, this is clear from the rise in the black line in the first few seconds of the bottom left panel, which should be fluorescence due to neuron 1, but is in fact due to spiking from neuron 2. Regardless, the spike trains are accurately inferred here.  Simulation parameters as in Figure \ref{fig:spatial_multi_inf}.} \label{fig:spatial_multi_learn}
+% \centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_learn_multi_data}
+\caption{data spatial fig} \label{fig:spatial_learn_multi_data}
 \end{figure}
 
 
