@@ -27,8 +27,9 @@ for i=datasets
         
         if ~isfield(V,'T'),     V.T = 400;     end     % # of time steps
         if ~isfield(V,'dt'),    V.dt = 1/30;    end     % # of pixels in ROI
+        if ~isfield(V,'fast_iter_max'),    V.fast_iter_max = 1;    end     % # of pixels in ROI
 
-        tau     = 0.5;                % decay time constant for each cell
+        tau     = 1;                % decay time constant for each cell
         if ~isfield(P,'b'),     P.b     = 0;    end
         if ~isfield(P,'sig'),   P.sig   = 0.4;  end 
         if ~isfield(P,'gam'),   P.gam   = 1-V.dt/tau; end
@@ -92,7 +93,6 @@ for i=datasets
             case 1.5 % fast est params
                 V.fast_poiss=0;
                 V.fast_nonlin=0;
-                V.fast_iter_max=1;
                 V.b_est=0;
                 V.sig_est=1;
                 [inf{i}.fast PP] = fast_oopsi(F{i},V);
@@ -159,28 +159,31 @@ for j=datasets
     i=1; h(i)=subplot(nrows,1,i); hold on
     Ftemp=z1(F{j}(tvec_o))*maxn;
     Ftemp=Ftemp-mean(Ftemp);
-    hold on
-    stem(spt{j},n_t{j}(spt{j}),'Marker','+','MarkerSize',ms,'LineStyle','none','MarkerFaceColor',gray,'MarkerEdgeColor',gray)
-    plot(zeros(V.T,1),'w')
-    plot(tvec_o,Ftemp,'-k','LineWidth',lw);
-    ylab=ylabel([{'fluorescence'}; {'(dF/F)      '}],'Interpreter',inter,'FontSize',fs);
-    set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
     maxF=max(Ftemp);
     minF=min(Ftemp);
-    set(gca,'YTick',[floor(minF):ceil(maxF)],'YTickLabel',[floor(minF):ceil(maxF)])
+    miny=min(minF,floor(minF)/2);
+    maxy=min(maxF,ceil(maxF)/2);
+    hold on
+    stem(spt{j},n_t{j}(spt{j})*(maxF),'Marker','+','MarkerSize',ms,'LineStyle','none','MarkerFaceColor',gray,'MarkerEdgeColor',gray)
+    plot(zeros(V.T,1),'w')
+    plot(tvec_o,Ftemp,'-k','LineWidth',lw);
+    ylab=ylabel([{'fluorescence'}; {'(%dF/F)    '}],'Interpreter',inter,'FontSize',fs);
+    set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
+    XTicks=[floor(minF):.5:ceil(maxF)];
+    set(gca,'YTick',XTicks,'YTickLabel',XTicks*100)
     set(gca,'XTick',xticks,'XTickLabel',[])
-    axis([xlims floor(minF) ceil(maxF)])
+    axis([xlims miny max(maxy,maxF)])
 
     % plot voltage data
     i=i+1; h(i)=subplot(nrows,1,i); hold on
     volt{j}(spt{j})=max(volt{j});
     if datasets==13
         stem(V.n,'Marker','none','LineWidth',sw,'Color','k')
-        ylab=ylabel([{'spike'}; {'train'}],'Interpreter',inter,'FontSize',fs);
+        ylab=ylabel([{'spike train'}; {'(# spikes)'}],'Interpreter',inter,'FontSize',fs);
         set(gca,'YTick',[0:maxn],'YTickLabel',[0:maxn])
     else
         plot(z1(volt{j}),'-k','LineWidth',lw);
-        ylab=ylabel([{'voltage'}],'Interpreter',inter,'FontSize',fs);
+        ylab=ylabel([{'voltage'}; {'(mV)  '}],'Interpreter',inter,'FontSize',fs);
         set(gca,'YTick',[0:maxn],'YTickLabel',round([min(volt{j}) max(volt{j})]))
     end
     set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
@@ -201,9 +204,13 @@ for j=datasets
         stem(spt{j},n_t{j}(spt{j}),'Marker','+','MarkerSize',ms,'LineStyle','none','MarkerFaceColor',gray,'MarkerEdgeColor',gray)
         axis([xlims floor(min(n(tvec_o))) max(n(tvec_o))])
         hold off,
-        ylab=ylabel([{char(names(k))}; {'filter'}],'Interpreter',inter,'FontSize',fs);
+        if strcmp(char(names(k)),'fast')
+        ylab=ylabel([[char(names(k)) ' filter']; {'(a.u.)   '}],'Interpreter',inter,'FontSize',fs);            
+        else
+        ylab=ylabel([[char(names(k)) ' filter']; {'(a.u.)     '}],'Interpreter',inter,'FontSize',fs);
+        end
         set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
-        set(gca,'YTick',[floor(min(n)):maxn],'YTickLabel',[floor(min(n)):maxn])
+        set(gca,'YTick',[floor(min(n)):ceil(maxn)],'YTickLabel',[floor(min(n)):ceil(maxn)])
         set(gca,'XTick',xticks,'XTickLabel',[])
         box off
     end

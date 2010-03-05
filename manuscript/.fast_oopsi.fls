@@ -114,9 +114,8 @@ INPUT /Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_burst12.pdf
 INPUT /Users/joshyv/Research/oopsi/fast-oopsi/figs/stats_data.pdf
 INPUT /Users/joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf
 INPUT /Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_smc_vitro12.pdf
-INPUT /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_background.pdf
-INPUT /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_inf.pdf
-INPUT /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_multi_learn.pdf
+INPUT /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_inf.pdf
+INPUT /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_learn_multi.pdf
 INPUT /opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 INPUT /opt/local/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 INPUT /opt/local/share/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm

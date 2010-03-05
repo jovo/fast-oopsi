@@ -16,14 +16,18 @@ V.datasets  = 13;
 V.filters   = [1.5 4.5];
 V.name      = 'fast_wiener_learn';
 V.save      = 1;
-
+V.T         = 1000;
+V.xlims     = [1 800];
+V.dt        = 1/60;
 P.lam       = 1;
-P.sig       = 0.14;
+P.sig       = 0.4;
+P.gam       = (1-V.dt/1);
 
 MakeFigs(V,P);
 
 %% vitro inference and learning (ie, params are not assumed known)
 
+clear, clc
 V.datasets  = 4;
 V.filters   = [1.5 4.5];
 V.name      = 'fast_wiener_vitro';

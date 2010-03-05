@@ -125,9 +125,9 @@ end
 
 if nargin < 3,          P       = struct;   end
 if ~isfield(P,'b'),     P.b     = median(F);end
-if ~isfield(P,'sig'),   P.sig   = mad(F,1)*1.4826; end  % initialized
-if ~isfield(P,'gam'),   P.gam   = 1-V.dt/1; end
-if ~isfield(P,'lam'),   P.lam   = 10;       end
+if ~isfield(P,'sig'),   P.sig   = mean(mad(F',1)*1.4826); end  % initialized
+if ~isfield(P,'gam'),   P.gam   = (1-V.dt/1)*ones(V.Ncells,1); end
+if ~isfield(P,'lam'),   P.lam   = 10*ones(V.Ncells,1);       end
 if ~isfield(P,'a'),     P.a     = 1;        end
 
 %% define some stuff needed for est_MAP function
@@ -211,7 +211,7 @@ end
 V.fast_time = cputime-starttime;                % time to run code
 V           = orderfields(V);                   % order fields alphabetically to they are easier to read
 P_best      = orderfields(P_best);
-n_best      = n_best/max(n_best);
+n_best      = n_best./repmat(max(n_best),V.T,1);
 
 %% fast filter function
     function [n C post] = est_MAP(F,P)
@@ -234,11 +234,11 @@ n_best      = n_best/max(n_best);
         if V.fast_poiss==1
             suma    = sum(P.a);                 % for grad
         else
-            e       = 1/(2*P.sig^2);            % scale of variance
-            aF      = F'*P.a;                   % for grad
             M(d1)   = -repmat(P.gam,V.T-1,1);   % matrix transforming calcium into spikes, ie n=M*C
+            ba      = P.a'*b; ba=ba(:);         % for grad
             aa      = repmat(diag(P.a'*P.a),V.T,1);% for grad
-            ba      = b'*P.a;                   % for grad
+            aF      = P.a'*F; aF=aF(:);         % for grad
+            e       = 1/(2*P.sig^2);            % scale of variance
             H1(d0)  = 2*e*aa;                   % for Hess
         end
         lnprior     = llam.*sum(M,2);            % for grad
@@ -333,32 +333,33 @@ n_best      = n_best/max(n_best);
                 CC      = C;
             end
 
-            % update spatial filter and baseline
-            CC = CC + b';
-            if V.est_a==1
-                for ii=1:V.Npixels
-                    Y   = F(ii,:)';
-                    P.a(ii,:) = CC\Y;
-                end
-            end
-            if V.est_b==1
-                for jj=1:V.Ncells
-                    P.b(jj) = mean(mean(F./repmat(P.a(:,jj),1,V.T)-repmat(C(:,jj)',V.Npixels,1)));
-                end
-                P.b(P.b<0)=0;
-            end
-            b       = repmat(P.b,V.T,1)';
-            D       = F-P.a*(reshape(C,V.Ncells,V.T)+b);
+            % update spatial filter and baseline (for when P.b is a scalar
+%             CC = CC + b';
+%             if V.est_a==1
+%                 for ii=1:V.Npixels
+%                     Y   = F(ii,:)';
+%                     P.a(ii,:) = CC\Y;
+%                 end
+%             end
+%             if V.est_b==1
+%                 for jj=1:V.Ncells
+%                     P.b(jj) = mean(mean(F./repmat(P.a(:,jj),1,V.T)-repmat(C(:,jj)',V.Npixels,1)));
+%                 end
+%                 P.b(P.b<0)=0;
+%             end
+%             b       = repmat(P.b,V.T,1)';
+%             D       = F-P.a*(reshape(C,V.Ncells,V.T)+b);
 
-%             A = [C -1+Z(1:V.T)];
-%             X = A\F;
-%             
-%             P.a = X(1,:);
-%             P.b = X(2,:);
-%             
-%             D       = F-P.a*(reshape(C,V.Ncells,V.T)) - P.b;
+            A = [CC -1+Z(1:V.T)];
+            X = A\F';
+            
+            P.a = X(1:V.Ncells,:)';
+            P.b = X(end,:)';
+            b   = repmat(P.b,1,V.T);
 
-            mse     = D(:)'*D(:);
+            D   = F-P.a*(reshape(C,V.Ncells,V.T)) - b;
+
+            mse = D(:)'*D(:);
         end
 
         if V.est_a==0 && V.est_b==0 && (V.est_sig==1 || V.est_lam==1),
@@ -389,7 +390,7 @@ n_best      = n_best/max(n_best);
             if V.Npixels>1                                     % plot spatial filter
                 figure(FigNum), nrows=V.Ncells;
                 for j=1:V.Ncells, subplot(1,nrows,j),
-                    imagesc(reshape(P.a(:,j),V.h,V.w)),
+                    imagesc(reshape(P.a(:,j),V.w,V.h)),
                     title('a')
                 end
             end
