@@ -4,13 +4,13 @@ clear all; close all; clc;
 fname = 'stats_data';
 
 % change to script directory
-%cd ~/Research/oopsi/fast-oopsi/code/scripts/
-cd   /Work/fast-oopsi/code/scripts/
+cd ~/Research/oopsi/fast-oopsi/code/scripts/
+% cd   /Work/fast-oopsi/code/scripts/
 
 % load datasets
 %dataset = load('C:\Users\Tim\Desktop\local data\various\vogelstein\Imaging-SNR-Data.mat');
-dataset  = load('/Work/local-oopsi/Imaging-SNR-Data.mat');
-%dataset = load('~/Research/oopsi/meta-oopsi/data/rafa/adam/2008/Imaging-SNR-Data.mat');
+% dataset  = load('/Work/local-oopsi/Imaging-SNR-Data.mat');
+dataset = load('~/Research/oopsi/meta-oopsi/data/rafa/adam/2008/Imaging-SNR-Data.mat');
 
 % this dataset has a really crazy baseline and so it isn't fair to use
 dataset = rmfield(dataset,'ExpDat20080801b4');
@@ -28,8 +28,8 @@ V.fast_plot     = 0;        % whether to generate foopsi plots
 V.save          = 0;        % whether to save results
 P.a       = 1;              % scale
 P.b       = 0;              % bias
-dPlot     = 1;              % generate foopsi/wiener output plot
-roc       = 0;              % compute roc curves
+dPlot     = 0;              % generate foopsi/wiener output plot
+roc       = 1;              % compute roc curves
 ephysRate = 10000;          % electrophysiology sampling rate
 alpha     = 0.6;            % spike detection threshold
 jitters   = 1:10;
@@ -77,6 +77,7 @@ for j=1:length(names)
 
     times = zeros(length(V.F),1);
     times(V.n) = 1; V.n = times;
+    TRUE{j}=V.n;
     % plot spike times
     if dPlot
         if column == 0, break, end;
@@ -335,3 +336,108 @@ if roc
     xlabel([])
     ylabel('mean-squared error')
 end
+
+%% cc of # of spikes
+
+clear su cc
+ts=0:.1:1;
+for t=1:length(ts);
+    for j=1:length(TRUE)
+        temp=FAST{j}/max(FAST{j});
+        temp(temp<ts(t))=0;
+        su.fast(j,t)=sum(temp);
+        temp0=corrcoef(TRUE{j},temp);
+        cc.fast(j,t)=temp0(2);
+
+        su.true(j,t)=sum(TRUE{j});
+
+        temp=WIENER{j}/max(WIENER{j});
+        temp(temp<ts(t))=0;
+        su.wien(j,t)=sum(temp);
+        temp0=corrcoef(TRUE{j},temp);
+        cc.wien(j,t)=temp0(2);
+    end
+end
+
+figure(3); clf, hold on
+plot(su.fast,su.true,'b.')
+plot(su.wien,su.true,'r.')
+hold off
+
+figure(4); clf, hold on
+plot(cc.fast,'b')
+plot(cc.wien,'r')
+hold off
+
+for t=1:length(ts)
+   temp=corrcoef(su.fast(:,t),su.true(:,t));
+   ccc.fast(t)=temp(2);
+   
+   temp=corrcoef(su.wien(:,t),su.true(:,t));
+   ccc.wien(t)=temp(2);
+end
+
+figure(5); clf, hold on
+plot(ccc.fast,'b')
+plot(ccc.wien,'r')
+hold off
+
+figure(6); clf, hold on
+b = regress(su.fast,su.true);
+[foo int] = sort(su.fast);
+plot(su.fast(int)/b,su.true(int),'b-')
+b = regress(su.wien,su.true);
+[foo int] = sort(su.wien);
+plot(su.wien(int)/b,su.true(int),'r-')
+hold off
+clear su cc
+ts=0:.1:1;
+for t=1:length(ts);
+    for j=1:length(TRUE)
+        temp=FAST{j}/max(FAST{j});
+        temp(temp<ts(t))=0;
+        su.fast(j,t)=sum(temp);
+        temp0=corrcoef(TRUE{j},temp);
+        cc.fast(j,t)=temp0(2);
+
+        su.true(j,t)=sum(TRUE{j});
+
+        temp=WIENER{j}/max(WIENER{j});
+        temp(temp<ts(t))=0;
+        su.wien(j,t)=sum(temp);
+        temp0=corrcoef(TRUE{j},temp);
+        cc.wien(j,t)=temp0(2);
+    end
+end
+
+figure(3); clf, hold on
+plot(su.fast,su.true,'b.')
+plot(su.wien,su.true,'r.')
+hold off
+
+figure(4); clf, hold on
+plot(cc.fast,'b')
+plot(cc.wien,'r')
+hold off
+
+for t=1:length(ts)
+   temp=corrcoef(su.fast(:,t),su.true(:,t));
+   ccc.fast(t)=temp(2);
+   
+   temp=corrcoef(su.wien(:,t),su.true(:,t));
+   ccc.wien(t)=temp(2);
+end
+
+figure(5); clf, hold on
+plot(ccc.fast,'b')
+plot(ccc.wien,'r')
+hold off
+
+figure(6); clf, hold on
+b = regress(su.fast,su.true);
+[foo int] = sort(su.fast);
+plot(su.fast(int)/b,su.true(int),'b-')
+b = regress(su.wien,su.true);
+[foo int] = sort(su.wien);
+plot(su.wien(int)/b,su.true(int),'r-')
+hold off

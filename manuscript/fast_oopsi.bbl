@@ -120,6 +120,16 @@ L.~Paninski, Y.~Ahmadian, D.~Ferreira, S.~Koyama, K.~R. Rad, M.~Vidne,
   J.~Vogelstein, and W.~Wu, ``A new look at state-space models for neural
   data.,'' {\em J Comput Neurosci}, Aug 2009.
 
+\bibitem{WuGallant06}
+M.~C.-K. Wu, S.~V. David, and J.~L. Gallant, ``Complete functional
+  characterization of sensory neurons by system identification,'' {\em Annual
+  Review of Neuroscience}, vol.~29, pp.~477--505, 2006.
+
+\bibitem{Seeger08}
+M.~Seeger, ``{Bayesian inference and optimal design for the sparse linear
+  model},'' {\em The Journal of Machine Learning Research}, vol.~9,
+  pp.~759--813, 2008.
+
 \bibitem{CONV04}
 S.~Boyd and L.~Vandenberghe, {\em Convex Optimization}.
 \newblock Oxford University Press, 2004.
@@ -128,6 +138,11 @@ S.~Boyd and L.~Vandenberghe, {\em Convex Optimization}.
 W.~Press, S.~Teukolsky, W.~Vetterling, and B.~Flannery, {\em Numerical recipes
   in {C}}.
 \newblock Cambridge University Press, 1992.
+
+\bibitem{DempsterRubin77}
+A.~Dempster, N.~Laird, and D.~Rubin, ``{Maximum likelihood from incomplete data
+  via the EM algorithm},'' {\em Journal of the Royal Statistical Society.
+  Series B (Methodological)}, vol.~39, no.~1, pp.~1--38, 1977.
 
 \bibitem{YaksiFriedrich06}
 E.~Yaksi and R.~W. Friedrich, ``Reconstruction of firing rate changes across
@@ -142,20 +157,6 @@ T.~A. Pologruto, R.~Yasuda, and K.~Svoboda, ``Monitoring neural activity and
 \bibitem{KassRaftery95}
 R.~Kass and A.~Raftery, ``{Bayes Factors},'' {\em Journal of the American
   Statistical Association}, vol.~90, no.~430, pp.~773--795, 1995.
-
-\bibitem{HornJohnson90}
-R.~Horn and C.~Johnson, {\em {Matrix analysis}}.
-\newblock Cambridge Univ Pr, 1990.
-
-\bibitem{MukamelSchnitzer09}
-E.~A. Mukamel, A.~Nimmerjahn, and M.~J. Schnitzer, ``Automated analysis of
-  cellular signals from large-scale calcium imaging data.,'' {\em Neuron},
-  vol.~63, pp.~747--760, Sep 2009.
-
-\bibitem{RokhlinTygert09}
-V.~Rokhlin, A.~Szlam, and M.~Tygert, ``{A randomized algorithm for principal
-  component analysis},'' {\em SIAM J. Matrix Anal. Appl}, vol.~31,
-  pp.~1100--1124, 2009.
 
 \bibitem{MacLeanYuste05}
 J.~N. MacLean, B.~O. Watson, G.~B. Aaron, and R.~Yuste, ``Internal dynamics
@@ -172,6 +173,11 @@ A.~J. Bell and T.~J. Sejnowski, ``An information-maximisation approach to blind
   separation and blind deconvolution,'' {\em Neural Computation}, vol.~7,
   no.~6, p.~1004, 1995.
 
+\bibitem{MukamelSchnitzer09}
+E.~A. Mukamel, A.~Nimmerjahn, and M.~J. Schnitzer, ``Automated analysis of
+  cellular signals from large-scale calcium imaging data.,'' {\em Neuron},
+  vol.~63, pp.~747--760, Sep 2009.
+
 \bibitem{AndrieuDoucet01}
 C.~Andrieu, {\'E}.~Barat, and A.~Doucet, ``{Bayesian deconvolution of noisy
   filtered point processes},'' {\em IEEE Transactions on Signal Processing},
@@ -182,6 +188,11 @@ Y.~Mishchenko, J.~Vogelstein, and P.~L, ``{A Bayesian approach for inferring
   neuronal connectivity from calcium fluorescent imaging data},'' {\em Annals
   of Applied Statistics}, vol.~in press, 2009.
 
+\bibitem{JouclaPouzat10}
+S.~Joucla, A.~Pippow, P.~Kloppenburg, and C.~Pouzat, ``Quantitative estimation
+  of calcium dynamics from ratiometric measurements: a direct, nonratioing
+  method.,'' {\em J Neurophysiol}, vol.~103, pp.~1130--1144, Feb 2010.
+
 \bibitem{FS81}
 J.~H. Friedman and W.~Stuetzle, ``{Projection Pursuit Regression.},'' {\em J.
   AM. STAT. ASSOC.}, vol.~76, no.~376, pp.~817--823, 1981.
@@ -189,5 +200,27 @@ J.~H. Friedman and W.~Stuetzle, ``{Projection Pursuit Regression.},'' {\em J.
 \bibitem{MallatZhang93}
 S.~Mallat and Z.~Zhang, ``{Matching pursuit with time-frequency dictionaries:
   IEEE Trans},'' {\em Signal Processing}, vol.~41, pp.~3397--3415, 1993.
+
+\bibitem{ZouHastie05}
+H.~Zou and T.~Hastie, ``{Regularization and variable selection via the elastic
+  net},'' {\em Journal of the Royal Statistical Society. Series B, Statistical
+  Methodology}, vol.~67, no.~2, p.~301, 2005.
+
+\bibitem{GrosenickSmith09}
+L.~Grosenick, T.~Anderson, and S.~Smith, ``{Elastic source selection for in
+  vivo imaging of neuronal ensembles},'' pp.~1263--1266, 2009.
+
+\bibitem{AbramowitzStegun64}
+M.~Abramowitz and I.~Stegun, {\em {Handbook of mathematical functions with
+  formulas, graphs, and mathematical tables}}.
+\newblock Dover publications, 1964.
+
+\bibitem{KoenkerMizera10}
+R.~Koenker and I.~Mizera, ``Quasi-concave density estimation,'' {\em Annals of
+  Statistics}, in presss.
+
+\bibitem{CoverThomas91}
+T.~M. Cover and J.~A. Thomas, {\em Elements of Information Theory}.
+\newblock Wiley Interscience, 1991.
 
 \end{thebibliography}

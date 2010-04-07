@@ -89,6 +89,7 @@ if V.fast_poiss && V.fast_nonlin,
     end
 end
 if ~isfield(V,'fast_iter_max'), V.fast_iter_max=1; end % max # of iterations before convergence
+
 % things that matter if we are iterating to estimate parameters
 if V.fast_iter_max>1;
     if V.fast_poiss || V.fast_nonlin,
@@ -96,13 +97,12 @@ if V.fast_iter_max>1;
         V.fast_iter_max=1;
     end
 
-    if ~isfield(V,'fast_plot'),     V.fast_plot     = 0; end
+    if ~isfield(V,'fast_plot'), V.fast_plot = 0; end
     if V.fast_plot==1
         FigNum = 400;
         if V.Npixels>1, figure(FigNum), clf, end        % figure showing estimated spatial filter
         figure(FigNum+1), clf                           % figure showing estimated spike trains
         if isfield(V,'n'), siz=size(V.n); V.n(V.n==0)=NaN; if siz(1)<siz(2), V.n=V.n'; end; end
-        %         V.n(isnan(V.n))=0;
     end
 
     if ~isfield(V,'est_sig'),   V.est_sig   = 0; end    % whether to estimate sig
@@ -123,32 +123,21 @@ end
 
 %% set default model Parameters
 
-if nargin < 3,          P       = struct;   end
-if ~isfield(P,'b'),     P.b     = median(F);end
-if ~isfield(P,'sig'),   P.sig   = mean(mad(F',1)*1.4826); end  % initialized
-if ~isfield(P,'gam'),   P.gam   = (1-V.dt/1)*ones(V.Ncells,1); end
-if ~isfield(P,'lam'),   P.lam   = 10*ones(V.Ncells,1);       end
-if ~isfield(P,'a'),     P.a     = 1;        end
+if nargin < 3,          P       = struct;                       end
+if ~isfield(P,'b'),     P.b     = median(F);                    end
+if ~isfield(P,'sig'),   P.sig   = mean(mad(F',1)*1.4826);       end
+if ~isfield(P,'gam'),   P.gam   = (1-V.dt/1)*ones(V.Ncells,1);  end
+if ~isfield(P,'lam'),   P.lam   = 10*ones(V.Ncells,1);          end
+if ~isfield(P,'a'),     P.a     = 1;                            end
 
 %% define some stuff needed for est_MAP function
-
-% make sure we have 1 spatial filter per neuron in ROI
-% if V.fast_iter_max>1 && V.est_a==1
-%     siz=size(P.a);
-%     if siz(2)~=V.Ncells
-%         [U,S,VV]=pca_approx(F',V.Ncells);
-%         for j=1:V.Ncells, P.a(:,j)=VV(:,j); end
-%     else
-%         P.a=ones(V.Ncells,1);
-%     end
-% end
 
 % for brevity and expediency
 Z   = zeros(V.Ncells*V.T,1);                    % zero vector
 M   = spdiags([repmat(-P.gam,V.T,1) repmat(Z,1,V.Ncells-1) (1+Z)], -V.Ncells:0,V.Ncells*V.T,V.Ncells*V.T);  % matrix transforming calcium into spikes, ie n=M*C
 I   = speye(V.Ncells*V.T);                      % create out here cuz it must be reused
 H1  = I;                                        % initialize memory for Hessian matrix
-H2  = I;                                        % initialize memory for Hessian matrix
+H2  = I;                                        % initialize memory for other part of Hessian matrix
 d0  = 1:V.Ncells*V.T+1:(V.Ncells*V.T)^2;        % index of diagonal elements of TxT matrices
 d1  = 1+V.Ncells:V.Ncells*V.T+1:(V.Ncells*V.T)*(V.Ncells*(V.T-1)); % index of off-diagonal elements of TxT matrices
 posts = Z(1:V.fast_iter_max);                   % initialize likelihood
@@ -191,7 +180,7 @@ while conv == 0
     P               = est_params(n,C,F,P,b);    % update parameters based on previous iteration
     [n C posts(i)]  = est_MAP(F,P);             % update inferred spike train based on new parameters
 
-    if posts(i)>post_max || V.fast_ignore_post==1                       % if this is the best one, keep n and P
+    if posts(i)>post_max || V.fast_ignore_post==1% if this is the best one, keep n and P
         n_best  = n;                            % keep n
         P_best  = P;                            % keep P
         i_best  = i;                            % keep track of which was best
@@ -332,31 +321,20 @@ n_best      = n_best./repmat(max(n_best),V.T,1);
             else
                 CC      = C;
             end
-
-            % update spatial filter and baseline (for when P.b is a scalar
-%             CC = CC + b';
-%             if V.est_a==1
-%                 for ii=1:V.Npixels
-%                     Y   = F(ii,:)';
-%                     P.a(ii,:) = CC\Y;
-%                 end
-%             end
-%             if V.est_b==1
-%                 for jj=1:V.Ncells
-%                     P.b(jj) = mean(mean(F./repmat(P.a(:,jj),1,V.T)-repmat(C(:,jj)',V.Npixels,1)));
-%                 end
-%                 P.b(P.b<0)=0;
-%             end
-%             b       = repmat(P.b,V.T,1)';
-%             D       = F-P.a*(reshape(C,V.Ncells,V.T)+b);
-
-            A = [CC -1+Z(1:V.T)];
+        
+            if V.est_b==1
+                A = [CC -1+Z(1:V.T)];
+            else
+                A=CC;
+            end
             X = A\F';
             
             P.a = X(1:V.Ncells,:)';
-            P.b = X(end,:)';
-            b   = repmat(P.b,1,V.T);
-
+            if V.est_b==1
+                P.b = X(end,:)';
+                b   = repmat(P.b,1,V.T);
+            end
+            
             D   = F-P.a*(reshape(C,V.Ncells,V.T)) - b;
 
             mse = D(:)'*D(:);

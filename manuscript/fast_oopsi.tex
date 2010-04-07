@@ -1,13 +1,13 @@
 %\documentclass[12pt]{article}
 % \input{/Work/jovo-latex/latex_paper.tex} 
-\input{/Users/joshyv/Research/misc/latex_paper.tex} 
+\input{/Users/joshyv/Research/meta/latex_paper.tex} 
 \usepackage{multicol}
 \usepackage{hyperref}
 \usepackage{algorithmic}
 \usepackage{algorithm}
 % \usepackage{algpseudocode}
 \newcommand{\zzz}{z}
-\newcommand{\az}{\argmax_{\bM \bC \geq \ve{0}}}
+\newcommand{\az}{\argmax_{\mb{M} \mb{C} \geq_\odot \ve{0}}}
 \newcommand{\anx}{\argmax_{n_t \in \mathbb{N}_0 \forall t}}
 \newcommand{\foopsi}{fast }
 
@@ -24,7 +24,7 @@
 \maketitle
 % \tableofcontents
 \begin{abstract}
-Fluorescent calcium indicators are becoming increasingly popular as a means for observing the spiking activity of large neuronal populations. Unfortunately, extracting the spike train for each neuron from a raw fluorescence movie is a nontrivial problem.  This work presents a fast non-negative deconvolution filter to infer the approximately most likely spike train for each neuron, given the fluorescence observations. This algorithm outperforms optimal linear deconvolution (Wiener filtering) on both simulated and biological data. The performance gains come from restricting the inferred spike trains to be positive (using an interior-point method), unlike the Wiener filter.  The algorithm is fast enough that even when imaging over 100 neurons, inference can be performed on the set of all observed traces faster than real-time.  Performing optimal spatial filtering on the images further refines the estimates.  Importantly, all the parameters required to perform the inference can be estimated using only the fluorescence data, obviating the need to perform joint electrophysiological and imaging calibration experiments.
+Fluorescent calcium indicators are becoming increasingly popular as a means for observing the spiking activity of large neuronal populations. Unfortunately, extracting the spike train for each neuron from a raw fluorescence movie is a nontrivial problem.  This work presents a fast non-negative deconvolution filter to infer the approximately most likely spike train for each neuron, given the fluorescence observations. This algorithm outperforms optimal linear deconvolution (Wiener filtering) on both simulated and biological data. The performance gains come from restricting the inferred spike trains to be positive (using an interior-point method), unlike the Wiener filter.  The algorithm is fast enough that even when imaging over 100 neurons simultaneously, inference can be performed on the set of all observed traces faster than real-time.  Performing optimal spatial filtering on the images further refines the estimates.  Importantly, all the parameters required to perform the inference can be estimated using only the fluorescence data, obviating the need to perform joint electrophysiological and imaging calibration experiments. Code is freely available for download from \url{http://www.optophysiology.org}. 
 \end{abstract}
 
 \input{body}
@@ -39,7 +39,7 @@ The authors would like to express appreciation for helpful discussions with Vinc
 \input{appendix}
 \clearpage
 %\subparagraph*{References}
-\bibliography{/Users/joshyv/Research/misc/biblist} 
+\bibliography{/Users/joshyv/Research/meta/biblist} 
 % \bibliography{/Work/jovo-latex/biblist}
 \addcontentsline{toc}{section}{References}
 %\bibliography{Science}

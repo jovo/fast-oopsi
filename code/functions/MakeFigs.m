@@ -77,14 +77,14 @@ for i=datasets
                 %                 V.T=min(length(F{i}),1000);
                 [fast smc] = run_oopsi(F{i}(1:V.T),V,P);
                 V.fast_iter_max = 1;
-                inf{i}.fast = fast.n;
-                inf{i}.smc = smc.E.nbar;
+                inf{i}.fast = fast;
+                inf{i}.smc = smc;
                 PP = fast.P;
             case 1 % fast with params
                 V.fast_poiss=0;
                 V.fast_nonlin=0;
                 V.test=0;
-                [inf{i}.fast PP] = fast_oopsi(F{i},V,P);
+                [inf{i}.fast.n inf{i}.fast.P] = fast_oopsi(F{i},V,P);
             case 1.1 
                 V.fast_poiss=0;
                 V.fast_nonlin=0;
@@ -95,7 +95,7 @@ for i=datasets
                 V.fast_nonlin=0;
                 V.b_est=0;
                 V.sig_est=1;
-                [inf{i}.fast PP] = fast_oopsi(F{i},V);
+                [inf{i}.fast.n inf{i}.fast.P] = fast_oopsi(F{i},V);
                 V.fast_iter_max=1;
             case 2 % nonlin
                 V.fast_poiss=0;
@@ -115,12 +115,15 @@ for i=datasets
             case 4 % Wiener known params
                 PP.lam = P.sig;
 %                 PP.lam = sum(inf{i}.fast/max(inf{i}.fast))/(V.T*V.dt);
-                PP.sig = PP.sig;
-                inf{i}.Wiener = wiener_oopsi(F{i},V.dt,PP);
+                PP=inf{i}.fast.P;
+%                 PP.sig = inf{i}.fast.P.sig;
+%                 PP.gam = inf{i}.fast.P.gam
+                [inf{i}.Wiener.n inf{i}.Wiener.P] = wiener_oopsi(F{i},V.dt,PP);
             case 4.5 % Wiener unknown params
+                PP = inf{i}.fast.P;
                 PP.sig = mad(F{i},1)*1.4826;
                 PP.lam = PP.sig;
-                inf{i}.Wiener = wiener_oopsi(F{i},V.dt,PP);
+                [inf{i}.Wiener.n inf{i}.Wiener.P] = wiener_oopsi(F{i},V.dt,PP);
             case 5 % smc
                 [M P V] = smc_oopsi(F{i},V,P);
                 inf{i}.smc = M.nbar;
@@ -192,7 +195,7 @@ for j=datasets
 
     for k=1:length(names)
         i=i+1; h(i)=subplot(nrows,1,i); hold on,
-        n = inf{j}.(char(names(k)));
+        n = inf{j}.(char(names(k))).n;
         n = n/max(abs(n(tvec_o)))*maxn;
         
         nneg=find(n<0);

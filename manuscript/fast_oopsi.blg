@@ -1,45 +1,47 @@
 This is BibTeX, Version 0.99c (Web2C 7.5.4)
 The top-level auxiliary file: fast_oopsi.aux
 The style file: ieeetr.bst
-Database file #1: /Users/joshyv/Research/misc/biblist.bib
-You've used 38 entries,
+Database file #1: /Users/joshyv/Research/meta/biblist.bib
+Warning--empty journal in GrosenickSmith09
+You've used 45 entries,
             1876 wiz_defined-function locations,
-            767 strings with 12471 characters,
-and the built_in function-call counts, 12094 in all, are:
-= -- 1239
-> -- 510
+            817 strings with 14057 characters,
+and the built_in function-call counts, 13949 in all, are:
+= -- 1432
+> -- 574
 < -- 0
-+ -- 183
-- -- 145
-* -- 913
-:= -- 1688
-add.period$ -- 41
-call.type$ -- 38
-change.case$ -- 34
++ -- 207
+- -- 162
+* -- 1038
+:= -- 1944
+add.period$ -- 49
+call.type$ -- 45
+change.case$ -- 40
 chr.to.int$ -- 0
-cite$ -- 38
-duplicate$ -- 578
-empty$ -- 1015
-format.name$ -- 145
-if$ -- 2920
+cite$ -- 46
+duplicate$ -- 676
+empty$ -- 1189
+format.name$ -- 162
+if$ -- 3378
 int.to.chr$ -- 0
-int.to.str$ -- 38
-missing$ -- 40
-newline$ -- 120
-num.names$ -- 38
-pop$ -- 72
+int.to.str$ -- 45
+missing$ -- 48
+newline$ -- 142
+num.names$ -- 45
+pop$ -- 93
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 487
+skip$ -- 556
 stack$ -- 0
-substring$ -- 973
-swap$ -- 297
+substring$ -- 1102
+swap$ -- 339
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 0
-while$ -- 125
-width$ -- 40
-write$ -- 376
+warning$ -- 1
+while$ -- 145
+width$ -- 47
+write$ -- 443
+(There was 1 warning)
