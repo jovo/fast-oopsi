@@ -2,7 +2,7 @@
 \BOOKMARK [1][-]{section.2}{Methods}{}
 \BOOKMARK [2][-]{subsection.2.1}{Data driven generative model}{section.2}
 \BOOKMARK [2][-]{subsection.2.2}{Goal}{section.2}
-\BOOKMARK [2][-]{subsection.2.3}{Inferring the most likely spike train, given a fluorescence trace}{section.2}
+\BOOKMARK [2][-]{subsection.2.3}{Inferring the approximately most likely spike train, given a fluorescence trace}{section.2}
 \BOOKMARK [2][-]{subsection.2.4}{Learning the parameters}{section.2}
 \BOOKMARK [3][-]{subsubsection.2.4.1}{Initializing the parameters}{subsection.2.4}
 \BOOKMARK [3][-]{subsubsection.2.4.2}{Estimating the parameters given n"0362n}{subsection.2.4}

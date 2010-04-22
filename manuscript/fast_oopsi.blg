@@ -2,46 +2,48 @@ This is BibTeX, Version 0.99c (Web2C 7.5.4)
 The top-level auxiliary file: fast_oopsi.aux
 The style file: ieeetr.bst
 Database file #1: /Users/joshyv/Research/meta/biblist.bib
+Too many commas in name 1 of "Benjamin F Grewe, Dominik Langer, Hansjörg Kasper, Björn M Kampa and Fritjof Helmchen" for entry GreweHelmchen10
+while executing---line 963 of file ieeetr.bst
 Warning--empty journal in GrosenickSmith09
-You've used 45 entries,
+You've used 47 entries,
             1876 wiz_defined-function locations,
-            817 strings with 14057 characters,
-and the built_in function-call counts, 13949 in all, are:
-= -- 1432
-> -- 574
+            831 strings with 14429 characters,
+and the built_in function-call counts, 14652 in all, are:
+= -- 1502
+> -- 608
 < -- 0
-+ -- 207
-- -- 162
-* -- 1038
-:= -- 1944
-add.period$ -- 49
-call.type$ -- 45
-change.case$ -- 40
++ -- 219
+- -- 172
+* -- 1096
+:= -- 2044
+add.period$ -- 50
+call.type$ -- 47
+change.case$ -- 43
 chr.to.int$ -- 0
-cite$ -- 46
-duplicate$ -- 676
-empty$ -- 1189
-format.name$ -- 162
-if$ -- 3378
+cite$ -- 48
+duplicate$ -- 713
+empty$ -- 1240
+format.name$ -- 172
+if$ -- 3546
 int.to.chr$ -- 0
-int.to.str$ -- 45
-missing$ -- 48
-newline$ -- 142
-num.names$ -- 45
+int.to.str$ -- 47
+missing$ -- 49
+newline$ -- 147
+num.names$ -- 47
 pop$ -- 93
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 556
+skip$ -- 590
 stack$ -- 0
-substring$ -- 1102
-swap$ -- 339
+substring$ -- 1152
+swap$ -- 361
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 1
-while$ -- 145
-width$ -- 47
-write$ -- 443
-(There was 1 warning)
+while$ -- 151
+width$ -- 49
+write$ -- 464
+(There was 1 error message)

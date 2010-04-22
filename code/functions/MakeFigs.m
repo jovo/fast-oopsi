@@ -91,13 +91,14 @@ for i=datasets
                 V.test=1;
                 [inf{i}.fast1 PP] = fast_oopsi(F{i},V,P);                
             case 1.5 % fast est params
+                V.fast_iter_max=1;
+                V.fast_plot=1;
                 V.fast_poiss=0;
                 V.fast_nonlin=0;
                 V.b_est=0;
                 V.sig_est=1;
                 [inf{i}.fast.n inf{i}.fast.P] = fast_oopsi(F{i},V);
-                V.fast_iter_max=1;
-            case 2 % nonlin
+            case 2 % nonlin                
                 V.fast_poiss=0;
                 V.fast_nonlin=1;
                 V.gauss_n = inf{i}.fast + 0.0001;
@@ -135,9 +136,9 @@ end
 
 
 %%
-% datasets=12;
-% V.name='smc_initb12';
-% load(['../../data/' V.name])
+datasets=12;
+V.name=['fast_smc_vitro' num2str(datasets)];
+load(['../../data/' V.name])
 
 for j=datasets
     V.name_fig = ['../../figs/' V.name];                                 % filename for figure
@@ -145,12 +146,12 @@ for j=datasets
     V.T     = length(F{j});
     names   = fieldnames(inf{j});
     nrows   = 2 + length(names);
-    gray    = 0.4*[1 1 1];            % define gray color
+    gray    = 0.4*[1 1 1];              % define gray color
     inter   = 'tex';                    % interpreter for axis labels
     fs      = 14;                       % font size
     ms      = 5;                        % marker size for real spike
     sw      = 2;                        % spike width
-    lw      = 2;                        % line width
+    lw      = 1;                        % line width
     if ~isfield(V,'xlims') xlims   = [200 V.T]; else xlims = V.xlims; end
     xticks  = xlims(1):1/V.dt:xlims(2);             % XTick positions
     skip    = round(length(xticks)/5);

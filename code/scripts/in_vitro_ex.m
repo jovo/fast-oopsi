@@ -104,29 +104,50 @@ Pl = PlotParams;
 roi2=Im.roi';
 roi_edge2=Im.roi_edge';
 
-ROI_im      = Im.MeanFrame+max(Im.MeanFrame)*roi_edge2(:);
+ROI_im      = Im.MeanFrame+max(Im.MeanFrame)*roi_edge2(:)/2;
 weighted_ROI= Im.MeanFrame.*roi2(:);
 
-figure(2); clf,
-subplot(2,2,1:2);
+fig=figure(2); clf,
+height=0.4;
+width=Im.h/Im.w*height;
+left = (1-width)/2;
+bottom=(.5-height)/2+.5;
+subplot('position',[left bottom width height]);
 imagesc(reshape(ROI_im,Im.h,Im.w)')
+colormap('gray')
+title('mean frame','FontSize',Pl.fs)
 
 subplot(2,2,3); hold all
 F=weighted_ROI'*Im.DataMat(:,1:end)/sum(weighted_ROI(:)); F=z1(F(2:end))';
 plot(F+1,'k','LineWidth',Pl.lw);
-x=fmincon(@(x) sum((filter(1,[1 -x(1)],x(2)*Ep.n(2:end,1))+x(3) - F).^2),[.99 1 .2],[],[],[],[],[0 0 -1], [1 1 1])
+% x=fmincon(@(x) sum((filter(1,[1 -x(1)],x(2)*Ep.n(2:end,1))+x(3) - F).^2),[.99 1 .2],[],[],[],[],[0 0 -1], [1 1 1])
 C = filter(1,[1 -x(1)],x(2)*Ep.n(:,1))+x(3);               % calcium concentration
-plot(C+1,'r','LineWidth',Pl.lw);
+plot(C+1,'color',0.75*[1 1 1],'LineWidth',Pl.lw);
 bar(Ep.n(:,1))
 axis('tight')
+xlabel('time (sec)','FontSize',Pl.fs)
+set(gca,'XTick',[200:200:2000],'XTickLabel',[3 6 9 12 15],'YTickLabel',[])
+ylab=ylabel([{'F'}; {''}; {''}; {''}; {''}; {''}; {'n'}],'FontSize',Pl.fs);
+set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
 
 subplot(2,2,4); hold all
 resid=F-C(2:end);
 [n,xout] = hist(resid,20);
 normn=n/sum(n);
-plot(xout,normn,'k','LineWidth',Pl.lw)
+plot(xout,normn,'--k','LineWidth',Pl.lw)
+ylabel('probability','FontSize',Pl.fs)
+xlabel('residual error','FontSize',Pl.fs)
 
 [muhat,sigmahat] = normfit(resid);
 gauss=1/sqrt(2*pi*sigmahat^2)*exp(- (linspace(min(xout),max(xout),length(xout)) - muhat).^2/(2*sigmahat^2));
-plot(xout,gauss/sum(gauss),'Color',Pl.gray,'LineWidth',Pl.lw)
+plot(xout,gauss/sum(gauss),'-k','LineWidth',Pl.lw)
 axis([-.4 .4 0 max(normn)])
+
+if Vsave==1 % print fig
+    wh=[7 6];   %width and height
+    set(gcf,'PaperSize',wh,'PaperPosition',[0 0 wh],'Color','w');
+    figname=['../../figs/' fname];
+    print('-depsc',figname)
+    print('-dpdf',figname)
+    saveas(fig,figname)
+end

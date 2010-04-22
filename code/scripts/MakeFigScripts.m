@@ -22,7 +22,8 @@ V.dt        = 1/60;
 P.lam       = 1;
 P.sig       = 0.4;
 P.gam       = (1-V.dt/1);
-
+V.fast_iter_max = 3;
+V.fast_plot=1;
 MakeFigs(V,P);
 
 %% vitro inference and learning (ie, params are not assumed known)
@@ -30,7 +31,7 @@ MakeFigs(V,P);
 clear, clc
 V.datasets  = 4;
 V.filters   = [1.5 4.5];
-V.name      = 'fast_wiener_vitro';
+V.name      = 'fast_wiener_vitro';j
 V.save      = 1;
 
 MakeFigs(V);

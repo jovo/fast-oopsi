@@ -1,4 +1,4 @@
-This is pdfeTeXk, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  6 APR 2010 10:40
+This is pdfeTeXk, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2009.4.16)  22 APR 2010 00:03
 entering extended mode
  file:line:error style messages enabled.
 **fast_oopsi.tex
@@ -387,12 +387,16 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 24.
 
 </Users/joshyv/Research/oopsi/fast-oopsi/figs/in_vitro_ex.pdf, id=186, 505.89pt
- x 361.35pt>
+ x 433.62pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/in_vitro_ex.pdf Graphic file
  (type pdf)
 
-<use /Users/joshyv/Research/oopsi/fast-oopsi/figs/in_vitro_ex.pdf> [2 </Users/j
-oshyv/Research/oopsi/fast-oopsi/figs/in_vitro_ex.pdf>] [3] [4] [5]
+<use /Users/joshyv/Research/oopsi/fast-oopsi/figs/in_vitro_ex.pdf>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[2] [3 </Users/joshyv/Research/oopsi/fast-oopsi/figs/in_vitro_ex.pdf>] [4]
+[5]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 169.
 
@@ -449,7 +453,7 @@ Package hyperref Warning: Token not allowed in a PDFDocEncoded string,
 (hyperref)                removing `math shift' on input line 173.
 
 [6] [7] [8] [9]
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_inf13.pdf, id=397, 50
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_inf13.pdf, id=400, 50
 5.89pt x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_inf13.pdf Graphi
 c file (type pdf)
@@ -459,7 +463,7 @@ c file (type pdf)
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/stats.pdf, id=398, 578.16pt x 433
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/stats.pdf, id=401, 578.16pt x 433
 .62pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/stats.pdf Graphic file (type
  pdf)
@@ -467,8 +471,8 @@ File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/stats.pdf Graphic file (type
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_learn13.pdf, id=399, 
+[10]
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_learn13.pdf, id=415, 
 505.89pt x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_learn13.pdf Grap
 hic file (type pdf)
@@ -477,45 +481,45 @@ hic file (type pdf)
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[10]
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_vitro4.pdf, id=418, 5
+
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_vitro4.pdf, id=416, 5
 05.89pt x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_vitro4.pdf Graph
 ic file (type pdf)
 
 <use /Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_vitro4.pdf>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_burst12.pdf, id=419, 
-505.89pt x 361.35pt>
-File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_burst12.pdf Grap
-hic file (type pdf)
-
-<use /Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_burst12.pdf>
 [11 </Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_inf13.pdf>]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf, id=431, 505.89pt x 144.5
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_burst12.pdf, id=432, 
+505.89pt x 361.35pt>
+File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_burst12.pdf Grap
+hic file (type pdf)
+
+<use /Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_burst12.pdf>
+[12 </Users/joshyv/Research/oopsi/fast-oopsi/figs/stats.pdf>]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf, id=443, 505.89pt x 144.5
 4pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf Graphic file (type p
 df)
  <use /Users/joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf>
-Underfull \hbox (badness 10000) in paragraph at lines 391--393
+Underfull \hbox (badness 10000) in paragraph at lines 394--396
 
  []
 
-[12 </Users/joshyv/Research/oopsi/fast-oopsi/figs/stats.pdf>]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [13 </Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_learn13.pdf>]
 [14 </Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_vitro4.pdf>]
 [15 </Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_burst12.pdf>]
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_smc_vitro12.pdf, id=491, 505
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_smc_vitro12.pdf, id=495, 505
 .89pt x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_smc_vitro12.pdf Graphic
  file (type pdf)
@@ -524,8 +528,8 @@ File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_smc_vitro12.pdf Graphic
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_inf.pdf, id=492, 722.7pt 
+[16 </Users/joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf>]
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_inf.pdf, id=509, 722.7pt 
 x 361.35pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_inf.pdf Graphic file
  (type pdf)
@@ -533,8 +537,8 @@ File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_inf.pdf Graphic file
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[16 </Users/joshyv/Research/oopsi/fast-oopsi/figs/pop.pdf>]
-</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_learn_multi.pdf, id=508, 
+[17 </Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_smc_vitro12.pdf>]
+</Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_learn_multi.pdf, id=526, 
 650.43pt x 433.62pt>
 File: /Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_learn_multi.pdf Grap
 hic file (type pdf)
@@ -543,12 +547,12 @@ hic file (type pdf)
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[17 </Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_smc_vitro12.pdf>]
-[18 </Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_inf.pdf>]
+[18 </Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_inf.pdf>] [19 </Users
+/joshyv/Research/oopsi/fast-oopsi/figs/spatial_learn_multi.pdf>]
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no “ in font ptmr7t!
- [19 </Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_learn_multi.pdf>])
+)
 (./appendix.tex [20]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 5.
@@ -570,16 +574,16 @@ Missing character: There is no ¼ in font ptmr7t!
 
 ] [24]) [25] (./fast_oopsi.aux) ) 
 Here is how much of TeX's memory you used:
- 4434 strings out of 94500
- 59280 string characters out of 1155413
- 125406 words of memory out of 1000000
- 7304 multiletter control sequences out of 10000+50000
+ 4440 strings out of 94500
+ 59362 string characters out of 1155413
+ 125699 words of memory out of 1000000
+ 7306 multiletter control sequences out of 10000+50000
  38447 words of font info for 94 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 29i,18n,43p,2195b,592s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 29i,18n,43p,2561b,592s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 617 PDF objects out of 300000
- 170 named destinations out of 131072
+ 628 PDF objects out of 300000
+ 174 named destinations out of 131072
  291 words of extra memory for PDF output out of 65536
 </opt/local/share/texmf-dist/fonts/type1/blues
 ky/cm/cmss8.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx7.pfb><
@@ -599,4 +603,4 @@ b>{/opt/local/share/texmf-dist/fonts/enc/dvips/psnfss/8r.enc}</opt/local/share/
 texmf-dist/fonts/type1/urw/times/utmri8a.pfb></opt/local/share/texmf-dist/fonts
 /type1/urw/courier/ucrr8a.pfb></opt/local/share/texmf-dist/fonts/type1/urw/time
 s/utmb8a.pfb></opt/local/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on fast_oopsi.pdf (25 pages, 766847 bytes).
+Output written on fast_oopsi.pdf (25 pages, 772062 bytes).

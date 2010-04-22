@@ -158,15 +158,24 @@ T.~A. Pologruto, R.~Yasuda, and K.~Svoboda, ``Monitoring neural activity and
 R.~Kass and A.~Raftery, ``{Bayes Factors},'' {\em Journal of the American
   Statistical Association}, vol.~90, no.~430, pp.~773--795, 1995.
 
+\bibitem{ZouHastie05}
+H.~Zou and T.~Hastie, ``{Regularization and variable selection via the elastic
+  net},'' {\em Journal of the Royal Statistical Society. Series B, Statistical
+  Methodology}, vol.~67, no.~2, p.~301, 2005.
+
 \bibitem{MacLeanYuste05}
-J.~N. MacLean, B.~O. Watson, G.~B. Aaron, and R.~Yuste, ``Internal dynamics
-  determine the cortical response to thalamic stimulation.,'' {\em Neuron},
-  vol.~48, pp.~811--823, Dec 2005.
+J.~MacLean, B.~Watson, G.~Aaron, and R.~Yuste, ``{Internal dynamics determine
+  the cortical response to thalamic stimulation},'' {\em Neuron}, vol.~48,
+  no.~5, pp.~811--823, 2005.
 
 \bibitem{SjulsonMiesenbock07}
 L.~Sjulson and G.~Miesenb\"{o}ck, ``Optical recording of action potentials and
   other discrete physiological events: a perspective from signal detection
   theory.,'' {\em Physiology (Bethesda)}, vol.~22, pp.~47--55, Feb 2007.
+
+\bibitem{WatsonYuste08}
+B.~O. Watson, J.~N. MacLean, and R.~Yuste, ``Up states protect ongoing cortical
+  activity from thalamic inputs,'' {\em PLoS ONE}, vol.~3, p.~e3971, 12 2008.
 
 \bibitem{BellSejnowski95}
 A.~J. Bell and T.~J. Sejnowski, ``An information-maximisation approach to blind
@@ -201,19 +210,15 @@ J.~H. Friedman and W.~Stuetzle, ``{Projection Pursuit Regression.},'' {\em J.
 S.~Mallat and Z.~Zhang, ``{Matching pursuit with time-frequency dictionaries:
   IEEE Trans},'' {\em Signal Processing}, vol.~41, pp.~3397--3415, 1993.
 
-\bibitem{ZouHastie05}
-H.~Zou and T.~Hastie, ``{Regularization and variable selection via the elastic
-  net},'' {\em Journal of the Royal Statistical Society. Series B, Statistical
-  Methodology}, vol.~67, no.~2, p.~301, 2005.
+\bibitem{GreweHelmchen10}
+H.~K. B. M.~K. Benjamin F~Grewe, Dominik~Langer and F.~Helmchen, ``high-speed
+  in vivo calcium imaging reveals neuronal network activity with
+  near-millisecond precision,'' {\em Nature Methods}, vol.~Advanced Online
+  Publication, 2010.
 
 \bibitem{GrosenickSmith09}
 L.~Grosenick, T.~Anderson, and S.~Smith, ``{Elastic source selection for in
   vivo imaging of neuronal ensembles},'' pp.~1263--1266, 2009.
-
-\bibitem{AbramowitzStegun64}
-M.~Abramowitz and I.~Stegun, {\em {Handbook of mathematical functions with
-  formulas, graphs, and mathematical tables}}.
-\newblock Dover publications, 1964.
 
 \bibitem{KoenkerMizera10}
 R.~Koenker and I.~Mizera, ``Quasi-concave density estimation,'' {\em Annals of
@@ -222,5 +227,10 @@ R.~Koenker and I.~Mizera, ``Quasi-concave density estimation,'' {\em Annals of
 \bibitem{CoverThomas91}
 T.~M. Cover and J.~A. Thomas, {\em Elements of Information Theory}.
 \newblock Wiley Interscience, 1991.
+
+\bibitem{ReiffBorst05}
+D.~F. Reiff, A.~Ihring, G.~Guerrero, E.~Y. Isacoff, M.~Joesch, J.~Nakai, and
+  A.~Borst, ``In vivo performance of genetically encoded indicators of neural
+  activity in flies.,'' {\em J Neurosci}, vol.~25, pp.~4766--4778, May 2005.
 
 \end{thebibliography}

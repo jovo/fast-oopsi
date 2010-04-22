@@ -56,7 +56,7 @@ P.a=P.a/norm(P.a);
 
 P.b     = rand(size(P.a(:,1)));             % baseline is zero
 P.b=P.b/mean(P.b)*mean(P.a);
-P.sig   = 0.2;                    % stan dev of noise (indep for each pixel)
+P.sig   = 0.3;                    % stan dev of noise (indep for each pixel)
 C_0     = 0;                        % initial calcium
 tau     = 0.5;   % decay time constant for each cell
 P.gam   = 1-V.dt./tau(1:V.Nc);
@@ -96,7 +96,7 @@ for q=qs
     elseif q==2
         Phat{q}=P;
         boxcar=zeros(V.w,V.h);
-        boxcar([82:84 96:100 111:115 126:130 142:144])=1; %[68 82:84 96:100 110:116 126:130 142:144 158]
+        boxcar([81:85 96:100 111:115 126:130 141:145])=1; %[68 82:84 96:100 110:116 126:130 142:144 158]
         Phat{q}.a=boxcar(:);
         fast{q}.label='boxcar filter';
     elseif q==3
@@ -136,10 +136,10 @@ nticks=5;                                    % number of ticks along x-axis
 fs      = 14;                       % font size
 ms      = 5;                        % marker size for real spike
 sw      = 2;                        % spike width
-lw      = 2;                        % line width
+lw      = 0.5;                        % line width
 Nc   = V.Nc;
 XTicks=0:round(V.T/3):V.T;
-    gray    = 0.4*[1 1 1];            % define gray color
+gray    = 0.4*[1 1 1];            % define gray color
 
 fig = figure(1); clf,
 
@@ -167,7 +167,7 @@ for q=qs
     set(gca,'YTick',[],'FontSize',fs)
     axis([0 V.T 0 1.1])
     if q==1, 
-        ylab=ylabel([{'fluorescence'}],'FontSize',fs); 
+        ylab=ylabel([{'fluorescence'}; {'(%dF/F)     '}],'FontSize',fs);
         set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
     end
     box off
@@ -182,7 +182,7 @@ for q=qs
     set(gca,'YTick',[],'FontSize',fs)
     xlabel('time (sec)','FontSize',fs)
     if q==1, 
-        ylab=ylabel([{'fast'};  {'filter'}],'FontSize',fs); 
+        ylab=ylabel([{'fast'}; {'filter'}; {'(a.u.)'}],'FontSize',fs);
         set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')    
     end
     axis([0 V.T 0 1.1])
