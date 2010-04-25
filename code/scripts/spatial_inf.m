@@ -25,7 +25,7 @@ y       = linspace(-5,5,width);
 g1      = zeros(Npixs,Nc);
 g2      = 0*g1;
 Sigma1  = diag([1,1])*2;            % var of positive gaussian
-Sigma2  = diag([1,1])*2.5;          % var of negative gaussian
+Sigma2  = diag([1,1])*2.25;          % var of negative gaussian
 mu      = [0 0];                    % means of gaussians for each cell (distributed across pixel space)
 w       = [1 1];                  % weights of each filter
 
@@ -37,7 +37,7 @@ for i=1:Nc                          % spatial filter
 end
 
 % 2) set simulation metadata
-V.T     = 1200;                    % # of time steps
+V.T     = 1800;                    % # of time steps
 V.dt    = 0.005;                  % time step size
 V.Np    = Npixs;                  % # of pixels in each image
 V.w     = width;                  % width of frame (pixels)
@@ -56,7 +56,7 @@ P.a=P.a/norm(P.a);
 
 P.b     = rand(size(P.a(:,1)));             % baseline is zero
 P.b=P.b/mean(P.b)*mean(P.a);
-P.sig   = 0.3;                    % stan dev of noise (indep for each pixel)
+P.sig   = 0.4;                    % stan dev of noise (indep for each pixel)
 C_0     = 0;                        % initial calcium
 tau     = 0.5;   % decay time constant for each cell
 P.gam   = 1-V.dt./tau(1:V.Nc);
@@ -96,7 +96,7 @@ for q=qs
     elseif q==2
         Phat{q}=P;
         boxcar=zeros(V.w,V.h);
-        boxcar([81:85 96:100 111:115 126:130 141:145])=1; %[68 82:84 96:100 110:116 126:130 142:144 158]
+        boxcar([80:86 95:101 110:116 125:131 140:146])=1; %[68 82:84 96:100 110:116 126:130 142:144 158]
         Phat{q}.a=boxcar(:);
         fast{q}.label='boxcar filter';
     elseif q==3

@@ -168,6 +168,9 @@ J.~MacLean, B.~Watson, G.~Aaron, and R.~Yuste, ``{Internal dynamics determine
   the cortical response to thalamic stimulation},'' {\em Neuron}, vol.~48,
   no.~5, pp.~811--823, 2005.
 
+\bibitem{GreenSwets66}
+D.~Green and J.~Swets, ``{Signal detection theory and psychophysics},'' 1966.
+
 \bibitem{SjulsonMiesenbock07}
 L.~Sjulson and G.~Miesenb\"{o}ck, ``Optical recording of action potentials and
   other discrete physiological events: a perspective from signal detection
@@ -211,14 +214,9 @@ S.~Mallat and Z.~Zhang, ``{Matching pursuit with time-frequency dictionaries:
   IEEE Trans},'' {\em Signal Processing}, vol.~41, pp.~3397--3415, 1993.
 
 \bibitem{GreweHelmchen10}
-H.~K. B. M.~K. Benjamin F~Grewe, Dominik~Langer and F.~Helmchen, ``high-speed
+B.~F. Grewe, D.~Langer, H.~Kasper, B.~M. Kampa, and F.~Helmchen, ``High-speed
   in vivo calcium imaging reveals neuronal network activity with
-  near-millisecond precision,'' {\em Nature Methods}, vol.~Advanced Online
-  Publication, 2010.
-
-\bibitem{GrosenickSmith09}
-L.~Grosenick, T.~Anderson, and S.~Smith, ``{Elastic source selection for in
-  vivo imaging of neuronal ensembles},'' pp.~1263--1266, 2009.
+  near-millisecond precision.,'' {\em Nature Methods}, Apr 2010.
 
 \bibitem{KoenkerMizera10}
 R.~Koenker and I.~Mizera, ``Quasi-concave density estimation,'' {\em Annals of
@@ -227,6 +225,14 @@ R.~Koenker and I.~Mizera, ``Quasi-concave density estimation,'' {\em Annals of
 \bibitem{CoverThomas91}
 T.~M. Cover and J.~A. Thomas, {\em Elements of Information Theory}.
 \newblock Wiley Interscience, 1991.
+
+\bibitem{HornJohnson90}
+R.~Horn and C.~Johnson, {\em {Matrix analysis}}.
+\newblock Cambridge Univ Pr, 1990.
+
+\bibitem{GrosenickSmith09}
+L.~Grosenick, T.~Anderson, and S.~Smith, ``{Elastic source selection for in
+  vivo imaging of neuronal ensembles},'' pp.~1263--1266, 2009.
 
 \bibitem{ReiffBorst05}
 D.~F. Reiff, A.~Ihring, G.~Guerrero, E.~Y. Isacoff, M.~Joesch, J.~Nakai, and

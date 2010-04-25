@@ -128,8 +128,8 @@ end
 if V.save==1, save(['../../data/' V.name]); end
 
 %% plot results
-% V.name  = 'spatial_learn_multi';
-% load(['../../data/' V.name])
+V.name  = 'spatial_learn_multi';
+load(['../../data/' V.name])
 
 nrows   = 5;                                 % set number of rows
 ncols   = length(qs);

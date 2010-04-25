@@ -70,6 +70,7 @@
 \citation{CONV04}
 \citation{PaninskiWu09}
 \citation{CONV04}
+\citation{CONV04}
 \citation{Press92}
 \newlabel{eq:obj4}{{12}{5}{Inferring the approximately most likely spike train, given a fluorescence trace\relax }{equation.12}{}}
 \newlabel{eq:eta}{{13}{5}{Inferring the approximately most likely spike train, given a fluorescence trace\relax }{equation.13}{}}
@@ -78,6 +79,7 @@
 \citation{Press92}
 \citation{PaninskiWu09}
 \citation{DempsterRubin77}
+\citation{VogelsteinPaninski09}
 \citation{YaksiFriedrich06}
 \citation{PologrutoSvoboda04}
 \citation{KassRaftery95}
@@ -119,7 +121,7 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.7.1}Slice Preparation and Imaging}{9}{subsubsection.2.7.1}}
 \citation{WuGallant06}
 \citation{Seeger08}
-\citation{CONV04}
+\citation{GreenSwets66}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.7.2}Electrophysiology}{10}{subsubsection.2.7.2}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.7.3}Fluorescence preprocessing}{10}{subsubsection.2.7.3}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Results}{10}{section.3}}
@@ -136,23 +138,23 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Online analysis of spike trains using the fast filter}{13}{subsection.3.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Extensions}{13}{subsection.3.3}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Replacing Gaussian observations with Poisson}{13}{subsubsection.3.3.1}}
+\newlabel{eq:poiss}{{37}{13}{Replacing Gaussian observations with Poisson\relax }{equation.37}{}}
 \citation{VogelsteinPaninski09}
+\citation{PologrutoSvoboda04}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces fast filter outperforms Wiener filter on biological data}}{14}{figure.5}}
 \newlabel{fig:woopsi_data}{{5}{14}{Main Result\relax }{figure.5}{}}
-\newlabel{eq:poiss}{{37}{14}{Replacing Gaussian observations with Poisson\relax }{equation.37}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Allowing for a time-varying prior}{14}{subsubsection.3.3.2}}
-\citation{PologrutoSvoboda04}
 \citation{VogelsteinPaninski09}
 \citation{VogelsteinPaninski09}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces fast filter outperforms Wiener filter on multi-spike events}}{15}{figure.6}}
 \newlabel{fig:woopsi_data_doublets}{{6}{15}{Main Result\relax }{figure.6}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3}Saturating fluorescence}{15}{subsubsection.3.3.3}}
 \newlabel{eq:nonlin}{{40}{15}{Saturating fluorescence\relax }{equation.40}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.4}Using the fast filter to initialize the sequential Monte Carlo filter}{15}{subsubsection.3.3.4}}
 \citation{MacLeanYuste05}
 \citation{WatsonYuste08}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces fast filter is robust and works online for populations of neurons}}{16}{figure.7}}
 \newlabel{fig:pop}{{7}{16}{Online analysis of spike trains using the \foopsi filter\relax }{figure.7}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.4}Using the fast filter to initialize the sequential Monte Carlo filter}{16}{subsubsection.3.3.4}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Spatial filter}{16}{subsection.3.4}}
 \newlabel{sec:results:spatial}{{3.4}{16}{Spatial filter\relax }{subsection.3.4}{}}
 \citation{BellSejnowski95}
@@ -173,25 +175,26 @@
 \citation{MallatZhang93}
 \citation{GreenbergKerr08}
 \citation{GreweHelmchen10}
+\citation{KoenkerMizera10}
+\citation{CoverThomas91}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces overlapping spatial filters can be estimated}}{19}{figure.10}}
+\newlabel{fig:spatial_multi_learn}{{10}{19}{Overlapping spatial filters\relax }{figure.10}{}}
+\citation{HornJohnson90}
 \citation{MukamelSchnitzer09}
 \citation{ZouHastie05}
 \citation{GrosenickSmith09}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces overlapping spatial filters can be estimated}}{19}{figure.10}}
-\newlabel{fig:spatial_multi_learn}{{10}{19}{Overlapping spatial filters\relax }{figure.10}{}}
-\citation{KoenkerMizera10}
-\citation{CoverThomas91}
 \citation{ReiffBorst05}
-\@writefile{toc}{\contentsline {paragraph}{Acknowledgments}{20}{section*.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Pseudocode}{21}{section.A}}
-\newlabel{sec:pseudo}{{A}{21}{Pseudocode\relax }{section.A}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Pseudocode for inferring the approximately most likely spike train, given fluorescence data. Note that the algorithm is robust to small variations $\xi _z, \xi _n$. The equations listed below refer to the most general equations in the text (simpler equations could be substituted when appropriate). Curly brackets, $\{ \cdot \}$, indicate comments.}}{21}{algorithm.\theHalgorithm }}
-\newlabel{eqn:pseudocode}{{1}{21}{Pseudocode\relax }{algorithm.\theHalgorithm }{}}
+\@writefile{toc}{\contentsline {paragraph}{Acknowledgments}{21}{section*.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Pseudocode}{22}{section.A}}
+\newlabel{sec:pseudo}{{A}{22}{Pseudocode\relax }{section.A}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Pseudocode for inferring the approximately most likely spike train, given fluorescence data. Note that the algorithm is robust to small variations $\xi _z, \xi _n$. The equations listed below refer to the most general equations in the text (simpler equations could be substituted when appropriate). Curly brackets, $\{ \cdot \}$, indicate comments.}}{22}{algorithm.\theHalgorithm }}
+\newlabel{eqn:pseudocode}{{1}{22}{Pseudocode\relax }{algorithm.\theHalgorithm }{}}
 \citation{SjulsonMiesenbock07}
 \citation{CONV04}
-\@writefile{toc}{\contentsline {section}{\numberline {B}Wiener Filter}{22}{section.B}}
-\newlabel{sec:wiener}{{B}{22}{Wiener Filter\relax }{section.B}{}}
-\newlabel{eq:obj5}{{43}{22}{Wiener Filter\relax }{equation.43}{}}
-\newlabel{eq:w2}{{44}{22}{Wiener Filter\relax }{equation.44}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Wiener Filter}{23}{section.B}}
+\newlabel{sec:wiener}{{B}{23}{Wiener Filter\relax }{section.B}{}}
+\newlabel{eq:obj5}{{43}{23}{Wiener Filter\relax }{equation.43}{}}
+\newlabel{eq:w2}{{44}{23}{Wiener Filter\relax }{equation.44}{}}
 \bibdata{/Users/joshyv/Research/meta/biblist}
 \bibcite{ImagingManual}{1}
 \bibcite{SmettersYuste99}{2}
@@ -226,19 +229,21 @@
 \bibcite{KassRaftery95}{31}
 \bibcite{ZouHastie05}{32}
 \bibcite{MacLeanYuste05}{33}
-\bibcite{SjulsonMiesenbock07}{34}
-\bibcite{WatsonYuste08}{35}
-\bibcite{BellSejnowski95}{36}
-\bibcite{MukamelSchnitzer09}{37}
-\bibcite{AndrieuDoucet01}{38}
-\bibcite{MishchenkoPaninski09}{39}
-\bibcite{JouclaPouzat10}{40}
-\bibcite{FS81}{41}
-\bibcite{MallatZhang93}{42}
-\bibcite{GreweHelmchen10}{43}
-\bibcite{GrosenickSmith09}{44}
+\bibcite{GreenSwets66}{34}
+\bibcite{SjulsonMiesenbock07}{35}
+\bibcite{WatsonYuste08}{36}
+\bibcite{BellSejnowski95}{37}
+\bibcite{MukamelSchnitzer09}{38}
+\bibcite{AndrieuDoucet01}{39}
+\bibcite{MishchenkoPaninski09}{40}
+\bibcite{JouclaPouzat10}{41}
+\bibcite{FS81}{42}
+\bibcite{MallatZhang93}{43}
+\bibcite{GreweHelmchen10}{44}
 \bibcite{KoenkerMizera10}{45}
 \bibcite{CoverThomas91}{46}
-\bibcite{ReiffBorst05}{47}
+\bibcite{HornJohnson90}{47}
+\bibcite{GrosenickSmith09}{48}
+\bibcite{ReiffBorst05}{49}
 \bibstyle{ieeetr}
-\@writefile{toc}{\contentsline {section}{References}{25}{section*.2}}
+\@writefile{toc}{\contentsline {section}{References}{26}{section*.2}}
