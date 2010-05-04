@@ -131,7 +131,7 @@ if V.save==1, save(['../../data/' V.name]); end
 nrows   = 3;                                 % set number of rows
 ncols   = length(qs);
 h       = zeros(nrows,1);
-xlims= [5 V.T-5];                            % time steps to plot
+xlims= [5 V.T];                            % time steps to plot
 nticks=5;                                    % number of ticks along x-axis
 fs      = 14;                       % font size
 ms      = 5;                        % marker size for real spike
