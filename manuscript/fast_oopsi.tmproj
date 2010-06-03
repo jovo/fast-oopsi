@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>documents</key>
+	<array>
+		<dict>
+			<key>filename</key>
+			<string>fast_oopsi.tex</string>
+			<key>lastUsed</key>
+			<date>2010-05-05T13:54:32Z</date>
+			<key>selected</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>body.tex</string>
+			<key>lastUsed</key>
+			<date>2010-04-25T01:26:14Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>appendix.tex</string>
+			<key>lastUsed</key>
+			<date>2010-04-25T01:26:33Z</date>
+		</dict>
+	</array>
+	<key>fileHierarchyDrawerWidth</key>
+	<integer>200</integer>
+	<key>metaData</key>
+	<dict/>
+	<key>showFileHierarchyDrawer</key>
+	<false/>
+	<key>windowFrame</key>
+	<string>{{4, 0}, {718, 878}}</string>
+</dict>
+</plist>

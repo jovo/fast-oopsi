@@ -3,7 +3,7 @@ path         = '/Users/joshyv/Research/oopsi/meta-oopsi/data/rafa/adam/2009/2009
 imname       = '20090128a10_cropped';
 tifname     = [path imname '.tif'];
 paqname     = [path '20090128a10.paq'];
-fname       = 'in_vitro_ex';
+fname       = '/Users/joshyv/Research/oopsi/fast-oopsi/data/in_vitro_ex';
 
 % set switches of things to do
 LoadTif     = 0;
@@ -100,7 +100,11 @@ else
 end
 
 %% plot ROI
-Pl = PlotParams;
+
+Pl.xlims=[1 Im.T];
+Pl.nticks=4;
+Pl = PlotParams(Pl);
+
 roi2=Im.roi';
 roi_edge2=Im.roi_edge';
 
@@ -120,7 +124,7 @@ title('mean frame','FontSize',Pl.fs)
 subplot(2,2,3); hold all
 F=weighted_ROI'*Im.DataMat(:,1:end)/sum(weighted_ROI(:)); F=z1(F(2:end))';
 plot(F+1,'k','LineWidth',Pl.lw);
-% x=fmincon(@(x) sum((filter(1,[1 -x(1)],x(2)*Ep.n(2:end,1))+x(3) - F).^2),[.99 1 .2],[],[],[],[],[0 0 -1], [1 1 1])
+x=fmincon(@(x) sum((filter(1,[1 -x(1)],x(2)*Ep.n(2:end,1))+x(3) - F).^2),[.99 1 .2],[],[],[],[],[0 0 -1], [1 1 1]);
 C = filter(1,[1 -x(1)],x(2)*Ep.n(:,1))+x(3);               % calcium concentration
 plot(C+1,'color',0.75*[1 1 1],'LineWidth',Pl.lw);
 bar(Ep.n(:,1))
