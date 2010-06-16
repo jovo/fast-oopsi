@@ -1,4 +1,4 @@
-function [n_best P_best V]=fast_oopsi(F,V,P)
+function [n_best P_best V C]=fast_oopsi(F,V,P)
 % this function solves the following optimization problem:
 % (*) n_best = argmax_{n >= 0} P(n | F)
 % which is a MAP estimate for the most likely spike train given the
@@ -115,20 +115,14 @@ if V.fast_iter_max>1;
     if ~isfield(V,'fast_ignore_post'), V.fast_ignore_post=0; end % whether to ignore the posterior, and just keep the last iteration
 end
 
-% normalize F if it is only a trace
-if V.Npixels==1
-    F=detrend(F);
-    F=F-min(F); F=F/max(F); F=F+eps;
-end
-
 %% set default model Parameters
 
 if nargin < 3,          P       = struct;                       end
-if ~isfield(P,'b'),     P.b     = median(F);                    end
+if ~isfield(P,'b'),     P.b     = quantile(F(:),0.05);       end % need to check how well this works with spatial filtering
 if ~isfield(P,'sig'),   P.sig   = mean(mad(F',1)*1.4826);       end
 if ~isfield(P,'gam'),   P.gam   = (1-V.dt/1)*ones(V.Ncells,1);  end
 if ~isfield(P,'lam'),   P.lam   = 10*ones(V.Ncells,1);          end
-if ~isfield(P,'a'),     P.a     = 1;                            end
+if ~isfield(P,'a'),     P.a     = median(F(:));                 end % need to check how well this works with spatial filtering
 
 %% define some stuff needed for est_MAP function
 
@@ -164,7 +158,6 @@ V.post = posts(1);
 post_max = posts(1);
 
 if V.fast_iter_max>1
-    options = optimset('Display','off');        % don't show warnings for parameter estimation
     i       = 1;                                % iteration #
     i_best  = i;                                % iteration with highest likelihood
     conv    = 0;                                % whether algorithm has converged yet
@@ -194,13 +187,13 @@ while conv == 0
         V.post  = posts(1:i);
         conv    = 1;
     end
-    sound(3*sin(linspace(0,90*pi,2000)))        % play sound to indicate iteration is over
+    sound(0.5*sin(linspace(0,90*pi,2000)))        % play sound to indicate iteration is over
 end
 
 V.fast_time = cputime-starttime;                % time to run code
 V           = orderfields(V);                   % order fields alphabetically to they are easier to read
 P_best      = orderfields(P_best);
-n_best      = n_best./repmat(max(n_best),V.T,1);
+% n_best      = n_best./repmat(max(n_best),V.T,1);
 
 %% fast filter function
     function [n C post] = est_MAP(F,P)

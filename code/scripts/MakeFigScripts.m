@@ -53,7 +53,7 @@ clear, clc,
 V.datasets  = 12;
 V.filters   = 0;
 V.name      = 'fast_smc_vitro';
-V.save      = 1;
+V.save      = 0;
 V.fast_do   = 1;
 V.smc_do    = 1;
 
