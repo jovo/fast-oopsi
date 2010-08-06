@@ -1,15 +1,16 @@
 clear, clc, %close all
-path         = '/Users/joshyv/Research/data/2P/rafa/adam/2009/20090128a/';
-imname       = '20090128a10_cropped';
+path         = '~\Research\data\2P\rafa\adam\2009\20090128a';
+imname       = '20090128a10';
 tifname     = [path imname '.tif'];
 paqname     = [path '20090128a10.paq'];
-figdir      = '/Users/joshyv/Research/publications/peer-reviewed/fast-oopsi/figs/';
-datadir     = '/Users/joshyv/Research/publications/peer-reviewed/fast-oopsi/data/';
+prettytif   = [path 'AVG_20090128a10_ROI.tif'];
+figdir      = '~\Research\publications\peer-reviewed\fast-oopsi\figs\';
+datadir     = '~\Research\publications\peer-reviewed\fast-oopsi\data\';
 fname       = 'in_vitro_ex';
 
 % set switches of things to do
-LoadTif     = 0;
-GetROI      = 0;
+LoadTif     = 1;
+GetROI      = 1;
 GetEphys    = 1;
 
 %% get image data
@@ -119,7 +120,8 @@ width=Im.h/Im.w*height;
 left = (1-width)/2;
 bottom=(.5-height)/2+.5;
 subplot('position',[left bottom width height]);
-imagesc(reshape(ROI_im,Im.h,Im.w)')
+Im.MeanPretty = imread(prettytif);
+imagesc(Im.MeanPretty)
 colormap('gray')
 title('mean frame','FontSize',Pl.fs)
 
@@ -149,11 +151,11 @@ gauss=1/sqrt(2*pi*sigmahat^2)*exp(- (linspace(min(xout),max(xout),length(xout)) 
 plot(xout,gauss/sum(gauss),'-k','LineWidth',Pl.lw)
 axis([-.4 .4 0 max(normn)])
 
-if Vsave==1 % print fig
+%if Vsave==1 % print fig
     wh=[7 6];   %width and height
     set(gcf,'PaperSize',wh,'PaperPosition',[0 0 wh],'Color','w');
     figname=[figdir fname];
     print('-depsc',figname)
     print('-dpdf',figname)
     saveas(fig,figname)
-end
+%end
