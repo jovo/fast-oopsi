@@ -24,14 +24,14 @@ P.k_d           = 180;
 for i=datasets
     disp(i)
     if i==13
-        
+
         if ~isfield(V,'T'),     V.T = 400;     end     % # of time steps
         if ~isfield(V,'dt'),    V.dt = 1/30;    end     % # of pixels in ROI
         if ~isfield(V,'fast_iter_max'),    V.fast_iter_max = 1;    end     % # of pixels in ROI
 
         tau     = 1;                % decay time constant for each cell
         if ~isfield(P,'b'),     P.b     = 0;    end
-        if ~isfield(P,'sig'),   P.sig   = 0.4;  end 
+        if ~isfield(P,'sig'),   P.sig   = 0.4;  end
         if ~isfield(P,'gam'),   P.gam   = 1-V.dt/tau; end
         if ~isfield(P,'lam'),   P.lam   = 2;    end
         if ~isfield(P,'a'),     P.a     = 1;    end
@@ -46,15 +46,26 @@ for i=datasets
 
     else
         cc      = dataset.(char(names(i)));
-        F{i}    = z1(cc.Fluorescence);
-        V.T     = length(F{i});
-        f       = detrend(F{i});
+        yy      = cc.Fluorescence;
+        V.T     = length(yy);
+        f       = detrend(yy);
         nfft    = 2^nextpow2(V.T);
         y       = fft(f,nfft);
         bw      = 10;
         y(1:bw) = 0; y(end-bw+1:end)=0;
         iy      = ifft(y,nfft);
-        F{i}    = z1(real(iy(1:V.T)));
+        G       = real(iy(1:V.T));
+        ab      = [G'; ones(1,V.T)]'\yy;
+        F{i}    = ab(1)*G+ab(2);
+        %         F{i}    = z1(cc.Fluorescence);
+        %         V.T     = length(F{i});
+        %         f       = detrend(F{i});
+        %         nfft    = 2^nextpow2(V.T);
+        %         y       = fft(f,nfft);
+        %         bw      = 10;
+        %         y(1:bw) = 0; y(end-bw+1:end)=0;
+        %         iy      = ifft(y,nfft);
+        %         F{i}    = z1(real(iy(1:V.T)));
         V.dt    = median(diff(cc.FluorescenceTime));
         P.gam   = 1-V.dt/1;
         volt1{i}= cc.chanDev1_ai0_VoltageCh1;
@@ -85,11 +96,11 @@ for i=datasets
                 V.fast_nonlin=0;
                 V.test=0;
                 [inf{i}.fast.n inf{i}.fast.P] = fast_oopsi(F{i},V,P);
-            case 1.1 
+            case 1.1
                 V.fast_poiss=0;
                 V.fast_nonlin=0;
                 V.test=1;
-                [inf{i}.fast1 PP] = fast_oopsi(F{i},V,P);                
+                [inf{i}.fast1 PP] = fast_oopsi(F{i},V,P);
             case 1.5 % fast est params
                 V.fast_iter_max=1;
                 V.fast_plot=1;
@@ -98,7 +109,7 @@ for i=datasets
                 V.b_est=0;
                 V.sig_est=1;
                 [inf{i}.fast.n inf{i}.fast.P] = fast_oopsi(F{i},V);
-            case 2 % nonlin                
+            case 2 % nonlin
                 V.fast_poiss=0;
                 V.fast_nonlin=1;
                 V.gauss_n = inf{i}.fast + 0.0001;
@@ -115,10 +126,10 @@ for i=datasets
                 inf{i}.poisson = fast_oopsi(F{i},V,P);
             case 4 % Wiener known params
                 PP.lam = P.sig;
-%                 PP.lam = sum(inf{i}.fast/max(inf{i}.fast))/(V.T*V.dt);
+                %                 PP.lam = sum(inf{i}.fast/max(inf{i}.fast))/(V.T*V.dt);
                 PP=inf{i}.fast.P;
-%                 PP.sig = inf{i}.fast.P.sig;
-%                 PP.gam = inf{i}.fast.P.gam
+                %                 PP.sig = inf{i}.fast.P.sig;
+                %                 PP.gam = inf{i}.fast.P.gam
                 [inf{i}.Wiener.n inf{i}.Wiener.P] = wiener_oopsi(F{i},V.dt,PP);
             case 4.5 % Wiener unknown params
                 PP = inf{i}.fast.P;
@@ -136,9 +147,9 @@ end
 
 
 %%
-datasets=12;
-V.name=['fast_smc_vitro' num2str(datasets)];
-load(['../../data/' V.name])
+% datasets=12;
+% V.name=['fast_smc_vitro' num2str(datasets)];
+% load(['../../data/' V.name])
 
 for j=datasets
     V.name_fig = ['../../figs/' V.name];                                 % filename for figure
@@ -158,7 +169,7 @@ for j=datasets
     xticks  = xticks(1:skip:end);
     tvec_o  = xlims(1):xlims(2);        % only plot stuff within xlims
     maxn    = max(V.n);
-    
+
     % plot fluorescence data
     i=1; h(i)=subplot(nrows,1,i); hold on
     Ftemp=z1(F{j}(tvec_o))*maxn;
@@ -198,7 +209,7 @@ for j=datasets
         i=i+1; h(i)=subplot(nrows,1,i); hold on,
         n = inf{j}.(char(names(k))).n;
         n = n/max(abs(n(tvec_o)))*maxn;
-        
+
         nneg=find(n<0);
         stem(nneg,n(nneg),'Marker','none','LineWidth',sw,'Color',gray)
 
@@ -209,9 +220,9 @@ for j=datasets
         axis([xlims floor(min(n(tvec_o))) max(n(tvec_o))])
         hold off,
         if strcmp(char(names(k)),'fast')
-        ylab=ylabel([[char(names(k)) ' filter']; {'(a.u.)   '}],'Interpreter',inter,'FontSize',fs);            
+            ylab=ylabel([[char(names(k)) ' filter']; {'(a.u.)   '}],'Interpreter',inter,'FontSize',fs);
         else
-        ylab=ylabel([[char(names(k)) ' filter']; {'(a.u.)     '}],'Interpreter',inter,'FontSize',fs);
+            ylab=ylabel([[char(names(k)) ' filter']; {'(a.u.)     '}],'Interpreter',inter,'FontSize',fs);
         end
         set(ylab,'Rotation',0,'HorizontalAlignment','right','verticalalignment','middle')
         set(gca,'YTick',[floor(min(n)):ceil(maxn)],'YTickLabel',[floor(min(n)):ceil(maxn)])

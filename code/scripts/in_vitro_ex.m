@@ -1,9 +1,11 @@
 clear, clc, %close all
-path         = '/Users/joshyv/Research/oopsi/meta-oopsi/data/rafa/adam/2009/20090128a/';
+path         = '/Users/joshyv/Research/data/2P/rafa/adam/2009/20090128a/';
 imname       = '20090128a10_cropped';
 tifname     = [path imname '.tif'];
 paqname     = [path '20090128a10.paq'];
-fname       = '/Users/joshyv/Research/oopsi/fast-oopsi/data/in_vitro_ex';
+figdir      = '/Users/joshyv/Research/publications/peer-reviewed/fast-oopsi/figs/';
+datadir     = '/Users/joshyv/Research/publications/peer-reviewed/fast-oopsi/data/';
+fname       = 'in_vitro_ex';
 
 % set switches of things to do
 LoadTif     = 0;
@@ -26,9 +28,9 @@ if LoadTif == 1                                     % get whole movie
         Im.DataMat(:,j)=X(:);
     end
     Im.MeanFrame=mean(Im.DataMat,2);
-    save(fname,'Im')
+    save([datadir fname],'Im')
 else
-    load(fname)
+    load([datadir fname])
 end
 
 %% select roi
@@ -54,7 +56,7 @@ if GetROI == 1
     Im.roi_edge = edge(uint8(Im.roi));
     save(fname,'Im')
 else
-    load(fname)
+    load([datadir fname])
 end
 
 %% get spike data
@@ -94,9 +96,9 @@ if GetEphys ==1
         Ep.n(:,i) = SubSampleSpikeTrain(frame_onset_times,Ep.spt{i});
     end
 
-    save(fname,'Ep','-append')
+    save([datadir fname],'Ep','-append')
 else
-    load(fname)
+    load([datadir fname])
 end
 
 %% plot ROI
@@ -150,7 +152,7 @@ axis([-.4 .4 0 max(normn)])
 if Vsave==1 % print fig
     wh=[7 6];   %width and height
     set(gcf,'PaperSize',wh,'PaperPosition',[0 0 wh],'Color','w');
-    figname=['../../figs/' fname];
+    figname=[figdir fname];
     print('-depsc',figname)
     print('-dpdf',figname)
     saveas(fig,figname)
