@@ -1,5 +1,5 @@
 %\documentclass[12pt]{article}
-\input{/Users/joshyv/Research/meta/latex_paper.tex} 
+\input{/Users/joshyv/Research/projects/meta/latex_paper.tex} 
 \usepackage{multicol}
 % \usepackage{hyperref}
 \usepackage{algorithmic}
@@ -37,7 +37,7 @@ Simultaneously imaging large populations of neurons using calcium sensors is bec
 A number of groups have therefore proposed algorithms to infer spike trains from calcium fluorescence data using very different approaches.  Early approaches simply thresholded $dF/F$ (typically defined as $(F-F_b)/F_b$ where $F_b$ is baseline fluorescence; e.g., \cite{Schwartz98,Mao01}) to obtain ``event onset times.''  More recently, Greenberg et al \cite{GreenbergKerr08} developed a  template matching algorithm to identify individual spikes. %, which performed well on their data, but is not particularly computationally efficient
 Holekamp et al \cite{HolekampHoly08} then applied an optimal linear deconvolution (i.e., the Wiener filter) to the fluorescence data.  This approach is natural from a signal processing standpoint, but does not utilize the knowledge that spikes are always positive.  Sasaki et al \cite{SasakiIkegaya08} proposed using machine learning techniques to build a nonlinear supervised classifier, requiring many hundreds of examples of joint electrophysiological and imaging data to ``train'' the algorithm to learn what effect spikes have on fluorescence.  Vogelstein et al \cite{VogelsteinPaninski09} proposed a biophysical model-based sequential Monte Carlo method to efficiently estimate the probability of a spike in each image frame, given the entire fluorescence time-series.  While effective, that approach is not suitable for online analyses of populations of neurons, as the computations run in about real-time per neuron (i.e., analyzing one minute of data requires about one minute of computational time on a standard laptop computer).
 
-In the present work, a simple model is proposed relating spiking activity to fluorescence traces. Unfortunately, inferring the most likely spike train given this model is computationally intractable.  Making some reasonable approximations leads to an algorithm that infers the approximately most likely spike train, given the fluorescence data.  This algorithm has a few particularly noteworthy features, relative to other approaches.  First, spikes are assumed to be positive.  This assumption often improves filtering results when the underlying signal has this property \cite{PortugalVicente94, MarkhamConchello99, LeeSeung99, LLS04, OGradyPearlmutter06, HuysPaninski06, Cunningham08, PaninskiWu09}.  Second, the algorithm is fast: it can process a calcium trace from 50,000 images in about one second on a standard laptop computer. In fact, filtering the signals for an entire population of over 100 neurons runs faster than real-time. This speed facilitates using this filter online, as observations are being collected. In addition to these two features, the model may be generalized in a number of ways, including incorporating spatial filtering of the raw movie, which can improve effective SNR. The utility of the proposed filter is demonstrated on several biological data-sets, suggesting that this algorithm is a powerful and robust tool for online spike train inference.  The code (which is a simple Matlab script) is available for free download from \url{http://wwww.optophysiology.org}.
+In the present work, a simple model is proposed relating spiking activity to fluorescence traces. Unfortunately, inferring the most likely spike train given this model is computationally intractable.  Making some reasonable approximations leads to an algorithm that infers the approximately most likely spike train, given the fluorescence data.  This algorithm has a few particularly noteworthy features, relative to other approaches.  First, spikes are assumed to be positive.  This assumption often improves filtering results when the underlying signal has this property \cite{PortugalVicente94, MarkhamConchello99, LeeSeung99, LLS04, OGradyPearlmutter06, HuysPaninski06, Cunningham08, PaninskiWu09}.  Second, the algorithm is fast: it can process a calcium trace from 50,000 images in about one second on a standard laptop computer. In fact, filtering the signals for an entire population of over 100 neurons runs faster than real-time. This speed facilitates using this filter online, as observations are being collected. In addition to these two features, the model may be generalized in a number of ways, including incorporating spatial filtering of the raw movie, which can improve effective SNR. The utility of the proposed filter is demonstrated on several biological data-sets, suggesting that this algorithm is a powerful and robust tool for online spike train inference.  The code (which is a simple Matlab script) is available for free download from \url{http://www.optophysiology.org}.
 
 
 
@@ -598,54 +598,54 @@ Note that this solution is the optimal linear solution, under the assumption tha
 % section figures (end)
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/in_vitro_ex}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/projects/working-papers/fast-oopsi/figs/in_vitro_ex}
 \caption{1} \label{fig:in_vitro_ex}
 \end{figure}
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_inf13}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/projects/working-papers/fast-oopsi/figs/fast_wiener_inf13}
 \caption[\foopsi filter outperforms Wiener filter]{2} \label{fig:woopsi_inf}
 \end{figure}
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/stats}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/projects/working-papers/fast-oopsi/figs/stats}
 \caption[quantifying the relative accuracy for the fast and Wiener filters]{3} \label{fig:stats}
 \end{figure}
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_learn13}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/projects/working-papers/fast-oopsi/figs/fast_wiener_learn13}
 \caption[parameters may be estimated using the \foopsi filter]{4} \label{fig:woopsi_learn}
 \end{figure}
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_vitro4}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/projects/working-papers/fast-oopsi/figs/fast_wiener_vitro4}
 \caption[\foopsi filter outperforms Wiener filter on biological data]{5} \label{fig:woopsi_data}
 \end{figure}
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_wiener_burst12}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/projects/working-papers/fast-oopsi/figs/fast_wiener_burst12}
 \caption[\foopsi filter outperforms Wiener filter on multi-spike events]{6} \label{fig:woopsi_data_doublets}
 \end{figure}
 
 \begin{figure}[h!]
 \begin{centering} 
-\includegraphics[width=1\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/pop}
+\includegraphics[width=1\linewidth]{/Users/joshyv/Research/projects/working-papers/fast-oopsi/figs/pop}
 \end{centering}
 \caption[\foopsi filter is robust and works online for populations of neurons]{7 } \label{fig:pop}
 \end{figure}
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/fast_smc_vitro12}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/projects/working-papers/fast-oopsi/figs/fast_smc_vitro12}
 \caption[\foopsi filter can initialize Wiener filter]{8} \label{fig:smc_init}
 \end{figure}
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_inf}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/projects/working-papers/fast-oopsi/figs/spatial_inf}
 \caption[spatial filtering can improve effective SNR]{9} \label{fig:spatial} 
 \end{figure}
 
 \begin{figure}[h!]
-\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/oopsi/fast-oopsi/figs/spatial_learn_multi}
+\centering \includegraphics[width=.9\linewidth]{/Users/joshyv/Research/projects/working-papers/fast-oopsi/figs/spatial_learn_multi}
 \caption[overlapping spatial filters can be estimated]{10} \label{fig:spatial_multi_learn}
 \end{figure}
 
@@ -655,7 +655,7 @@ Note that this solution is the optimal linear solution, under the assumption tha
 
 \clearpage
 %\subparagraph*{References}
-\bibliography{/Users/joshyv/Research/meta/biblist} 
+\bibliography{/Users/joshyv/Research/projects/meta/biblist} 
 % \bibliography{/Work/jovo-latex/biblist}
 \addcontentsline{toc}{section}{References}
 %\bibliography{Science}
