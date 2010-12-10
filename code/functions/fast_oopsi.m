@@ -115,10 +115,16 @@ if V.fast_iter_max>1;
     if ~isfield(V,'fast_ignore_post'), V.fast_ignore_post=0; end % whether to ignore the posterior, and just keep the last iteration
 end
 
+% normalize F if it is only a trace
+if V.Npixels==1
+    F=detrend(F);
+    F=F-min(F)+eps;
+end
+
 %% set default model Parameters
 
 if nargin < 3,          P       = struct;                       end
-if ~isfield(P,'b'),     P.b     = quantile(F(:),0.05);          end % need to check how well this works with spatial filtering
+if ~isfield(P,'b'),     P.b     = quantile(F,0.4);       end % need to check how well this works with spatial filtering
 if ~isfield(P,'sig'),   P.sig   = mean(mad(F',1)*1.4826);       end
 if ~isfield(P,'gam'),   P.gam   = (1-V.dt/1)*ones(V.Ncells,1);  end
 if ~isfield(P,'lam'),   P.lam   = 10*ones(V.Ncells,1);          end
@@ -158,6 +164,7 @@ V.post = posts(1);
 post_max = posts(1);
 
 if V.fast_iter_max>1
+    options = optimset('Display','off');        % don't show warnings for parameter estimation
     i       = 1;                                % iteration #
     i_best  = i;                                % iteration with highest likelihood
     conv    = 0;                                % whether algorithm has converged yet
@@ -187,7 +194,7 @@ while conv == 0
         V.post  = posts(1:i);
         conv    = 1;
     end
-    sound(0.5*sin(linspace(0,90*pi,2000)))        % play sound to indicate iteration is over
+    sound(3*sin(linspace(0,90*pi,2000)))        % play sound to indicate iteration is over
 end
 
 V.fast_time = cputime-starttime;                % time to run code
