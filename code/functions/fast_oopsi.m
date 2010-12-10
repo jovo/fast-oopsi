@@ -96,7 +96,7 @@ if V.fast_iter_max>1;
         disp('\ncode does not currrently support estimating parameters for \npoisson or nonlinear observations');
         V.fast_iter_max=1;
     end
-
+    
     if ~isfield(V,'fast_plot'), V.fast_plot = 0; end
     if V.fast_plot==1
         FigNum = 400;
@@ -104,7 +104,7 @@ if V.fast_iter_max>1;
         figure(FigNum+1), clf                           % figure showing estimated spike trains
         if isfield(V,'n'), siz=size(V.n); V.n(V.n==0)=NaN; if siz(1)<siz(2), V.n=V.n'; end; end
     end
-
+    
     if ~isfield(V,'est_sig'),   V.est_sig   = 0; end    % whether to estimate sig
     if ~isfield(V,'est_lam'),   V.est_lam   = 0; end    % whether to estimate lam
     if ~isfield(V,'est_gam'),   V.est_gam   = 0; end    % whether to estimate gam
@@ -124,12 +124,20 @@ end
 %% set default model Parameters
 
 if nargin < 3,          P       = struct;                       end
-if ~isfield(P,'b'),     P.b     = quantile(F,0.4);       end % need to check how well this works with spatial filtering
 if ~isfield(P,'sig'),   P.sig   = mean(mad(F',1)*1.4826);       end
 if ~isfield(P,'gam'),   P.gam   = (1-V.dt/1)*ones(V.Ncells,1);  end
 if ~isfield(P,'lam'),   P.lam   = 10*ones(V.Ncells,1);          end
-if ~isfield(P,'a'),     P.a     = 1;                            end % need to check how well this works with spatial filtering
-
+if ~isfield(P,'a'),
+    if V.Npixels==1, P.a = 1;
+    else P.a=median(F,2);
+    end
+end 
+if ~isfield(P,'b'),
+    if V.Npixels==1, P.b = quantile(F,0.4);
+    else P.b=median(F,2);
+    end
+end    
+    
 %% define some stuff needed for est_MAP function
 
 % for brevity and expediency
@@ -179,14 +187,14 @@ while conv == 0
     V.fast_iter_tot = i;                        % record of total # of iterations
     P               = est_params(n,C,F,P,b);    % update parameters based on previous iteration
     [n C posts(i)]  = est_MAP(F,P);             % update inferred spike train based on new parameters
-
+    
     if posts(i)>post_max || V.fast_ignore_post==1% if this is the best one, keep n and P
         n_best  = n;                            % keep n
         P_best  = P;                            % keep P
         i_best  = i;                            % keep track of which was best
         post_max= posts(i);                     % keep max posterior
     end
-
+    
     % if lik doesn't change much (relatively), or returns to some previous state, stop iterating
     if  i>=V.fast_iter_max || (abs((posts(i)-posts(i-1))/posts(i))<1e-3 || any(posts(1:i-1)-posts(i))<1e-5)% abs((posts(i)-posts(i-1))/posts(i))<1e-5 || posts(i-1)-posts(i)>1e5;
         MakePlot(n,F,P,V);
@@ -204,7 +212,7 @@ P_best      = orderfields(P_best);
 
 %% fast filter function
     function [n C post] = est_MAP(F,P)
-
+        
         % initialize n and C
         z = 1;                                  % weight on barrier function
         llam = reshape(1./lam',1,V.Ncells*V.T)';
@@ -217,7 +225,7 @@ P_best      = orderfields(P_best);
         for j=1:V.Ncells
             C(j:V.Ncells:end) = filter(1,[1, -P.gam(j)],n(j:V.Ncells:end)); %(1-P.gam(j))*P.b(j);
         end
-
+        
         % precompute parameters required for evaluating and maximizing likelihood
         b           = repmat(P.b,1,V.T);       % for lik
         if V.fast_poiss==1
@@ -231,10 +239,10 @@ P_best      = orderfields(P_best);
             H1(d0)  = 2*e*aa;                   % for Hess
         end
         lnprior     = llam.*sum(M,2);            % for grad
-
+        
         % find C = argmin_{C_z} lik + prior + barrier_z
         while z>1e-13                           % this is an arbitrary threshold
-
+            
             if V.fast_poiss==1
                 Fexpect = P.a*(C+b')';          % expected poisson observation rate
                 lik = -sum(sum(-Fexpect+ F.*log(Fexpect) - gamlnF)); % lik
@@ -285,8 +293,8 @@ P_best      = orderfields(P_best);
                         else
                             S1 = C1;
                         end
-                            D = F-P.a*(reshape(S1,V.Ncells,V.T))-b; % difference vector to be used in likelihood computation
-                            lik1 = e*D(:)'*D(:);             % lik
+                        D = F-P.a*(reshape(S1,V.Ncells,V.T))-b; % difference vector to be used in likelihood computation
+                        lik1 = e*D(:)'*D(:);             % lik
                     end
                     post1 = lik1 + llam'*n - z*sum(log(n));
                     s   = s/5;                  % if step increases objective function, decrease step size
@@ -297,7 +305,7 @@ P_best      = orderfields(P_best);
             end
             z=z/10;                             % reduce z (sequence of z reductions is arbitrary)
         end
-
+        
         % reshape things in the case of multiple neurons within the ROI
         n=reshape(n,V.Ncells,V.T)';
         C=reshape(C,V.Ncells,V.T)';
@@ -305,7 +313,7 @@ P_best      = orderfields(P_best);
 
 %% Parameter Update
     function P = est_params(n,C,F,P,b)
-
+        
         % generate regressor for spatial filter
         if V.est_a==1 || V.est_b==1
             if V.fast_thr==1
@@ -321,7 +329,7 @@ P_best      = orderfields(P_best);
             else
                 CC      = C;
             end
-        
+            
             if V.est_b==1
                 A = [CC -1+Z(1:V.T)];
             else
@@ -336,15 +344,15 @@ P_best      = orderfields(P_best);
             end
             
             D   = F-P.a*(reshape(C,V.Ncells,V.T)) - b;
-
+            
             mse = D(:)'*D(:);
         end
-
+        
         if V.est_a==0 && V.est_b==0 && (V.est_sig==1 || V.est_lam==1),
             D   = F-P.a*(reshape(C,V.Ncells,V.T)+b);
             mse = D(:)'*D(:);
         end
-
+        
         % estimate other parameters
         if V.est_sig==1,
             P.sig = sqrt(mse)/V.T;
@@ -358,7 +366,7 @@ P_best      = orderfields(P_best);
                 P.lam   = nnorm/(V.T*V.dt);
                 lam     = P.lam*V.dt;
             end
-
+            
         end
     end
 
@@ -372,7 +380,7 @@ P_best      = orderfields(P_best);
                     title('a')
                 end
             end
-
+            
             figure(FigNum+1),  ncols=V.Ncells; nrows=3; END=V.T; h=zeros(V.Ncells,2);
             for j=1:V.Ncells                                  % plot inferred spike train
                 h(j,1)=subplot(nrows,ncols,(j-1)*ncols+1); cla
@@ -382,7 +390,7 @@ P_best      = orderfields(P_best);
                 title(['best iteration ' num2str(i_best)]),
                 axis('tight')
                 set(gca,'XTickLabel',[],'YTickLabel',[])
-
+                
                 h(j,2)=subplot(nrows,ncols,(j-1)*ncols+2); cla
                 bar(z1(n(2:END,j)))
                 if isfield(V,'n'), hold on,
@@ -394,7 +402,7 @@ P_best      = orderfields(P_best);
                 title(['current iteration ' num2str(i)]),
                 axis('tight')
             end
-
+            
             subplot(nrows,ncols,j*nrows),
             plot(1:i,posts(1:i))    % plot record of likelihoods
             title(['max lik ' num2str(post_max,4), ',   lik ' num2str(posts(i),4)])
