@@ -127,13 +127,10 @@ if nargin < 3,          P       = struct;                       end
 if ~isfield(P,'sig'),   P.sig   = mean(mad(F',1)*1.4826);       end
 if ~isfield(P,'gam'),   P.gam   = (1-V.dt/1)*ones(V.Ncells,1);  end
 if ~isfield(P,'lam'),   P.lam   = 10*ones(V.Ncells,1);          end
-if ~isfield(P,'a'),
-    if V.Npixels==1, P.a = 1;
-    else P.a=median(F,2);
-    end
-end 
+if ~isfield(P,'a'),     P.a     = median(F,2);                  end
+
 if ~isfield(P,'b'),
-    if V.Npixels==1, P.b = quantile(F,0.4);
+    if V.Npixels==1, P.b = quantile(F,0.05);
     else P.b=median(F,2);
     end
 end    
